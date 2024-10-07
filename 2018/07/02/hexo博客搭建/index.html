@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="github,tools," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="hexo 本地搭建12345678910111213141516171819202122D:\Developer&gt;hexo init github_blogINFO  Cloning hexo-starter https:&#x2F;&#x2F;github.com&#x2F;hexojs&#x2F;hexo-starter.gitINFO  Install dependenciesINFO  Start blogging wit">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hexo博客搭建">
+<meta property="og:url" content="http://example.com/2018/07/02/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="hexo 本地搭建12345678910111213141516171819202122D:\Developer&gt;hexo init github_blogINFO  Cloning hexo-starter https:&#x2F;&#x2F;github.com&#x2F;hexojs&#x2F;hexo-starter.gitINFO  Install dependenciesINFO  Start blogging wit">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-07-02T04:22:22.000Z">
+<meta property="article:modified_time" content="2024-10-07T13:12:35.713Z">
+<meta property="article:author" content="Zhu Yuping">
+<meta property="article:tag" content="github">
+<meta property="article:tag" content="tools">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/2018/07/02/hexo博客搭建/"/>
+
+
+
+
+
+  <title>hexo博客搭建 | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Magnolia's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">我们的征途是星辰大海</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2018/07/02/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhu Yuping">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">hexo博客搭建</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-02T12:22:22+08:00">
+                2018-07-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="hexo-本地搭建"><a href="#hexo-本地搭建" class="headerlink" title="hexo 本地搭建"></a>hexo 本地搭建</h3><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">D:\<span class="title">Developer</span>&gt;<span class="title">hexo</span> <span class="title">init</span> <span class="title">github_blog</span></span></span><br><span class="line"><span class="function"><span class="title">INFO</span>  <span class="title">Cloning</span> <span class="title">hexo</span>-<span class="title">starter</span> <span class="title">https</span>://<span class="title">github.com</span>/<span class="title">hexojs</span>/<span class="title">hexo</span>-<span class="title">starter.git</span></span></span><br><span class="line"><span class="function"><span class="title">INFO</span>  <span class="title">Install</span> <span class="title">dependencies</span></span></span><br><span class="line"><span class="function"><span class="title">INFO</span>  <span class="title">Start</span> <span class="title">blogging</span> <span class="title">with</span> <span class="title">Hexo</span>!</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">D</span>:\<span class="title">Developer</span>&gt;<span class="title">cd</span> <span class="title">github_blog</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">D</span>:\<span class="title">Developer</span>\<span class="title">github_blog</span>&gt;<span class="title">hexo</span> <span class="title">g</span></span></span><br><span class="line"><span class="function"><span class="title">INFO</span>  <span class="title">Validating</span> <span class="title">config</span></span></span><br><span class="line"><span class="function"><span class="title">INFO</span>  <span class="title">Start</span> <span class="title">processing</span></span></span><br><span class="line"><span class="function"><span class="title">INFO</span>  <span class="title">Files</span> <span class="title">loaded</span> <span class="title">in</span> 175 <span class="title">ms</span></span></span><br><span class="line"><span class="function"><span class="title">INFO</span>  <span class="title">Generated</span>: <span class="title">archives</span>/<span class="title">index.html</span></span></span><br><span class="line"><span class="function"><span class="title">INFO</span>  <span class="title">Generated</span>: <span class="title">index.html</span></span></span><br><span class="line"><span class="function"><span class="title">INFO</span>  <span class="title">Generated</span>: <span class="title">css</span>/<span class="title">style.css</span></span></span><br><span class="line"><span class="function">...</span></span><br><span class="line"><span class="function"><span class="title">INFO</span>  <span class="title">Generated</span>: <span class="title">css</span>/<span class="title">images</span>/<span class="title">banner.jpg</span></span></span><br><span class="line"><span class="function"><span class="title">INFO</span>  11 <span class="title">files</span> <span class="title">generated</span> <span class="title">in</span> 163 <span class="title">ms</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">D</span>:\<span class="title">Developer</span>\<span class="title">github_blog</span>&gt;<span class="title">hexo</span> <span class="title">server</span></span></span><br><span class="line"><span class="function"><span class="title">INFO</span>  <span class="title">Validating</span> <span class="title">config</span></span></span><br><span class="line"><span class="function"><span class="title">INFO</span>  <span class="title">Start</span> <span class="title">processing</span></span></span><br><span class="line"><span class="function"><span class="title">INFO</span>  <span class="title">Hexo</span> <span class="title">is</span> <span class="title">running</span> <span class="title">at</span> <span class="title">http</span>://<span class="title">localhost</span>:4000/ . <span class="title">Press</span> <span class="title">Ctrl</span>+<span class="title">C</span> <span class="title">to</span> <span class="title">stop</span>.</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">hexo new &quot;my new post&quot;  # Create a new post</span><br><span class="line">hexo generate    # Generate static files</span><br><span class="line">hexo server  # Run server</span><br><span class="line">hexo deploy  # Deploy to remote sites</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h4 id="部署到-github"><a href="#部署到-github" class="headerlink" title="部署到 github"></a>部署到 github</h4><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br><span class="line">hexo clean  # 清除旧的生成文件和缓存。</span><br><span class="line">hexo g  # 根据内容生成新的静态页面。</span><br><span class="line">hexo d  # 将生成的页面部署到服务器或 GitHub Pages。</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="next-主题安装和配置"><a href="#next-主题安装和配置" class="headerlink" title="next 主题安装和配置"></a>next 主题安装和配置</h3><p>从  <a target="_blank" rel="noopener" href="https://github.com/iissnan/hexo-theme-next">https://github.com/iissnan/hexo-theme-next</a> fork 一份到自己的 github 上，为了方便跟踪改了哪些配置，再克隆到 github_blod 目录中。</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">D:\<span class="title">Developer</span>\<span class="title">github_blog</span>&gt;<span class="title">git</span> <span class="title">clone</span> <span class="title">git</span>@<span class="title">github.com:zypdominate</span>/<span class="title">hexo</span>-<span class="title">theme</span>-<span class="title">next.git</span> <span class="title">themes</span>/<span class="title">next</span></span></span><br></pre></td></tr></table></figure>
+
+<p>修改 <code>_config.yaml</code>，</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="section"># Extensions</span></span><br><span class="line"><span class="section"># theme: landscape</span></span><br><span class="line">theme: next</span><br></pre></td></tr></table></figure>
+
+<p>重新启动服务，出现一个报错：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;% extends &#x27;_layout.swig&#x27; %&#125; &#123;% import &#x27;_macro/post.swig&#x27; as post_template %&#125; &#123;% import &#x27;_macro/sidebar.swig&#x27; as sidebar_template %&#125; &#123;% block title %&#125;&#123;&#123; config.title &#125;&#125;&#123;% if theme.index_with_subtitle and config.subtitle %&#125; - &#123;&#123;config.subtitle &#125;&#125;&#123;% endif %&#125;&#123;% endblock %&#125; &#123;% block page_class %&#125; &#123;% if is_home() %&#125;page-home&#123;% endif -%&#125; &#123;% endblock %&#125; &#123;% block content %&#125;</span><br><span class="line">&#123;% for post in page.posts %&#125; &#123;&#123; post_template.render(post, true) &#125;&#125; &#123;% endfor %&#125;</span><br><span class="line">&#123;% include &#x27;_partials/pagination.swig&#x27; %&#125; &#123;% endblock %&#125; &#123;% block sidebar %&#125; &#123;&#123; sidebar_template.render(false) &#125;&#125; &#123;% endblock %&#125;</span><br></pre></td></tr></table></figure>
+
+<p>解决：<code>npm i hexo-renderer-swig</code></p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">D:\<span class="title">Developer</span>\<span class="title">github_blog</span>&gt;<span class="title">npm</span> <span class="title">i</span> <span class="title">hexo</span>-<span class="title">renderer</span>-<span class="title">swig</span></span></span><br><span class="line"><span class="function"><span class="title">npm</span> <span class="title">warn</span> <span class="title">deprecated</span> <span class="title">hexo</span>-<span class="title">renderer</span>-<span class="title">swig</span>@2.0.0: <span class="title">hexo</span>-<span class="title">renderer</span>-<span class="title">swig</span> <span class="title">has</span> <span class="title">been</span> <span class="title">deprecated</span>. <span class="title">Please</span> <span class="title">use</span> <span class="title">other</span> <span class="title">template</span> <span class="title">engines</span>. (<span class="title">e.g</span>. <span class="title">nunjucks</span> <span class="title">https</span>://<span class="title">github.com</span>/<span class="title">hexojs</span>/<span class="title">hexo</span>-<span class="title">renderer</span>-<span class="title">nunjucks</span>)</span></span><br><span class="line"><span class="function"><span class="title">npm</span> <span class="title">warn</span> <span class="title">deprecated</span> <span class="title">swig</span>-<span class="title">templates</span>@2.0.3: <span class="title">unmaintained</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">added</span> 28 <span class="title">packages</span>, <span class="title">and</span> <span class="title">audited</span> 256 <span class="title">packages</span> <span class="title">in</span> 5<span class="title">m</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">23 <span class="title">packages</span> <span class="title">are</span> <span class="title">looking</span> <span class="title">for</span> <span class="title">funding</span></span></span><br><span class="line"><span class="function">  <span class="title">run</span> `<span class="title">npm</span> <span class="title">fund</span>` <span class="title">for</span> <span class="title">details</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">6 <span class="title">vulnerabilities</span> (2 <span class="title">low</span>, 1 <span class="title">high</span>, 3 <span class="title">critical</span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">To</span> <span class="title">address</span> <span class="title">all</span> <span class="title">issues</span> (<span class="title">including</span> <span class="title">breaking</span> <span class="title">changes</span>), <span class="title">run</span>:</span></span><br><span class="line"><span class="function">  <span class="title">npm</span> <span class="title">audit</span> <span class="title">fix</span> --<span class="title">force</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">Run</span> `<span class="title">npm</span> <span class="title">audit</span>` <span class="title">for</span> <span class="title">details</span>.</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="标签和分类"><a href="#标签和分类" class="headerlink" title="标签和分类"></a>标签和分类</h4><p>设置菜单栏，修改 <code>_config.yaml</code></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">menu:</span></span><br><span class="line">  <span class="attr">home:</span> <span class="string">/</span></span><br><span class="line">  <span class="attr">categories:</span> <span class="string">/categories/</span></span><br><span class="line">  <span class="attr">tags:</span> <span class="string">/tags/</span></span><br><span class="line">  <span class="attr">archives:</span> <span class="string">/archives/</span></span><br><span class="line">  <span class="attr">about:</span> <span class="string">/about/</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>创建页面：categories，tages，about。在此之前，如果没有创建，点击主页上的这些菜单，会出现 <code>Cannot GET /categories/</code> 这样的报错。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">D:\Developer\github_blog&gt;hexo new page categories</span><br><span class="line">INFO  Validating config</span><br><span class="line">INFO  Created: D:\Developer\github_blog\source\categories\index.md</span><br><span class="line"></span><br><span class="line">D:\Developer\github_blog&gt;hexo new page tags</span><br><span class="line">INFO  Validating config</span><br><span class="line">INFO  Created: D:\Developer\github_blog\source\tags\index.md</span><br><span class="line"></span><br><span class="line">D:\Developer\github_blog&gt;hexo new page about</span><br><span class="line">INFO  Validating config</span><br><span class="line">INFO  Created: D:\Developer\github_blog\source\about\index.md</span><br></pre></td></tr></table></figure>
+
+<p>分别修改对应的<code>index.md</code>文件</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: categories</span><br><span class="line">date: 2018-07-01 23:37:24</span><br><span class="line">type: &quot;categories&quot;</span><br><span class="line"></span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">title: tages</span><br><span class="line">date: 2018-07-01 23:33:14</span><br><span class="line">type: &quot;tags&quot;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="一篇文章多个分类"><a href="#一篇文章多个分类" class="headerlink" title="一篇文章多个分类"></a>一篇文章多个分类</h4><p>在很多情况下，我们希望在 Hexo 中写的一篇文章能够同时属于多个分类，例如我写一篇 [《Python自动化测试》]，我既想将它放在 [Python] 这个分类中，又想将它放入 [自动化测试] 这个分类。</p>
+<p>子分类</p>
+<p>下面的分类会将该分章放到 <code>Python/Automation</code>这个分类下</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">categories:</span><br><span class="line"><span class="bullet">  -</span> Python</span><br><span class="line"><span class="bullet">  -</span> Automation</span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">categories: [Python, Automation]</span><br></pre></td></tr></table></figure>
+
+
+
+<p>多个分类</p>
+<p>如果要求是将文章同时分到多个不同的分类中呢，应该这样：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">categories:</span><br><span class="line">  -[Python]</span><br><span class="line">  -[Automation]</span><br></pre></td></tr></table></figure>
+
+<p>这样，就可以将上面的文章分类到 <code>Python</code> 和 <code>Automation</code> 这两个不同的目录中了。</p>
+<p>扩展一下，如果我们将其分类到 <code>Python/Servlet</code> 和 <code>Programming</code> 两个不同的目录下，我们应该如下写：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">categories:</span><br><span class="line">  -[Python, Automation]</span><br><span class="line">  -[Programming]</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="网站描述"><a href="#网站描述" class="headerlink" title="网站描述"></a>网站描述</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Site</span></span><br><span class="line"><span class="attr">title:</span> <span class="string">Magnolia的博客</span></span><br><span class="line"><span class="attr">subtitle:</span> <span class="string">&#x27;我们的征途是星辰大海&#x27;</span></span><br><span class="line"><span class="attr">description:</span> <span class="string">&#x27;Pytho/测试开发/自动化测试&#x27;</span></span><br><span class="line"><span class="attr">keywords:</span></span><br><span class="line"><span class="attr">author:</span> <span class="string">Zhu</span> <span class="string">Yuping</span></span><br><span class="line"><span class="attr">language:</span> <span class="string">en</span></span><br><span class="line"><span class="attr">timezone:</span> <span class="string">Asia/Nanjing</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="头像"><a href="#头像" class="headerlink" title="头像"></a>头像</h4><p>将图片放到 source&#x2F;images 里面</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Sidebar Avatar</span></span><br><span class="line"><span class="attr">avatar:</span> <span class="string">/images/avatar.jpg</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="侧边栏社交链接"><a href="#侧边栏社交链接" class="headerlink" title="侧边栏社交链接"></a>侧边栏社交链接</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">social:</span></span><br><span class="line">  <span class="attr">CSDN:</span> <span class="string">https://blog.csdn.net/qq_31362767</span> <span class="string">||</span> <span class="string">cndn</span></span><br><span class="line">  <span class="attr">Gitee:</span> <span class="string">https://gitee.com/zypdominate</span> <span class="string">||</span> <span class="string">gitee</span></span><br><span class="line">  <span class="attr">GitHub:</span> <span class="string">https://github.com/zypdominate</span> <span class="string">||</span> <span class="string">github</span></span><br><span class="line">  <span class="attr">E-Mail:</span> <span class="string">mailto:zypdominate@gmail.com</span> <span class="string">||</span> <span class="string">envelope</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="字数统计和阅读时长"><a href="#字数统计和阅读时长" class="headerlink" title="字数统计和阅读时长"></a>字数统计和阅读时长</h4><p>安装插件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-symbols-count-time --save</span><br></pre></td></tr></table></figure>
+
+<p>修改配置</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">symbols_count_time:</span></span><br><span class="line">  <span class="comment">#文章内是否显示</span></span><br><span class="line">  <span class="attr">symbols:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">time:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># 网页底部是否显示</span></span><br><span class="line">  <span class="attr">total_symbols:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">total_time:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">separated_meta:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">item_text_post:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">item_text_total:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">awl:</span> <span class="number">4</span></span><br><span class="line">  <span class="attr">wpm:</span> <span class="number">275</span></span><br><span class="line">  <span class="attr">suffix:</span> <span class="string">mins.</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="遇到的报错解决"><a href="#遇到的报错解决" class="headerlink" title="遇到的报错解决"></a>遇到的报错解决</h3><h4 id="文章摘要显示数字"><a href="#文章摘要显示数字" class="headerlink" title="文章摘要显示数字"></a>文章摘要显示数字</h4><p>解决：</p>
+<p>在文章的 <code>front-matter</code> 中添加 <code>description: xxx</code>，description 的内容就是被显示在首页上，其他的不显示。</p>
+<p>或者在文件内容中加入截断，<code>&lt;!--more--&gt;</code>，在这之后的内容就不会显示。</p>
+<h4 id="分页的前一页下一页显示不对"><a href="#分页的前一页下一页显示不对" class="headerlink" title="分页的前一页下一页显示不对"></a>分页的前一页下一页显示不对</h4><p>将以下内容：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;% if page.prev or page.next %&#125;</span><br><span class="line">  <span class="tag">&lt;<span class="name">nav</span> <span class="attr">class</span>=<span class="string">&quot;pagination&quot;</span>&gt;</span></span><br><span class="line">    &#123;&#123;</span><br><span class="line">      paginator(&#123;</span><br><span class="line">        prev_text: &#x27;<span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;fa fa-angle-left&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span>&#x27;,</span><br><span class="line">        next_text: &#x27;<span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;fa fa-angle-right&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span>&#x27;,</span><br><span class="line">        mid_size: 1</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;&#125;</span><br><span class="line">  <span class="tag">&lt;/<span class="name">nav</span>&gt;</span></span><br><span class="line">&#123;% endif %&#125;</span><br></pre></td></tr></table></figure>
+
+<p>改为：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;% if page.prev or page.next %&#125;</span><br><span class="line">  <span class="tag">&lt;<span class="name">nav</span> <span class="attr">class</span>=<span class="string">&quot;pagination&quot;</span>&gt;</span></span><br><span class="line">    &#123;&#123;</span><br><span class="line">      paginator(&#123;</span><br><span class="line">        prev_text: &#x27;<span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;fa fa-angle-left&quot;</span> <span class="attr">aria-label</span>=<span class="string">&quot;&#x27; + __(&#x27;accessibility.prev_page&#x27;) + &#x27;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span>&#x27;,</span><br><span class="line">        next_text: &#x27;<span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;fa fa-angle-right&quot;</span> <span class="attr">aria-label</span>=<span class="string">&quot;&#x27; + __(&#x27;accessibility.next_page&#x27;) + &#x27;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span>&#x27;,</span><br><span class="line">        mid_size: 1,</span><br><span class="line">        escape: false</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;&#125;</span><br><span class="line">  <span class="tag">&lt;/<span class="name">nav</span>&gt;</span></span><br><span class="line">&#123;% endif %&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/github/" rel="tag"># github</a>
+          
+            <a href="/tags/tools/" rel="tag"># tools</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/16/2018/python%20wordcloud/" rel="prev" title="python词云安装报错解决">
+                python词云安装报错解决 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Zhu Yuping" />
+            
+              <p class="site-author-name" itemprop="name">Zhu Yuping</p>
+              <p class="site-description motion-element" itemprop="description">Python/测试开发</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/">
+              
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://blog.csdn.net/qq_31362767" target="_blank" title="CSDN">
+                      
+                        <i class="fa fa-fw fa-cndn"></i>CSDN</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://gitee.com/zypdominate" target="_blank" title="Gitee">
+                      
+                        <i class="fa fa-fw fa-gitee"></i>Gitee</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/zypdominate" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:zypdominate@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#hexo-%E6%9C%AC%E5%9C%B0%E6%90%AD%E5%BB%BA"><span class="nav-number">1.</span> <span class="nav-text">hexo 本地搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%83%A8%E7%BD%B2%E5%88%B0-github"><span class="nav-number">1.1.</span> <span class="nav-text">部署到 github</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#next-%E4%B8%BB%E9%A2%98%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE"><span class="nav-number">2.</span> <span class="nav-text">next 主题安装和配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%87%E7%AD%BE%E5%92%8C%E5%88%86%E7%B1%BB"><span class="nav-number">2.1.</span> <span class="nav-text">标签和分类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E5%A4%9A%E4%B8%AA%E5%88%86%E7%B1%BB"><span class="nav-number">2.2.</span> <span class="nav-text">一篇文章多个分类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BD%91%E7%AB%99%E6%8F%8F%E8%BF%B0"><span class="nav-number">2.3.</span> <span class="nav-text">网站描述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%B4%E5%83%8F"><span class="nav-number">2.4.</span> <span class="nav-text">头像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BE%A7%E8%BE%B9%E6%A0%8F%E7%A4%BE%E4%BA%A4%E9%93%BE%E6%8E%A5"><span class="nav-number">2.5.</span> <span class="nav-text">侧边栏社交链接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AD%97%E6%95%B0%E7%BB%9F%E8%AE%A1%E5%92%8C%E9%98%85%E8%AF%BB%E6%97%B6%E9%95%BF"><span class="nav-number">2.6.</span> <span class="nav-text">字数统计和阅读时长</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%81%87%E5%88%B0%E7%9A%84%E6%8A%A5%E9%94%99%E8%A7%A3%E5%86%B3"><span class="nav-number">3.</span> <span class="nav-text">遇到的报错解决</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%87%E7%AB%A0%E6%91%98%E8%A6%81%E6%98%BE%E7%A4%BA%E6%95%B0%E5%AD%97"><span class="nav-number">3.1.</span> <span class="nav-text">文章摘要显示数字</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E9%A1%B5%E7%9A%84%E5%89%8D%E4%B8%80%E9%A1%B5%E4%B8%8B%E4%B8%80%E9%A1%B5%E6%98%BE%E7%A4%BA%E4%B8%8D%E5%AF%B9"><span class="nav-number">3.2.</span> <span class="nav-text">分页的前一页下一页显示不对</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhu Yuping</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/canvas_lines.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
