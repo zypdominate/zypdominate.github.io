@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Python,python2," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="一.性能python3.x 起始比python2.x 效率低, 但是3.x后有极大的优化空间, 性能上正在追赶. 二.编码Python3 对Unicode字符的原生支持. python2中使用ASCII码作为默认的编码方式, string有两种类型: str 和 unicode. python3 只支持unicode的string.     Python2 Python3 表现形式 转换 作用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python2与python3的区别">
+<meta property="og:url" content="http://example.com/2019/03/19/2019/python2%E4%B8%8Epython3%E7%9A%84%E5%8C%BA%E5%88%AB/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="一.性能python3.x 起始比python2.x 效率低, 但是3.x后有极大的优化空间, 性能上正在追赶. 二.编码Python3 对Unicode字符的原生支持. python2中使用ASCII码作为默认的编码方式, string有两种类型: str 和 unicode. python3 只支持unicode的string.     Python2 Python3 表现形式 转换 作用">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-03-19T10:51:01.000Z">
+<meta property="article:modified_time" content="2024-10-14T16:20:51.882Z">
+<meta property="article:author" content="Zhu Yuping">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="python2">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/2019/03/19/2019/python2与python3的区别/"/>
+
+
+
+
+
+  <title>python2与python3的区别 | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Magnolia's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">我们的征途是星辰大海</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/03/19/2019/python2%E4%B8%8Epython3%E7%9A%84%E5%8C%BA%E5%88%AB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhu Yuping">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">python2与python3的区别</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-19T18:51:01+08:00">
+                2019-03-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="一-性能"><a href="#一-性能" class="headerlink" title="一.性能"></a>一.性能</h2><p>python3.x 起始比python2.x 效率低, 但是3.x后有极大的优化空间, 性能上正在追赶.</p>
+<h2 id="二-编码"><a href="#二-编码" class="headerlink" title="二.编码"></a>二.编码</h2><p>Python3 对Unicode字符的原生支持.</p>
+<p>python2中使用ASCII码作为默认的编码方式, string有两种类型: str 和 unicode. python3 只支持unicode的string. </p>
+<table>
+<thead>
+<tr>
+<th>Python2</th>
+<th>Python3</th>
+<th>表现形式</th>
+<th>转换</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>unicode</td>
+<td>str</td>
+<td>字节</td>
+<td>decode</td>
+<td>显示</td>
+</tr>
+<tr>
+<td>str</td>
+<td>bytes</td>
+<td>字节</td>
+<td>encode</td>
+<td>存储, 传输</td>
+</tr>
+</tbody></table>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># python2:</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span> <span class="built_in">type</span>(unicode(<span class="string">&#x27;this is like a python3 str type&#x27;</span>))</span><br><span class="line">&lt;<span class="built_in">type</span> <span class="string">&#x27;unicode&#x27;</span>&gt;</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span> <span class="built_in">type</span>(<span class="string">b&#x27;byte type does not exist&#x27;</span>)</span><br><span class="line">&lt;<span class="built_in">type</span> <span class="string">&#x27;str&#x27;</span>&gt;</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span> <span class="string">&#x27;they are really&#x27;</span> + <span class="string">b&#x27; the same&#x27;</span></span><br><span class="line">they are really the same</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span> <span class="built_in">type</span>(<span class="built_in">bytearray</span>(<span class="string">b&#x27;bytearray oddly does exist though&#x27;</span>))</span><br><span class="line">&lt;<span class="built_in">type</span> <span class="string">&#x27;bytearray&#x27;</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># python3:</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(<span class="string">&#x27;strings are now utf-8 \u03BCnico\u0394é!&#x27;</span>)</span><br><span class="line">strings are now utf-<span class="number">8</span> μnicoΔé!</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(<span class="built_in">type</span>(<span class="string">&#x27;strings are now utf-8 \u03BCnico\u0394é!&#x27;</span>))</span><br><span class="line">&lt;<span class="keyword">class</span> <span class="string">&#x27;str&#x27;</span>&gt;</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(<span class="string">&#x27;python3 has&#x27;</span>, <span class="built_in">type</span>(<span class="string">b&#x27; bytes for storing data&#x27;</span>))</span><br><span class="line">python3 has &lt;<span class="keyword">class</span> <span class="string">&#x27;bytes&#x27;</span>&gt;</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(<span class="string">&#x27; also has&#x27;</span>, <span class="built_in">type</span>(<span class="built_in">bytearray</span>(<span class="string">b&#x27;bytearrays&#x27;</span>)))</span><br><span class="line"> also has &lt;<span class="keyword">class</span> <span class="string">&#x27;bytearray&#x27;</span>&gt;</span><br><span class="line">  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">&#x27;note that we cannot add a string&#x27;</span> + <span class="string">b&#x27;bytes for data&#x27;</span></span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">&quot;&lt;stdin&gt;&quot;</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">TypeError: must be <span class="built_in">str</span>, <span class="keyword">not</span> <span class="built_in">bytes</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>python3默认使用utf-8编码, 使得变量名更加广泛.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>中国 = <span class="string">&#x27;china&#x27;</span> </span><br><span class="line">&gt;&gt;&gt;<span class="built_in">print</span>(中国) </span><br><span class="line">china</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># python2.x</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">str</span> = <span class="string">&quot;我爱北京天安门&quot;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">str</span></span><br><span class="line"><span class="string">&#x27;\xe6\x88\x91\xe7\x88\xb1\xe5\x8c\x97\xe4\xba\xac\xe5\xa4\xa9\xe5\xae\x89\xe9\x97\xa8&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">str</span> = <span class="string">u&quot;我爱北京天安门&quot;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">str</span></span><br><span class="line"><span class="string">u&#x27;\u6211\u7231\u5317\u4eac\u5929\u5b89\u95e8&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># python3.x</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">str</span> = <span class="string">&quot;我爱北京天安门&quot;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">str</span></span><br><span class="line"><span class="string">&#x27;我爱北京天安门&#x27;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="三-语法"><a href="#三-语法" class="headerlink" title="三.语法"></a>三.语法</h2><h4 id="1-去除了-改用"><a href="#1-去除了-改用" class="headerlink" title="1. 去除了 &lt;&gt; , 改用 !&#x3D;"></a>1. 去除了 &lt;&gt; , 改用 !&#x3D;</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># python2:</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">1</span> &lt;&gt; <span class="number">2</span></span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">1</span> != <span class="number">2</span></span><br><span class="line"><span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># python3:</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">1</span> &lt;&gt; <span class="number">2</span></span><br><span class="line">  File <span class="string">&quot;&lt;stdin&gt;&quot;</span>, line <span class="number">1</span></span><br><span class="line">    <span class="number">1</span> &lt;&gt; <span class="number">2</span></span><br><span class="line">       ^</span><br><span class="line">SyntaxError: invalid syntax</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">1</span> != <span class="number">2</span></span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2-加入了-as-和-with关键字-还有-True-False-None"><a href="#2-加入了-as-和-with关键字-还有-True-False-None" class="headerlink" title="2. 加入了 as 和 with关键字, 还有 True, False, None"></a>2. 加入了 as 和 with关键字, 还有 True, False, None</h4><p>True 和 False 在 Python2 中是两个全局变量（名字），在数值上分别对应 1 和 0，既然是变量，那么他们就可以指向其它对象，例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="literal">True</span> = <span class="literal">False</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="literal">True</span></span><br><span class="line"><span class="literal">False</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="literal">True</span> <span class="keyword">is</span> <span class="literal">False</span></span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="literal">False</span> = <span class="string">&quot;a&quot;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="literal">False</span></span><br><span class="line"><span class="string">&#x27;a&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">if</span> <span class="literal">False</span>:</span><br><span class="line"><span class="meta">... </span>    <span class="built_in">print</span> <span class="string">&quot;false is True&quot;</span></span><br><span class="line">...</span><br><span class="line">false <span class="keyword">is</span> <span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+<p>上面的代码违背了 Python 的设计哲学 Explicit is better than implicit.。而 Python3 修正了这个缺陷，True 和 False 变为两个关键字，永远指向两个固定的对象，不允许再被重新赋值。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="literal">True</span> = <span class="literal">False</span></span><br><span class="line">  File <span class="string">&quot;&lt;stdin&gt;&quot;</span>, line <span class="number">1</span></span><br><span class="line">SyntaxError: can<span class="string">&#x27;t assign to keyword</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="3-整型触发返回浮点数-整除使用"><a href="#3-整型触发返回浮点数-整除使用" class="headerlink" title="3. 整型触发返回浮点数, 整除使用 &#x2F;&#x2F;"></a>3. 整型触发返回浮点数, 整除使用 &#x2F;&#x2F;</h4><p>在python 2.x中&#x2F;除法就跟我们熟悉的大多数语言，比如Java啊C啊差不多，整数相除的结果是一个整数，把小数部分完全忽略掉，浮点数除法会保留小数点的部分得到一个浮点数的结果。</p>
+<p>在python 3.x中&#x2F;除法不再这么做了，对于整数之间的相除，结果也会是浮点数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># python2:</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">5</span>/<span class="number">3</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">5.0</span>/<span class="number">3</span></span><br><span class="line"><span class="number">1.6666666666666667</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># python3:</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">5</span>/<span class="number">3</span></span><br><span class="line"><span class="number">1.6666666666666667</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">5.0</span>/<span class="number">3</span></span><br><span class="line"><span class="number">1.6666666666666667</span></span><br></pre></td></tr></table></figure>
+
+<p>对于&#x2F;&#x2F;除法(floor除法)，会对除法的结果自动进行一个floor操作，在python 2.x和python 3.x中是一致的。</p>
+<h4 id="3-加入nonlocal-语句"><a href="#3-加入nonlocal-语句" class="headerlink" title="3. 加入nonlocal 语句"></a>3. 加入nonlocal 语句</h4><p>在python2中,函数里面可以使用关键字global 声明某个变量为全局变量, 但是在嵌套函数中, 如果要把一个变量声明为非局部变量是没有办法实现的. 在python3中,加入了关键字nonlocal.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">func</span>():</span><br><span class="line">  a = <span class="number">1</span></span><br><span class="line">	<span class="keyword">def</span> <span class="title function_">inner</span>():</span><br><span class="line">    a = <span class="number">11</span></span><br><span class="line">    inner()</span><br><span class="line">    <span class="built_in">print</span>(a)</span><br><span class="line">func()  </span><br><span class="line"><span class="comment"># 1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">funcNonlocal</span>():</span><br><span class="line">  a = <span class="number">1</span></span><br><span class="line">	<span class="keyword">def</span> <span class="title function_">inner</span>():</span><br><span class="line">    <span class="keyword">nonlocal</span> a</span><br><span class="line">    a = <span class="number">11</span></span><br><span class="line">    inner()</span><br><span class="line">    <span class="built_in">print</span>(a)</span><br><span class="line">funcNonlocal() </span><br><span class="line"><span class="comment"># 11</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="4-去除print语句-加入print-函数"><a href="#4-去除print语句-加入print-函数" class="headerlink" title="4. 去除print语句, 加入print()函数"></a>4. 去除print语句, 加入print()函数</h4><p>在python2中print是一条语句, 而在python3中是作为函数存在.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 2:</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;python2&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3:</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;python3&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>上述代码在输出结果上是一样的, 但是在Python2中是把(“python2”)当做是一个整体, 而后者print()是接收”python3”字符串作为参数的函数.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># python2:</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(<span class="string">&quot;a&quot;</span>)</span><br><span class="line">a</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(<span class="string">&quot;a&quot;</span>,<span class="string">&quot;b&quot;</span>)</span><br><span class="line">(<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># python3:</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(<span class="string">&quot;a&quot;</span>)</span><br><span class="line">a</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(<span class="string">&quot;a&quot;</span>,<span class="string">&quot;b&quot;</span>)</span><br><span class="line">a b</span><br></pre></td></tr></table></figure>
+
+<p>由上述代码可以看出, 在python2中, print语句后面接的是一个元组对象. 相比较而言, 在python3中, print函数可以接受任意个位置参数. 如果想要在python2中把print当做函数使用, 可以导入future模块中的print_function.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># python2:</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(<span class="string">&quot;a&quot;</span>)</span><br><span class="line">a</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(<span class="string">&quot;a&quot;</span>,<span class="string">&quot;b&quot;</span>)</span><br><span class="line">(<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> __future__ <span class="keyword">import</span> print_function</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(<span class="string">&quot;a&quot;</span>,<span class="string">&quot;b&quot;</span>)</span><br><span class="line">a b</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-去除raw-input-加入input函数"><a href="#5-去除raw-input-加入input函数" class="headerlink" title="5. 去除raw_input , 加入input函数"></a>5. 去除raw_input , 加入input函数</h4><p>在 Python 3 中已经解决了把用户的输入存储为一个 <code>str</code> 对象的问题。</p>
+<h4 id="6-新的super-可以不给super-传参"><a href="#6-新的super-可以不给super-传参" class="headerlink" title="6. 新的super(), 可以不给super()传参"></a>6. 新的super(), 可以不给super()传参</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">A</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">  	<span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, a</span>):</span><br><span class="line">      	<span class="built_in">print</span>(<span class="string">&quot;A&quot;</span>, a)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">B</span>(<span class="title class_ inherited__">A</span>):</span><br><span class="line">  	<span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, a</span>):</span><br><span class="line">      	<span class="built_in">super</span>().__init__(a)  </span><br></pre></td></tr></table></figure>
+
+<h4 id="7-改变了顺序操作符的行为"><a href="#7-改变了顺序操作符的行为" class="headerlink" title="7. 改变了顺序操作符的行为"></a>7. 改变了顺序操作符的行为</h4><p>例如:  x &lt; y , 当x和y的类型不匹配时抛出TypeError ,而不是返回随机的bool值.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># python2:</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">2</span> &lt; <span class="string">&quot;a&quot;</span></span><br><span class="line"><span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># python3:</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">2</span> &lt; <span class="string">&quot;a&quot;</span></span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">&quot;&lt;stdin&gt;&quot;</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">TypeError: <span class="string">&#x27;&lt;&#x27;</span> <span class="keyword">not</span> supported between instances of <span class="string">&#x27;int&#x27;</span> <span class="keyword">and</span> <span class="string">&#x27;str&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="8-新式的八进制变量"><a href="#8-新式的八进制变量" class="headerlink" title="8. 新式的八进制变量"></a>8. 新式的八进制变量</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># python2:</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>0666</span><br><span class="line"><span class="number">438</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>0777</span><br><span class="line"><span class="number">511</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># python3:</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>0666</span><br><span class="line">  File <span class="string">&quot;&lt;stdin&gt;&quot;</span>, line <span class="number">1</span></span><br><span class="line">    0666</span><br><span class="line">       ^</span><br><span class="line">SyntaxError: invalid token</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">0o666</span></span><br><span class="line"><span class="number">438</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">0o777</span></span><br><span class="line"><span class="number">511</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="9-字符串和字节串"><a href="#9-字符串和字节串" class="headerlink" title="9. 字符串和字节串"></a>9. 字符串和字节串</h4><p>在python2中:<br>字符串以 8-bit 字符串存储;</p>
+<p>在python3中:<br>字符串以 16-bit Unicode 字符串存储;<br>现在字符串只有str 一种类型.</p>
+<h4 id="10-数据类型"><a href="#10-数据类型" class="headerlink" title="10. 数据类型"></a>10. 数据类型</h4><p>pthon3.x 去除了long类型, 只有一种整型—-int<br>python3 彻底废弃了 long+int 双整数实现的方法, 统一为 int , 支持高精度整数运算.</p>
+<p>新增了bytes类型, 对应于2.x 版本的八位串:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># python2:</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = <span class="string">b&quot;china&quot;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a</span><br><span class="line"><span class="string">&#x27;china&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">type</span>(a)</span><br><span class="line">&lt;<span class="built_in">type</span> <span class="string">&#x27;str&#x27;</span>&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># python3:</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = <span class="string">b&quot;china&quot;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a</span><br><span class="line"><span class="string">b&#x27;china&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">type</span>(a)</span><br><span class="line">&lt;<span class="keyword">class</span> <span class="string">&#x27;bytes&#x27;</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p>str对象和bytes对象可以使用 <strong>.encode() 将str 转换为 bytes</strong>, 或者使用 <strong>.decode() 将 bytes装换为str</strong>.</p>
+<h4 id="11-面向对象"><a href="#11-面向对象" class="headerlink" title="11. 面向对象"></a>11. 面向对象</h4><p>引入抽象基类</p>
+<h4 id="12-异常"><a href="#12-异常" class="headerlink" title="12. 异常"></a>12. 异常</h4><ul>
+<li><p>所有异常都从BaseException 继承, 并删除了 StandardError</p>
+</li>
+<li><p>python2:  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">	<span class="keyword">pass</span></span><br><span class="line"><span class="keyword">except</span> Exception, e:</span><br><span class="line">	<span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+<p>python3:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">	<span class="keyword">pass</span></span><br><span class="line"><span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">	<span class="keyword">pass</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="13-返回可迭代对象"><a href="#13-返回可迭代对象" class="headerlink" title="13. 返回可迭代对象"></a>13. 返回可迭代对象</h4><p>python2中很多返回列表对象的内置函数和方法, 在python3中都改为了返回类似于迭代器的对象(可迭代对象), 由于迭代器的惰性加载特性使得操作大数据时可以更加有效率. 比如python2中的range和xrange函数合成了 python3中的range(同时兼容2和3).</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># python2:</span></span><br><span class="line"><span class="built_in">print</span> <span class="built_in">range</span>(<span class="number">3</span>) </span><br><span class="line"><span class="built_in">print</span> <span class="built_in">type</span>(<span class="built_in">range</span>(<span class="number">3</span>))</span><br><span class="line"><span class="comment"># [0, 1, 2]</span></span><br><span class="line"><span class="comment"># &lt; type ‘list’&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># python3:</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">range</span>(<span class="number">3</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">type</span>(<span class="built_in">range</span>(<span class="number">3</span>)))</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">list</span>(<span class="built_in">range</span>(<span class="number">3</span>)))</span><br><span class="line"><span class="comment"># range(0, 3)</span></span><br><span class="line"><span class="comment"># &lt; class ‘range’&gt;</span></span><br><span class="line"><span class="comment"># [0, 1, 2]</span></span><br></pre></td></tr></table></figure>
+
+<p>除此, 字典对象的 dict.keys() ,  dict.values() ,  dict.items() 方法都不再返回列表, 而是以一个类似迭代器的 “view” 对象返回.<br>高阶函数map, filter, zip 返回的也都 不是列表对象了. 在python2中的迭代器必须实现 next 方法,  而在Python3 改成了 <code>__next__</code>.</p>
+<h4 id="14-for循环变量和去全局命名空间泄露"><a href="#14-for循环变量和去全局命名空间泄露" class="headerlink" title="14. for循环变量和去全局命名空间泄露"></a>14. for循环变量和去全局命名空间泄露</h4><p>在python3 中 for循环变量不会导致命名空间泄露.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># python2:</span></span><br><span class="line">i = <span class="number">1</span></span><br><span class="line"><span class="built_in">print</span> <span class="string">&#x27;before: i =&#x27;</span>, i</span><br><span class="line"><span class="built_in">print</span> <span class="string">&#x27;comprehension: &#x27;</span>, [i <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>)]</span><br><span class="line"><span class="built_in">print</span> <span class="string">&#x27;after: i =&#x27;</span>, i</span><br><span class="line"></span><br><span class="line"><span class="comment"># before: i = 1</span></span><br><span class="line"><span class="comment"># comprehension: [0, 1, 2, 3, 4]</span></span><br><span class="line"><span class="comment"># after: i = 4</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># python3:</span></span><br><span class="line">i = <span class="number">1</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;before: i =&#x27;</span>, i)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;comprehension:&#x27;</span>, [i <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>)])</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;after: i =&#x27;</span>, i)</span><br><span class="line"></span><br><span class="line"><span class="comment"># before: i = 1</span></span><br><span class="line"><span class="comment"># comprehension: [0, 1, 2, 3, 4]</span></span><br><span class="line"><span class="comment"># after: i = 1</span></span><br></pre></td></tr></table></figure>
+
+<p>参考:<br><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/19698598">Python 2 和 Python 3 有哪些主要区别？</a><br><a target="_blank" rel="noopener" href="http://chenqx.github.io/2014/11/10/Key-differences-between-Python-2-7-x-and-Python-3-x/">Python 2.7.x 与 Python 3.x 的主要差异</a><br><a target="_blank" rel="noopener" href="https://docs.python.org/3.0/whatsnew/3.0.html">What’s New In Python 3.0</a><br><a target="_blank" rel="noopener" href="http://www.runoob.com/python/python-2x-3x.html">菜鸟教程</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+            <a href="/tags/python2/" rel="tag"># python2</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/18/2019/%E7%BF%BB%E8%AF%91%20Style%20Guide%20for%20Python%20Code/" rel="next" title="翻译PEP8中学习 -- Style Guide for Python Code">
+                <i class="fa fa-chevron-left"></i> 翻译PEP8中学习 -- Style Guide for Python Code
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/06/10/2020/useful_python_tricks/" rel="prev" title="Useful Python Tricks">
+                Useful Python Tricks <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Zhu Yuping" />
+            
+              <p class="site-author-name" itemprop="name">Zhu Yuping</p>
+              <p class="site-description motion-element" itemprop="description">Python/测试开发</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/">
+              
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://blog.csdn.net/qq_31362767" target="_blank" title="CSDN">
+                      
+                        <i class="fa fa-fw fa-cndn"></i>CSDN</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://gitee.com/zypdominate" target="_blank" title="Gitee">
+                      
+                        <i class="fa fa-fw fa-gitee"></i>Gitee</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/zypdominate" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:zypdominate@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80-%E6%80%A7%E8%83%BD"><span class="nav-number">1.</span> <span class="nav-text">一.性能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C-%E7%BC%96%E7%A0%81"><span class="nav-number">2.</span> <span class="nav-text">二.编码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89-%E8%AF%AD%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">三.语法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%8E%BB%E9%99%A4%E4%BA%86-%E6%94%B9%E7%94%A8"><span class="nav-number">3.0.1.</span> <span class="nav-text">1. 去除了 &lt;&gt; , 改用 !&#x3D;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%8A%A0%E5%85%A5%E4%BA%86-as-%E5%92%8C-with%E5%85%B3%E9%94%AE%E5%AD%97-%E8%BF%98%E6%9C%89-True-False-None"><span class="nav-number">3.0.2.</span> <span class="nav-text">2. 加入了 as 和 with关键字, 还有 True, False, None</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E6%95%B4%E5%9E%8B%E8%A7%A6%E5%8F%91%E8%BF%94%E5%9B%9E%E6%B5%AE%E7%82%B9%E6%95%B0-%E6%95%B4%E9%99%A4%E4%BD%BF%E7%94%A8"><span class="nav-number">3.0.3.</span> <span class="nav-text">3. 整型触发返回浮点数, 整除使用 &#x2F;&#x2F;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E5%8A%A0%E5%85%A5nonlocal-%E8%AF%AD%E5%8F%A5"><span class="nav-number">3.0.4.</span> <span class="nav-text">3. 加入nonlocal 语句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E5%8E%BB%E9%99%A4print%E8%AF%AD%E5%8F%A5-%E5%8A%A0%E5%85%A5print-%E5%87%BD%E6%95%B0"><span class="nav-number">3.0.5.</span> <span class="nav-text">4. 去除print语句, 加入print()函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E5%8E%BB%E9%99%A4raw-input-%E5%8A%A0%E5%85%A5input%E5%87%BD%E6%95%B0"><span class="nav-number">3.0.6.</span> <span class="nav-text">5. 去除raw_input , 加入input函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-%E6%96%B0%E7%9A%84super-%E5%8F%AF%E4%BB%A5%E4%B8%8D%E7%BB%99super-%E4%BC%A0%E5%8F%82"><span class="nav-number">3.0.7.</span> <span class="nav-text">6. 新的super(), 可以不给super()传参</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-%E6%94%B9%E5%8F%98%E4%BA%86%E9%A1%BA%E5%BA%8F%E6%93%8D%E4%BD%9C%E7%AC%A6%E7%9A%84%E8%A1%8C%E4%B8%BA"><span class="nav-number">3.0.8.</span> <span class="nav-text">7. 改变了顺序操作符的行为</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-%E6%96%B0%E5%BC%8F%E7%9A%84%E5%85%AB%E8%BF%9B%E5%88%B6%E5%8F%98%E9%87%8F"><span class="nav-number">3.0.9.</span> <span class="nav-text">8. 新式的八进制变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%92%8C%E5%AD%97%E8%8A%82%E4%B8%B2"><span class="nav-number">3.0.10.</span> <span class="nav-text">9. 字符串和字节串</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">3.0.11.</span> <span class="nav-text">10. 数据类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1"><span class="nav-number">3.0.12.</span> <span class="nav-text">11. 面向对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12-%E5%BC%82%E5%B8%B8"><span class="nav-number">3.0.13.</span> <span class="nav-text">12. 异常</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#13-%E8%BF%94%E5%9B%9E%E5%8F%AF%E8%BF%AD%E4%BB%A3%E5%AF%B9%E8%B1%A1"><span class="nav-number">3.0.14.</span> <span class="nav-text">13. 返回可迭代对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#14-for%E5%BE%AA%E7%8E%AF%E5%8F%98%E9%87%8F%E5%92%8C%E5%8E%BB%E5%85%A8%E5%B1%80%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4%E6%B3%84%E9%9C%B2"><span class="nav-number">3.0.15.</span> <span class="nav-text">14. for循环变量和去全局命名空间泄露</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhu Yuping</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/canvas_lines.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
