@@ -87,7 +87,7 @@
 <meta property="og:description" content="对一个案例的分析">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2019-08-18T14:24:03.000Z">
-<meta property="article:modified_time" content="2024-11-24T15:38:03.214Z">
+<meta property="article:modified_time" content="2024-12-01T13:40:01.713Z">
 <meta property="article:author" content="Zhu Yuping">
 <meta property="article:tag" content="Python">
 <meta name="twitter:card" content="summary">
@@ -315,7 +315,18 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python/" itemprop="url" rel="index">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/Python/" itemprop="url" rel="index">
                     <span itemprop="name">Python</span>
                   </a>
                 </span>
@@ -403,6 +414,49 @@
 <li><code>DelayFunc</code> 的 <code>__init__</code> 方法接收这两个参数，完成初始化</li>
 </ol>
 <p>这就是为什么尽管看起来有点混乱，但参数还是能被正确地传递和识别。</p>
+<hr>
+<p>偏函数在这里的应用：DelayFunc 类的初始化，需要两个参数，可以用偏函数来暂时固定一个。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> functools</span><br><span class="line"></span><br><span class="line"><span class="comment"># 1. 假设我们有一个需要两个参数的类</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, age, name</span>):</span><br><span class="line">        <span class="variable language_">self</span>.age = age</span><br><span class="line">        <span class="variable language_">self</span>.name = name</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;创建了一个<span class="subst">&#123;age&#125;</span>岁的<span class="subst">&#123;name&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 我们可以用偏函数固定第一个参数</span></span><br><span class="line">CreateChild = functools.partial(Person, <span class="number">3</span>)  <span class="comment"># 固定年龄为3岁</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 现在使用这个偏函数，只需要提供name参数</span></span><br><span class="line">child1 = CreateChild(<span class="string">&quot;小明&quot;</span>)  <span class="comment"># 输出：创建了一个3岁的小明</span></span><br><span class="line">child2 = CreateChild(<span class="string">&quot;小红&quot;</span>)  <span class="comment"># 输出：创建了一个3岁的小红</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 等价于：</span></span><br><span class="line"><span class="comment"># child1 = Person(3, &quot;小明&quot;)</span></span><br><span class="line"><span class="comment"># child2 = Person(3, &quot;小红&quot;)</span></span><br></pre></td></tr></table></figure>
+
+<p>回到 DelayFunc 例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> functools</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">DelayFunc</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, duration, func</span>):</span><br><span class="line">        <span class="variable language_">self</span>.duration = duration</span><br><span class="line">        <span class="variable language_">self</span>.func = func</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;初始化DelayFunc: duration=<span class="subst">&#123;duration&#125;</span>, func=<span class="subst">&#123;func.__name__&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">print_some</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;print_some&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 1. 完整调用方式</span></span><br><span class="line">normal_delayed = DelayFunc(<span class="number">2</span>, <span class="built_in">print</span>)  <span class="comment"># 需要两个参数</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 使用偏函数固定第一个参数</span></span><br><span class="line">Delay2Seconds = functools.partial(DelayFunc, <span class="number">2</span>)  <span class="comment"># 固定duration为2秒</span></span><br><span class="line">delayed_print = Delay2Seconds(<span class="built_in">print</span>)  <span class="comment"># 只需要提供func参数</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 让我们做一个更清晰的演示：</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;演示1: 创建等待3秒的偏函数&quot;</span>)</span><br><span class="line">Delay3Seconds = functools.partial(DelayFunc, <span class="number">3</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Delay3Seconds是：&quot;</span>, Delay3Seconds)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;\n演示2: 使用这个偏函数创建实例&quot;</span>)</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">greet</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Hello!&quot;</span>)</span><br><span class="line"></span><br><span class="line">delayed_greet = Delay3Seconds(greet)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;delayed_greet是：&quot;</span>, delayed_greet)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;isinstance(delayed_greet, DelayFunc)：&quot;</span>, <span class="built_in">isinstance</span>(delayed_greet, DelayFunc))</span><br><span class="line"></span><br><span class="line">delayed_print.print_some()</span><br></pre></td></tr></table></figure>
+
+<p>输出会类似：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">演示1: 创建等待3秒的偏函数</span><br><span class="line">Delay3Seconds是： functools.partial(&lt;class &#x27;__main__.DelayFunc&#x27;&gt;, 3)</span><br><span class="line"></span><br><span class="line">演示2: 使用这个偏函数创建实例</span><br><span class="line">初始化DelayFunc: duration=3, func=greet</span><br><span class="line">delayed_greet是： &lt;__main__.DelayFunc object at 0x...&gt;</span><br><span class="line">isinstance(delayed_greet, DelayFunc)： True</span><br><span class="line">print_some</span><br></pre></td></tr></table></figure>
+
+<p>可以再深入一点，看看偏函数是如何工作的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> functools</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">demo_func</span>(<span class="params">a, b, c</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;a=<span class="subst">&#123;a&#125;</span>, b=<span class="subst">&#123;b&#125;</span>, c=<span class="subst">&#123;c&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建偏函数，固定第一个参数</span></span><br><span class="line">partial_demo = functools.partial(demo_func, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看偏函数的属性</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;偏函数的属性:&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;- func: <span class="subst">&#123;partial_demo.func&#125;</span>&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;- args: <span class="subst">&#123;partial_demo.args&#125;</span>&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;- keywords: <span class="subst">&#123;partial_demo.keywords&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 不同的调用方式</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;\n不同的调用方式:&quot;</span>)</span><br><span class="line">partial_demo(<span class="number">2</span>, <span class="number">3</span>)                  <span class="comment"># 位置参数: a=1, b=2, c=3</span></span><br><span class="line">partial_demo(b=<span class="number">2</span>, c=<span class="number">3</span>)             <span class="comment"># 关键字参数: a=1, b=2, c=3</span></span><br><span class="line">partial_demo(c=<span class="number">3</span>, b=<span class="number">2</span>)             <span class="comment"># 关键字参数顺序不重要: a=1, b=2, c=3</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个固定关键字参数的偏函数</span></span><br><span class="line">partial_demo_kw = functools.partial(demo_func, c=<span class="number">3</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;\n固定关键字参数:&quot;</span>)</span><br><span class="line">partial_demo_kw(<span class="number">1</span>, <span class="number">2</span>)              <span class="comment"># a=1, b=2, c=3</span></span><br></pre></td></tr></table></figure>
+
+<p>这样设计的好处是：</p>
+<ol>
+<li>参数复用<ul>
+<li>可以创建一个固定某些参数的模板</li>
+<li>减少重复代码</li>
+</ul>
+</li>
+<li>代码清晰<ul>
+<li>通过固定某些参数，使函数调用更简洁</li>
+<li>代码意图更明确</li>
+</ul>
+</li>
+<li>灵活性<ul>
+<li>可以固定任意位置的参数</li>
+<li>可以固定位置参数或关键字参数</li>
+</ul>
+</li>
+<li>工厂模式<ul>
+<li>可以用来创建特定配置的函数或类实例</li>
+<li>很适合用在装饰器模式中</li>
+</ul>
+</li>
+</ol>
+<p>在你的装饰器例子中，<code>partial(DelayFunc, 2)</code> 创建了一个新的可调用对象，它：</p>
+<ol>
+<li>已经固定了 <code>DelayFunc</code> 的第一个参数 (<code>duration</code>) 为 2</li>
+<li>等待接收第二个参数 (<code>func</code>)</li>
+<li>当装饰器应用到函数上时，这个函数就自动成为第二个参数</li>
+</ol>
+<p>这就是为什么装饰器模式和偏函数配合得如此好的原因！</p>
 
       
     </div>
@@ -517,7 +571,7 @@
               
                 <a href="/">
               
-                  <span class="site-state-item-count">37</span>
+                  <span class="site-state-item-count">41</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
                 </a>
@@ -529,7 +583,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">18</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -540,7 +594,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
