@@ -87,7 +87,7 @@
 <meta property="og:description" content="拷贝的主要实现方式：赋值、copy模块、列表切片、字典copy()">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2019-08-03T12:48:52.000Z">
-<meta property="article:modified_time" content="2024-12-01T13:32:45.951Z">
+<meta property="article:modified_time" content="2024-12-01T13:57:39.472Z">
 <meta property="article:author" content="Zhu Yuping">
 <meta property="article:tag" content="Python">
 <meta name="twitter:card" content="summary">
@@ -394,6 +394,10 @@
 <h1 id="字典拷贝"><a href="#字典拷贝" class="headerlink" title="字典拷贝"></a>字典拷贝</h1><p>字典自带有 copy() 函数，这种拷贝为浅拷贝</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">original_dict = &#123;<span class="string">&#x27;a&#x27;</span>: <span class="number">1</span>, <span class="string">&#x27;b&#x27;</span>: [<span class="number">2</span>, <span class="number">3</span>], <span class="string">&#x27;c&#x27;</span>: &#123;<span class="string">&#x27;d&#x27;</span>: <span class="number">4</span>&#125;&#125;</span><br><span class="line">copied_dict = original_dict.copy()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改原字典中的不可变对象（如整数）不会影响拷贝</span></span><br><span class="line">original_dict[<span class="string">&#x27;a&#x27;</span>] = <span class="number">10</span>  <span class="comment"># 这不会影响 copied_dict</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改原字典中的可变对象（如列表或字典）会同时影响拷贝</span></span><br><span class="line">original_dict[<span class="string">&#x27;b&#x27;</span>].append(<span class="number">4</span>)  <span class="comment"># 这会影响 copied_dict</span></span><br><span class="line">original_dict[<span class="string">&#x27;c&#x27;</span>][<span class="string">&#x27;d&#x27;</span>] = <span class="number">5</span>  <span class="comment"># 这也会影响 copied_dict</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(original_dict)  <span class="comment"># &#123;&#x27;a&#x27;: 10, &#x27;b&#x27;: [2, 3, 4], &#x27;c&#x27;: &#123;&#x27;d&#x27;: 5&#125;&#125;</span></span><br><span class="line"><span class="built_in">print</span>(copied_dict)  <span class="comment"># &#123;&#x27;a&#x27;: 1, &#x27;b&#x27;: [2, 3, 4], &#x27;c&#x27;: &#123;&#x27;d&#x27;: 5&#125;&#125;</span></span><br></pre></td></tr></table></figure>
 
+<p>要想深拷贝，还得用 <code>copy.deepcopy()</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> copy</span><br><span class="line"></span><br><span class="line">original_dict = &#123;<span class="string">&#x27;a&#x27;</span>: <span class="number">1</span>, <span class="string">&#x27;b&#x27;</span>: [<span class="number">2</span>, <span class="number">3</span>], <span class="string">&#x27;c&#x27;</span>: &#123;<span class="string">&#x27;d&#x27;</span>: <span class="number">4</span>&#125;&#125;</span><br><span class="line">deep_copied_dict = copy.deepcopy(original_dict)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 现在修改原字典的任何嵌套对象都不会影响 deep_copied_dict</span></span><br><span class="line">original_dict[<span class="string">&#x27;b&#x27;</span>].append(<span class="number">4</span>)</span><br><span class="line">original_dict[<span class="string">&#x27;c&#x27;</span>][<span class="string">&#x27;d&#x27;</span>] = <span class="number">5</span></span><br><span class="line"><span class="built_in">print</span>(original_dict)  <span class="comment"># &#123;&#x27;a&#x27;: 1, &#x27;b&#x27;: [2, 3, 4], &#x27;c&#x27;: &#123;&#x27;d&#x27;: 5&#125;&#125;</span></span><br><span class="line"><span class="built_in">print</span>(deep_copied_dict)  <span class="comment"># &#123;&#x27;a&#x27;: 1, &#x27;b&#x27;: [2, 3], &#x27;c&#x27;: &#123;&#x27;d&#x27;: 4&#125;&#125;</span></span><br></pre></td></tr></table></figure>
+
+
       
     </div>
     
@@ -516,7 +520,7 @@
               
                 <a href="/">
               
-                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-count">47</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
                 </a>
