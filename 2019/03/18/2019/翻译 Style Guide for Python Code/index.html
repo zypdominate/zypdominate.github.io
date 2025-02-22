@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next gemini use-motion" lang="zh-CN">
+<html class="theme-next gemini use-motion" lang="en">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -40,7 +40,9 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+    
+  
+  <link href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
 
 
 
@@ -85,7 +87,7 @@
 <meta property="og:url" content="http://example.com/2019/03/18/2019/%E7%BF%BB%E8%AF%91%20Style%20Guide%20for%20Python%20Code/index.html">
 <meta property="og:site_name" content="Magnolia&#39;s Blog">
 <meta property="og:description" content="翻译了好久，终于把这篇文档翻完了，学到很多。 官方原文:PEP8 Style Guide for Python Code IntroductionThis document gives coding conventions for the Python code comprising the standard library in the main Python distribution. Ple">
-<meta property="og:locale" content="zh_CN">
+<meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2019-03-18T15:31:14.000Z">
 <meta property="article:modified_time" content="2024-10-15T15:14:08.768Z">
 <meta property="article:author" content="Zhu Yuping">
@@ -139,7 +141,7 @@
 
 <meta name="generator" content="Hexo 7.3.0"></head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
 
   
   
@@ -162,7 +164,7 @@
       </a>
     </div>
       
-        <p class="site-subtitle">我们的征途是星辰大海</p>
+        <p class="site-subtitle">努力学习</p>
       
   </div>
 
@@ -886,7 +888,7 @@
               
                 <a href="/">
               
-                  <span class="site-state-item-count">88</span>
+                  <span class="site-state-item-count">89</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
                 </a>
@@ -898,7 +900,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -909,7 +911,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">28</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -970,7 +972,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#A-Foolish-Consistency-is-the-Hobgoblin-of-Little-Minds"><span class="nav-number">2.</span> <span class="nav-text">A Foolish Consistency is the Hobgoblin of Little Minds</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Code-Lay-out"><span class="nav-number">3.</span> <span class="nav-text">Code Lay-out</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Indentation"><span class="nav-number">3.1.</span> <span class="nav-text">Indentation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tabs-or-Spaces"><span class="nav-number">3.2.</span> <span class="nav-text">Tabs or Spaces?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Maximum-Line-Length"><span class="nav-number">3.3.</span> <span class="nav-text">Maximum Line Length</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Should-a-Line-Break-Before-or-After-a-Binary-Operator"><span class="nav-number">3.4.</span> <span class="nav-text">Should a Line Break Before or After a Binary Operator?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Blank-Lines"><span class="nav-number">3.5.</span> <span class="nav-text">Blank Lines</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Source-File-Encoding"><span class="nav-number">3.6.</span> <span class="nav-text">Source File Encoding</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Imports"><span class="nav-number">3.7.</span> <span class="nav-text">Imports</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Module-Level-Dunder-Names"><span class="nav-number">3.8.</span> <span class="nav-text">Module Level Dunder Names</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#String-Quotes"><span class="nav-number">4.</span> <span class="nav-text">String Quotes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Whitespace-in-Expressions-and-Statements"><span class="nav-number">5.</span> <span class="nav-text">Whitespace in Expressions and Statements</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Pet-Peeves"><span class="nav-number">5.1.</span> <span class="nav-text">Pet Peeves</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Other-Recommendations"><span class="nav-number">5.2.</span> <span class="nav-text">Other Recommendations</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#When-to-Use-Trailing-Commas"><span class="nav-number">6.</span> <span class="nav-text">When to Use Trailing Commas</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Comments"><span class="nav-number">7.</span> <span class="nav-text">Comments</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Block-Comments"><span class="nav-number">7.1.</span> <span class="nav-text">Block Comments</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Inline-Comments"><span class="nav-number">7.2.</span> <span class="nav-text">Inline Comments</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Documentation-Strings"><span class="nav-number">7.3.</span> <span class="nav-text">Documentation Strings</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Naming-Conventions"><span class="nav-number">8.</span> <span class="nav-text">Naming Conventions</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Overriding-Principle"><span class="nav-number">8.1.</span> <span class="nav-text">Overriding Principle</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Descriptive-Naming-Styles"><span class="nav-number">8.2.</span> <span class="nav-text">Descriptive: Naming Styles</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Prescriptive-Naming-Conventions"><span class="nav-number">8.3.</span> <span class="nav-text">Prescriptive: Naming Conventions</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Names-to-Avoid"><span class="nav-number">8.3.1.</span> <span class="nav-text">Names to Avoid</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ASCII-Compatibility"><span class="nav-number">8.3.2.</span> <span class="nav-text">ASCII Compatibility</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Package-and-Module-Names"><span class="nav-number">8.3.3.</span> <span class="nav-text">Package and Module Names</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Class-Names"><span class="nav-number">8.3.4.</span> <span class="nav-text">Class Names</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Type-Variable-Names"><span class="nav-number">8.3.5.</span> <span class="nav-text">Type Variable Names</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Exception-Names"><span class="nav-number">8.3.6.</span> <span class="nav-text">Exception Names</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Global-Variable-Names"><span class="nav-number">8.3.7.</span> <span class="nav-text">Global Variable Names</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Function-and-Variable-Names"><span class="nav-number">8.3.8.</span> <span class="nav-text">Function and Variable Names</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Function-and-Method-Arguments"><span class="nav-number">8.3.9.</span> <span class="nav-text">Function and Method Arguments</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Method-Names-and-Instance-Variables"><span class="nav-number">8.3.10.</span> <span class="nav-text">Method Names and Instance Variables</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Constants"><span class="nav-number">8.3.11.</span> <span class="nav-text">Constants</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Designing-for-Inheritance"><span class="nav-number">8.3.12.</span> <span class="nav-text">Designing for Inheritance</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Public-and-Internal-Interfaces"><span class="nav-number">8.4.</span> <span class="nav-text">Public and Internal Interfaces</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Programming-Recommendations"><span class="nav-number">9.</span> <span class="nav-text">Programming Recommendations</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Function-Annotations"><span class="nav-number">9.0.1.</span> <span class="nav-text">Function Annotations</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Variable-Annotations"><span class="nav-number">9.0.2.</span> <span class="nav-text">Variable Annotations</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#A-Foolish-Consistency-is-the-Hobgoblin-of-Little-Minds"><span class="nav-text">A Foolish Consistency is the Hobgoblin of Little Minds</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Code-Lay-out"><span class="nav-text">Code Lay-out</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Indentation"><span class="nav-text">Indentation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tabs-or-Spaces"><span class="nav-text">Tabs or Spaces?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Maximum-Line-Length"><span class="nav-text">Maximum Line Length</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Should-a-Line-Break-Before-or-After-a-Binary-Operator"><span class="nav-text">Should a Line Break Before or After a Binary Operator?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Blank-Lines"><span class="nav-text">Blank Lines</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Source-File-Encoding"><span class="nav-text">Source File Encoding</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Imports"><span class="nav-text">Imports</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Module-Level-Dunder-Names"><span class="nav-text">Module Level Dunder Names</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#String-Quotes"><span class="nav-text">String Quotes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Whitespace-in-Expressions-and-Statements"><span class="nav-text">Whitespace in Expressions and Statements</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Pet-Peeves"><span class="nav-text">Pet Peeves</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Other-Recommendations"><span class="nav-text">Other Recommendations</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#When-to-Use-Trailing-Commas"><span class="nav-text">When to Use Trailing Commas</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Comments"><span class="nav-text">Comments</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Block-Comments"><span class="nav-text">Block Comments</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Inline-Comments"><span class="nav-text">Inline Comments</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Documentation-Strings"><span class="nav-text">Documentation Strings</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Naming-Conventions"><span class="nav-text">Naming Conventions</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Overriding-Principle"><span class="nav-text">Overriding Principle</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Descriptive-Naming-Styles"><span class="nav-text">Descriptive: Naming Styles</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Prescriptive-Naming-Conventions"><span class="nav-text">Prescriptive: Naming Conventions</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Names-to-Avoid"><span class="nav-text">Names to Avoid</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ASCII-Compatibility"><span class="nav-text">ASCII Compatibility</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Package-and-Module-Names"><span class="nav-text">Package and Module Names</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Class-Names"><span class="nav-text">Class Names</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Type-Variable-Names"><span class="nav-text">Type Variable Names</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Exception-Names"><span class="nav-text">Exception Names</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Global-Variable-Names"><span class="nav-text">Global Variable Names</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Function-and-Variable-Names"><span class="nav-text">Function and Variable Names</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Function-and-Method-Arguments"><span class="nav-text">Function and Method Arguments</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Method-Names-and-Instance-Variables"><span class="nav-text">Method Names and Instance Variables</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Constants"><span class="nav-text">Constants</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Designing-for-Inheritance"><span class="nav-text">Designing for Inheritance</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Public-and-Internal-Interfaces"><span class="nav-text">Public and Internal Interfaces</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Programming-Recommendations"><span class="nav-text">Programming Recommendations</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Function-Annotations"><span class="nav-text">Function Annotations</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Variable-Annotations"><span class="nav-text">Variable Annotations</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
@@ -1072,7 +1074,7 @@
 
   
   
-    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/jquery@2/dist/jquery.min.js"></script>
   
 
   
@@ -1097,7 +1099,7 @@
 
   
   
-    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
   
 
   

@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next gemini use-motion" lang="zh-CN">
+<html class="theme-next gemini use-motion" lang="en">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -40,7 +40,9 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+    
+  
+  <link href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
 
 
 
@@ -85,7 +87,7 @@
 <meta property="og:url" content="http://example.com/2019/03/21/2019/python%E5%A4%9A%E8%BF%9B%E7%A8%8B%EF%BC%8C%E5%A4%9A%E7%BA%BF%E7%A8%8B%EF%BC%8C%E5%8D%8F%E7%A8%8B/index.html">
 <meta property="og:site_name" content="Magnolia&#39;s Blog">
 <meta property="og:description" content="多进程与多线程的对比多任务的实现原理一般地, 设计Master-Worker模式, Master负责分配任务, Worker负责执行任务, 所以在多任务环境下, 一般是由一个Master, 多个Worker. 多进程主进程就是Master, 其他进程就是Worker  优点:稳定性好:一个子进程崩溃了, 不会影响主进程和其他子进程. 当然的, 主进程挂了后, 所有进程就全挂了, 但是Master进">
-<meta property="og:locale" content="zh_CN">
+<meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2019-03-21T15:18:06.000Z">
 <meta property="article:modified_time" content="2024-10-17T16:52:41.973Z">
 <meta property="article:author" content="Zhu Yuping">
@@ -138,7 +140,7 @@
 
 <meta name="generator" content="Hexo 7.3.0"></head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
 
   
   
@@ -161,7 +163,7 @@
       </a>
     </div>
       
-        <p class="site-subtitle">我们的征途是星辰大海</p>
+        <p class="site-subtitle">努力学习</p>
       
   </div>
 
@@ -602,7 +604,7 @@
               
                 <a href="/">
               
-                  <span class="site-state-item-count">88</span>
+                  <span class="site-state-item-count">89</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
                 </a>
@@ -614,7 +616,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -625,7 +627,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">28</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -686,7 +688,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%9A%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%AF%B9%E6%AF%94"><span class="nav-number">1.</span> <span class="nav-text">多进程与多线程的对比</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E4%BB%BB%E5%8A%A1%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="nav-number">1.1.</span> <span class="nav-text">多任务的实现原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E8%BF%9B%E7%A8%8B"><span class="nav-number">1.2.</span> <span class="nav-text">多进程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B"><span class="nav-number">1.3.</span> <span class="nav-text">多线程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E5%AF%86%E9%9B%86%E5%9E%8B-%E4%B8%8E-IO%E5%AF%86%E9%9B%86%E5%9E%8B"><span class="nav-number">1.4.</span> <span class="nav-text">计算密集型 与 IO密集型</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">进程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA%E8%BF%9B%E7%A8%8B%E7%9A%84%E4%B8%BE%E4%BE%8B"><span class="nav-number">2.1.</span> <span class="nav-text">一个进程的举例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E5%A4%9A%E4%B8%AA%E8%BF%9B%E7%A8%8B%E5%AE%9E%E7%8E%B0%E5%A4%9A%E4%BB%BB%E5%8A%A1"><span class="nav-number">2.2.</span> <span class="nav-text">启动多个进程实现多任务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-join-%E7%AD%89%E5%BE%85%E5%AD%90%E8%BF%9B%E7%A8%8B%E7%BB%93%E6%9D%9F%E5%90%8E%E5%86%8D%E6%89%A7%E8%A1%8C%E7%88%B6%E8%BF%9B%E7%A8%8B"><span class="nav-number">2.3.</span> <span class="nav-text">使用 .join() 等待子进程结束后再执行父进程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E5%9C%A8%E5%A4%9A%E4%B8%AA%E8%BF%9B%E7%A8%8B%E4%B8%AD%E4%B8%8D%E8%83%BD%E8%A2%AB%E5%85%B1%E4%BA%AB"><span class="nav-number">2.4.</span> <span class="nav-text">全局变量在多个进程中不能被共享</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E8%BF%9B%E7%A8%8B%E6%B1%A0-%E5%90%AF%E5%8A%A8%E5%A4%9A%E4%B8%AA%E5%AD%90%E8%BF%9B%E7%A8%8B"><span class="nav-number">2.5.</span> <span class="nav-text">使用进程池 启动多个子进程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E7%9A%84%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1-Queue"><span class="nav-number">2.6.</span> <span class="nav-text">简单的进程间通信_Queue</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%81%E8%A3%85%E8%BF%9B%E7%A8%8B%E5%AF%B9%E8%B1%A1"><span class="nav-number">2.7.</span> <span class="nav-text">封装进程对象</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B"><span class="nav-number">3.</span> <span class="nav-text">线程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B-1"><span class="nav-number">3.1.</span> <span class="nav-text">线程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E4%B8%80%E4%B8%AA%E7%BA%BF%E7%A8%8B"><span class="nav-number">3.2.</span> <span class="nav-text">启动一个线程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E5%85%B1%E4%BA%AB%E6%95%B0%E6%8D%AE"><span class="nav-number">3.3.</span> <span class="nav-text">线程间的共享数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E9%94%81%E8%A7%A3%E5%86%B3%E6%95%B0%E6%8D%AE%E6%B7%B7%E4%B9%B1"><span class="nav-number">3.4.</span> <span class="nav-text">线程锁解决数据混乱</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E5%85%A8%E5%B1%80%E7%9A%84ThreadLocal-%E5%AF%B9%E8%B1%A1"><span class="nav-number">3.5.</span> <span class="nav-text">创建全局的ThreadLocal 对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E6%97%B6%E7%BA%BF%E7%A8%8B"><span class="nav-number">3.6.</span> <span class="nav-text">定时线程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E9%80%9A%E4%BF%A1"><span class="nav-number">3.7.</span> <span class="nav-text">线程通信</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E4%BA%A7%E8%80%85%E4%B8%8E%E6%B6%88%E8%B4%B9%E8%80%85"><span class="nav-number">3.8.</span> <span class="nav-text">生产者与消费者</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8D%8F%E7%A8%8B"><span class="nav-number">4.</span> <span class="nav-text">协程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%8F%E7%A8%8B%E4%B8%BE%E4%BE%8B"><span class="nav-number">4.1.</span> <span class="nav-text">协程举例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93"><span class="nav-number">4.2.</span> <span class="nav-text">数据传输</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E4%BA%A7%E8%80%85%E4%B8%8E%E6%B6%88%E8%B4%B9%E8%80%85-1"><span class="nav-number">4.3.</span> <span class="nav-text">生产者与消费者</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%9A%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%AF%B9%E6%AF%94"><span class="nav-text">多进程与多线程的对比</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E4%BB%BB%E5%8A%A1%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="nav-text">多任务的实现原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E8%BF%9B%E7%A8%8B"><span class="nav-text">多进程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B"><span class="nav-text">多线程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E5%AF%86%E9%9B%86%E5%9E%8B-%E4%B8%8E-IO%E5%AF%86%E9%9B%86%E5%9E%8B"><span class="nav-text">计算密集型 与 IO密集型</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B"><span class="nav-text">进程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA%E8%BF%9B%E7%A8%8B%E7%9A%84%E4%B8%BE%E4%BE%8B"><span class="nav-text">一个进程的举例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E5%A4%9A%E4%B8%AA%E8%BF%9B%E7%A8%8B%E5%AE%9E%E7%8E%B0%E5%A4%9A%E4%BB%BB%E5%8A%A1"><span class="nav-text">启动多个进程实现多任务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-join-%E7%AD%89%E5%BE%85%E5%AD%90%E8%BF%9B%E7%A8%8B%E7%BB%93%E6%9D%9F%E5%90%8E%E5%86%8D%E6%89%A7%E8%A1%8C%E7%88%B6%E8%BF%9B%E7%A8%8B"><span class="nav-text">使用 .join() 等待子进程结束后再执行父进程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E5%9C%A8%E5%A4%9A%E4%B8%AA%E8%BF%9B%E7%A8%8B%E4%B8%AD%E4%B8%8D%E8%83%BD%E8%A2%AB%E5%85%B1%E4%BA%AB"><span class="nav-text">全局变量在多个进程中不能被共享</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E8%BF%9B%E7%A8%8B%E6%B1%A0-%E5%90%AF%E5%8A%A8%E5%A4%9A%E4%B8%AA%E5%AD%90%E8%BF%9B%E7%A8%8B"><span class="nav-text">使用进程池 启动多个子进程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E7%9A%84%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1-Queue"><span class="nav-text">简单的进程间通信_Queue</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%81%E8%A3%85%E8%BF%9B%E7%A8%8B%E5%AF%B9%E8%B1%A1"><span class="nav-text">封装进程对象</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B"><span class="nav-text">线程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B-1"><span class="nav-text">线程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E4%B8%80%E4%B8%AA%E7%BA%BF%E7%A8%8B"><span class="nav-text">启动一个线程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E5%85%B1%E4%BA%AB%E6%95%B0%E6%8D%AE"><span class="nav-text">线程间的共享数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E9%94%81%E8%A7%A3%E5%86%B3%E6%95%B0%E6%8D%AE%E6%B7%B7%E4%B9%B1"><span class="nav-text">线程锁解决数据混乱</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E5%85%A8%E5%B1%80%E7%9A%84ThreadLocal-%E5%AF%B9%E8%B1%A1"><span class="nav-text">创建全局的ThreadLocal 对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E6%97%B6%E7%BA%BF%E7%A8%8B"><span class="nav-text">定时线程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E9%80%9A%E4%BF%A1"><span class="nav-text">线程通信</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E4%BA%A7%E8%80%85%E4%B8%8E%E6%B6%88%E8%B4%B9%E8%80%85"><span class="nav-text">生产者与消费者</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8D%8F%E7%A8%8B"><span class="nav-text">协程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%8F%E7%A8%8B%E4%B8%BE%E4%BE%8B"><span class="nav-text">协程举例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93"><span class="nav-text">数据传输</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E4%BA%A7%E8%80%85%E4%B8%8E%E6%B6%88%E8%B4%B9%E8%80%85-1"><span class="nav-text">生产者与消费者</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -788,7 +790,7 @@
 
   
   
-    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/jquery@2/dist/jquery.min.js"></script>
   
 
   
@@ -813,7 +815,7 @@
 
   
   
-    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
   
 
   

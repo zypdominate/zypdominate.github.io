@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next gemini use-motion" lang="zh-CN">
+<html class="theme-next gemini use-motion" lang="en">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -40,7 +40,9 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+    
+  
+  <link href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
 
 
 
@@ -85,7 +87,7 @@
 <meta property="og:url" content="http://example.com/2019/09/22/2019/%E7%BC%96%E5%86%99%E9%AB%98%E8%B4%A8%E9%87%8F%E4%BB%A3%E7%A0%81%EF%BC%9APython%E4%B8%AD%E7%9A%84%E6%83%AF%E7%94%A8%E6%B3%95/index.html">
 <meta property="og:site_name" content="Magnolia&#39;s Blog">
 <meta property="og:description" content="Rome was not built in one day， coding will not advance vigorously with one effort. 编程语言都有其惯用法，了解掌握这些用法有助于帮助写出更加专业和精简的程序。 利用Assert发现问题assert 主要是为调试使用，方便检查程序的异常和不恰当的值。 __debug__的值为True。  断言不要滥用，应该使用在正常逻">
-<meta property="og:locale" content="zh_CN">
+<meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2019-09-22T06:54:24.000Z">
 <meta property="article:modified_time" content="2024-12-08T12:26:12.595Z">
 <meta property="article:author" content="Zhu Yuping">
@@ -138,7 +140,7 @@
 
 <meta name="generator" content="Hexo 7.3.0"></head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
 
   
   
@@ -161,7 +163,7 @@
       </a>
     </div>
       
-        <p class="site-subtitle">我们的征途是星辰大海</p>
+        <p class="site-subtitle">努力学习</p>
       
   </div>
 
@@ -551,7 +553,7 @@
               
                 <a href="/">
               
-                  <span class="site-state-item-count">88</span>
+                  <span class="site-state-item-count">89</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
                 </a>
@@ -563,7 +565,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -574,7 +576,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">28</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -635,7 +637,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A9%E7%94%A8Assert%E5%8F%91%E7%8E%B0%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">利用Assert发现问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%80%BC%E4%BA%A4%E6%8D%A2%E4%B8%8D%E6%8E%A8%E8%8D%90%E4%BD%BF%E7%94%A8%E4%B8%AD%E9%97%B4%E5%8F%98%E9%87%8F"><span class="nav-number">2.</span> <span class="nav-text">数据值交换不推荐使用中间变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%85%E5%88%86%E5%88%A9%E7%94%A8Lazy-evaluation%E7%89%B9%E6%80%A7"><span class="nav-number">3.</span> <span class="nav-text">充分利用Lazy evaluation特性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E6%8E%A8%E8%8D%90%E4%BD%BF%E7%94%A8type%E6%9D%A5%E6%A3%80%E6%9F%A5%E7%B1%BB%E5%9E%8B"><span class="nav-number">4.</span> <span class="nav-text">不推荐使用type来检查类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8enumerate-%E8%8E%B7%E5%8F%96%E5%BA%8F%E5%88%97%E7%9A%84%E7%B4%A2%E5%BC%95%E5%92%8C%E5%80%BC"><span class="nav-number">5.</span> <span class="nav-text">使用enumerate()获取序列的索引和值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#is-%E5%92%8C-%E7%9A%84%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">6.</span> <span class="nav-text">is 和 &#x3D;&#x3D; 的适用场景</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A9%E7%94%A8Assert%E5%8F%91%E7%8E%B0%E9%97%AE%E9%A2%98"><span class="nav-text">利用Assert发现问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%80%BC%E4%BA%A4%E6%8D%A2%E4%B8%8D%E6%8E%A8%E8%8D%90%E4%BD%BF%E7%94%A8%E4%B8%AD%E9%97%B4%E5%8F%98%E9%87%8F"><span class="nav-text">数据值交换不推荐使用中间变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%85%E5%88%86%E5%88%A9%E7%94%A8Lazy-evaluation%E7%89%B9%E6%80%A7"><span class="nav-text">充分利用Lazy evaluation特性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E6%8E%A8%E8%8D%90%E4%BD%BF%E7%94%A8type%E6%9D%A5%E6%A3%80%E6%9F%A5%E7%B1%BB%E5%9E%8B"><span class="nav-text">不推荐使用type来检查类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8enumerate-%E8%8E%B7%E5%8F%96%E5%BA%8F%E5%88%97%E7%9A%84%E7%B4%A2%E5%BC%95%E5%92%8C%E5%80%BC"><span class="nav-text">使用enumerate()获取序列的索引和值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#is-%E5%92%8C-%E7%9A%84%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-text">is 和 &#x3D;&#x3D; 的适用场景</span></a></li></ol></div>
             
 
           </div>
@@ -737,7 +739,7 @@
 
   
   
-    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/jquery@2/dist/jquery.min.js"></script>
   
 
   
@@ -762,7 +764,7 @@
 
   
   
-    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
   
 
   

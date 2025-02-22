@@ -3,6 +3,20 @@
 $(document).ready(function () {
 
   initScrollSpy();
+  // Handle the clicking of TOC links
+
+  $('.post-toc a').on('click', function (e) {
+    e.preventDefault();
+    var targetId = decodeURIComponent($(this).attr('href'));
+    var target = $(targetId);
+
+    if (target.length) {
+      $('html, body').animate({
+        scrollTop: target.offset().top
+      }, 500);
+    }
+  });
+
 
   function initScrollSpy () {
     var tocSelector = '.post-toc';

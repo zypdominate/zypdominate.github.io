@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next gemini use-motion" lang="zh-CN">
+<html class="theme-next gemini use-motion" lang="en">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -40,7 +40,9 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+    
+  
+  <link href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
 
 
 
@@ -85,7 +87,7 @@
 <meta property="og:url" content="http://example.com/2025/02/09/2024/Jenkins%E6%95%B0%E6%8D%AE%E5%A4%87%E4%BB%BD%E5%88%B0windows%20FTP%E6%9C%8D%E5%8A%A1%E5%99%A8/index.html">
 <meta property="og:site_name" content="Magnolia&#39;s Blog">
 <meta property="og:description" content="在 CentOS 上搭建了 Jenkins 服务，为了防止意外丢失数据，我们需要定期备份 Jenkins 数据。本方案采用 FileZilla Server 作为 FTP 服务器，并使用 lftp 进行数据同步。">
-<meta property="og:locale" content="zh_CN">
+<meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2025-02-09T03:18:18.000Z">
 <meta property="article:modified_time" content="2025-02-09T03:53:54.699Z">
 <meta property="article:author" content="Zhu Yuping">
@@ -138,7 +140,7 @@
 
 <meta name="generator" content="Hexo 7.3.0"></head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
 
   
   
@@ -161,7 +163,7 @@
       </a>
     </div>
       
-        <p class="site-subtitle">我们的征途是星辰大海</p>
+        <p class="site-subtitle">努力学习</p>
       
   </div>
 
@@ -620,7 +622,7 @@
               
                 <a href="/">
               
-                  <span class="site-state-item-count">88</span>
+                  <span class="site-state-item-count">89</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
                 </a>
@@ -632,7 +634,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -643,7 +645,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">28</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -704,7 +706,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%83%8C%E6%99%AF"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE-FileZilla-Server%EF%BC%88Windows%EF%BC%89"><span class="nav-number">2.</span> <span class="nav-text">1. 安装配置 FileZilla Server（Windows）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E4%B8%8B%E8%BD%BD%E5%B9%B6%E5%AE%89%E8%A3%85-FileZilla-Server"><span class="nav-number">2.1.</span> <span class="nav-text">1.1 下载并安装 FileZilla Server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E9%85%8D%E7%BD%AE-FTP-%E7%94%A8%E6%88%B7%E5%92%8C%E5%85%B1%E4%BA%AB%E7%9B%AE%E5%BD%95"><span class="nav-number">2.2.</span> <span class="nav-text">1.2 配置 FTP 用户和共享目录</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%AE%89%E8%A3%85%E5%B9%B6%E9%85%8D%E7%BD%AE-FTP-%E5%AE%A2%E6%88%B7%E7%AB%AF%EF%BC%88CentOS%EF%BC%89"><span class="nav-number">3.</span> <span class="nav-text">2. 安装并配置 FTP 客户端（CentOS）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E5%9C%A8-CentOS-%E5%AE%89%E8%A3%85-lftp"><span class="nav-number">3.1.</span> <span class="nav-text">2.1 在 CentOS 安装 lftp</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E7%BC%96%E5%86%99-Jenkins-%E5%A4%87%E4%BB%BD%E8%84%9A%E6%9C%AC"><span class="nav-number">4.</span> <span class="nav-text">3. 编写 Jenkins 备份脚本</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E8%B5%8B%E4%BA%88%E6%89%A7%E8%A1%8C%E6%9D%83%E9%99%90"><span class="nav-number">4.1.</span> <span class="nav-text">3.1 赋予执行权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E6%B5%8B%E8%AF%95%E6%89%A7%E8%A1%8C"><span class="nav-number">4.2.</span> <span class="nav-text">3.2 测试执行</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E9%85%8D%E7%BD%AE%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%EF%BC%88Crontab%EF%BC%89"><span class="nav-number">5.</span> <span class="nav-text">4. 配置定时任务（Crontab）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-%E7%BC%96%E8%BE%91-Crontab-%E4%BB%BB%E5%8A%A1"><span class="nav-number">5.1.</span> <span class="nav-text">4.1 编辑 Crontab 任务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-%E9%87%8D%E5%90%AF-Crontab-%E6%9C%8D%E5%8A%A1%EF%BC%88%E9%80%82%E7%94%A8%E4%BA%8E%E9%83%A8%E5%88%86%E7%B3%BB%E7%BB%9F%EF%BC%89"><span class="nav-number">5.2.</span> <span class="nav-text">4.2 重启 Crontab 服务（适用于部分系统）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-%E7%A1%AE%E8%AE%A4%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%98%AF%E5%90%A6%E7%94%9F%E6%95%88"><span class="nav-number">5.3.</span> <span class="nav-text">4.3 确认定时任务是否生效</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E5%8F%AF%E8%83%BD%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">6.</span> <span class="nav-text">5. 可能遇到的问题及解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-%E8%84%9A%E6%9C%AC%E6%89%A7%E8%A1%8C%E6%97%B6%E6%8A%A5"><span class="nav-number">6.1.</span> <span class="nav-text">5.1 脚本执行时报</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-%E6%9D%83%E9%99%90%E9%97%AE%E9%A2%98"><span class="nav-number">6.2.</span> <span class="nav-text">5.2 权限问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-FTP-%E8%BF%9E%E6%8E%A5%E5%A4%B1%E8%B4%A5"><span class="nav-number">6.3.</span> <span class="nav-text">5.3 FTP 连接失败</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E6%80%BB%E7%BB%93"><span class="nav-number">7.</span> <span class="nav-text">6. 总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-%E4%BD%BF%E7%94%A8%E5%A4%87%E4%BB%BD%E6%95%B0%E6%8D%AE"><span class="nav-number">8.</span> <span class="nav-text">7. 使用备份数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-%E5%85%B6%E4%BB%96"><span class="nav-number">9.</span> <span class="nav-text">8. 其他</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%83%8C%E6%99%AF"><span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE-FileZilla-Server%EF%BC%88Windows%EF%BC%89"><span class="nav-text">1. 安装配置 FileZilla Server（Windows）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E4%B8%8B%E8%BD%BD%E5%B9%B6%E5%AE%89%E8%A3%85-FileZilla-Server"><span class="nav-text">1.1 下载并安装 FileZilla Server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E9%85%8D%E7%BD%AE-FTP-%E7%94%A8%E6%88%B7%E5%92%8C%E5%85%B1%E4%BA%AB%E7%9B%AE%E5%BD%95"><span class="nav-text">1.2 配置 FTP 用户和共享目录</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%AE%89%E8%A3%85%E5%B9%B6%E9%85%8D%E7%BD%AE-FTP-%E5%AE%A2%E6%88%B7%E7%AB%AF%EF%BC%88CentOS%EF%BC%89"><span class="nav-text">2. 安装并配置 FTP 客户端（CentOS）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E5%9C%A8-CentOS-%E5%AE%89%E8%A3%85-lftp"><span class="nav-text">2.1 在 CentOS 安装 lftp</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E7%BC%96%E5%86%99-Jenkins-%E5%A4%87%E4%BB%BD%E8%84%9A%E6%9C%AC"><span class="nav-text">3. 编写 Jenkins 备份脚本</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E8%B5%8B%E4%BA%88%E6%89%A7%E8%A1%8C%E6%9D%83%E9%99%90"><span class="nav-text">3.1 赋予执行权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E6%B5%8B%E8%AF%95%E6%89%A7%E8%A1%8C"><span class="nav-text">3.2 测试执行</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E9%85%8D%E7%BD%AE%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%EF%BC%88Crontab%EF%BC%89"><span class="nav-text">4. 配置定时任务（Crontab）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-%E7%BC%96%E8%BE%91-Crontab-%E4%BB%BB%E5%8A%A1"><span class="nav-text">4.1 编辑 Crontab 任务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-%E9%87%8D%E5%90%AF-Crontab-%E6%9C%8D%E5%8A%A1%EF%BC%88%E9%80%82%E7%94%A8%E4%BA%8E%E9%83%A8%E5%88%86%E7%B3%BB%E7%BB%9F%EF%BC%89"><span class="nav-text">4.2 重启 Crontab 服务（适用于部分系统）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-%E7%A1%AE%E8%AE%A4%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%98%AF%E5%90%A6%E7%94%9F%E6%95%88"><span class="nav-text">4.3 确认定时任务是否生效</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E5%8F%AF%E8%83%BD%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-text">5. 可能遇到的问题及解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-%E8%84%9A%E6%9C%AC%E6%89%A7%E8%A1%8C%E6%97%B6%E6%8A%A5"><span class="nav-text">5.1 脚本执行时报</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-%E6%9D%83%E9%99%90%E9%97%AE%E9%A2%98"><span class="nav-text">5.2 权限问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-FTP-%E8%BF%9E%E6%8E%A5%E5%A4%B1%E8%B4%A5"><span class="nav-text">5.3 FTP 连接失败</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E6%80%BB%E7%BB%93"><span class="nav-text">6. 总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-%E4%BD%BF%E7%94%A8%E5%A4%87%E4%BB%BD%E6%95%B0%E6%8D%AE"><span class="nav-text">7. 使用备份数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-%E5%85%B6%E4%BB%96"><span class="nav-text">8. 其他</span></a></li></ol></div>
             
 
           </div>
@@ -806,7 +808,7 @@
 
   
   
-    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/jquery@2/dist/jquery.min.js"></script>
   
 
   
@@ -831,7 +833,7 @@
 
   
   
-    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
   
 
   

@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next gemini use-motion" lang="zh-CN">
+<html class="theme-next gemini use-motion" lang="en">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -40,7 +40,9 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+    
+  
+  <link href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
 
 
 
@@ -85,7 +87,7 @@
 <meta property="og:url" content="http://example.com/2019/12/08/2019/%E6%B5%81%E7%95%85%E7%9A%84Python%EF%BC%9A%E5%87%BD%E6%95%B0%E8%A3%85%E9%A5%B0%E5%99%A8%E5%92%8C%E9%97%AD%E5%8C%85%E4%B8%80/index.html">
 <meta property="og:site_name" content="Magnolia&#39;s Blog">
 <meta property="og:description" content="本文主要介绍了函数装饰器和闭包相关的知识，包括装饰器的基础概念、执行时机、在 “策略” 模式中的应用、变量作用域规则、闭包以及 nonlocal 声明的作用。">
-<meta property="og:locale" content="zh_CN">
+<meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i-blog.csdnimg.cn/blog_migrate/02bc7f5e56e483e51dd6068c1e78e450.png">
 <meta property="og:image" content="https://i-blog.csdnimg.cn/blog_migrate/f45cb09a76b7bddf03cd53faa6753f87.png">
 <meta property="og:image" content="https://i-blog.csdnimg.cn/blog_migrate/6ccd89ec8e3b7f7f482184d636046269.png">
@@ -142,7 +144,7 @@
 
 <meta name="generator" content="Hexo 7.3.0"></head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
 
   
   
@@ -165,7 +167,7 @@
       </a>
     </div>
       
-        <p class="site-subtitle">我们的征途是星辰大海</p>
+        <p class="site-subtitle">努力学习</p>
       
   </div>
 
@@ -572,7 +574,7 @@
               
                 <a href="/">
               
-                  <span class="site-state-item-count">88</span>
+                  <span class="site-state-item-count">89</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
                 </a>
@@ -584,7 +586,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -595,7 +597,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">28</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -656,7 +658,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%9F%BA%E7%A1%80"><span class="nav-number">1.</span> <span class="nav-text">1.基础</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Python%E4%BD%95%E6%97%B6%E6%89%A7%E8%A1%8C%E8%A3%85%E9%A5%B0%E5%99%A8"><span class="nav-number">2.</span> <span class="nav-text">2. Python何时执行装饰器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E4%BD%BF%E7%94%A8%E8%A3%85%E9%A5%B0%E5%99%A8%E6%94%B9%E8%BF%9B%E2%80%9C%E7%AD%96%E7%95%A5%E2%80%9D%E6%A8%A1%E5%BC%8F"><span class="nav-number">3.</span> <span class="nav-text">3. 使用装饰器改进“策略”模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E5%8F%98%E9%87%8F%E4%BD%9C%E7%94%A8%E5%9F%9F%E8%A7%84%E5%88%99"><span class="nav-number">4.</span> <span class="nav-text">4. 变量作用域规则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E9%97%AD%E5%8C%85"><span class="nav-number">5.</span> <span class="nav-text">5. 闭包</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-nonlocal%E5%A3%B0%E6%98%8E"><span class="nav-number">6.</span> <span class="nav-text">6. nonlocal声明</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%9F%BA%E7%A1%80"><span class="nav-text">1.基础</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Python%E4%BD%95%E6%97%B6%E6%89%A7%E8%A1%8C%E8%A3%85%E9%A5%B0%E5%99%A8"><span class="nav-text">2. Python何时执行装饰器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E4%BD%BF%E7%94%A8%E8%A3%85%E9%A5%B0%E5%99%A8%E6%94%B9%E8%BF%9B%E2%80%9C%E7%AD%96%E7%95%A5%E2%80%9D%E6%A8%A1%E5%BC%8F"><span class="nav-text">3. 使用装饰器改进“策略”模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E5%8F%98%E9%87%8F%E4%BD%9C%E7%94%A8%E5%9F%9F%E8%A7%84%E5%88%99"><span class="nav-text">4. 变量作用域规则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E9%97%AD%E5%8C%85"><span class="nav-text">5. 闭包</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-nonlocal%E5%A3%B0%E6%98%8E"><span class="nav-text">6. nonlocal声明</span></a></li></ol></div>
             
 
           </div>
@@ -758,7 +760,7 @@
 
   
   
-    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/jquery@2/dist/jquery.min.js"></script>
   
 
   
@@ -783,7 +785,7 @@
 
   
   
-    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
   
 
   
