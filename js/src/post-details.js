@@ -33,7 +33,6 @@ $(document).ready(function () {
     }
   }
 
-
   // 处理目录点击展开/折叠
   $('.post-toc .nav-item').on('click', function (e) {
     e.stopPropagation(); // 阻止事件冒泡
@@ -84,23 +83,21 @@ $(document).ready(function () {
     var target = $('.' + item.data('target'));
 
     // 使用Velocity.js或jQuery进行动画切换
-    hasVelocity ?
-      currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
-        target
-          .velocity('stop')
-          .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
-          .addClass(activePanelClassName);
-      }) :
-      currentTarget.animate({opacity: 0}, TAB_ANIMATE_DURATION, function () {
-        currentTarget.hide();
-        target
-          .stop()
-          .css({'opacity': 0, 'display': 'block'})
-          .animate({opacity: 1}, TAB_ANIMATE_DURATION, function () {
-            currentTarget.removeClass(activePanelClassName);
-            target.addClass(activePanelClassName);
-          });
-      });
+    hasVelocity ? currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+      target
+        .velocity('stop')
+        .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+        .addClass(activePanelClassName);
+    }) : currentTarget.animate({opacity: 0}, TAB_ANIMATE_DURATION, function () {
+      currentTarget.hide();
+      target
+        .stop()
+        .css({'opacity': 0, 'display': 'block'})
+        .animate({opacity: 1}, TAB_ANIMATE_DURATION, function () {
+          currentTarget.removeClass(activePanelClassName);
+          target.addClass(activePanelClassName);
+        });
+    });
 
     item.siblings().removeClass(activeTabClassName);
     item.addClass(activeTabClassName);
@@ -121,13 +118,11 @@ $(document).ready(function () {
 
   // 默认展开侧边栏（如果有TOC）
   var $tocContent = $('.post-toc-content');
-  var isSidebarCouldDisplay = CONFIG.sidebar.display === 'post' ||
-    CONFIG.sidebar.display === 'always';
+  var isSidebarCouldDisplay = CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always';
   var hasTOC = $tocContent.length > 0 && $tocContent.html().trim().length > 0;
   if (isSidebarCouldDisplay && hasTOC) {
-    CONFIG.motion.enable ?
-      (NexT.motion.middleWares.sidebar = function () {
-        NexT.utils.displaySidebar();
-      }) : NexT.utils.displaySidebar();
+    CONFIG.motion.enable ? (NexT.motion.middleWares.sidebar = function () {
+      NexT.utils.displaySidebar();
+    }) : NexT.utils.displaySidebar();
   }
 });
