@@ -50,21 +50,21 @@
 
 
 
-<link href="/MagnoliaYa/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
-<link href="/MagnoliaYa/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/MagnoliaYa/images/apple-touch-icon-next.png?v=5.1.4">
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
 
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/MagnoliaYa/images/favicon-32x32-next.png?v=5.1.4">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
 
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/MagnoliaYa/images/favicon-16x16-next.png?v=5.1.4">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
 
 
-  <link rel="mask-icon" href="/MagnoliaYa/images/logo.svg?v=5.1.4" color="#222">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
 
 
 
@@ -84,18 +84,18 @@
 <meta name="description" content="学了一些Android的简单控件，用这些布局和控件，设计并实现一个简单计算器。 计算器的界面分为两大部分，第一部分是上方的计算表达式，既包括用户的按键输入，也包括计算结果 数字；第二部分是下方的各个按键，例如：从0到9的数字按钮、加减乘除与等号、正负号按钮、小数点 按钮、求倒数按钮、平方按钮、开方按钮，以及退格、清空、取消等控制按钮。通过这些按键操作，能 够实现整数和小数的四则运算，以及求倒数、求">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android 简单控件实现简易计算器">
-<meta property="og:url" content="https://zypdominate.gitlab.io/MagnoliaYa/2024/10/25/2024/Android%20%E7%AE%80%E5%8D%95%E6%8E%A7%E4%BB%B6%E5%AE%9E%E7%8E%B0%E7%AE%80%E6%98%93%E8%AE%A1%E7%AE%97%E5%99%A8/index.html">
+<meta property="og:url" content="http://example.com/2024/10/25/2024/Android%20%E7%AE%80%E5%8D%95%E6%8E%A7%E4%BB%B6%E5%AE%9E%E7%8E%B0%E7%AE%80%E6%98%93%E8%AE%A1%E7%AE%97%E5%99%A8/index.html">
 <meta property="og:site_name" content="Magnolia&#39;s Blog">
 <meta property="og:description" content="学了一些Android的简单控件，用这些布局和控件，设计并实现一个简单计算器。 计算器的界面分为两大部分，第一部分是上方的计算表达式，既包括用户的按键输入，也包括计算结果 数字；第二部分是下方的各个按键，例如：从0到9的数字按钮、加减乘除与等号、正负号按钮、小数点 按钮、求倒数按钮、平方按钮、开方按钮，以及退格、清空、取消等控制按钮。通过这些按键操作，能 够实现整数和小数的四则运算，以及求倒数、求">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://zypdominate.gitlab.io/images/calculator.png">
+<meta property="og:image" content="http://example.com/images/calculator.png">
 <meta property="article:published_time" content="2024-10-25T15:45:18.000Z">
 <meta property="article:modified_time" content="2024-10-26T13:25:15.772Z">
 <meta property="article:author" content="Magnolia">
 <meta property="article:tag" content="Android">
 <meta property="article:tag" content="Java">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://zypdominate.gitlab.io/images/calculator.png">
+<meta name="twitter:image" content="http://example.com/images/calculator.png">
 
 
 
@@ -125,7 +125,7 @@
 
 
 
-  <link rel="canonical" href="https://zypdominate.gitlab.io/MagnoliaYa/2024/10/25/2024/Android 简单控件实现简易计算器/"/>
+  <link rel="canonical" href="http://example.com/2024/10/25/2024/Android 简单控件实现简易计算器/"/>
 
 
 
@@ -159,7 +159,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/MagnoliaYa/"  class="brand" rel="start">
+      <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">Magnolia's Blog</span>
         <span class="logo-line-after"><i></i></span>
@@ -187,7 +187,7 @@
       
         
         <li class="menu-item menu-item-home">
-          <a href="/MagnoliaYa/" rel="section">
+          <a href="/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
@@ -197,7 +197,7 @@
       
         
         <li class="menu-item menu-item-about">
-          <a href="/MagnoliaYa/about/" rel="section">
+          <a href="/about/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
@@ -207,7 +207,7 @@
       
         
         <li class="menu-item menu-item-tags">
-          <a href="/MagnoliaYa/tags/" rel="section">
+          <a href="/tags/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
@@ -217,7 +217,7 @@
       
         
         <li class="menu-item menu-item-categories">
-          <a href="/MagnoliaYa/categories/" rel="section">
+          <a href="/categories/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
             
@@ -227,7 +227,7 @@
       
         
         <li class="menu-item menu-item-archives">
-          <a href="/MagnoliaYa/archives/" rel="section">
+          <a href="/archives/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
@@ -268,12 +268,12 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://zypdominate.gitlab.io/MagnoliaYa/MagnoliaYa/2024/10/25/2024/Android%20%E7%AE%80%E5%8D%95%E6%8E%A7%E4%BB%B6%E5%AE%9E%E7%8E%B0%E7%AE%80%E6%98%93%E8%AE%A1%E7%AE%97%E5%99%A8/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/10/25/2024/Android%20%E7%AE%80%E5%8D%95%E6%8E%A7%E4%BB%B6%E5%AE%9E%E7%8E%B0%E7%AE%80%E6%98%93%E8%AE%A1%E7%AE%97%E5%99%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Magnolia">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/MagnoliaYa/images/avatar.jpg">
+      <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -320,7 +320,7 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/MagnoliaYa/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
                     <span itemprop="name">技术</span>
                   </a>
                 </span>
@@ -331,7 +331,7 @@
                 
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/MagnoliaYa/categories/%E6%8A%80%E6%9C%AF/Android/" itemprop="url" rel="index">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/Android/" itemprop="url" rel="index">
                     <span itemprop="name">Android</span>
                   </a>
                 </span>
@@ -379,7 +379,7 @@
 <li>按钮Button：几乎所有的数字与运算符按钮都采用了Button控件。 </li>
 <li>图像按钮ImageButton：开根号的运算符“√”虽然能够打出来，但是右上角少了数学课本上的一横， 所以该按钮要显示一张标准的开根号图片，这用到了ImageButton。</li>
 </ul>
-<p><img src="/MagnoliaYa/../../images/calculator.png" alt="1729875957884"></p>
+<p><img src="/../../images/calculator.png" alt="1729875957884"></p>
 <p><code>CalculatorActivity.java</code></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.chapter03;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> androidx.appcompat.app.AppCompatActivity;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> android.os.Bundle;</span><br><span class="line"><span class="keyword">import</span> android.view.View;</span><br><span class="line"><span class="keyword">import</span> android.widget.TextView;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">CalculatorActivity</span> <span class="keyword">extends</span> <span class="title class_">AppCompatActivity</span> <span class="keyword">implements</span> <span class="title class_">View</span>.OnClickListener &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> TextView tv_result;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">String</span> <span class="variable">firstNum</span> <span class="operator">=</span> <span class="string">&quot;&quot;</span>; <span class="comment">// 记录第一个操作数</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">String</span> <span class="variable">secondNum</span> <span class="operator">=</span> <span class="string">&quot;&quot;</span>; <span class="comment">// 记录第二个操作数</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">String</span> <span class="variable">operator</span> <span class="operator">=</span> <span class="string">&quot;&quot;</span>; <span class="comment">// 记录运算符</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">String</span> <span class="variable">result</span> <span class="operator">=</span> <span class="string">&quot;&quot;</span>; <span class="comment">// 记录运算结果</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">String</span> <span class="variable">showText</span> <span class="operator">=</span> <span class="string">&quot;&quot;</span>; <span class="comment">// 记录显示文本</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">onCreate</span><span class="params">(Bundle savedInstanceState)</span> &#123;</span><br><span class="line">        <span class="built_in">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_calculator);</span><br><span class="line">        tv_result = findViewById(R.id.tv_result);</span><br><span class="line">        <span class="comment">// 给每个按钮控件注册点击监听器</span></span><br><span class="line">        findViewById(R.id.btn_clear).setOnClickListener(<span class="built_in">this</span>);</span><br><span class="line">        findViewById(R.id.btn_cancel).setOnClickListener(<span class="built_in">this</span>);</span><br><span class="line">        findViewById(R.id.btn_plus).setOnClickListener(<span class="built_in">this</span>);</span><br><span class="line">        findViewById(R.id.btn_minus).setOnClickListener(<span class="built_in">this</span>);</span><br><span class="line">        findViewById(R.id.btn_multiply).setOnClickListener(<span class="built_in">this</span>);</span><br><span class="line">        findViewById(R.id.btn_reciprocal).setOnClickListener(<span class="built_in">this</span>);</span><br><span class="line">        findViewById(R.id.btn_equal).setOnClickListener(<span class="built_in">this</span>);</span><br><span class="line">        findViewById(R.id.ib_sqrt).setOnClickListener(<span class="built_in">this</span>);</span><br><span class="line">        findViewById(R.id.btn_divide).setOnClickListener(<span class="built_in">this</span>);</span><br><span class="line">        findViewById(R.id.btn_zero).setOnClickListener(<span class="built_in">this</span>);</span><br><span class="line">        findViewById(R.id.btn_one).setOnClickListener(<span class="built_in">this</span>);</span><br><span class="line">        findViewById(R.id.btn_two).setOnClickListener(<span class="built_in">this</span>);</span><br><span class="line">        findViewById(R.id.btn_three).setOnClickListener(<span class="built_in">this</span>);</span><br><span class="line">        findViewById(R.id.btn_four).setOnClickListener(<span class="built_in">this</span>);</span><br><span class="line">        findViewById(R.id.btn_five).setOnClickListener(<span class="built_in">this</span>);</span><br><span class="line">        findViewById(R.id.btn_six).setOnClickListener(<span class="built_in">this</span>);</span><br><span class="line">        findViewById(R.id.btn_seven).setOnClickListener(<span class="built_in">this</span>);</span><br><span class="line">        findViewById(R.id.btn_eight).setOnClickListener(<span class="built_in">this</span>);</span><br><span class="line">        findViewById(R.id.btn_nine).setOnClickListener(<span class="built_in">this</span>);</span><br><span class="line">        findViewById(R.id.btn_dot).setOnClickListener(<span class="built_in">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onClick</span><span class="params">(View v)</span> &#123;</span><br><span class="line">        String inputText;</span><br><span class="line">        <span class="keyword">if</span> (v.getId() == R.id.ib_sqrt) &#123;</span><br><span class="line">            inputText = <span class="string">&quot;√&quot;</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            inputText = ((TextView) v).getText().toString();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">switch</span> (v.getId()) &#123;</span><br><span class="line">            <span class="comment">// 清除</span></span><br><span class="line">            <span class="keyword">case</span> R.id.btn_clear:</span><br><span class="line">                clear();</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> R.id.btn_cancel:</span><br><span class="line">                <span class="keyword">if</span> (!showText.equals(<span class="string">&quot;&quot;</span>)) &#123;</span><br><span class="line">                    showText = showText.substring(<span class="number">0</span>, showText.length() - <span class="number">1</span>);</span><br><span class="line">                    <span class="keyword">if</span> (operator.equals(<span class="string">&quot;&quot;</span>)) &#123;</span><br><span class="line">                        firstNum = showText;</span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                        secondNum = showText;</span><br><span class="line">                    &#125;</span><br><span class="line">                    refreshResult(showText);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> R.id.btn_plus:</span><br><span class="line">            <span class="keyword">case</span> R.id.btn_minus:</span><br><span class="line">            <span class="keyword">case</span> R.id.btn_multiply:</span><br><span class="line">            <span class="keyword">case</span> R.id.btn_divide:</span><br><span class="line">                <span class="keyword">if</span> (firstNum.equals(<span class="string">&quot;&quot;</span>)) &#123;</span><br><span class="line">                    firstNum = <span class="string">&quot;0&quot;</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                operator = inputText;</span><br><span class="line">                refreshResult(showText + inputText);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> R.id.btn_equal:</span><br><span class="line">                <span class="type">double</span> <span class="variable">calculate_result</span> <span class="operator">=</span> calculateFour();</span><br><span class="line">                <span class="keyword">if</span> (calculate_result == <span class="number">0</span>) &#123;</span><br><span class="line">                    result = showText;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    refreshOperate(String.valueOf(calculate_result));</span><br><span class="line">                    refreshResult(showText + <span class="string">&quot;=&quot;</span> + result);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> R.id.ib_sqrt:</span><br><span class="line">                <span class="keyword">if</span> (operator.equals(<span class="string">&quot;&quot;</span>)) &#123;</span><br><span class="line">                    <span class="type">double</span> <span class="variable">sqrt_result</span> <span class="operator">=</span> Math.sqrt(Double.parseDouble(firstNum));</span><br><span class="line">                    refreshOperate(String.valueOf(sqrt_result));</span><br><span class="line">                    refreshResult(<span class="string">&quot;√&quot;</span> + firstNum + <span class="string">&quot;=&quot;</span> + result);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="type">double</span> <span class="variable">sqrt_result</span> <span class="operator">=</span> Math.sqrt(Double.parseDouble(secondNum));</span><br><span class="line">                    secondNum = String.valueOf(sqrt_result);</span><br><span class="line">                    refreshResult(firstNum + operator + secondNum);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> R.id.btn_reciprocal:</span><br><span class="line">                <span class="type">double</span> <span class="variable">reciprocal_result</span> <span class="operator">=</span> <span class="number">1</span> / Double.parseDouble(firstNum);</span><br><span class="line">                refreshOperate(String.valueOf(reciprocal_result));</span><br><span class="line">                refreshResult(<span class="string">&quot;1/&quot;</span> + showText + <span class="string">&quot;=&quot;</span> + result);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">                <span class="comment">// 数字键</span></span><br><span class="line">                <span class="keyword">if</span> ((result.contains(<span class="string">&quot;Error&quot;</span>)) || (!result.equals(<span class="string">&quot;&quot;</span>) &amp;&amp; operator.equals(<span class="string">&quot;&quot;</span>))) &#123;</span><br><span class="line">                    clear();</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (operator.equals(<span class="string">&quot;&quot;</span>)) &#123;</span><br><span class="line">                    firstNum += inputText;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    secondNum += inputText;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (showText.equals(<span class="string">&quot;0&quot;</span>) &amp;&amp; !inputText.equals(<span class="string">&quot;.&quot;</span>)) &#123;</span><br><span class="line">                    refreshResult(inputText);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    refreshResult(showText + inputText);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">double</span> <span class="title function_">calculateFour</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (secondNum.equals(<span class="string">&quot;&quot;</span>)) &#123;</span><br><span class="line">            secondNum = <span class="string">&quot;0&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">switch</span> (operator) &#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&quot;+&quot;</span>:</span><br><span class="line">                <span class="keyword">return</span> Double.parseDouble(firstNum) + Double.parseDouble(secondNum);</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&quot;-&quot;</span>:</span><br><span class="line">                <span class="keyword">return</span> Double.parseDouble(firstNum) - Double.parseDouble(secondNum);</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&quot;x&quot;</span>:</span><br><span class="line">                <span class="keyword">return</span> Double.parseDouble(firstNum) * Double.parseDouble(secondNum);</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&quot;÷&quot;</span>:</span><br><span class="line">                <span class="keyword">if</span> (Double.parseDouble(secondNum) == <span class="number">0</span>) &#123;</span><br><span class="line">                    clear();</span><br><span class="line">                    tv_result.setText(<span class="string">&quot;Error: 除数不能为0&quot;</span>);</span><br><span class="line">                    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">return</span> Double.parseDouble(firstNum) / Double.parseDouble(secondNum);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 清除</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">clear</span><span class="params">()</span> &#123;</span><br><span class="line">        refreshOperate(<span class="string">&quot;&quot;</span>);</span><br><span class="line">        refreshResult(<span class="string">&quot;&quot;</span>);</span><br><span class="line">        firstNum = <span class="string">&quot;&quot;</span>;</span><br><span class="line">        secondNum = <span class="string">&quot;&quot;</span>;</span><br><span class="line">        operator = <span class="string">&quot;&quot;</span>;</span><br><span class="line">        result = <span class="string">&quot;&quot;</span>;</span><br><span class="line">        showText = <span class="string">&quot;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 刷新运算结果</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">refreshOperate</span><span class="params">(String new_result)</span> &#123;</span><br><span class="line">        result = new_result;</span><br><span class="line">        firstNum = result;</span><br><span class="line">        secondNum = <span class="string">&quot;&quot;</span>;</span><br><span class="line">        operator = <span class="string">&quot;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 刷新文本显示</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">refreshResult</span><span class="params">(String text)</span> &#123;</span><br><span class="line">        showText = text;</span><br><span class="line">        tv_result.setText(showText);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -401,9 +401,9 @@
       
         <div class="post-tags">
           
-            <a href="/MagnoliaYa/tags/Android/" rel="tag"># Android</a>
+            <a href="/tags/Android/" rel="tag"># Android</a>
           
-            <a href="/MagnoliaYa/tags/Java/" rel="tag"># Java</a>
+            <a href="/tags/Java/" rel="tag"># Java</a>
           
         </div>
       
@@ -416,7 +416,7 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/MagnoliaYa/2024/10/01/2024/Python%20%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%EF%BC%8C%E6%98%AF%E5%90%A6%E5%8F%AF%E5%8F%98%E3%80%81%E5%8F%AF%E5%93%88%E5%B8%8C/" rel="next" title="Python 数据类型，是否可变、可哈希">
+              <a href="/2024/10/01/2024/Python%20%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%EF%BC%8C%E6%98%AF%E5%90%A6%E5%8F%AF%E5%8F%98%E3%80%81%E5%8F%AF%E5%93%88%E5%B8%8C/" rel="next" title="Python 数据类型，是否可变、可哈希">
                 <i class="fa fa-chevron-left"></i> Python 数据类型，是否可变、可哈希
               </a>
             
@@ -426,7 +426,7 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/MagnoliaYa/2024/10/26/2024/drawio%E7%94%BB%E6%B5%81%E7%A8%8B%E5%9B%BE/" rel="prev" title="drawio画流程图">
+              <a href="/2024/10/26/2024/drawio%E7%94%BB%E6%B5%81%E7%A8%8B%E5%9B%BE/" rel="prev" title="drawio画流程图">
                 drawio画流程图 <i class="fa fa-chevron-right"></i>
               </a>
             
@@ -486,7 +486,7 @@
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image"
-                src="/MagnoliaYa/images/avatar.jpg"
+                src="/images/avatar.jpg"
                 alt="Magnolia" />
             
               <p class="site-author-name" itemprop="name">Magnolia</p>
@@ -498,7 +498,7 @@
             
               <div class="site-state-item site-state-posts">
               
-                <a href="/MagnoliaYa/">
+                <a href="/">
               
                   <span class="site-state-item-count">94</span>
                   <span class="site-state-item-name">posts</span>
@@ -511,7 +511,7 @@
               
               
               <div class="site-state-item site-state-categories">
-                <a href="/MagnoliaYa/categories/index.html">
+                <a href="/categories/index.html">
                   <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
@@ -522,7 +522,7 @@
               
               
               <div class="site-state-item site-state-tags">
-                <a href="/MagnoliaYa/tags/index.html">
+                <a href="/tags/index.html">
                   <span class="site-state-item-count">29</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
@@ -675,22 +675,22 @@
 
   
   
-    <script type="text/javascript" src="/MagnoliaYa/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
   
 
   
   
-    <script type="text/javascript" src="/MagnoliaYa/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
   
 
   
   
-    <script type="text/javascript" src="/MagnoliaYa/lib/velocity/velocity.min.js?v=1.2.1"></script>
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
   
 
   
   
-    <script type="text/javascript" src="/MagnoliaYa/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
   
 
   
@@ -700,44 +700,44 @@
 
   
   
-    <script type="text/javascript" src="/MagnoliaYa/lib/three/three.min.js"></script>
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
   
 
   
   
-    <script type="text/javascript" src="/MagnoliaYa/lib/three/canvas_lines.min.js"></script>
+    <script type="text/javascript" src="/lib/three/canvas_lines.min.js"></script>
   
-
-
-  
-
-
-  <script type="text/javascript" src="/MagnoliaYa/js/src/utils.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/MagnoliaYa/js/src/motion.js?v=5.1.4"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/MagnoliaYa/js/src/affix.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/MagnoliaYa/js/src/schemes/pisces.js?v=5.1.4"></script>
-
-
-
-  
-  <script type="text/javascript" src="/MagnoliaYa/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/MagnoliaYa/js/src/post-details.js?v=5.1.4"></script>
-
 
 
   
 
 
-  <script type="text/javascript" src="/MagnoliaYa/js/src/bootstrap.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
 
 
 

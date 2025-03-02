@@ -50,21 +50,21 @@
 
 
 
-<link href="/MagnoliaYa/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
-<link href="/MagnoliaYa/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/MagnoliaYa/images/apple-touch-icon-next.png?v=5.1.4">
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
 
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/MagnoliaYa/images/favicon-32x32-next.png?v=5.1.4">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
 
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/MagnoliaYa/images/favicon-16x16-next.png?v=5.1.4">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
 
 
-  <link rel="mask-icon" href="/MagnoliaYa/images/logo.svg?v=5.1.4" color="#222">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
 
 
 
@@ -84,18 +84,18 @@
 <meta name="description" content="文章主要介绍了 Python 中的描述符，包括描述符的概念、用法、实现方式以及应用场景等内容。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="流畅的Python 属性描述符—验证属性">
-<meta property="og:url" content="https://zypdominate.gitlab.io/MagnoliaYa/2020/04/05/2020/%E6%B5%81%E7%95%85%E7%9A%84Python%EF%BC%9A%E5%B1%9E%E6%80%A7%E6%8F%8F%E8%BF%B0%E7%AC%A6%E2%80%94%E9%AA%8C%E8%AF%81%E5%B1%9E%E6%80%A7/index.html">
+<meta property="og:url" content="http://example.com/2020/04/05/2020/%E6%B5%81%E7%95%85%E7%9A%84Python%EF%BC%9A%E5%B1%9E%E6%80%A7%E6%8F%8F%E8%BF%B0%E7%AC%A6%E2%80%94%E9%AA%8C%E8%AF%81%E5%B1%9E%E6%80%A7/index.html">
 <meta property="og:site_name" content="Magnolia&#39;s Blog">
 <meta property="og:description" content="文章主要介绍了 Python 中的描述符，包括描述符的概念、用法、实现方式以及应用场景等内容。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://zypdominate.gitlab.io/images/2020/%E6%B5%81%E7%95%85%E7%9A%84python-%E5%B1%9E%E6%80%A7%E6%8F%8F%E8%BF%B0%E7%AC%A61.png">
-<meta property="og:image" content="https://zypdominate.gitlab.io/images/2020/%E6%B5%81%E7%95%85%E7%9A%84python-%E5%B1%9E%E6%80%A7%E6%8F%8F%E8%BF%B0%E7%AC%A62.png">
+<meta property="og:image" content="http://example.com/images/2020/%E6%B5%81%E7%95%85%E7%9A%84python-%E5%B1%9E%E6%80%A7%E6%8F%8F%E8%BF%B0%E7%AC%A61.png">
+<meta property="og:image" content="http://example.com/images/2020/%E6%B5%81%E7%95%85%E7%9A%84python-%E5%B1%9E%E6%80%A7%E6%8F%8F%E8%BF%B0%E7%AC%A62.png">
 <meta property="article:published_time" content="2020-04-05T06:53:48.000Z">
 <meta property="article:modified_time" content="2025-02-22T06:50:25.590Z">
 <meta property="article:author" content="Magnolia">
 <meta property="article:tag" content="Python">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://zypdominate.gitlab.io/images/2020/%E6%B5%81%E7%95%85%E7%9A%84python-%E5%B1%9E%E6%80%A7%E6%8F%8F%E8%BF%B0%E7%AC%A61.png">
+<meta name="twitter:image" content="http://example.com/images/2020/%E6%B5%81%E7%95%85%E7%9A%84python-%E5%B1%9E%E6%80%A7%E6%8F%8F%E8%BF%B0%E7%AC%A61.png">
 
 
 
@@ -125,7 +125,7 @@
 
 
 
-  <link rel="canonical" href="https://zypdominate.gitlab.io/MagnoliaYa/2020/04/05/2020/流畅的Python：属性描述符—验证属性/"/>
+  <link rel="canonical" href="http://example.com/2020/04/05/2020/流畅的Python：属性描述符—验证属性/"/>
 
 
 
@@ -159,7 +159,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/MagnoliaYa/"  class="brand" rel="start">
+      <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">Magnolia's Blog</span>
         <span class="logo-line-after"><i></i></span>
@@ -187,7 +187,7 @@
       
         
         <li class="menu-item menu-item-home">
-          <a href="/MagnoliaYa/" rel="section">
+          <a href="/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
@@ -197,7 +197,7 @@
       
         
         <li class="menu-item menu-item-about">
-          <a href="/MagnoliaYa/about/" rel="section">
+          <a href="/about/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
@@ -207,7 +207,7 @@
       
         
         <li class="menu-item menu-item-tags">
-          <a href="/MagnoliaYa/tags/" rel="section">
+          <a href="/tags/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
@@ -217,7 +217,7 @@
       
         
         <li class="menu-item menu-item-categories">
-          <a href="/MagnoliaYa/categories/" rel="section">
+          <a href="/categories/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
             
@@ -227,7 +227,7 @@
       
         
         <li class="menu-item menu-item-archives">
-          <a href="/MagnoliaYa/archives/" rel="section">
+          <a href="/archives/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
@@ -268,12 +268,12 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://zypdominate.gitlab.io/MagnoliaYa/MagnoliaYa/2020/04/05/2020/%E6%B5%81%E7%95%85%E7%9A%84Python%EF%BC%9A%E5%B1%9E%E6%80%A7%E6%8F%8F%E8%BF%B0%E7%AC%A6%E2%80%94%E9%AA%8C%E8%AF%81%E5%B1%9E%E6%80%A7/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/04/05/2020/%E6%B5%81%E7%95%85%E7%9A%84Python%EF%BC%9A%E5%B1%9E%E6%80%A7%E6%8F%8F%E8%BF%B0%E7%AC%A6%E2%80%94%E9%AA%8C%E8%AF%81%E5%B1%9E%E6%80%A7/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Magnolia">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/MagnoliaYa/images/avatar.jpg">
+      <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -320,7 +320,7 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/MagnoliaYa/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
                     <span itemprop="name">技术</span>
                   </a>
                 </span>
@@ -331,7 +331,7 @@
                 
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/MagnoliaYa/categories/%E6%8A%80%E6%9C%AF/Python/" itemprop="url" rel="index">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/Python/" itemprop="url" rel="index">
                     <span itemprop="name">Python</span>
                   </a>
                 </span>
@@ -378,7 +378,7 @@
 <hr>
 <h4 id="描述符示例：验证属性"><a href="#描述符示例：验证属性" class="headerlink" title="描述符示例：验证属性"></a>描述符示例：验证属性</h4><p>实现了 <code>__get__</code>、<code>__set__</code> 或 <code>__delete__</code> 方法的类是描述符。<strong>描述符的用法是，创建一个实例，作为另一个类的类属性。</strong></p>
 <p>将定义一个Quantity描述符，LineItem类会用到两个Quantity实例：一个用于管理weight属性，另一个用于管理price属性。示意图有助于理解，如图所示：</p>
-<p><img src="/MagnoliaYa/../../images/2020/%E6%B5%81%E7%95%85%E7%9A%84python-%E5%B1%9E%E6%80%A7%E6%8F%8F%E8%BF%B0%E7%AC%A61.png" alt="image-20250222144248996"></p>
+<p><img src="/../../images/2020/%E6%B5%81%E7%95%85%E7%9A%84python-%E5%B1%9E%E6%80%A7%E6%8F%8F%E8%BF%B0%E7%AC%A61.png" alt="image-20250222144248996"></p>
 <p>在图中，“weight”这个词出现了两次，因为其实有两个不同的属性都叫weight：一个是LineItem的类属性，另一个是各个LineItem对象的实例属性。price也是如此。</p>
 <p><strong>描述符类</strong>：实现描述符协议的类。图中的Quantity类。</p>
 <p><strong>托管类</strong>：把描述符实例声明为类属性的类。图中的LineItem类。</p>
@@ -398,7 +398,7 @@
 <p><strong>self 是描述符实例，它其实是托管类的类属性。同一时刻，内存中可能有几千个LineItem实例，不过只会有两个描述符实例：LineItem.weight 和 LineItem.price。因此，存储在描述符实例中的数据，其实会变成LineItem类的类属性，从而由全部LineItem实例共享。</strong></p>
 <hr>
 <h4 id="自动获取储存属性的名称"><a href="#自动获取储存属性的名称" class="headerlink" title="自动获取储存属性的名称"></a>自动获取储存属性的名称</h4><p>为了避免在描述符声明语句中重复输入属性名，我们将为每个Quantity实例的storage_name属性生成一个独一无二的字符串。更新后的Quantity和LineItem类的UML类图：</p>
-<p><img src="/MagnoliaYa/../../images/2020/%E6%B5%81%E7%95%85%E7%9A%84python-%E5%B1%9E%E6%80%A7%E6%8F%8F%E8%BF%B0%E7%AC%A62.png" alt="image-20250222144549070"></p>
+<p><img src="/../../images/2020/%E6%B5%81%E7%95%85%E7%9A%84python-%E5%B1%9E%E6%80%A7%E6%8F%8F%E8%BF%B0%E7%AC%A62.png" alt="image-20250222144549070"></p>
 <p>为了生成storage_name，我们以<code>&#39;_Quantity#&#39;</code>为前缀，然后在后面拼接一个整数：<code>Quantity.__counter</code>类属性的当前值，每次把一个新的Quantity描述符实例依附到类上，都会递增这个值。在前缀中使用井号能避免storage_name与用户使用点号创建的属性冲突，因为nutmeg._Quantity#0是无效的Python句法。但是，内置的getattr和setattr函数可以使用这种“无效的”标识符获取和设置属性，此外也可以直接处理实例属性__dict__。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Quantity</span>:</span><br><span class="line">    __counter = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        cls = <span class="variable language_">self</span>.__class__  <span class="comment"># cls是Quantity类的引用。</span></span><br><span class="line">        prefix = cls.__name__</span><br><span class="line">        index = cls.__counter</span><br><span class="line">        <span class="variable language_">self</span>.storage_name = <span class="string">f&#x27;_<span class="subst">&#123;prefix&#125;</span>#<span class="subst">&#123;index&#125;</span>&#x27;</span>  <span class="comment"># 每个描述符实例的storage_name属性都是独一无二的</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="variable language_">self</span>.storage_name)</span><br><span class="line">        cls.__counter += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__get__</span>(<span class="params">self, instance, owner</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">getattr</span>(instance, <span class="variable language_">self</span>.storage_name)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__set__</span>(<span class="params">self, instance, value</span>):</span><br><span class="line">        <span class="keyword">if</span> value &gt; <span class="number">0</span>:</span><br><span class="line">            <span class="built_in">setattr</span>(instance, <span class="variable language_">self</span>.storage_name, value)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">&#x27;value must &gt; 0&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">LineItem</span>:</span><br><span class="line">    weight = Quantity()  <span class="comment"># 不用把托管属性的名称传给Quantity构造方法。</span></span><br><span class="line">    price = Quantity()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, description, weight, price</span>):</span><br><span class="line">        <span class="variable language_">self</span>.description = description</span><br><span class="line">        <span class="variable language_">self</span>.weight = weight</span><br><span class="line">        <span class="variable language_">self</span>.price = price</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">subtotal</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.weight * <span class="variable language_">self</span>.price</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    item = LineItem(<span class="string">&#x27;test&#x27;</span>, <span class="number">10</span>, <span class="number">20</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&#x27;weight:<span class="subst">&#123;item.weight&#125;</span>, price:<span class="subst">&#123;item.price&#125;</span>&#x27;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">getattr</span>(item, <span class="string">&#x27;_Quantity#0&#x27;</span>), <span class="built_in">getattr</span>(item, <span class="string">&#x27;_Quantity#1&#x27;</span>))</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    _Quantity#0</span></span><br><span class="line"><span class="string">    _Quantity#1</span></span><br><span class="line"><span class="string">    weight:10, price:20</span></span><br><span class="line"><span class="string">    10 20</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
 
@@ -453,7 +453,7 @@
       
         <div class="post-tags">
           
-            <a href="/MagnoliaYa/tags/Python/" rel="tag"># Python</a>
+            <a href="/tags/Python/" rel="tag"># Python</a>
           
         </div>
       
@@ -466,7 +466,7 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/MagnoliaYa/2020/04/03/2020/%E6%B5%81%E7%95%85%E7%9A%84Python%EF%BC%9A%E5%8A%A8%E6%80%81%E5%B1%9E%E6%80%A7%E5%92%8C%E7%89%B9%E5%BE%81/" rel="next" title="流畅的Python 动态属性和特征">
+              <a href="/2020/04/03/2020/%E6%B5%81%E7%95%85%E7%9A%84Python%EF%BC%9A%E5%8A%A8%E6%80%81%E5%B1%9E%E6%80%A7%E5%92%8C%E7%89%B9%E5%BE%81/" rel="next" title="流畅的Python 动态属性和特征">
                 <i class="fa fa-chevron-left"></i> 流畅的Python 动态属性和特征
               </a>
             
@@ -476,7 +476,7 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/MagnoliaYa/2020/04/08/2020/Python%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F/" rel="prev" title="Python代码执行顺序">
+              <a href="/2020/04/08/2020/Python%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F/" rel="prev" title="Python代码执行顺序">
                 Python代码执行顺序 <i class="fa fa-chevron-right"></i>
               </a>
             
@@ -545,7 +545,7 @@
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image"
-                src="/MagnoliaYa/images/avatar.jpg"
+                src="/images/avatar.jpg"
                 alt="Magnolia" />
             
               <p class="site-author-name" itemprop="name">Magnolia</p>
@@ -557,7 +557,7 @@
             
               <div class="site-state-item site-state-posts">
               
-                <a href="/MagnoliaYa/">
+                <a href="/">
               
                   <span class="site-state-item-count">94</span>
                   <span class="site-state-item-name">posts</span>
@@ -570,7 +570,7 @@
               
               
               <div class="site-state-item site-state-categories">
-                <a href="/MagnoliaYa/categories/index.html">
+                <a href="/categories/index.html">
                   <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
@@ -581,7 +581,7 @@
               
               
               <div class="site-state-item site-state-tags">
-                <a href="/MagnoliaYa/tags/index.html">
+                <a href="/tags/index.html">
                   <span class="site-state-item-count">29</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
@@ -750,22 +750,22 @@
 
   
   
-    <script type="text/javascript" src="/MagnoliaYa/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
   
 
   
   
-    <script type="text/javascript" src="/MagnoliaYa/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
   
 
   
   
-    <script type="text/javascript" src="/MagnoliaYa/lib/velocity/velocity.min.js?v=1.2.1"></script>
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
   
 
   
   
-    <script type="text/javascript" src="/MagnoliaYa/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
   
 
   
@@ -775,44 +775,44 @@
 
   
   
-    <script type="text/javascript" src="/MagnoliaYa/lib/three/three.min.js"></script>
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
   
 
   
   
-    <script type="text/javascript" src="/MagnoliaYa/lib/three/canvas_lines.min.js"></script>
+    <script type="text/javascript" src="/lib/three/canvas_lines.min.js"></script>
   
-
-
-  
-
-
-  <script type="text/javascript" src="/MagnoliaYa/js/src/utils.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/MagnoliaYa/js/src/motion.js?v=5.1.4"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/MagnoliaYa/js/src/affix.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/MagnoliaYa/js/src/schemes/pisces.js?v=5.1.4"></script>
-
-
-
-  
-  <script type="text/javascript" src="/MagnoliaYa/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/MagnoliaYa/js/src/post-details.js?v=5.1.4"></script>
-
 
 
   
 
 
-  <script type="text/javascript" src="/MagnoliaYa/js/src/bootstrap.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
 
 
 

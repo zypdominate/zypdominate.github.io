@@ -50,21 +50,21 @@
 
 
 
-<link href="/MagnoliaYa/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
-<link href="/MagnoliaYa/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/MagnoliaYa/images/apple-touch-icon-next.png?v=5.1.4">
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
 
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/MagnoliaYa/images/favicon-32x32-next.png?v=5.1.4">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
 
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/MagnoliaYa/images/favicon-16x16-next.png?v=5.1.4">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
 
 
-  <link rel="mask-icon" href="/MagnoliaYa/images/logo.svg?v=5.1.4" color="#222">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
 
 
 
@@ -84,18 +84,18 @@
 <meta name="description" content="使用 Git 进行团队协作开发时的一些操作流程和注意事项。包括从主线创建分支进行开发，处理分支落后主分支的情况，以及结合 Gitlab 进行开发任务的步骤，如创建议题、合并请求，在本地检出分支进行编码和 review，最后将分支合入远程主分支等。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Git：分支merge主线代码">
-<meta property="og:url" content="https://zypdominate.gitlab.io/MagnoliaYa/2020/01/11/2020/Git%EF%BC%9A%E5%88%86%E6%94%AFmerge%E4%B8%BB%E7%BA%BF%E4%BB%A3%E7%A0%81/index.html">
+<meta property="og:url" content="http://example.com/2020/01/11/2020/Git%EF%BC%9A%E5%88%86%E6%94%AFmerge%E4%B8%BB%E7%BA%BF%E4%BB%A3%E7%A0%81/index.html">
 <meta property="og:site_name" content="Magnolia&#39;s Blog">
 <meta property="og:description" content="使用 Git 进行团队协作开发时的一些操作流程和注意事项。包括从主线创建分支进行开发，处理分支落后主分支的情况，以及结合 Gitlab 进行开发任务的步骤，如创建议题、合并请求，在本地检出分支进行编码和 review，最后将分支合入远程主分支等。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://zypdominate.gitlab.io/images%5C2020%5CGit%EF%BC%9Amerge%E4%BB%A3%E7%A0%81.png">
-<meta property="og:image" content="https://zypdominate.gitlab.io/images%5C2020%5CGit%EF%BC%9Amerge%E4%BB%A3%E7%A0%812.png">
+<meta property="og:image" content="http://example.com/images%5C2020%5CGit%EF%BC%9Amerge%E4%BB%A3%E7%A0%81.png">
+<meta property="og:image" content="http://example.com/images%5C2020%5CGit%EF%BC%9Amerge%E4%BB%A3%E7%A0%812.png">
 <meta property="article:published_time" content="2020-01-11T08:40:02.000Z">
 <meta property="article:modified_time" content="2025-02-09T15:00:22.657Z">
 <meta property="article:author" content="Magnolia">
 <meta property="article:tag" content="Git">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://zypdominate.gitlab.io/images%5C2020%5CGit%EF%BC%9Amerge%E4%BB%A3%E7%A0%81.png">
+<meta name="twitter:image" content="http://example.com/images%5C2020%5CGit%EF%BC%9Amerge%E4%BB%A3%E7%A0%81.png">
 
 
 
@@ -125,7 +125,7 @@
 
 
 
-  <link rel="canonical" href="https://zypdominate.gitlab.io/MagnoliaYa/2020/01/11/2020/Git：分支merge主线代码/"/>
+  <link rel="canonical" href="http://example.com/2020/01/11/2020/Git：分支merge主线代码/"/>
 
 
 
@@ -159,7 +159,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/MagnoliaYa/"  class="brand" rel="start">
+      <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">Magnolia's Blog</span>
         <span class="logo-line-after"><i></i></span>
@@ -187,7 +187,7 @@
       
         
         <li class="menu-item menu-item-home">
-          <a href="/MagnoliaYa/" rel="section">
+          <a href="/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
@@ -197,7 +197,7 @@
       
         
         <li class="menu-item menu-item-about">
-          <a href="/MagnoliaYa/about/" rel="section">
+          <a href="/about/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
@@ -207,7 +207,7 @@
       
         
         <li class="menu-item menu-item-tags">
-          <a href="/MagnoliaYa/tags/" rel="section">
+          <a href="/tags/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
@@ -217,7 +217,7 @@
       
         
         <li class="menu-item menu-item-categories">
-          <a href="/MagnoliaYa/categories/" rel="section">
+          <a href="/categories/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
             
@@ -227,7 +227,7 @@
       
         
         <li class="menu-item menu-item-archives">
-          <a href="/MagnoliaYa/archives/" rel="section">
+          <a href="/archives/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
@@ -268,12 +268,12 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://zypdominate.gitlab.io/MagnoliaYa/MagnoliaYa/2020/01/11/2020/Git%EF%BC%9A%E5%88%86%E6%94%AFmerge%E4%B8%BB%E7%BA%BF%E4%BB%A3%E7%A0%81/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/01/11/2020/Git%EF%BC%9A%E5%88%86%E6%94%AFmerge%E4%B8%BB%E7%BA%BF%E4%BB%A3%E7%A0%81/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Magnolia">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/MagnoliaYa/images/avatar.jpg">
+      <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -320,7 +320,7 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/MagnoliaYa/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
                     <span itemprop="name">技术</span>
                   </a>
                 </span>
@@ -331,7 +331,7 @@
                 
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/MagnoliaYa/categories/%E6%8A%80%E6%9C%AF/Git/" itemprop="url" rel="index">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/Git/" itemprop="url" rel="index">
                     <span itemprop="name">Git</span>
                   </a>
                 </span>
@@ -378,8 +378,8 @@
 <hr>
 <p>下面结合Gitlab，在此基础上小结一下：</p>
 <p>对于一个具体的开发任务</p>
-<h4 id="1-创建议题"><a href="#1-创建议题" class="headerlink" title="1. 创建议题"></a>1. 创建议题</h4><p>一般先创建一个议题（Issue）：<br><img src="/MagnoliaYa/../../images%5C2020%5CGit%EF%BC%9Amerge%E4%BB%A3%E7%A0%81.png"></p>
-<h4 id="2-创建合并请求"><a href="#2-创建合并请求" class="headerlink" title="2.创建合并请求"></a>2.创建合并请求</h4><p>再创建一个合并请求（Create merge request），分支名可以自己修改，如 test_dev<br><img src="/MagnoliaYa/../../images%5C2020%5CGit%EF%BC%9Amerge%E4%BB%A3%E7%A0%812.png" alt="在这里插入图片描述"></p>
+<h4 id="1-创建议题"><a href="#1-创建议题" class="headerlink" title="1. 创建议题"></a>1. 创建议题</h4><p>一般先创建一个议题（Issue）：<br><img src="/../../images%5C2020%5CGit%EF%BC%9Amerge%E4%BB%A3%E7%A0%81.png"></p>
+<h4 id="2-创建合并请求"><a href="#2-创建合并请求" class="headerlink" title="2.创建合并请求"></a>2.创建合并请求</h4><p>再创建一个合并请求（Create merge request），分支名可以自己修改，如 test_dev<br><img src="/../../images%5C2020%5CGit%EF%BC%9Amerge%E4%BB%A3%E7%A0%812.png" alt="在这里插入图片描述"></p>
 <h4 id="3-本地检出分支"><a href="#3-本地检出分支" class="headerlink" title="3. 本地检出分支"></a>3. 本地检出分支</h4><p>然后在本地拉取远程最新的(刚刚创建的)分支, 并检出该分支：</p>
 <p><code>git fetch origin</code><br><code>git checkout -b test_dev  origin/test_dev</code></p>
 <h4 id="4-编码-review"><a href="#4-编码-review" class="headerlink" title="4.编码 &amp; review"></a>4.编码 &amp; review</h4><p>接下来就可以在本地的该分支上编码了。编码完成后，提交到该分支，review后再将该分支合并到远程主分支。</p>
@@ -410,7 +410,7 @@
       
         <div class="post-tags">
           
-            <a href="/MagnoliaYa/tags/Git/" rel="tag"># Git</a>
+            <a href="/tags/Git/" rel="tag"># Git</a>
           
         </div>
       
@@ -423,7 +423,7 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/MagnoliaYa/2020/01/05/2020/%E6%B5%81%E7%95%85%E7%9A%84Python%EF%BC%9A%E7%AC%A6%E5%90%88Python%E9%A3%8E%E6%A0%BC%E7%9A%84%E5%AF%B9%E8%B1%A1/" rel="next" title="流畅的Python：符合Python风格的对象">
+              <a href="/2020/01/05/2020/%E6%B5%81%E7%95%85%E7%9A%84Python%EF%BC%9A%E7%AC%A6%E5%90%88Python%E9%A3%8E%E6%A0%BC%E7%9A%84%E5%AF%B9%E8%B1%A1/" rel="next" title="流畅的Python：符合Python风格的对象">
                 <i class="fa fa-chevron-left"></i> 流畅的Python：符合Python风格的对象
               </a>
             
@@ -433,7 +433,7 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/MagnoliaYa/2020/01/18/2020/%E6%B5%81%E7%95%85%E7%9A%84Python%EF%BC%9A%E5%BA%8F%E5%88%97%E7%9A%84%E4%BF%AE%E6%94%B9%E3%80%81%E6%95%A3%E5%88%97%E5%92%8C%E5%88%87%E7%89%87/" rel="prev" title="流畅的Python：序列的修改、散列和切片">
+              <a href="/2020/01/18/2020/%E6%B5%81%E7%95%85%E7%9A%84Python%EF%BC%9A%E5%BA%8F%E5%88%97%E7%9A%84%E4%BF%AE%E6%94%B9%E3%80%81%E6%95%A3%E5%88%97%E5%92%8C%E5%88%87%E7%89%87/" rel="prev" title="流畅的Python：序列的修改、散列和切片">
                 流畅的Python：序列的修改、散列和切片 <i class="fa fa-chevron-right"></i>
               </a>
             
@@ -502,7 +502,7 @@
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image"
-                src="/MagnoliaYa/images/avatar.jpg"
+                src="/images/avatar.jpg"
                 alt="Magnolia" />
             
               <p class="site-author-name" itemprop="name">Magnolia</p>
@@ -514,7 +514,7 @@
             
               <div class="site-state-item site-state-posts">
               
-                <a href="/MagnoliaYa/">
+                <a href="/">
               
                   <span class="site-state-item-count">94</span>
                   <span class="site-state-item-name">posts</span>
@@ -527,7 +527,7 @@
               
               
               <div class="site-state-item site-state-categories">
-                <a href="/MagnoliaYa/categories/index.html">
+                <a href="/categories/index.html">
                   <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
@@ -538,7 +538,7 @@
               
               
               <div class="site-state-item site-state-tags">
-                <a href="/MagnoliaYa/tags/index.html">
+                <a href="/tags/index.html">
                   <span class="site-state-item-count">29</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
@@ -707,22 +707,22 @@
 
   
   
-    <script type="text/javascript" src="/MagnoliaYa/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
   
 
   
   
-    <script type="text/javascript" src="/MagnoliaYa/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
   
 
   
   
-    <script type="text/javascript" src="/MagnoliaYa/lib/velocity/velocity.min.js?v=1.2.1"></script>
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
   
 
   
   
-    <script type="text/javascript" src="/MagnoliaYa/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
   
 
   
@@ -732,44 +732,44 @@
 
   
   
-    <script type="text/javascript" src="/MagnoliaYa/lib/three/three.min.js"></script>
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
   
 
   
   
-    <script type="text/javascript" src="/MagnoliaYa/lib/three/canvas_lines.min.js"></script>
+    <script type="text/javascript" src="/lib/three/canvas_lines.min.js"></script>
   
-
-
-  
-
-
-  <script type="text/javascript" src="/MagnoliaYa/js/src/utils.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/MagnoliaYa/js/src/motion.js?v=5.1.4"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/MagnoliaYa/js/src/affix.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/MagnoliaYa/js/src/schemes/pisces.js?v=5.1.4"></script>
-
-
-
-  
-  <script type="text/javascript" src="/MagnoliaYa/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/MagnoliaYa/js/src/post-details.js?v=5.1.4"></script>
-
 
 
   
 
 
-  <script type="text/javascript" src="/MagnoliaYa/js/src/bootstrap.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
 
 
 

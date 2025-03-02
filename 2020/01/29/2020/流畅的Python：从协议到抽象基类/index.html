@@ -50,21 +50,21 @@
 
 
 
-<link href="/MagnoliaYa/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
-<link href="/MagnoliaYa/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/MagnoliaYa/images/apple-touch-icon-next.png?v=5.1.4">
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
 
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/MagnoliaYa/images/favicon-32x32-next.png?v=5.1.4">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
 
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/MagnoliaYa/images/favicon-16x16-next.png?v=5.1.4">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
 
 
-  <link rel="mask-icon" href="/MagnoliaYa/images/logo.svg?v=5.1.4" color="#222">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
 
 
 
@@ -84,20 +84,20 @@
 <meta name="description" content="Python 中与序列相关的概念和技术，包括抽象基类 Sequence 和 MutableSequence、猴子补丁、鸭子类型以及标准库中的抽象基类等内容。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="流畅的Python 从协议到抽象基类">
-<meta property="og:url" content="https://zypdominate.gitlab.io/MagnoliaYa/2020/01/29/2020/%E6%B5%81%E7%95%85%E7%9A%84Python%EF%BC%9A%E4%BB%8E%E5%8D%8F%E8%AE%AE%E5%88%B0%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB/index.html">
+<meta property="og:url" content="http://example.com/2020/01/29/2020/%E6%B5%81%E7%95%85%E7%9A%84Python%EF%BC%9A%E4%BB%8E%E5%8D%8F%E8%AE%AE%E5%88%B0%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB/index.html">
 <meta property="og:site_name" content="Magnolia&#39;s Blog">
 <meta property="og:description" content="Python 中与序列相关的概念和技术，包括抽象基类 Sequence 和 MutableSequence、猴子补丁、鸭子类型以及标准库中的抽象基类等内容。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://zypdominate.gitlab.io/images%5C2020%5C%E6%B5%81%E7%95%85%E7%9A%84python%EF%BC%9A%E4%BB%8E%E5%8D%8F%E8%AE%AE%E5%88%B0%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB1.png">
-<meta property="og:image" content="https://zypdominate.gitlab.io/images%5C2020%5C%E6%B5%81%E7%95%85%E7%9A%84python%EF%BC%9A%E4%BB%8E%E5%8D%8F%E8%AE%AE%E5%88%B0%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB2.png">
-<meta property="og:image" content="https://zypdominate.gitlab.io/images%5C2020%5C%E6%B5%81%E7%95%85%E7%9A%84python%EF%BC%9A%E4%BB%8E%E5%8D%8F%E8%AE%AE%E5%88%B0%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB3.png">
-<meta property="og:image" content="https://zypdominate.gitlab.io/images%5C2020%5C%E6%B5%81%E7%95%85%E7%9A%84python%EF%BC%9A%E4%BB%8E%E5%8D%8F%E8%AE%AE%E5%88%B0%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB4.png">
+<meta property="og:image" content="http://example.com/images%5C2020%5C%E6%B5%81%E7%95%85%E7%9A%84python%EF%BC%9A%E4%BB%8E%E5%8D%8F%E8%AE%AE%E5%88%B0%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB1.png">
+<meta property="og:image" content="http://example.com/images%5C2020%5C%E6%B5%81%E7%95%85%E7%9A%84python%EF%BC%9A%E4%BB%8E%E5%8D%8F%E8%AE%AE%E5%88%B0%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB2.png">
+<meta property="og:image" content="http://example.com/images%5C2020%5C%E6%B5%81%E7%95%85%E7%9A%84python%EF%BC%9A%E4%BB%8E%E5%8D%8F%E8%AE%AE%E5%88%B0%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB3.png">
+<meta property="og:image" content="http://example.com/images%5C2020%5C%E6%B5%81%E7%95%85%E7%9A%84python%EF%BC%9A%E4%BB%8E%E5%8D%8F%E8%AE%AE%E5%88%B0%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB4.png">
 <meta property="article:published_time" content="2020-01-29T15:26:35.000Z">
 <meta property="article:modified_time" content="2025-02-09T14:54:24.337Z">
 <meta property="article:author" content="Magnolia">
 <meta property="article:tag" content="Python">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://zypdominate.gitlab.io/images%5C2020%5C%E6%B5%81%E7%95%85%E7%9A%84python%EF%BC%9A%E4%BB%8E%E5%8D%8F%E8%AE%AE%E5%88%B0%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB1.png">
+<meta name="twitter:image" content="http://example.com/images%5C2020%5C%E6%B5%81%E7%95%85%E7%9A%84python%EF%BC%9A%E4%BB%8E%E5%8D%8F%E8%AE%AE%E5%88%B0%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB1.png">
 
 
 
@@ -127,7 +127,7 @@
 
 
 
-  <link rel="canonical" href="https://zypdominate.gitlab.io/MagnoliaYa/2020/01/29/2020/流畅的Python：从协议到抽象基类/"/>
+  <link rel="canonical" href="http://example.com/2020/01/29/2020/流畅的Python：从协议到抽象基类/"/>
 
 
 
@@ -161,7 +161,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/MagnoliaYa/"  class="brand" rel="start">
+      <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">Magnolia's Blog</span>
         <span class="logo-line-after"><i></i></span>
@@ -189,7 +189,7 @@
       
         
         <li class="menu-item menu-item-home">
-          <a href="/MagnoliaYa/" rel="section">
+          <a href="/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
@@ -199,7 +199,7 @@
       
         
         <li class="menu-item menu-item-about">
-          <a href="/MagnoliaYa/about/" rel="section">
+          <a href="/about/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
@@ -209,7 +209,7 @@
       
         
         <li class="menu-item menu-item-tags">
-          <a href="/MagnoliaYa/tags/" rel="section">
+          <a href="/tags/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
@@ -219,7 +219,7 @@
       
         
         <li class="menu-item menu-item-categories">
-          <a href="/MagnoliaYa/categories/" rel="section">
+          <a href="/categories/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
             
@@ -229,7 +229,7 @@
       
         
         <li class="menu-item menu-item-archives">
-          <a href="/MagnoliaYa/archives/" rel="section">
+          <a href="/archives/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
@@ -270,12 +270,12 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://zypdominate.gitlab.io/MagnoliaYa/MagnoliaYa/2020/01/29/2020/%E6%B5%81%E7%95%85%E7%9A%84Python%EF%BC%9A%E4%BB%8E%E5%8D%8F%E8%AE%AE%E5%88%B0%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/01/29/2020/%E6%B5%81%E7%95%85%E7%9A%84Python%EF%BC%9A%E4%BB%8E%E5%8D%8F%E8%AE%AE%E5%88%B0%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Magnolia">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/MagnoliaYa/images/avatar.jpg">
+      <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -322,7 +322,7 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/MagnoliaYa/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
                     <span itemprop="name">技术</span>
                   </a>
                 </span>
@@ -333,7 +333,7 @@
                 
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/MagnoliaYa/categories/%E6%8A%80%E6%9C%AF/Python/" itemprop="url" rel="index">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/Python/" itemprop="url" rel="index">
                     <span itemprop="name">Python</span>
                   </a>
                 </span>
@@ -375,7 +375,7 @@
 
       
         <h4 id="序列"><a href="#序列" class="headerlink" title="序列"></a>序列</h4><p>定义为抽象基类的 Sequence 正式接口：</p>
-<p><img src="/MagnoliaYa/../../images%5C2020%5C%E6%B5%81%E7%95%85%E7%9A%84python%EF%BC%9A%E4%BB%8E%E5%8D%8F%E8%AE%AE%E5%88%B0%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB1.png"></p>
+<p><img src="/../../images%5C2020%5C%E6%B5%81%E7%95%85%E7%9A%84python%EF%BC%9A%E4%BB%8E%E5%8D%8F%E8%AE%AE%E5%88%B0%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB1.png"></p>
 <p>Sequence 抽象基类和 collections.abc 中相关抽象类的 UML 类图，箭头由子类指向超类，以斜体显示的是抽象方法。</p>
 <p>demo：</p>
 <p>类Foo，它没有继承 abc.Sequence，而且只实现了序列协议的一个方法：<code>__getitem__</code>（没有实现 <code>__len__</code> 方法），这样足够访问元素、迭代和使用 in 运算符了。</p>
@@ -405,11 +405,11 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> collections</span><br><span class="line">Card = collections.namedtuple(<span class="string">&#x27;Card&#x27;</span>, [<span class="string">&#x27;rank&#x27;</span>, <span class="string">&#x27;suit&#x27;</span>])</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FrenchDeck2</span>(collections.MutableSequence):</span><br><span class="line">    ranks = [<span class="built_in">str</span>(n) <span class="keyword">for</span> n <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>, <span class="number">11</span>)] + <span class="built_in">list</span>(<span class="string">&#x27;JQKA&#x27;</span>)</span><br><span class="line">    suits = <span class="string">&#x27;spades diamonds clubs hearts&#x27;</span>.split()  <span class="comment"># 黑桃 方块 梅花 红心</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>._cards = [Card(rank, suit) <span class="keyword">for</span> suit <span class="keyword">in</span> <span class="variable language_">self</span>.suits</span><br><span class="line">                       <span class="keyword">for</span> rank <span class="keyword">in</span> <span class="variable language_">self</span>.ranks]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__len__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">len</span>(<span class="variable language_">self</span>._cards)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__getitem__</span>(<span class="params">self, position</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>._cards[position]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 为了支持洗牌，只需要实现__setitem__方法</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__setitem__</span>(<span class="params">self, position, value</span>):</span><br><span class="line">        <span class="variable language_">self</span>._cards[position] = value</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 继承MutableSequence类，必须实现它的一个抽象方法__delitem__</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__delitem__</span>(<span class="params">self, position</span>):</span><br><span class="line">        <span class="keyword">del</span> <span class="variable language_">self</span>._cards[position]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 还要实现 insert 方法，这是 MutableSequence 类的第三个抽象方法。</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">insert</span>(<span class="params">self, position, value</span>):</span><br><span class="line">        <span class="variable language_">self</span>._cards.insert(position, value)</span><br><span class="line"></span><br><span class="line">french = FrenchDeck2()</span><br></pre></td></tr></table></figure>
 
 <p>导入时（加载并编译 上述代码所在的 模块时），Python 不会检查抽象方法的实现，在运行时实例化 FrenchDeck2 类时才会真正检查。如果没有正确实现某个抽象方法，Python 会抛出 TypeError 异常：<code>TypeError: Can&#39;t instantiate abstract class FrenchDeck2 with abstract methods __delitem__, __setitem__, insert</code>。正是这个原因，即便 FrenchDeck2 类不需要 <code>__delitem__</code> 和 <code>insert</code> 提供的行为，也要实现，因为 MutableSequence 抽象基类需要它们。</p>
-<p>Sequence 和 MutableSequence 抽象基类的方法不全是抽象的：<br>下面是MutableSequence 抽象基类和 collections.abc 中它的超类的 UML 类图（箭头由子类指向祖先；以斜体显示的名称是抽象类和抽象方法）。<br><img src="/MagnoliaYa/../../images%5C2020%5C%E6%B5%81%E7%95%85%E7%9A%84python%EF%BC%9A%E4%BB%8E%E5%8D%8F%E8%AE%AE%E5%88%B0%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB2.png"><br>FrenchDeck2 从 Sequence 继 承 了 几 个 拿 来 即 用 的 具 体 方 法：<code>__contains__</code> 、<code>__iter__</code>、 <code>__reversed__</code>、<code>index</code> 和 <code>count</code> 。FrenchDeck2 从 MutableSequence 继 承 了 <code>append</code>、<code>extend</code>、<code>pop</code>、<code>remove</code> 和 <code>__iadd__</code>。</p>
+<p>Sequence 和 MutableSequence 抽象基类的方法不全是抽象的：<br>下面是MutableSequence 抽象基类和 collections.abc 中它的超类的 UML 类图（箭头由子类指向祖先；以斜体显示的名称是抽象类和抽象方法）。<br><img src="/../../images%5C2020%5C%E6%B5%81%E7%95%85%E7%9A%84python%EF%BC%9A%E4%BB%8E%E5%8D%8F%E8%AE%AE%E5%88%B0%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB2.png"><br>FrenchDeck2 从 Sequence 继 承 了 几 个 拿 来 即 用 的 具 体 方 法：<code>__contains__</code> 、<code>__iter__</code>、 <code>__reversed__</code>、<code>index</code> 和 <code>count</code> 。FrenchDeck2 从 MutableSequence 继 承 了 <code>append</code>、<code>extend</code>、<code>pop</code>、<code>remove</code> 和 <code>__iadd__</code>。</p>
 <hr>
 <h4 id="标准库中的基类"><a href="#标准库中的基类" class="headerlink" title="标准库中的基类"></a>标准库中的基类</h4><p>从 Python 2.6 开始，标准库提供了抽象基类。大多数抽象基类在 collections.abc 模块中定义，不过其他地方也有。例如，numbers 和 io 包中有一些抽象基类。但是，collections.abc 中的抽象基类最常用。</p>
 <p>标准库中有两个名为 abc 的模块，这里说的是 collections.abc。为了减少加载时间，Python 3.4 在 collections 包之外实现这个模块（在 <code>Lib/_collections_abc.py </code>中 <a target="_blank" rel="noopener" href="https://hg.python.org/cpython/file/3.4/Lib/_collections_abc.py">https://hg.python.org/cpython/file/3.4/Lib/_collections_abc.py</a> ），因此要与 collections 分开导入。另一个 abc 模块就是 abc（即 <code>Lib/abc.py</code>，<a target="_blank" rel="noopener" href="https://hg.python.org/cpython/file/3.4/Lib/abc.py%EF%BC%89%EF%BC%8C%E8%BF%99%E9%87%8C%E5%AE%9A%E4%B9%89%E7%9A%84%E6%98%AF">https://hg.python.org/cpython/file/3.4/Lib/abc.py），这里定义的是</a> abc.ABC 类。每个抽象基类都依赖这个类，但是不用导入它，除非定义新抽象基类。</p>
-<h5 id="collections-abc-模块中的抽象基类"><a href="#collections-abc-模块中的抽象基类" class="headerlink" title="collections.abc 模块中的抽象基类"></a>collections.abc 模块中的抽象基类</h5><p>Python 3.5 在 collections.abc 模块中定义了 22 个抽象基类，简要的 UML 类图（没有属<br>性名称）。collections.abc 的官方文档中有个不错的表格（<a target="_blank" rel="noopener" href="https://docs.python.org/3.7/library/collections.abc.html#collections-abstract-base-classes%EF%BC%89%EF%BC%8C%E5%AF%B9%E5%90%84%E4%B8%AA%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB%E5%81%9A%E4%BA%86%E6%80%BB%E7%BB%93%EF%BC%8C%E8%AF%B4%E6%98%8E%E4%BA%86%E7%9B%B8%E4%BA%92%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB%EF%BC%8C%E4%BB%A5%E5%8F%8A%E5%90%84%E4%B8%AA%E5%9F%BA%E7%B1%BB%E6%8F%90%E4%BE%9B%E7%9A%84%E6%8A%BD%E8%B1%A1%E6%96%B9%E6%B3%95%E5%92%8C%E5%85%B7%E4%BD%93%E6%96%B9%E6%B3%95%EF%BC%88%E7%A7%B0%E4%B8%BA%E2%80%9C%E6%B7%B7%E5%85%A5%E6%96%B9%E6%B3%95%E2%80%9D%EF%BC%89%E3%80%82%E5%9B%BE%E4%B8%AD%E6%9C%89%E5%BE%88%E5%A4%9A%E5%A4%9A%E9%87%8D%E7%BB%A7%E6%89%BF%E3%80%82">https://docs.python.org/3.7/library/collections.abc.html#collections-abstract-base-classes），对各个抽象基类做了总结，说明了相互之间的关系，以及各个基类提供的抽象方法和具体方法（称为“混入方法”）。图中有很多多重继承。</a><br><img src="/MagnoliaYa/../../images%5C2020%5C%E6%B5%81%E7%95%85%E7%9A%84python%EF%BC%9A%E4%BB%8E%E5%8D%8F%E8%AE%AE%E5%88%B0%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB3.png"></p>
+<h5 id="collections-abc-模块中的抽象基类"><a href="#collections-abc-模块中的抽象基类" class="headerlink" title="collections.abc 模块中的抽象基类"></a>collections.abc 模块中的抽象基类</h5><p>Python 3.5 在 collections.abc 模块中定义了 22 个抽象基类，简要的 UML 类图（没有属<br>性名称）。collections.abc 的官方文档中有个不错的表格（<a target="_blank" rel="noopener" href="https://docs.python.org/3.7/library/collections.abc.html#collections-abstract-base-classes%EF%BC%89%EF%BC%8C%E5%AF%B9%E5%90%84%E4%B8%AA%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB%E5%81%9A%E4%BA%86%E6%80%BB%E7%BB%93%EF%BC%8C%E8%AF%B4%E6%98%8E%E4%BA%86%E7%9B%B8%E4%BA%92%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB%EF%BC%8C%E4%BB%A5%E5%8F%8A%E5%90%84%E4%B8%AA%E5%9F%BA%E7%B1%BB%E6%8F%90%E4%BE%9B%E7%9A%84%E6%8A%BD%E8%B1%A1%E6%96%B9%E6%B3%95%E5%92%8C%E5%85%B7%E4%BD%93%E6%96%B9%E6%B3%95%EF%BC%88%E7%A7%B0%E4%B8%BA%E2%80%9C%E6%B7%B7%E5%85%A5%E6%96%B9%E6%B3%95%E2%80%9D%EF%BC%89%E3%80%82%E5%9B%BE%E4%B8%AD%E6%9C%89%E5%BE%88%E5%A4%9A%E5%A4%9A%E9%87%8D%E7%BB%A7%E6%89%BF%E3%80%82">https://docs.python.org/3.7/library/collections.abc.html#collections-abstract-base-classes），对各个抽象基类做了总结，说明了相互之间的关系，以及各个基类提供的抽象方法和具体方法（称为“混入方法”）。图中有很多多重继承。</a><br><img src="/../../images%5C2020%5C%E6%B5%81%E7%95%85%E7%9A%84python%EF%BC%9A%E4%BB%8E%E5%8D%8F%E8%AE%AE%E5%88%B0%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB3.png"></p>
 <ol>
 <li><p><strong>Iterable、Container 和 Sized</strong><br>各个集合应该继承这三个抽象基类，或者至少实现兼容的协议。Iterable 通过 <code>__iter__</code> 方法支持迭代，Container 通过 <code>__contains__</code> 方法支持 in 运算符，Sized 通过 <code>__len__</code> 方法支持 len() 函数。</p>
 </li>
@@ -426,7 +426,7 @@
 <p>它是 Iterable 的子类。在第 14 章详细讨论。</p>
 </li>
 </ol>
-<p>collections.abc 的官方文档中的表格：<br><img src="/MagnoliaYa/../../images%5C2020%5C%E6%B5%81%E7%95%85%E7%9A%84python%EF%BC%9A%E4%BB%8E%E5%8D%8F%E8%AE%AE%E5%88%B0%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB4.png" alt="在这里插入图片描述"></p>
+<p>collections.abc 的官方文档中的表格：<br><img src="/../../images%5C2020%5C%E6%B5%81%E7%95%85%E7%9A%84python%EF%BC%9A%E4%BB%8E%E5%8D%8F%E8%AE%AE%E5%88%B0%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB4.png" alt="在这里插入图片描述"></p>
 <h5 id="抽象基类的数字塔"><a href="#抽象基类的数字塔" class="headerlink" title="抽象基类的数字塔"></a>抽象基类的数字塔</h5><p>继 collections.abc 之后，标准库中最有用的抽象基类包是 numbers。</p>
 <p>numbers 包（<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/numbers.html%EF%BC%89%E5%AE%9A%E4%B9%89%E7%9A%84%E6%98%AF%E2%80%9C%E6%95%B0%E5%AD%97%E5%A1%94%E2%80%9D%EF%BC%88%E5%8D%B3%E5%90%84%E4%B8%AA%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB%E7%9A%84%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84%E6%98%AF%E7%BA%BF%E6%80%A7%E7%9A%84%EF%BC%89%EF%BC%8C%E5%85%B6%E4%B8%AD">https://docs.python.org/3/library/numbers.html）定义的是“数字塔”（即各个抽象基类的层次结构是线性的），其中</a> Number 是位于最顶端的超类，随后是 Complex 子类，依次往下，最底端是 Integral 类：</p>
 <ul>
@@ -454,7 +454,7 @@
       
         <div class="post-tags">
           
-            <a href="/MagnoliaYa/tags/Python/" rel="tag"># Python</a>
+            <a href="/tags/Python/" rel="tag"># Python</a>
           
         </div>
       
@@ -467,7 +467,7 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/MagnoliaYa/2020/01/18/2020/%E6%B5%81%E7%95%85%E7%9A%84Python%EF%BC%9A%E5%BA%8F%E5%88%97%E7%9A%84%E4%BF%AE%E6%94%B9%E3%80%81%E6%95%A3%E5%88%97%E5%92%8C%E5%88%87%E7%89%87/" rel="next" title="流畅的Python：序列的修改、散列和切片">
+              <a href="/2020/01/18/2020/%E6%B5%81%E7%95%85%E7%9A%84Python%EF%BC%9A%E5%BA%8F%E5%88%97%E7%9A%84%E4%BF%AE%E6%94%B9%E3%80%81%E6%95%A3%E5%88%97%E5%92%8C%E5%88%87%E7%89%87/" rel="next" title="流畅的Python：序列的修改、散列和切片">
                 <i class="fa fa-chevron-left"></i> 流畅的Python：序列的修改、散列和切片
               </a>
             
@@ -477,7 +477,7 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/MagnoliaYa/2020/02/08/2020/%E6%B5%81%E7%95%85%E7%9A%84Python%EF%BC%9A%E7%BB%A7%E6%89%BF%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9/" rel="prev" title="流畅的Python 继承的优缺点">
+              <a href="/2020/02/08/2020/%E6%B5%81%E7%95%85%E7%9A%84Python%EF%BC%9A%E7%BB%A7%E6%89%BF%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9/" rel="prev" title="流畅的Python 继承的优缺点">
                 流畅的Python 继承的优缺点 <i class="fa fa-chevron-right"></i>
               </a>
             
@@ -546,7 +546,7 @@
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image"
-                src="/MagnoliaYa/images/avatar.jpg"
+                src="/images/avatar.jpg"
                 alt="Magnolia" />
             
               <p class="site-author-name" itemprop="name">Magnolia</p>
@@ -558,7 +558,7 @@
             
               <div class="site-state-item site-state-posts">
               
-                <a href="/MagnoliaYa/">
+                <a href="/">
               
                   <span class="site-state-item-count">94</span>
                   <span class="site-state-item-name">posts</span>
@@ -571,7 +571,7 @@
               
               
               <div class="site-state-item site-state-categories">
-                <a href="/MagnoliaYa/categories/index.html">
+                <a href="/categories/index.html">
                   <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
@@ -582,7 +582,7 @@
               
               
               <div class="site-state-item site-state-tags">
-                <a href="/MagnoliaYa/tags/index.html">
+                <a href="/tags/index.html">
                   <span class="site-state-item-count">29</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
@@ -751,22 +751,22 @@
 
   
   
-    <script type="text/javascript" src="/MagnoliaYa/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
   
 
   
   
-    <script type="text/javascript" src="/MagnoliaYa/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
   
 
   
   
-    <script type="text/javascript" src="/MagnoliaYa/lib/velocity/velocity.min.js?v=1.2.1"></script>
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
   
 
   
   
-    <script type="text/javascript" src="/MagnoliaYa/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
   
 
   
@@ -776,44 +776,44 @@
 
   
   
-    <script type="text/javascript" src="/MagnoliaYa/lib/three/three.min.js"></script>
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
   
 
   
   
-    <script type="text/javascript" src="/MagnoliaYa/lib/three/canvas_lines.min.js"></script>
+    <script type="text/javascript" src="/lib/three/canvas_lines.min.js"></script>
   
-
-
-  
-
-
-  <script type="text/javascript" src="/MagnoliaYa/js/src/utils.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/MagnoliaYa/js/src/motion.js?v=5.1.4"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/MagnoliaYa/js/src/affix.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/MagnoliaYa/js/src/schemes/pisces.js?v=5.1.4"></script>
-
-
-
-  
-  <script type="text/javascript" src="/MagnoliaYa/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/MagnoliaYa/js/src/post-details.js?v=5.1.4"></script>
-
 
 
   
 
 
-  <script type="text/javascript" src="/MagnoliaYa/js/src/bootstrap.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
 
 
 

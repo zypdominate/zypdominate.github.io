@@ -50,21 +50,21 @@
 
 
 
-<link href="/MagnoliaYa/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
-<link href="/MagnoliaYa/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/MagnoliaYa/images/apple-touch-icon-next.png?v=5.1.4">
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
 
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/MagnoliaYa/images/favicon-32x32-next.png?v=5.1.4">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
 
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/MagnoliaYa/images/favicon-16x16-next.png?v=5.1.4">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
 
 
-  <link rel="mask-icon" href="/MagnoliaYa/images/logo.svg?v=5.1.4" color="#222">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
 
 
 
@@ -84,18 +84,18 @@
 <meta name="description" content="本文主要介绍了 Python 中处理属性的多种方法，包括使用动态属性转换和访问 JSON 类数据、处理无效属性名、使用特殊方法创建对象、使用特性验证属性、特性覆盖属性、定义特性工厂函数、特殊属性对属性处理的影响以及处理属性的内置函数和特殊方法。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="流畅的Python 动态属性和特征">
-<meta property="og:url" content="https://zypdominate.gitlab.io/MagnoliaYa/2020/04/03/2020/%E6%B5%81%E7%95%85%E7%9A%84Python%EF%BC%9A%E5%8A%A8%E6%80%81%E5%B1%9E%E6%80%A7%E5%92%8C%E7%89%B9%E5%BE%81/index.html">
+<meta property="og:url" content="http://example.com/2020/04/03/2020/%E6%B5%81%E7%95%85%E7%9A%84Python%EF%BC%9A%E5%8A%A8%E6%80%81%E5%B1%9E%E6%80%A7%E5%92%8C%E7%89%B9%E5%BE%81/index.html">
 <meta property="og:site_name" content="Magnolia&#39;s Blog">
 <meta property="og:description" content="本文主要介绍了 Python 中处理属性的多种方法，包括使用动态属性转换和访问 JSON 类数据、处理无效属性名、使用特殊方法创建对象、使用特性验证属性、特性覆盖属性、定义特性工厂函数、特殊属性对属性处理的影响以及处理属性的内置函数和特殊方法。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://zypdominate.gitlab.io/images/2020/%E6%B5%81%E7%95%85%E7%9A%84python-%E5%8A%A8%E6%80%81%E5%B1%9E%E6%80%A7%E5%92%8C%E7%89%B9%E5%BE%811.png">
-<meta property="og:image" content="https://zypdominate.gitlab.io/images/2020/%E6%B5%81%E7%95%85%E7%9A%84python-%E5%8A%A8%E6%80%81%E5%B1%9E%E6%80%A7%E5%92%8C%E7%89%B9%E5%BE%812.png">
+<meta property="og:image" content="http://example.com/images/2020/%E6%B5%81%E7%95%85%E7%9A%84python-%E5%8A%A8%E6%80%81%E5%B1%9E%E6%80%A7%E5%92%8C%E7%89%B9%E5%BE%811.png">
+<meta property="og:image" content="http://example.com/images/2020/%E6%B5%81%E7%95%85%E7%9A%84python-%E5%8A%A8%E6%80%81%E5%B1%9E%E6%80%A7%E5%92%8C%E7%89%B9%E5%BE%812.png">
 <meta property="article:published_time" content="2020-04-02T16:06:02.000Z">
 <meta property="article:modified_time" content="2025-02-22T06:39:31.450Z">
 <meta property="article:author" content="Magnolia">
 <meta property="article:tag" content="Python">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://zypdominate.gitlab.io/images/2020/%E6%B5%81%E7%95%85%E7%9A%84python-%E5%8A%A8%E6%80%81%E5%B1%9E%E6%80%A7%E5%92%8C%E7%89%B9%E5%BE%811.png">
+<meta name="twitter:image" content="http://example.com/images/2020/%E6%B5%81%E7%95%85%E7%9A%84python-%E5%8A%A8%E6%80%81%E5%B1%9E%E6%80%A7%E5%92%8C%E7%89%B9%E5%BE%811.png">
 
 
 
@@ -125,7 +125,7 @@
 
 
 
-  <link rel="canonical" href="https://zypdominate.gitlab.io/MagnoliaYa/2020/04/03/2020/流畅的Python：动态属性和特征/"/>
+  <link rel="canonical" href="http://example.com/2020/04/03/2020/流畅的Python：动态属性和特征/"/>
 
 
 
@@ -159,7 +159,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/MagnoliaYa/"  class="brand" rel="start">
+      <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">Magnolia's Blog</span>
         <span class="logo-line-after"><i></i></span>
@@ -187,7 +187,7 @@
       
         
         <li class="menu-item menu-item-home">
-          <a href="/MagnoliaYa/" rel="section">
+          <a href="/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
@@ -197,7 +197,7 @@
       
         
         <li class="menu-item menu-item-about">
-          <a href="/MagnoliaYa/about/" rel="section">
+          <a href="/about/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
@@ -207,7 +207,7 @@
       
         
         <li class="menu-item menu-item-tags">
-          <a href="/MagnoliaYa/tags/" rel="section">
+          <a href="/tags/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
@@ -217,7 +217,7 @@
       
         
         <li class="menu-item menu-item-categories">
-          <a href="/MagnoliaYa/categories/" rel="section">
+          <a href="/categories/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
             
@@ -227,7 +227,7 @@
       
         
         <li class="menu-item menu-item-archives">
-          <a href="/MagnoliaYa/archives/" rel="section">
+          <a href="/archives/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
@@ -268,12 +268,12 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://zypdominate.gitlab.io/MagnoliaYa/MagnoliaYa/2020/04/03/2020/%E6%B5%81%E7%95%85%E7%9A%84Python%EF%BC%9A%E5%8A%A8%E6%80%81%E5%B1%9E%E6%80%A7%E5%92%8C%E7%89%B9%E5%BE%81/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/04/03/2020/%E6%B5%81%E7%95%85%E7%9A%84Python%EF%BC%9A%E5%8A%A8%E6%80%81%E5%B1%9E%E6%80%A7%E5%92%8C%E7%89%B9%E5%BE%81/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Magnolia">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/MagnoliaYa/images/avatar.jpg">
+      <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -320,7 +320,7 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/MagnoliaYa/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
                     <span itemprop="name">技术</span>
                   </a>
                 </span>
@@ -331,7 +331,7 @@
                 
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/MagnoliaYa/categories/%E6%8A%80%E6%9C%AF/Python/" itemprop="url" rel="index">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/Python/" itemprop="url" rel="index">
                     <span itemprop="name">Python</span>
                   </a>
                 </span>
@@ -414,9 +414,9 @@
 <ol>
 <li>使用 property(get_weight, set_weight)：</li>
 </ol>
-<p>  <img src="/MagnoliaYa/../../images/2020/%E6%B5%81%E7%95%85%E7%9A%84python-%E5%8A%A8%E6%80%81%E5%B1%9E%E6%80%A7%E5%92%8C%E7%89%B9%E5%BE%811.png"></p>
+<p>  <img src="/../../images/2020/%E6%B5%81%E7%95%85%E7%9A%84python-%E5%8A%A8%E6%80%81%E5%B1%9E%E6%80%A7%E5%92%8C%E7%89%B9%E5%BE%811.png"></p>
 <ol start="2">
-<li>使用 @property：<br>  <img src="/MagnoliaYa/../../images/2020/%E6%B5%81%E7%95%85%E7%9A%84python-%E5%8A%A8%E6%80%81%E5%B1%9E%E6%80%A7%E5%92%8C%E7%89%B9%E5%BE%812.png"></li>
+<li>使用 @property：<br>  <img src="/../../images/2020/%E6%B5%81%E7%95%85%E7%9A%84python-%E5%8A%A8%E6%80%81%E5%B1%9E%E6%80%A7%E5%92%8C%E7%89%B9%E5%BE%812.png"></li>
 </ol>
 <hr>
 <h4 id="特性会覆盖属性"><a href="#特性会覆盖属性" class="headerlink" title="特性会覆盖属性"></a>特性会覆盖属性</h4><p>特性都是类属性，但是特性管理的其实是实例属性的存取。</p>
@@ -483,7 +483,7 @@
       
         <div class="post-tags">
           
-            <a href="/MagnoliaYa/tags/Python/" rel="tag"># Python</a>
+            <a href="/tags/Python/" rel="tag"># Python</a>
           
         </div>
       
@@ -496,7 +496,7 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/MagnoliaYa/2020/03/14/2020/Python%EF%BC%9A%E4%BD%BF%E7%94%A8future%E5%B9%B6%E5%8F%91%E4%B8%8B%E8%BD%BD%E5%9B%BE%E7%89%87/" rel="next" title="Python：使用future并发下载图片">
+              <a href="/2020/03/14/2020/Python%EF%BC%9A%E4%BD%BF%E7%94%A8future%E5%B9%B6%E5%8F%91%E4%B8%8B%E8%BD%BD%E5%9B%BE%E7%89%87/" rel="next" title="Python：使用future并发下载图片">
                 <i class="fa fa-chevron-left"></i> Python：使用future并发下载图片
               </a>
             
@@ -506,7 +506,7 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/MagnoliaYa/2020/04/05/2020/%E6%B5%81%E7%95%85%E7%9A%84Python%EF%BC%9A%E5%B1%9E%E6%80%A7%E6%8F%8F%E8%BF%B0%E7%AC%A6%E2%80%94%E9%AA%8C%E8%AF%81%E5%B1%9E%E6%80%A7/" rel="prev" title="流畅的Python 属性描述符—验证属性">
+              <a href="/2020/04/05/2020/%E6%B5%81%E7%95%85%E7%9A%84Python%EF%BC%9A%E5%B1%9E%E6%80%A7%E6%8F%8F%E8%BF%B0%E7%AC%A6%E2%80%94%E9%AA%8C%E8%AF%81%E5%B1%9E%E6%80%A7/" rel="prev" title="流畅的Python 属性描述符—验证属性">
                 流畅的Python 属性描述符—验证属性 <i class="fa fa-chevron-right"></i>
               </a>
             
@@ -575,7 +575,7 @@
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image"
-                src="/MagnoliaYa/images/avatar.jpg"
+                src="/images/avatar.jpg"
                 alt="Magnolia" />
             
               <p class="site-author-name" itemprop="name">Magnolia</p>
@@ -587,7 +587,7 @@
             
               <div class="site-state-item site-state-posts">
               
-                <a href="/MagnoliaYa/">
+                <a href="/">
               
                   <span class="site-state-item-count">94</span>
                   <span class="site-state-item-name">posts</span>
@@ -600,7 +600,7 @@
               
               
               <div class="site-state-item site-state-categories">
-                <a href="/MagnoliaYa/categories/index.html">
+                <a href="/categories/index.html">
                   <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
@@ -611,7 +611,7 @@
               
               
               <div class="site-state-item site-state-tags">
-                <a href="/MagnoliaYa/tags/index.html">
+                <a href="/tags/index.html">
                   <span class="site-state-item-count">29</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
@@ -780,22 +780,22 @@
 
   
   
-    <script type="text/javascript" src="/MagnoliaYa/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
   
 
   
   
-    <script type="text/javascript" src="/MagnoliaYa/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
   
 
   
   
-    <script type="text/javascript" src="/MagnoliaYa/lib/velocity/velocity.min.js?v=1.2.1"></script>
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
   
 
   
   
-    <script type="text/javascript" src="/MagnoliaYa/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
   
 
   
@@ -805,44 +805,44 @@
 
   
   
-    <script type="text/javascript" src="/MagnoliaYa/lib/three/three.min.js"></script>
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
   
 
   
   
-    <script type="text/javascript" src="/MagnoliaYa/lib/three/canvas_lines.min.js"></script>
+    <script type="text/javascript" src="/lib/three/canvas_lines.min.js"></script>
   
-
-
-  
-
-
-  <script type="text/javascript" src="/MagnoliaYa/js/src/utils.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/MagnoliaYa/js/src/motion.js?v=5.1.4"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/MagnoliaYa/js/src/affix.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/MagnoliaYa/js/src/schemes/pisces.js?v=5.1.4"></script>
-
-
-
-  
-  <script type="text/javascript" src="/MagnoliaYa/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/MagnoliaYa/js/src/post-details.js?v=5.1.4"></script>
-
 
 
   
 
 
-  <script type="text/javascript" src="/MagnoliaYa/js/src/bootstrap.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
 
 
 
