@@ -50,21 +50,21 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/MagnoliaYa/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+<link href="/MagnoliaYa/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
 
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+  <link rel="apple-touch-icon" sizes="180x180" href="/MagnoliaYa/images/apple-touch-icon-next.png?v=5.1.4">
 
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+  <link rel="icon" type="image/png" sizes="32x32" href="/MagnoliaYa/images/favicon-32x32-next.png?v=5.1.4">
 
 
-  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+  <link rel="icon" type="image/png" sizes="16x16" href="/MagnoliaYa/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/MagnoliaYa/images/logo.svg?v=5.1.4" color="#222">
 
 
 
@@ -84,7 +84,7 @@
 <meta name="description" content="1  进程的基本概念什么是进程？ 进程就是一个程序在一个数据集上的一次动态执行过程。进程一般由程序、数据集、进程控制块三部分组成。我们编写的程序用来描述进程要完成哪些功能以及如何完成；数据集则是程序在执行过程中所需要使用的资源；进程控制块用来记录进程的外部特征，描述进程的执行变化过程，系统可以利用它来控制和管理进程，它是系统感知进程存在的唯一标志。 进程的过程: 创建，就绪，运行，阻塞, 消亡。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="python多进程原理及其实现">
-<meta property="og:url" content="http://example.com/2019/02/16/2019/python%E5%A4%9A%E8%BF%9B%E7%A8%8B%E5%8E%9F%E7%90%86%E5%8F%8A%E5%85%B6%E5%AE%9E%E7%8E%B0/index.html">
+<meta property="og:url" content="https://zypdominate.gitlab.io/MagnoliaYa/2019/02/16/2019/python%E5%A4%9A%E8%BF%9B%E7%A8%8B%E5%8E%9F%E7%90%86%E5%8F%8A%E5%85%B6%E5%AE%9E%E7%8E%B0/index.html">
 <meta property="og:site_name" content="Magnolia&#39;s Blog">
 <meta property="og:description" content="1  进程的基本概念什么是进程？ 进程就是一个程序在一个数据集上的一次动态执行过程。进程一般由程序、数据集、进程控制块三部分组成。我们编写的程序用来描述进程要完成哪些功能以及如何完成；数据集则是程序在执行过程中所需要使用的资源；进程控制块用来记录进程的外部特征，描述进程的执行变化过程，系统可以利用它来控制和管理进程，它是系统感知进程存在的唯一标志。 进程的过程: 创建，就绪，运行，阻塞, 消亡。">
 <meta property="og:locale" content="en_US">
@@ -124,7 +124,7 @@
 
 
 
-  <link rel="canonical" href="http://example.com/2019/02/16/2019/python多进程原理及其实现/"/>
+  <link rel="canonical" href="https://zypdominate.gitlab.io/MagnoliaYa/2019/02/16/2019/python多进程原理及其实现/"/>
 
 
 
@@ -158,7 +158,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
+      <a href="/MagnoliaYa/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">Magnolia's Blog</span>
         <span class="logo-line-after"><i></i></span>
@@ -186,7 +186,7 @@
       
         
         <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
+          <a href="/MagnoliaYa/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
@@ -196,7 +196,7 @@
       
         
         <li class="menu-item menu-item-about">
-          <a href="/about/" rel="section">
+          <a href="/MagnoliaYa/about/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
@@ -206,7 +206,7 @@
       
         
         <li class="menu-item menu-item-tags">
-          <a href="/tags/" rel="section">
+          <a href="/MagnoliaYa/tags/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
@@ -216,7 +216,7 @@
       
         
         <li class="menu-item menu-item-categories">
-          <a href="/categories/" rel="section">
+          <a href="/MagnoliaYa/categories/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
             
@@ -226,7 +226,7 @@
       
         
         <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
+          <a href="/MagnoliaYa/archives/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
@@ -267,12 +267,12 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2019/02/16/2019/python%E5%A4%9A%E8%BF%9B%E7%A8%8B%E5%8E%9F%E7%90%86%E5%8F%8A%E5%85%B6%E5%AE%9E%E7%8E%B0/">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.gitlab.io/MagnoliaYa/MagnoliaYa/2019/02/16/2019/python%E5%A4%9A%E8%BF%9B%E7%A8%8B%E5%8E%9F%E7%90%86%E5%8F%8A%E5%85%B6%E5%AE%9E%E7%8E%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Magnolia">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="image" content="/MagnoliaYa/images/avatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -319,7 +319,7 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
+                  <a href="/MagnoliaYa/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
                     <span itemprop="name">技术</span>
                   </a>
                 </span>
@@ -330,7 +330,7 @@
                 
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%8A%80%E6%9C%AF/Python/" itemprop="url" rel="index">
+                  <a href="/MagnoliaYa/categories/%E6%8A%80%E6%9C%AF/Python/" itemprop="url" rel="index">
                     <span itemprop="name">Python</span>
                   </a>
                 </span>
@@ -460,11 +460,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Python/" rel="tag"># Python</a>
+            <a href="/MagnoliaYa/tags/Python/" rel="tag"># Python</a>
           
-            <a href="/tags/code/" rel="tag"># code</a>
+            <a href="/MagnoliaYa/tags/code/" rel="tag"># code</a>
           
-            <a href="/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B/" rel="tag"># 多进程</a>
+            <a href="/MagnoliaYa/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B/" rel="tag"># 多进程</a>
           
         </div>
       
@@ -477,7 +477,7 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/01/19/2019/python%E6%88%AA%E5%8F%96%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9%EF%BC%8C%E6%8C%87%E5%AE%9A%E4%BD%8D%E7%BD%AE%E5%92%8C%E9%95%BF%E5%BA%A6/" rel="next" title="截取bin文件内容，指定位置和长度">
+              <a href="/MagnoliaYa/2019/01/19/2019/python%E6%88%AA%E5%8F%96%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9%EF%BC%8C%E6%8C%87%E5%AE%9A%E4%BD%8D%E7%BD%AE%E5%92%8C%E9%95%BF%E5%BA%A6/" rel="next" title="截取bin文件内容，指定位置和长度">
                 <i class="fa fa-chevron-left"></i> 截取bin文件内容，指定位置和长度
               </a>
             
@@ -487,7 +487,7 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/02/17/2019/python%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%8E%9F%E7%90%86%E5%8F%8A%E5%85%B6%E5%AE%9E%E7%8E%B0/" rel="prev" title="python多线程原理及其实现">
+              <a href="/MagnoliaYa/2019/02/17/2019/python%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%8E%9F%E7%90%86%E5%8F%8A%E5%85%B6%E5%AE%9E%E7%8E%B0/" rel="prev" title="python多线程原理及其实现">
                 python多线程原理及其实现 <i class="fa fa-chevron-right"></i>
               </a>
             
@@ -556,7 +556,7 @@
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image"
-                src="/images/avatar.jpg"
+                src="/MagnoliaYa/images/avatar.jpg"
                 alt="Magnolia" />
             
               <p class="site-author-name" itemprop="name">Magnolia</p>
@@ -568,7 +568,7 @@
             
               <div class="site-state-item site-state-posts">
               
-                <a href="/">
+                <a href="/MagnoliaYa/">
               
                   <span class="site-state-item-count">93</span>
                   <span class="site-state-item-name">posts</span>
@@ -581,7 +581,7 @@
               
               
               <div class="site-state-item site-state-categories">
-                <a href="/categories/index.html">
+                <a href="/MagnoliaYa/categories/index.html">
                   <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
@@ -592,7 +592,7 @@
               
               
               <div class="site-state-item site-state-tags">
-                <a href="/tags/index.html">
+                <a href="/MagnoliaYa/tags/index.html">
                   <span class="site-state-item-count">29</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
@@ -761,22 +761,22 @@
 
   
   
-    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+    <script type="text/javascript" src="/MagnoliaYa/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
   
 
   
   
-    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+    <script type="text/javascript" src="/MagnoliaYa/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
   
 
   
   
-    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+    <script type="text/javascript" src="/MagnoliaYa/lib/velocity/velocity.min.js?v=1.2.1"></script>
   
 
   
   
-    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+    <script type="text/javascript" src="/MagnoliaYa/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
   
 
   
@@ -786,44 +786,44 @@
 
   
   
-    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+    <script type="text/javascript" src="/MagnoliaYa/lib/three/three.min.js"></script>
   
 
   
   
-    <script type="text/javascript" src="/lib/three/canvas_lines.min.js"></script>
+    <script type="text/javascript" src="/MagnoliaYa/lib/three/canvas_lines.min.js"></script>
   
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
-
-
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
-
 
 
   
 
 
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/MagnoliaYa/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/MagnoliaYa/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/MagnoliaYa/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/MagnoliaYa/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/MagnoliaYa/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/MagnoliaYa/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/MagnoliaYa/js/src/bootstrap.js?v=5.1.4"></script>
 
 
 

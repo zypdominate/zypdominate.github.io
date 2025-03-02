@@ -50,21 +50,21 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/MagnoliaYa/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+<link href="/MagnoliaYa/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
 
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+  <link rel="apple-touch-icon" sizes="180x180" href="/MagnoliaYa/images/apple-touch-icon-next.png?v=5.1.4">
 
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+  <link rel="icon" type="image/png" sizes="32x32" href="/MagnoliaYa/images/favicon-32x32-next.png?v=5.1.4">
 
 
-  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+  <link rel="icon" type="image/png" sizes="16x16" href="/MagnoliaYa/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/MagnoliaYa/images/logo.svg?v=5.1.4" color="#222">
 
 
 
@@ -84,18 +84,18 @@
 <meta name="description" content="文章主要介绍了 Python 中的元类知识，并通过一个计算时间的 demo 进行了深入讲解。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="含元类、类装饰器的Python代码执行顺序">
-<meta property="og:url" content="http://example.com/2020/04/11/2020/%E5%90%AB%E5%85%83%E7%B1%BB%E3%80%81%E7%B1%BB%E8%A3%85%E9%A5%B0%E5%99%A8%E7%9A%84Python%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F/index.html">
+<meta property="og:url" content="https://zypdominate.gitlab.io/MagnoliaYa/2020/04/11/2020/%E5%90%AB%E5%85%83%E7%B1%BB%E3%80%81%E7%B1%BB%E8%A3%85%E9%A5%B0%E5%99%A8%E7%9A%84Python%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F/index.html">
 <meta property="og:site_name" content="Magnolia&#39;s Blog">
 <meta property="og:description" content="文章主要介绍了 Python 中的元类知识，并通过一个计算时间的 demo 进行了深入讲解。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/images/2020/%E6%B5%81%E7%95%85%E7%9A%84python-%E5%90%AB%E5%85%83%E7%B1%BB%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F1.png">
-<meta property="og:image" content="http://example.com/images/2020/%E6%B5%81%E7%95%85%E7%9A%84python-%E5%90%AB%E5%85%83%E7%B1%BB%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F2.png">
+<meta property="og:image" content="https://zypdominate.gitlab.io/images/2020/%E6%B5%81%E7%95%85%E7%9A%84python-%E5%90%AB%E5%85%83%E7%B1%BB%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F1.png">
+<meta property="og:image" content="https://zypdominate.gitlab.io/images/2020/%E6%B5%81%E7%95%85%E7%9A%84python-%E5%90%AB%E5%85%83%E7%B1%BB%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F2.png">
 <meta property="article:published_time" content="2020-04-11T08:22:27.000Z">
 <meta property="article:modified_time" content="2025-02-22T07:13:17.311Z">
 <meta property="article:author" content="Magnolia">
 <meta property="article:tag" content="Python">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/images/2020/%E6%B5%81%E7%95%85%E7%9A%84python-%E5%90%AB%E5%85%83%E7%B1%BB%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F1.png">
+<meta name="twitter:image" content="https://zypdominate.gitlab.io/images/2020/%E6%B5%81%E7%95%85%E7%9A%84python-%E5%90%AB%E5%85%83%E7%B1%BB%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F1.png">
 
 
 
@@ -125,7 +125,7 @@
 
 
 
-  <link rel="canonical" href="http://example.com/2020/04/11/2020/含元类、类装饰器的Python代码执行顺序/"/>
+  <link rel="canonical" href="https://zypdominate.gitlab.io/MagnoliaYa/2020/04/11/2020/含元类、类装饰器的Python代码执行顺序/"/>
 
 
 
@@ -159,7 +159,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
+      <a href="/MagnoliaYa/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">Magnolia's Blog</span>
         <span class="logo-line-after"><i></i></span>
@@ -187,7 +187,7 @@
       
         
         <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
+          <a href="/MagnoliaYa/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
@@ -197,7 +197,7 @@
       
         
         <li class="menu-item menu-item-about">
-          <a href="/about/" rel="section">
+          <a href="/MagnoliaYa/about/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
@@ -207,7 +207,7 @@
       
         
         <li class="menu-item menu-item-tags">
-          <a href="/tags/" rel="section">
+          <a href="/MagnoliaYa/tags/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
@@ -217,7 +217,7 @@
       
         
         <li class="menu-item menu-item-categories">
-          <a href="/categories/" rel="section">
+          <a href="/MagnoliaYa/categories/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
             
@@ -227,7 +227,7 @@
       
         
         <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
+          <a href="/MagnoliaYa/archives/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
@@ -268,12 +268,12 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/04/11/2020/%E5%90%AB%E5%85%83%E7%B1%BB%E3%80%81%E7%B1%BB%E8%A3%85%E9%A5%B0%E5%99%A8%E7%9A%84Python%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F/">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.gitlab.io/MagnoliaYa/MagnoliaYa/2020/04/11/2020/%E5%90%AB%E5%85%83%E7%B1%BB%E3%80%81%E7%B1%BB%E8%A3%85%E9%A5%B0%E5%99%A8%E7%9A%84Python%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Magnolia">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="image" content="/MagnoliaYa/images/avatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -320,7 +320,7 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
+                  <a href="/MagnoliaYa/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
                     <span itemprop="name">技术</span>
                   </a>
                 </span>
@@ -331,7 +331,7 @@
                 
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%8A%80%E6%9C%AF/Python/" itemprop="url" rel="index">
+                  <a href="/MagnoliaYa/categories/%E6%8A%80%E6%9C%AF/Python/" itemprop="url" rel="index">
                     <span itemprop="name">Python</span>
                   </a>
                 </span>
@@ -379,14 +379,14 @@
 
 <p>为了避免无限回溯，type是其自身的实例。</p>
 <p>没有说 str 或 LineItem 继承自type。而是说，str和LineItem是type的实例。这两个类是object的子类。</p>
-<p><img src="/../../images/2020/%E6%B5%81%E7%95%85%E7%9A%84python-%E5%90%AB%E5%85%83%E7%B1%BB%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F1.png" alt="image-20250222150305390"></p>
+<p><img src="/MagnoliaYa/../../images/2020/%E6%B5%81%E7%95%85%E7%9A%84python-%E5%90%AB%E5%85%83%E7%B1%BB%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F1.png" alt="image-20250222150305390"></p>
 <p>两个示意图都是正确的。左边的示意图强调 <strong>str、type和LineItem是object的子类</strong>。右边的示意图则清楚地表明<strong>str、object和LineItem是type的实例</strong>，因为它们都是类</p>
 <p>object类和type类之间的关系很独特：object是type的实例，而type是object的子类。这种关系很“神奇”，无法使用Python代码表述，因为定义其中一个之前另一个必须存在。type是自身的实例这一点也很神奇。</p>
 <p>除了type，标准库中还有一些别的元类，例如ABCMeta和Enum。如下述代码片段所示，collections.Iterable所属的类是abc.ABCMeta。Iterable是抽象类，而ABCMeta不是——不管怎样，Iterable是ABCMeta的实例：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> collections </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>collections.Iterable.__class__ </span><br><span class="line">&lt;<span class="keyword">class</span> <span class="string">&#x27;abc.ABCMeta&#x27;</span>&gt; </span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> abc </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>abc.ABCMeta.__class__ </span><br><span class="line">&lt;<span class="keyword">class</span> <span class="string">&#x27;type&#x27;</span>&gt; </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>abc.ABCMeta.__mro__ </span><br><span class="line">(&lt;<span class="keyword">class</span> <span class="string">&#x27;abc.ABCMeta&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;type&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;object&#x27;</span>&gt;)</span><br></pre></td></tr></table></figure>
 
 <p>向上追溯，ABCMeta最终所属的类也是type。所有类都直接或间接地是type的实例，不过只有元类同时也是type的子类。若想理解元类，一定要知道这种关系：元类（如ABCMeta）从type类继承了构建类的能力。</p>
-<p><img src="/../../images/2020/%E6%B5%81%E7%95%85%E7%9A%84python-%E5%90%AB%E5%85%83%E7%B1%BB%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F2.png" alt="image-20250222150607587"></p>
+<p><img src="/MagnoliaYa/../../images/2020/%E6%B5%81%E7%95%85%E7%9A%84python-%E5%90%AB%E5%85%83%E7%B1%BB%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F2.png" alt="image-20250222150607587"></p>
 <p>所有类都是type的实例，但是元类还是type的子类，因此可以作为制造类的工厂。</p>
 <hr>
 <h4 id="理解元类计算时间的demo"><a href="#理解元类计算时间的demo" class="headerlink" title="理解元类计算时间的demo"></a>理解元类计算时间的demo</h4><p>其中demo中用到的代码：</p>
@@ -418,7 +418,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Python/" rel="tag"># Python</a>
+            <a href="/MagnoliaYa/tags/Python/" rel="tag"># Python</a>
           
         </div>
       
@@ -431,7 +431,7 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/04/08/2020/Python%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F/" rel="next" title="Python代码执行顺序">
+              <a href="/MagnoliaYa/2020/04/08/2020/Python%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F/" rel="next" title="Python代码执行顺序">
                 <i class="fa fa-chevron-left"></i> Python代码执行顺序
               </a>
             
@@ -441,7 +441,7 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2020/04/19/2020/%E6%B5%81%E7%95%85%E7%9A%84Python%EF%BC%9APython%E4%B8%AD%E5%B8%B8%E8%A7%81%E7%9A%84%E6%9C%AF%E8%AF%AD/" rel="prev" title="Python中常见的术语">
+              <a href="/MagnoliaYa/2020/04/19/2020/%E6%B5%81%E7%95%85%E7%9A%84Python%EF%BC%9APython%E4%B8%AD%E5%B8%B8%E8%A7%81%E7%9A%84%E6%9C%AF%E8%AF%AD/" rel="prev" title="Python中常见的术语">
                 Python中常见的术语 <i class="fa fa-chevron-right"></i>
               </a>
             
@@ -510,7 +510,7 @@
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image"
-                src="/images/avatar.jpg"
+                src="/MagnoliaYa/images/avatar.jpg"
                 alt="Magnolia" />
             
               <p class="site-author-name" itemprop="name">Magnolia</p>
@@ -522,7 +522,7 @@
             
               <div class="site-state-item site-state-posts">
               
-                <a href="/">
+                <a href="/MagnoliaYa/">
               
                   <span class="site-state-item-count">93</span>
                   <span class="site-state-item-name">posts</span>
@@ -535,7 +535,7 @@
               
               
               <div class="site-state-item site-state-categories">
-                <a href="/categories/index.html">
+                <a href="/MagnoliaYa/categories/index.html">
                   <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
@@ -546,7 +546,7 @@
               
               
               <div class="site-state-item site-state-tags">
-                <a href="/tags/index.html">
+                <a href="/MagnoliaYa/tags/index.html">
                   <span class="site-state-item-count">29</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
@@ -715,22 +715,22 @@
 
   
   
-    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+    <script type="text/javascript" src="/MagnoliaYa/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
   
 
   
   
-    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+    <script type="text/javascript" src="/MagnoliaYa/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
   
 
   
   
-    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+    <script type="text/javascript" src="/MagnoliaYa/lib/velocity/velocity.min.js?v=1.2.1"></script>
   
 
   
   
-    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+    <script type="text/javascript" src="/MagnoliaYa/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
   
 
   
@@ -740,44 +740,44 @@
 
   
   
-    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+    <script type="text/javascript" src="/MagnoliaYa/lib/three/three.min.js"></script>
   
 
   
   
-    <script type="text/javascript" src="/lib/three/canvas_lines.min.js"></script>
+    <script type="text/javascript" src="/MagnoliaYa/lib/three/canvas_lines.min.js"></script>
   
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
-
-
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
-
 
 
   
 
 
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/MagnoliaYa/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/MagnoliaYa/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/MagnoliaYa/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/MagnoliaYa/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/MagnoliaYa/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/MagnoliaYa/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/MagnoliaYa/js/src/bootstrap.js?v=5.1.4"></script>
 
 
 

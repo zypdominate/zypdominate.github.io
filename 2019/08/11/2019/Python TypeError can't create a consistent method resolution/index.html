@@ -50,21 +50,21 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/MagnoliaYa/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+<link href="/MagnoliaYa/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
 
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+  <link rel="apple-touch-icon" sizes="180x180" href="/MagnoliaYa/images/apple-touch-icon-next.png?v=5.1.4">
 
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+  <link rel="icon" type="image/png" sizes="32x32" href="/MagnoliaYa/images/favicon-32x32-next.png?v=5.1.4">
 
 
-  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+  <link rel="icon" type="image/png" sizes="16x16" href="/MagnoliaYa/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/MagnoliaYa/images/logo.svg?v=5.1.4" color="#222">
 
 
 
@@ -84,19 +84,19 @@
 <meta name="description" content="今天在学习使用Ctrl+H、Ctrl+Shift+H的用处时，随便写了几个类的继承举例来测试，结果运行一下出现报错了TypeError: Cannot create a consistent method resolution无法创建一致的方法解析 修正后代码截图如下：定位到报错的位置，改了一些继承类A、B的顺序就好了。究其原因：类C想要继承A和B，由于B已经继承A了，写成class C(A, B">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python TypeError can&#39;t create a consistent method resolution">
-<meta property="og:url" content="http://example.com/2019/08/11/2019/Python%20TypeError%20can't%20create%20a%20consistent%20method%20resolution/index.html">
+<meta property="og:url" content="https://zypdominate.gitlab.io/MagnoliaYa/2019/08/11/2019/Python%20TypeError%20can't%20create%20a%20consistent%20method%20resolution/index.html">
 <meta property="og:site_name" content="Magnolia&#39;s Blog">
 <meta property="og:description" content="今天在学习使用Ctrl+H、Ctrl+Shift+H的用处时，随便写了几个类的继承举例来测试，结果运行一下出现报错了TypeError: Cannot create a consistent method resolution无法创建一致的方法解析 修正后代码截图如下：定位到报错的位置，改了一些继承类A、B的顺序就好了。究其原因：类C想要继承A和B，由于B已经继承A了，写成class C(A, B">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/images/2019/PythonTypeError1.png">
-<meta property="og:image" content="http://example.com/images/2019/PythonTypeError2.png">
+<meta property="og:image" content="https://zypdominate.gitlab.io/images/2019/PythonTypeError1.png">
+<meta property="og:image" content="https://zypdominate.gitlab.io/images/2019/PythonTypeError2.png">
 <meta property="article:published_time" content="2019-08-11T08:21:09.000Z">
 <meta property="article:modified_time" content="2024-12-01T13:45:20.152Z">
 <meta property="article:author" content="Magnolia">
 <meta property="article:tag" content="Python">
 <meta property="article:tag" content="troubleshooting">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/images/2019/PythonTypeError1.png">
+<meta name="twitter:image" content="https://zypdominate.gitlab.io/images/2019/PythonTypeError1.png">
 
 
 
@@ -126,7 +126,7 @@
 
 
 
-  <link rel="canonical" href="http://example.com/2019/08/11/2019/Python TypeError can't create a consistent method resolution/"/>
+  <link rel="canonical" href="https://zypdominate.gitlab.io/MagnoliaYa/2019/08/11/2019/Python TypeError can't create a consistent method resolution/"/>
 
 
 
@@ -160,7 +160,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
+      <a href="/MagnoliaYa/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">Magnolia's Blog</span>
         <span class="logo-line-after"><i></i></span>
@@ -188,7 +188,7 @@
       
         
         <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
+          <a href="/MagnoliaYa/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
@@ -198,7 +198,7 @@
       
         
         <li class="menu-item menu-item-about">
-          <a href="/about/" rel="section">
+          <a href="/MagnoliaYa/about/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
@@ -208,7 +208,7 @@
       
         
         <li class="menu-item menu-item-tags">
-          <a href="/tags/" rel="section">
+          <a href="/MagnoliaYa/tags/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
@@ -218,7 +218,7 @@
       
         
         <li class="menu-item menu-item-categories">
-          <a href="/categories/" rel="section">
+          <a href="/MagnoliaYa/categories/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
             
@@ -228,7 +228,7 @@
       
         
         <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
+          <a href="/MagnoliaYa/archives/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
@@ -269,12 +269,12 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2019/08/11/2019/Python%20TypeError%20can't%20create%20a%20consistent%20method%20resolution/">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.gitlab.io/MagnoliaYa/MagnoliaYa/2019/08/11/2019/Python%20TypeError%20can't%20create%20a%20consistent%20method%20resolution/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Magnolia">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="image" content="/MagnoliaYa/images/avatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -321,7 +321,7 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
+                  <a href="/MagnoliaYa/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
                     <span itemprop="name">技术</span>
                   </a>
                 </span>
@@ -332,7 +332,7 @@
                 
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%8A%80%E6%9C%AF/Python/" itemprop="url" rel="index">
+                  <a href="/MagnoliaYa/categories/%E6%8A%80%E6%9C%AF/Python/" itemprop="url" rel="index">
                     <span itemprop="name">Python</span>
                   </a>
                 </span>
@@ -369,8 +369,8 @@
       
 
       
-        <p>今天在学习使用Ctrl+H、Ctrl+Shift+H的用处时，随便写了几个类的继承举例来测试，结果运行一下出现报错了<br><img src="/../../images/2019/PythonTypeError1.png" alt="在这里插入图片描述"><br><strong>TypeError: Cannot create a consistent method resolution<br>无法创建一致的方法解析</strong></p>
-<p>修正后代码截图如下：<br><img src="/../../images/2019/PythonTypeError2.png" alt="在这里插入图片描述"><br>定位到报错的位置，改了一些继承类A、B的顺序就好了。<br><strong>究其原因</strong>：类C想要继承A和B，由于B已经继承A了，写成<code>class C(A, B)</code>错误形式时，python无法确定先查找哪些类的方法，于是无法覆盖定义在A中定义的方法。其实没有必要再继承一下A，因为既然B已经继承A了，那只要继承一下B就行了。</p>
+        <p>今天在学习使用Ctrl+H、Ctrl+Shift+H的用处时，随便写了几个类的继承举例来测试，结果运行一下出现报错了<br><img src="/MagnoliaYa/../../images/2019/PythonTypeError1.png" alt="在这里插入图片描述"><br><strong>TypeError: Cannot create a consistent method resolution<br>无法创建一致的方法解析</strong></p>
+<p>修正后代码截图如下：<br><img src="/MagnoliaYa/../../images/2019/PythonTypeError2.png" alt="在这里插入图片描述"><br>定位到报错的位置，改了一些继承类A、B的顺序就好了。<br><strong>究其原因</strong>：类C想要继承A和B，由于B已经继承A了，写成<code>class C(A, B)</code>错误形式时，python无法确定先查找哪些类的方法，于是无法覆盖定义在A中定义的方法。其实没有必要再继承一下A，因为既然B已经继承A了，那只要继承一下B就行了。</p>
 <p>另外，在查找实例属性&#x2F;方法时，python需要决定按哪个顺序搜索（直接和间接）基类。它通过线性化继承图来实现这一点，也就是通过使用一种叫做c3或mro的算法将基类图转换成序列。MRO算法是一种独特的算法，可实现以下几个理想特性：</p>
 <ul>
 <li>每个祖先类只出现一次</li>
@@ -399,9 +399,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Python/" rel="tag"># Python</a>
+            <a href="/MagnoliaYa/tags/Python/" rel="tag"># Python</a>
           
-            <a href="/tags/troubleshooting/" rel="tag"># troubleshooting</a>
+            <a href="/MagnoliaYa/tags/troubleshooting/" rel="tag"># troubleshooting</a>
           
         </div>
       
@@ -414,7 +414,7 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/08/03/2019/Python%E4%B8%AD%E7%9A%84%E6%B5%85%E6%8B%B7%E8%B4%9D&%E6%B7%B1%E6%8B%B7%E8%B4%9D/" rel="next" title="Python中的几种拷贝方式">
+              <a href="/MagnoliaYa/2019/08/03/2019/Python%E4%B8%AD%E7%9A%84%E6%B5%85%E6%8B%B7%E8%B4%9D&%E6%B7%B1%E6%8B%B7%E8%B4%9D/" rel="next" title="Python中的几种拷贝方式">
                 <i class="fa fa-chevron-left"></i> Python中的几种拷贝方式
               </a>
             
@@ -424,7 +424,7 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/08/17/2019/Python%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%E4%B9%8B%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0/" rel="prev" title="Python函数式编程之高阶函数">
+              <a href="/MagnoliaYa/2019/08/17/2019/Python%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%E4%B9%8B%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0/" rel="prev" title="Python函数式编程之高阶函数">
                 Python函数式编程之高阶函数 <i class="fa fa-chevron-right"></i>
               </a>
             
@@ -484,7 +484,7 @@
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image"
-                src="/images/avatar.jpg"
+                src="/MagnoliaYa/images/avatar.jpg"
                 alt="Magnolia" />
             
               <p class="site-author-name" itemprop="name">Magnolia</p>
@@ -496,7 +496,7 @@
             
               <div class="site-state-item site-state-posts">
               
-                <a href="/">
+                <a href="/MagnoliaYa/">
               
                   <span class="site-state-item-count">93</span>
                   <span class="site-state-item-name">posts</span>
@@ -509,7 +509,7 @@
               
               
               <div class="site-state-item site-state-categories">
-                <a href="/categories/index.html">
+                <a href="/MagnoliaYa/categories/index.html">
                   <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
@@ -520,7 +520,7 @@
               
               
               <div class="site-state-item site-state-tags">
-                <a href="/tags/index.html">
+                <a href="/MagnoliaYa/tags/index.html">
                   <span class="site-state-item-count">29</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
@@ -673,22 +673,22 @@
 
   
   
-    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+    <script type="text/javascript" src="/MagnoliaYa/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
   
 
   
   
-    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+    <script type="text/javascript" src="/MagnoliaYa/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
   
 
   
   
-    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+    <script type="text/javascript" src="/MagnoliaYa/lib/velocity/velocity.min.js?v=1.2.1"></script>
   
 
   
   
-    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+    <script type="text/javascript" src="/MagnoliaYa/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
   
 
   
@@ -698,44 +698,44 @@
 
   
   
-    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+    <script type="text/javascript" src="/MagnoliaYa/lib/three/three.min.js"></script>
   
 
   
   
-    <script type="text/javascript" src="/lib/three/canvas_lines.min.js"></script>
+    <script type="text/javascript" src="/MagnoliaYa/lib/three/canvas_lines.min.js"></script>
   
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
-
-
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
-
 
 
   
 
 
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/MagnoliaYa/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/MagnoliaYa/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/MagnoliaYa/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/MagnoliaYa/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/MagnoliaYa/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/MagnoliaYa/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/MagnoliaYa/js/src/bootstrap.js?v=5.1.4"></script>
 
 
 

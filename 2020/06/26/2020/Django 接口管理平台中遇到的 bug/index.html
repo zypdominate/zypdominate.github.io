@@ -50,21 +50,21 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/MagnoliaYa/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+<link href="/MagnoliaYa/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
 
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+  <link rel="apple-touch-icon" sizes="180x180" href="/MagnoliaYa/images/apple-touch-icon-next.png?v=5.1.4">
 
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+  <link rel="icon" type="image/png" sizes="32x32" href="/MagnoliaYa/images/favicon-32x32-next.png?v=5.1.4">
 
 
-  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+  <link rel="icon" type="image/png" sizes="16x16" href="/MagnoliaYa/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/MagnoliaYa/images/logo.svg?v=5.1.4" color="#222">
 
 
 
@@ -84,19 +84,19 @@
 <meta name="description" content="本文主要是关于 Django 的虚拟环境创建、数据库迁移、mysqlclient 报错、运行时在 mysql 的 operations.py 中报错、映射 html 函数不存在、页面跳转后 url 错误、as_view () 使用错误以及前端返回数据问题等。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Django 接口管理平台中遇到的 bug">
-<meta property="og:url" content="http://example.com/2020/06/26/2020/Django%20%E6%8E%A5%E5%8F%A3%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B0%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%20bug/index.html">
+<meta property="og:url" content="https://zypdominate.gitlab.io/MagnoliaYa/2020/06/26/2020/Django%20%E6%8E%A5%E5%8F%A3%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B0%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%20bug/index.html">
 <meta property="og:site_name" content="Magnolia&#39;s Blog">
 <meta property="og:description" content="本文主要是关于 Django 的虚拟环境创建、数据库迁移、mysqlclient 报错、运行时在 mysql 的 operations.py 中报错、映射 html 函数不存在、页面跳转后 url 错误、as_view () 使用错误以及前端返回数据问题等。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/images/2020/Django%E6%8E%A5%E5%8F%A3%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B01.png">
-<meta property="og:image" content="http://example.com/images/2020/Django%E6%8E%A5%E5%8F%A3%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B02.png">
+<meta property="og:image" content="https://zypdominate.gitlab.io/images/2020/Django%E6%8E%A5%E5%8F%A3%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B01.png">
+<meta property="og:image" content="https://zypdominate.gitlab.io/images/2020/Django%E6%8E%A5%E5%8F%A3%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B02.png">
 <meta property="article:published_time" content="2020-06-26T06:41:05.000Z">
 <meta property="article:modified_time" content="2025-03-02T07:03:35.344Z">
 <meta property="article:author" content="Magnolia">
 <meta property="article:tag" content="Python">
 <meta property="article:tag" content="Django">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/images/2020/Django%E6%8E%A5%E5%8F%A3%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B01.png">
+<meta name="twitter:image" content="https://zypdominate.gitlab.io/images/2020/Django%E6%8E%A5%E5%8F%A3%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B01.png">
 
 
 
@@ -126,7 +126,7 @@
 
 
 
-  <link rel="canonical" href="http://example.com/2020/06/26/2020/Django 接口管理平台中遇到的 bug/"/>
+  <link rel="canonical" href="https://zypdominate.gitlab.io/MagnoliaYa/2020/06/26/2020/Django 接口管理平台中遇到的 bug/"/>
 
 
 
@@ -160,7 +160,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
+      <a href="/MagnoliaYa/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">Magnolia's Blog</span>
         <span class="logo-line-after"><i></i></span>
@@ -188,7 +188,7 @@
       
         
         <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
+          <a href="/MagnoliaYa/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
@@ -198,7 +198,7 @@
       
         
         <li class="menu-item menu-item-about">
-          <a href="/about/" rel="section">
+          <a href="/MagnoliaYa/about/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
@@ -208,7 +208,7 @@
       
         
         <li class="menu-item menu-item-tags">
-          <a href="/tags/" rel="section">
+          <a href="/MagnoliaYa/tags/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
@@ -218,7 +218,7 @@
       
         
         <li class="menu-item menu-item-categories">
-          <a href="/categories/" rel="section">
+          <a href="/MagnoliaYa/categories/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
             
@@ -228,7 +228,7 @@
       
         
         <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
+          <a href="/MagnoliaYa/archives/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
@@ -269,12 +269,12 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/06/26/2020/Django%20%E6%8E%A5%E5%8F%A3%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B0%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%20bug/">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.gitlab.io/MagnoliaYa/MagnoliaYa/2020/06/26/2020/Django%20%E6%8E%A5%E5%8F%A3%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B0%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%20bug/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Magnolia">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="image" content="/MagnoliaYa/images/avatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -321,7 +321,7 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
+                  <a href="/MagnoliaYa/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
                     <span itemprop="name">技术</span>
                   </a>
                 </span>
@@ -332,7 +332,7 @@
                 
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%8A%80%E6%9C%AF/Django/" itemprop="url" rel="index">
+                  <a href="/MagnoliaYa/categories/%E6%8A%80%E6%9C%AF/Django/" itemprop="url" rel="index">
                     <span itemprop="name">Django</span>
                   </a>
                 </span>
@@ -424,9 +424,9 @@
 <h4 id="6-register页面注册成功后跳转到login页面，但是url还是register"><a href="#6-register页面注册成功后跳转到login页面，但是url还是register" class="headerlink" title="6. register页面注册成功后跳转到login页面，但是url还是register"></a>6. register页面注册成功后跳转到login页面，但是url还是register</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">RegisterView</span>(<span class="title class_ inherited__">View</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get</span>(<span class="params">self, request</span>):</span><br><span class="line">        <span class="keyword">return</span> render(request, <span class="string">&#x27;login/register.html&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">post</span>(<span class="params">self, request</span>):</span><br><span class="line">        user_register_form = RegisterForm(data=request.POST)</span><br><span class="line">        <span class="keyword">if</span> user_register_form.is_valid():</span><br><span class="line">            username = user_register_form.cleaned_data.get(<span class="string">&#x27;username&#x27;</span>)</span><br><span class="line">            password = user_register_form.cleaned_data.get(<span class="string">&#x27;password&#x27;</span>)</span><br><span class="line">            email = user_register_form.cleaned_data.get(<span class="string">&#x27;email&#x27;</span>)</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> request.POST.get(<span class="string">&#x27;aggree&#x27;</span>):</span><br><span class="line">                <span class="keyword">return</span> translate2json(errno=ResCode.AGGREE, errmsg=error_map[ResCode.AGGREE])</span><br><span class="line">            new_user = User.objects.create(username=username, password=password, email=email)</span><br><span class="line">            new_user.save()</span><br><span class="line">            <span class="keyword">return</span> render(request, <span class="string">&#x27;login/index.html&#x27;</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> HttpResponse(<span class="string">&quot;注册输入有误，请重新输入~&quot;</span>)</span><br></pre></td></tr></table></figure>
 
 <p>在注册页面，注册一个用户：</p>
-<p><img src="/../../images/2020/Django%E6%8E%A5%E5%8F%A3%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B01.png"></p>
+<p><img src="/MagnoliaYa/../../images/2020/Django%E6%8E%A5%E5%8F%A3%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B01.png"></p>
 <p>提交注册数据后，跳转到登录页面：</p>
-<p><img src="/../../images/2020/Django%E6%8E%A5%E5%8F%A3%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B02.png"></p>
+<p><img src="/MagnoliaYa/../../images/2020/Django%E6%8E%A5%E5%8F%A3%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B02.png"></p>
 <p>如果直接填写信息登录，会出现错误，原因是当前网页的 url 并不是真正的登录（login）页面，所以提交的数据不能通过本应该是 login 的路由来发出 get 请求。仔细看页面的路由，依然是 register。</p>
 <p>此时填写正确的注册过的用户数据，会返回注册过程的一些数据。(由于刚刚在注册页面注册了信息，数据被写入数据库，然后再在当前的假登录【实际还是注册的页面】进行登录，就相当于用原来的数据重新注册一次，当然这样是不允许的，在后端代码中就防止该行为出现而抛出异常。)</p>
 <p>解决办法：使用 redirect 来重定向到真正的登录页面。</p>
@@ -509,9 +509,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Python/" rel="tag"># Python</a>
+            <a href="/MagnoliaYa/tags/Python/" rel="tag"># Python</a>
           
-            <a href="/tags/Django/" rel="tag"># Django</a>
+            <a href="/MagnoliaYa/tags/Django/" rel="tag"># Django</a>
           
         </div>
       
@@ -524,7 +524,7 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/06/21/2020/Django%20%E5%89%8D%E5%90%8E%E7%AB%AF%E4%BA%A4%E4%BA%92%E7%9A%84%E6%96%AD%E7%82%B9%E8%B0%83%E8%AF%95(Pycharm%20&%20F12-Console)/" rel="next" title="Django 前后端交互的断点调试(Pycharm & F12-Console)">
+              <a href="/MagnoliaYa/2020/06/21/2020/Django%20%E5%89%8D%E5%90%8E%E7%AB%AF%E4%BA%A4%E4%BA%92%E7%9A%84%E6%96%AD%E7%82%B9%E8%B0%83%E8%AF%95(Pycharm%20&%20F12-Console)/" rel="next" title="Django 前后端交互的断点调试(Pycharm & F12-Console)">
                 <i class="fa fa-chevron-left"></i> Django 前后端交互的断点调试(Pycharm & F12-Console)
               </a>
             
@@ -534,7 +534,7 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2023/12/03/2024/Python%20%E6%9F%A5%E7%9C%8B%E6%9F%90%E4%B8%AA%E5%BA%93%E7%9A%84%E7%89%88%E6%9C%AC/" rel="prev" title="Python 查看某个库的版本">
+              <a href="/MagnoliaYa/2023/12/03/2024/Python%20%E6%9F%A5%E7%9C%8B%E6%9F%90%E4%B8%AA%E5%BA%93%E7%9A%84%E7%89%88%E6%9C%AC/" rel="prev" title="Python 查看某个库的版本">
                 Python 查看某个库的版本 <i class="fa fa-chevron-right"></i>
               </a>
             
@@ -603,7 +603,7 @@
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image"
-                src="/images/avatar.jpg"
+                src="/MagnoliaYa/images/avatar.jpg"
                 alt="Magnolia" />
             
               <p class="site-author-name" itemprop="name">Magnolia</p>
@@ -615,7 +615,7 @@
             
               <div class="site-state-item site-state-posts">
               
-                <a href="/">
+                <a href="/MagnoliaYa/">
               
                   <span class="site-state-item-count">93</span>
                   <span class="site-state-item-name">posts</span>
@@ -628,7 +628,7 @@
               
               
               <div class="site-state-item site-state-categories">
-                <a href="/categories/index.html">
+                <a href="/MagnoliaYa/categories/index.html">
                   <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
@@ -639,7 +639,7 @@
               
               
               <div class="site-state-item site-state-tags">
-                <a href="/tags/index.html">
+                <a href="/MagnoliaYa/tags/index.html">
                   <span class="site-state-item-count">29</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
@@ -808,22 +808,22 @@
 
   
   
-    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+    <script type="text/javascript" src="/MagnoliaYa/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
   
 
   
   
-    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+    <script type="text/javascript" src="/MagnoliaYa/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
   
 
   
   
-    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+    <script type="text/javascript" src="/MagnoliaYa/lib/velocity/velocity.min.js?v=1.2.1"></script>
   
 
   
   
-    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+    <script type="text/javascript" src="/MagnoliaYa/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
   
 
   
@@ -833,44 +833,44 @@
 
   
   
-    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+    <script type="text/javascript" src="/MagnoliaYa/lib/three/three.min.js"></script>
   
 
   
   
-    <script type="text/javascript" src="/lib/three/canvas_lines.min.js"></script>
+    <script type="text/javascript" src="/MagnoliaYa/lib/three/canvas_lines.min.js"></script>
   
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
-
-
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
-
 
 
   
 
 
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/MagnoliaYa/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/MagnoliaYa/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/MagnoliaYa/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/MagnoliaYa/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/MagnoliaYa/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/MagnoliaYa/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/MagnoliaYa/js/src/bootstrap.js?v=5.1.4"></script>
 
 
 

@@ -50,21 +50,21 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/MagnoliaYa/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+<link href="/MagnoliaYa/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
 
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+  <link rel="apple-touch-icon" sizes="180x180" href="/MagnoliaYa/images/apple-touch-icon-next.png?v=5.1.4">
 
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+  <link rel="icon" type="image/png" sizes="32x32" href="/MagnoliaYa/images/favicon-32x32-next.png?v=5.1.4">
 
 
-  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+  <link rel="icon" type="image/png" sizes="16x16" href="/MagnoliaYa/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/MagnoliaYa/images/logo.svg?v=5.1.4" color="#222">
 
 
 
@@ -84,20 +84,20 @@
 <meta name="description" content="本文主要是关于 Django 项目开发及部署过程中遇到的一些问题及解决方法。包括路由配置错误、表单类字段设置问题、拓展 User 模型后登录失败的处理、特定方法报错、子路由模块属性设置、检查未展示元素、处理服务器错误提示、部署过程以及部署后 CSS 和 JS 文件未加载的问题。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Django 博客项目中遇到的 bug">
-<meta property="og:url" content="http://example.com/2020/06/16/2020/Django%20%E5%8D%9A%E5%AE%A2%E9%A1%B9%E7%9B%AE%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%20bug/index.html">
+<meta property="og:url" content="https://zypdominate.gitlab.io/MagnoliaYa/2020/06/16/2020/Django%20%E5%8D%9A%E5%AE%A2%E9%A1%B9%E7%9B%AE%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%20bug/index.html">
 <meta property="og:site_name" content="Magnolia&#39;s Blog">
 <meta property="og:description" content="本文主要是关于 Django 项目开发及部署过程中遇到的一些问题及解决方法。包括路由配置错误、表单类字段设置问题、拓展 User 模型后登录失败的处理、特定方法报错、子路由模块属性设置、检查未展示元素、处理服务器错误提示、部署过程以及部署后 CSS 和 JS 文件未加载的问题。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/images/2020/Django%E5%8D%9A%E5%AE%A21.png">
-<meta property="og:image" content="http://example.com/images/2020/Django%E5%8D%9A%E5%AE%A22.png">
-<meta property="og:image" content="http://example.com/images/2020/Django%E5%8D%9A%E5%AE%A23.png">
+<meta property="og:image" content="https://zypdominate.gitlab.io/images/2020/Django%E5%8D%9A%E5%AE%A21.png">
+<meta property="og:image" content="https://zypdominate.gitlab.io/images/2020/Django%E5%8D%9A%E5%AE%A22.png">
+<meta property="og:image" content="https://zypdominate.gitlab.io/images/2020/Django%E5%8D%9A%E5%AE%A23.png">
 <meta property="article:published_time" content="2020-06-15T16:34:43.000Z">
 <meta property="article:modified_time" content="2025-03-02T06:45:45.913Z">
 <meta property="article:author" content="Magnolia">
 <meta property="article:tag" content="Python">
 <meta property="article:tag" content="Django">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/images/2020/Django%E5%8D%9A%E5%AE%A21.png">
+<meta name="twitter:image" content="https://zypdominate.gitlab.io/images/2020/Django%E5%8D%9A%E5%AE%A21.png">
 
 
 
@@ -127,7 +127,7 @@
 
 
 
-  <link rel="canonical" href="http://example.com/2020/06/16/2020/Django 博客项目中遇到的 bug/"/>
+  <link rel="canonical" href="https://zypdominate.gitlab.io/MagnoliaYa/2020/06/16/2020/Django 博客项目中遇到的 bug/"/>
 
 
 
@@ -161,7 +161,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
+      <a href="/MagnoliaYa/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">Magnolia's Blog</span>
         <span class="logo-line-after"><i></i></span>
@@ -189,7 +189,7 @@
       
         
         <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
+          <a href="/MagnoliaYa/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
@@ -199,7 +199,7 @@
       
         
         <li class="menu-item menu-item-about">
-          <a href="/about/" rel="section">
+          <a href="/MagnoliaYa/about/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
@@ -209,7 +209,7 @@
       
         
         <li class="menu-item menu-item-tags">
-          <a href="/tags/" rel="section">
+          <a href="/MagnoliaYa/tags/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
@@ -219,7 +219,7 @@
       
         
         <li class="menu-item menu-item-categories">
-          <a href="/categories/" rel="section">
+          <a href="/MagnoliaYa/categories/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
             
@@ -229,7 +229,7 @@
       
         
         <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
+          <a href="/MagnoliaYa/archives/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
@@ -270,12 +270,12 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/06/16/2020/Django%20%E5%8D%9A%E5%AE%A2%E9%A1%B9%E7%9B%AE%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%20bug/">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.gitlab.io/MagnoliaYa/MagnoliaYa/2020/06/16/2020/Django%20%E5%8D%9A%E5%AE%A2%E9%A1%B9%E7%9B%AE%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%20bug/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Magnolia">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="image" content="/MagnoliaYa/images/avatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -322,7 +322,7 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
+                  <a href="/MagnoliaYa/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
                     <span itemprop="name">技术</span>
                   </a>
                 </span>
@@ -333,7 +333,7 @@
                 
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%8A%80%E6%9C%AF/Django/" itemprop="url" rel="index">
+                  <a href="/MagnoliaYa/categories/%E6%8A%80%E6%9C%AF/Django/" itemprop="url" rel="index">
                     <span itemprop="name">Django</span>
                   </a>
                 </span>
@@ -422,7 +422,7 @@
 
 <hr>
 <h4 id="6-使用F12检查没有展示的元素"><a href="#6-使用F12检查没有展示的元素" class="headerlink" title="6. 使用F12检查没有展示的元素"></a>6. 使用F12检查没有展示的元素</h4><p>模板中已经写好前端的展示，视图函数也给前端传参了，但是实际就是没有显示。</p>
-<p><img src="/../../images/2020/Django%E5%8D%9A%E5%AE%A21.png" alt="img"></p>
+<p><img src="/MagnoliaYa/../../images/2020/Django%E5%8D%9A%E5%AE%A21.png" alt="img"></p>
 <p>通过F12查看元素，可以发现该标签中没有内容，应该是没有从视图中获取到标签、或者获取到后经过前端操作后没有拿到该有的标签。</p>
 <p>自然地，先检查视图函数有没有给前端模板传递对象，然后回到该页面的 html 代码中检查，发现是 html 中的变量 articles 写错了。</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;% for article in articles %&#125;</span><br><span class="line">			&#123;% for tag in articles.tags.all %&#125;</span><br><span class="line">           <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span> <span class="attr">class</span>=<span class="string">&quot;badge badge-secondary&quot;</span>&gt;</span>&#123;&#123; tag &#125;&#125;<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">       &#123;% endfor %&#125;</span><br></pre></td></tr></table></figure>
@@ -482,7 +482,7 @@
 </ol>
 <hr>
 <h4 id="9-css、js等没有加载出来"><a href="#9-css、js等没有加载出来" class="headerlink" title="9. css、js等没有加载出来"></a>9. css、js等没有加载出来</h4><p>本地调试好工程后，服务起来后在浏览器上测试也是正常的，但是一部署后就发现浏览器中没有加载css、js等，只有单纯的html格式，经过查看 nginx 的日志发现了问题：没有所需要的文件。</p>
-<p><img src="/../../images/2020/Django%E5%8D%9A%E5%AE%A22.png" alt="img"></p>
+<p><img src="/MagnoliaYa/../../images/2020/Django%E5%8D%9A%E5%AE%A22.png" alt="img"></p>
 <p>怎么会没有该文件呢？于是查看了 nginx 的配置文件：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">  charset utf-8;</span><br><span class="line">  listen 80;</span><br><span class="line">  server_name 192.168.171.128;  # 暂时是我本地的Ubuntu的ip地址</span><br><span class="line"></span><br><span class="line">  location /static &#123;</span><br><span class="line">    root /home/zyp/sites/django_blog_tutorial/collected_static;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  location /media &#123;</span><br><span class="line">    root /home/zyp/sites/django_blog_tutorial/media;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  location / &#123;</span><br><span class="line">    proxy_set_header Host $host;</span><br><span class="line">    proxy_pass http://unix:/tmp/192.168.171.128.socket;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -494,7 +494,7 @@
 
 <p>同理，media 目录中存放的资源在页面中加载不出来，也是路径的问题。其实这边可以修改工程中的 settings.py 文件，也可以更改 nginx 中的配置文件。</p>
 <p>最后，终于改好了：</p>
-<p><img src="/../../images/2020/Django%E5%8D%9A%E5%AE%A23.png" alt="img"></p>
+<p><img src="/MagnoliaYa/../../images/2020/Django%E5%8D%9A%E5%AE%A23.png" alt="img"></p>
 
       
     </div>
@@ -512,9 +512,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Python/" rel="tag"># Python</a>
+            <a href="/MagnoliaYa/tags/Python/" rel="tag"># Python</a>
           
-            <a href="/tags/Django/" rel="tag"># Django</a>
+            <a href="/MagnoliaYa/tags/Django/" rel="tag"># Django</a>
           
         </div>
       
@@ -527,7 +527,7 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/06/10/2020/Python%E5%B0%8F%E6%8A%80%E5%B7%A7/" rel="next" title="Python 小技巧">
+              <a href="/MagnoliaYa/2020/06/10/2020/Python%E5%B0%8F%E6%8A%80%E5%B7%A7/" rel="next" title="Python 小技巧">
                 <i class="fa fa-chevron-left"></i> Python 小技巧
               </a>
             
@@ -537,7 +537,7 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2020/06/18/2020/Django%20mysql%20%E7%89%88%E6%9C%AC%E6%8A%A5%E9%94%99/" rel="prev" title="Django mysql 版本报错">
+              <a href="/MagnoliaYa/2020/06/18/2020/Django%20mysql%20%E7%89%88%E6%9C%AC%E6%8A%A5%E9%94%99/" rel="prev" title="Django mysql 版本报错">
                 Django mysql 版本报错 <i class="fa fa-chevron-right"></i>
               </a>
             
@@ -606,7 +606,7 @@
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image"
-                src="/images/avatar.jpg"
+                src="/MagnoliaYa/images/avatar.jpg"
                 alt="Magnolia" />
             
               <p class="site-author-name" itemprop="name">Magnolia</p>
@@ -618,7 +618,7 @@
             
               <div class="site-state-item site-state-posts">
               
-                <a href="/">
+                <a href="/MagnoliaYa/">
               
                   <span class="site-state-item-count">93</span>
                   <span class="site-state-item-name">posts</span>
@@ -631,7 +631,7 @@
               
               
               <div class="site-state-item site-state-categories">
-                <a href="/categories/index.html">
+                <a href="/MagnoliaYa/categories/index.html">
                   <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
@@ -642,7 +642,7 @@
               
               
               <div class="site-state-item site-state-tags">
-                <a href="/tags/index.html">
+                <a href="/MagnoliaYa/tags/index.html">
                   <span class="site-state-item-count">29</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
@@ -811,22 +811,22 @@
 
   
   
-    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+    <script type="text/javascript" src="/MagnoliaYa/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
   
 
   
   
-    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+    <script type="text/javascript" src="/MagnoliaYa/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
   
 
   
   
-    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+    <script type="text/javascript" src="/MagnoliaYa/lib/velocity/velocity.min.js?v=1.2.1"></script>
   
 
   
   
-    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+    <script type="text/javascript" src="/MagnoliaYa/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
   
 
   
@@ -836,44 +836,44 @@
 
   
   
-    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+    <script type="text/javascript" src="/MagnoliaYa/lib/three/three.min.js"></script>
   
 
   
   
-    <script type="text/javascript" src="/lib/three/canvas_lines.min.js"></script>
+    <script type="text/javascript" src="/MagnoliaYa/lib/three/canvas_lines.min.js"></script>
   
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
-
-
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
-
 
 
   
 
 
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/MagnoliaYa/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/MagnoliaYa/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/MagnoliaYa/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/MagnoliaYa/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/MagnoliaYa/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/MagnoliaYa/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/MagnoliaYa/js/src/bootstrap.js?v=5.1.4"></script>
 
 
 
