@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Python,Django," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="本文主要是关于 Django 的虚拟环境创建、数据库迁移、mysqlclient 报错、运行时在 mysql 的 operations.py 中报错、映射 html 函数不存在、页面跳转后 url 错误、as_view () 使用错误以及前端返回数据问题等。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Django 接口管理平台中遇到的 bug">
+<meta property="og:url" content="http://example.com/2020/06/26/2020/Django%20%E6%8E%A5%E5%8F%A3%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B0%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%20bug/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="本文主要是关于 Django 的虚拟环境创建、数据库迁移、mysqlclient 报错、运行时在 mysql 的 operations.py 中报错、映射 html 函数不存在、页面跳转后 url 错误、as_view () 使用错误以及前端返回数据问题等。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/2020/Django%E6%8E%A5%E5%8F%A3%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B01.png">
+<meta property="og:image" content="http://example.com/images/2020/Django%E6%8E%A5%E5%8F%A3%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B02.png">
+<meta property="article:published_time" content="2020-06-26T06:41:05.000Z">
+<meta property="article:modified_time" content="2025-03-02T07:03:35.344Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="Django">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/2020/Django%E6%8E%A5%E5%8F%A3%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B01.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/2020/06/26/2020/Django 接口管理平台中遇到的 bug/"/>
+
+
+
+
+
+  <title>Django 接口管理平台中遇到的 bug | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Magnolia's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">努力</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/06/26/2020/Django%20%E6%8E%A5%E5%8F%A3%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B0%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%20bug/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Magnolia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Django 接口管理平台中遇到的 bug</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-06-26T14:41:05+08:00">
+                2020-06-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/Django/" itemprop="url" rel="index">
+                    <span itemprop="name">Django</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+              <div class="post-description">
+                  本文主要是关于 Django 的虚拟环境创建、数据库迁移、mysqlclient 报错、运行时在 mysql 的 operations.py 中报错、映射 html 函数不存在、页面跳转后 url 错误、as_view () 使用错误以及前端返回数据问题等。
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近又练习了一个基于 django 的小项目，在此过程中也遇到一些小问题，最后通过查找资料和debug等办法解决了，同时也将一些感觉比较好的bug记录了一下。</p>
+<hr>
+<h4 id="1-虚拟环境"><a href="#1-虚拟环境" class="headerlink" title="1. 虚拟环境"></a>1. 虚拟环境</h4><p>最好在命令行中创建虚拟环境，如果用 pycharm 可能不不小心将本地的 Python 环境作为基础添加进去。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">D:\&gt;python</span><br><span class="line">Python 3.6.0 (v3.6.0:41df79263a11, Dec 23 2016, 08:06:12) [MSC v.1900 64 bit (AMD64)] on win32</span><br><span class="line">Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.</span><br><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; quit()</span></span><br><span class="line"></span><br><span class="line">D:\&gt;python -m venv env_testing</span><br><span class="line"></span><br><span class="line">D:\&gt;</span><br><span class="line">D:\&gt;cd env_testing/Scripts</span><br><span class="line">D:\env_testing\Scripts&gt;activate.bat</span><br><span class="line">(env_testing) D:\env_testing\Scripts&gt;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="2-django-项目之始迁移文件"><a href="#2-django-项目之始迁移文件" class="headerlink" title="2. django 项目之始迁移文件"></a>2. django 项目之始迁移文件</h4><p>发现在通过 <code>python manage.py runserver</code> 启动服务后，访问 127.0.0.1:8000</p>
+<p>但是无法访问 admin 的页面，报错如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">......</span><br><span class="line">File &quot;D:\env_testing\lib\site-packages\django\db\backends\sqlite3\base.py&quot;, line 383, in execute</span><br><span class="line">    return Database.Cursor.execute(self, query, params)</span><br><span class="line">django.db.utils.OperationalError: no such table: django_session</span><br><span class="line">[17/Jun/2020 01:08:13] &quot;GET /admin/ HTTP/1.1&quot; 500 198090</span><br></pre></td></tr></table></figure>
+
+<p>需要迁移数据库：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">(env_testing) D:\django_learning\api_testing&gt;python manage.py migrate</span><br><span class="line">Operations to perform:</span><br><span class="line">  Apply all migrations: admin, auth, contenttypes, sessions</span><br><span class="line">Running migrations:</span><br><span class="line">  Applying contenttypes.0001_initial... OK</span><br><span class="line">  Applying auth.0001_initial... OK</span><br><span class="line">  Applying admin.0001_initial... OK</span><br><span class="line">  Applying admin.0002_logentry_remove_auto_add... OK</span><br><span class="line">  Applying admin.0003_logentry_add_action_flag_choices... OK</span><br><span class="line">  Applying contenttypes.0002_remove_content_type_name... OK</span><br><span class="line">  Applying auth.0002_alter_permission_name_max_length... OK</span><br><span class="line">  Applying auth.0003_alter_user_email_max_length... OK</span><br><span class="line">  Applying auth.0004_alter_user_username_opts... OK</span><br><span class="line">  Applying auth.0005_alter_user_last_login_null... OK</span><br><span class="line">  Applying auth.0006_require_contenttypes_0002... OK</span><br><span class="line">  Applying auth.0007_alter_validators_add_error_messages... OK</span><br><span class="line">  Applying auth.0008_alter_user_username_max_length... OK</span><br><span class="line">  Applying auth.0009_alter_user_last_name_max_length... OK</span><br><span class="line">  Applying auth.0010_alter_group_name_max_length... OK</span><br><span class="line">  Applying auth.0011_update_proxy_permissions... OK</span><br><span class="line">  Applying sessions.0001_initial... OK</span><br></pre></td></tr></table></figure>
+
+<p>接着就可以访问 admin 了。</p>
+<hr>
+<h4 id="3-mysqlclient-error"><a href="#3-mysqlclient-error" class="headerlink" title="3. mysqlclient error"></a>3. mysqlclient error</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">manage.py@api_testing &gt; startapp login</span><br><span class="line">......</span><br><span class="line">......</span><br><span class="line">	File &quot;D:\env_testing\lib\site-packages\django\db\backends\mysql\base.py&quot;, line 36, in &lt;module&gt;</span><br><span class="line">    raise ImproperlyConfigured(&#x27;mysqlclient 1.3.13 or newer is required; you have %s.&#x27; % Database.__version__)</span><br><span class="line">django.core.exceptions.ImproperlyConfigured: mysqlclient 1.3.13 or newer is required; you have 0.9.3.</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/55657752/django-installing-mysqlclient-error-mysqlclient-1-3-13-or-newer-is-required">比较好的解决办法(亲测可用)</a>：找到引入 pymsql 的文件，然后添加版本信息，只需要一行代码。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pymysql</span><br><span class="line"></span><br><span class="line">pymysql.version_info = (<span class="number">1</span>, <span class="number">3</span>, <span class="number">13</span>, <span class="string">&quot;final&quot;</span>, <span class="number">0</span>) <span class="comment"># 解决mysql版本问题报错而添加的代码</span></span><br><span class="line">pymysql.install_as_MySQLdb()</span><br></pre></td></tr></table></figure>
+
+<p>原因：</p>
+<ul>
+<li>Why do I know you are using pymysql? Because 0.9.3 is just the latest version of pymysql.</li>
+<li>Why use pymysql instead of mysqlclient for the project? Because it is easier to install. pymysql does not depend on system libraries, while mysqlclient relies on a series of system libraries such as libmysqlclient-dev.</li>
+<li>Why is mysqlclient difficult to install and Django still uses it by default? Because mysqlclient is faster and performs better. So if your project has high performance requirements, I suggest you remove the compatible code above and install mysqlclient in your project. If you need help during the installation of mysqlclient, please refer to this link: <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/25865270/how-to-install-python-mysqldb-module-using-pip">How to install Python MySQLdb module using pip?</a>, and ensure <code>libssl-dev</code> has been installed before <code>pip install mysqlclient</code>.</li>
+</ul>
+<p>其他方法：参考 <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/55657752/django-installing-mysqlclient-error-mysqlclient-1-3-13-or-newer-is-required">stack overflow</a> 上的其他建议。</p>
+<hr>
+<h4 id="4-运行时在-mysql-的-operations-py-中报错"><a href="#4-运行时在-mysql-的-operations-py-中报错" class="headerlink" title="4. 运行时在 mysql 的 operations.py 中报错"></a>4. 运行时在 mysql 的 operations.py 中报错</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(env_testing) D:\django_learning\api_testing&gt;python manage.py runserver</span><br><span class="line">	......</span><br><span class="line">	File &quot;D:\env_testing\lib\site-packages\django\db\backends\mysql\features.py&quot;, line 82, in is_sql_auto_is_null_enabled</span><br><span class="line">    cursor.execute(&#x27;SELECT @@SQL_AUTO_IS_NULL&#x27;)</span><br><span class="line">  File &quot;D:\env_testing\lib\site-packages\django\db\backends\utils.py&quot;, line 103, in execute</span><br><span class="line">    sql = self.db.ops.last_executed_query(self.cursor, sql, params)</span><br><span class="line">	File &quot;D:\env_testing\lib\site-packages\django\db\backends\mysql\operations.py&quot;, line 146, in last_executed_query</span><br><span class="line">    query = query.decode(errors=&#x27;replace&#x27;)</span><br><span class="line">AttributeError: &#x27;str&#x27; object has no attribute &#x27;decode&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>处理办法：Go to django folder, then go to this path:  <code>django\db\backends\mysql</code></p>
+<p>then go to <code>operations.py</code> and find <code>query = query.decode(errors=&#39;replace&#39;)</code>. Remove the line and put <code>query = errors=&#39;replace&#39;</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">last_executed_query</span>(<span class="params">self, cursor, sql, params</span>):</span><br><span class="line">    <span class="comment"># With MySQLdb, cursor objects have an (undocumented) &quot;_executed&quot;</span></span><br><span class="line">    <span class="comment"># attribute where the exact query sent to the database is saved.</span></span><br><span class="line">    <span class="comment"># See MySQLdb/cursors.py in the source distribution.</span></span><br><span class="line">    query = <span class="built_in">getattr</span>(cursor, <span class="string">&#x27;_executed&#x27;</span>, <span class="literal">None</span>)</span><br><span class="line">    <span class="keyword">if</span> query <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">        <span class="comment"># query = query.decode(errors=&#x27;replace&#x27;)  # zhuyuping modify</span></span><br><span class="line">        query = errors = <span class="string">&#x27;replace&#x27;</span>  <span class="comment"># zhuyuping add</span></span><br><span class="line">    <span class="keyword">return</span> query</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="5-映射html出问题，函数不存在"><a href="#5-映射html出问题，函数不存在" class="headerlink" title="5. 映射html出问题，函数不存在"></a>5. 映射html出问题，函数不存在</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">NoReverseMatch at /register/</span><br><span class="line">Reverse for &#x27;login&#x27; not found. &#x27;login&#x27; is not a valid view function or pattern name.</span><br></pre></td></tr></table></figure>
+
+<p><code>templates\login\register.html</code>:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;margin-top20 text-center&quot;</span>&gt;</span></span><br><span class="line">    已经有账号了? <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&#123;%</span> <span class="attr">url</span> &#x27;<span class="attr">login</span>&#x27; %&#125;&gt;</span>登录<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>login\urls.py</code>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">app_name = <span class="string">&#x27;login&#x27;</span></span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">&#x27;&#x27;</span>, views.LoginView.as_view(), name=<span class="string">&#x27;login&#x27;</span>),</span><br><span class="line">    path(<span class="string">&#x27;forgot/&#x27;</span>, views.ForgotView.as_view(), name=<span class="string">&#x27;forgot&#x27;</span>),</span><br><span class="line">    path(<span class="string">&#x27;register/&#x27;</span>, views.RegisterView.as_view(), name=<span class="string">&#x27;register&#x27;</span>),</span><br><span class="line">    path(<span class="string">&#x27;reset/&#x27;</span>, views.ResetView.as_view(), name=<span class="string">&#x27;reset&#x27;</span>),</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<p>需要指定app，所以修改为：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;margin-top20 text-center&quot;</span>&gt;</span></span><br><span class="line">    已经有账号了? <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&#123;%</span> <span class="attr">url</span> &#x27;<span class="attr">login:login</span>&#x27; %&#125;&gt;</span>登录<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>同理，还有类似的写法也都是报这个错误。</p>
+<hr>
+<h4 id="6-register页面注册成功后跳转到login页面，但是url还是register"><a href="#6-register页面注册成功后跳转到login页面，但是url还是register" class="headerlink" title="6. register页面注册成功后跳转到login页面，但是url还是register"></a>6. register页面注册成功后跳转到login页面，但是url还是register</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">RegisterView</span>(<span class="title class_ inherited__">View</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get</span>(<span class="params">self, request</span>):</span><br><span class="line">        <span class="keyword">return</span> render(request, <span class="string">&#x27;login/register.html&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">post</span>(<span class="params">self, request</span>):</span><br><span class="line">        user_register_form = RegisterForm(data=request.POST)</span><br><span class="line">        <span class="keyword">if</span> user_register_form.is_valid():</span><br><span class="line">            username = user_register_form.cleaned_data.get(<span class="string">&#x27;username&#x27;</span>)</span><br><span class="line">            password = user_register_form.cleaned_data.get(<span class="string">&#x27;password&#x27;</span>)</span><br><span class="line">            email = user_register_form.cleaned_data.get(<span class="string">&#x27;email&#x27;</span>)</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> request.POST.get(<span class="string">&#x27;aggree&#x27;</span>):</span><br><span class="line">                <span class="keyword">return</span> translate2json(errno=ResCode.AGGREE, errmsg=error_map[ResCode.AGGREE])</span><br><span class="line">            new_user = User.objects.create(username=username, password=password, email=email)</span><br><span class="line">            new_user.save()</span><br><span class="line">            <span class="keyword">return</span> render(request, <span class="string">&#x27;login/index.html&#x27;</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> HttpResponse(<span class="string">&quot;注册输入有误，请重新输入~&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>在注册页面，注册一个用户：</p>
+<p><img src="/../../images/2020/Django%E6%8E%A5%E5%8F%A3%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B01.png"></p>
+<p>提交注册数据后，跳转到登录页面：</p>
+<p><img src="/../../images/2020/Django%E6%8E%A5%E5%8F%A3%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B02.png"></p>
+<p>如果直接填写信息登录，会出现错误，原因是当前网页的 url 并不是真正的登录（login）页面，所以提交的数据不能通过本应该是 login 的路由来发出 get 请求。仔细看页面的路由，依然是 register。</p>
+<p>此时填写正确的注册过的用户数据，会返回注册过程的一些数据。(由于刚刚在注册页面注册了信息，数据被写入数据库，然后再在当前的假登录【实际还是注册的页面】进行登录，就相当于用原来的数据重新注册一次，当然这样是不允许的，在后端代码中就防止该行为出现而抛出异常。)</p>
+<p>解决办法：使用 redirect 来重定向到真正的登录页面。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># return render(request, &#x27;login/index.html&#x27;)</span></span><br><span class="line"><span class="keyword">return</span> redirect(<span class="string">&#x27;login:login&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>从该定位该 bug 以及解决可知，以后凡是涉及页面跳转的，不仅要考虑前端页面，还有考虑跳转后的路由 url 是否与页面匹配，防止出现类似的问题。</p>
+<hr>
+<p>同样的，在登录页面进行登录后进入首页，但是路由 url 并没有改变，刷新 url 后又回到了登录界面，显然是不合理的。</p>
+<p>涉及的相关代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">LoginView</span>(<span class="title class_ inherited__">View</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get</span>(<span class="params">self, request</span>):</span><br><span class="line">        <span class="keyword">return</span> render(request, <span class="string">&#x27;login/index.html&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">post</span>(<span class="params">self, request</span>):</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            post_data = request.POST</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> post_data:</span><br><span class="line">                <span class="keyword">return</span> translate2json(errno=ResCode.PARAMERR, errmsg=<span class="string">&quot;参数为空，请输入&quot;</span>)</span><br><span class="line">            user_key = [<span class="string">&quot;email&quot;</span>, <span class="string">&quot;password&quot;</span>, <span class="string">&quot;remember&quot;</span>]</span><br><span class="line">            data_dict = &#123;&#125;</span><br><span class="line">            <span class="keyword">for</span> key <span class="keyword">in</span> user_key:</span><br><span class="line">                data_dict[key] = post_data.get(key)</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            logging.info(<span class="string">&quot;错误信息：\n&#123;&#125;&quot;</span>.<span class="built_in">format</span>(e))</span><br><span class="line">            <span class="keyword">return</span> translate2json(errno=ResCode.UNKOWNERR, errmsg=error_map[ResCode.UNKOWNERR])</span><br><span class="line">        login_form = LoginForm(data=data_dict, request=request)</span><br><span class="line">        <span class="keyword">if</span> login_form.is_valid():</span><br><span class="line">            <span class="keyword">return</span> render(request, <span class="string">&#x27;home/index.html&#x27;</span>)  <span class="comment"># 问题原因</span></span><br></pre></td></tr></table></figure>
+
+<p>将 render 改为重定向：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># login\views.py</span></span><br><span class="line"><span class="keyword">if</span> login_form.is_valid():</span><br><span class="line">    <span class="comment"># return render(request, &#x27;home/index.html&#x27;)</span></span><br><span class="line">    <span class="keyword">return</span> redirect(reverse(<span class="string">&#x27;index&#x27;</span>)) </span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># apiwork\urls.py</span></span><br><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">&#x27;index/&#x27;</span>, views.ApiView.as_view(), name=<span class="string">&#x27;index&#x27;</span>)</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># apiwork\views.py</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ApiView</span>(<span class="title class_ inherited__">View</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get</span>(<span class="params">self, request</span>):</span><br><span class="line">        <span class="keyword">return</span> render(request, <span class="string">&#x27;home/index.html&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="7-as-view"><a href="#7-as-view" class="headerlink" title="7. as_view()"></a>7. as_view()</h4><p>路由中调用视图函数 as_view 函数后面需要加括号。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">&#x27;index/&#x27;</span>, views.ApiView.as_view, name=<span class="string">&#x27;index&#x27;</span>)</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<p>view.py是这样的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ApiView</span>(<span class="title class_ inherited__">View</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get</span>(<span class="params">self, request</span>):</span><br><span class="line">        <span class="keyword">return</span> render(request, <span class="string">&#x27;home/index.html&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>当前端发起 request 请求时，会报这样的错误：</p>
+<p>TypeError at &#x2F;apiwork&#x2F;index&#x2F;</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">as_view() takes 1 positional argument but 2 were given</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th align="right">Request Method:</th>
+<th>GET</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="right">Request URL:</td>
+<td><a target="_blank" rel="noopener" href="http://127.0.0.1:8000/apiwork/index/">http://127.0.0.1:8000/apiwork/index/</a></td>
+</tr>
+<tr>
+<td align="right">Django Version:</td>
+<td>2.2</td>
+</tr>
+<tr>
+<td align="right">Exception Type:</td>
+<td>TypeError</td>
+</tr>
+<tr>
+<td align="right">Exception Value:</td>
+<td><code>as_view() takes 1 positional argument but 2 were given</code></td>
+</tr>
+</tbody></table>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">&#x27;index/&#x27;</span>, views.ApiView.as_view(), name=<span class="string">&#x27;index&#x27;</span>)</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="8-小结"><a href="#8-小结" class="headerlink" title="8. 小结"></a>8. 小结</h4><p>通过这个小小的项目的学习练习，也发现自己在前端知识方面存在很多不懂的地方，需要好好弥补一下。不过由于现在练习的两个项目都是前后端不分离，这已经是落后的潮流了，以后的趋势是前后端分离，所以准备学一下目前大火的 Vue，正好也有一个前后端分离的项目可以用来练习。</p>
+<p>很多模型以及设计方面的东西还是不太理解的，只是照葫芦画瓢，不过相比以前刚刚接触 django 来说，已经是进步很多了。有些 bug 的处理没有很好地办法，有的可以通过删库后重新迁移文件来解决，但是实际场景中肯定是不可以这样做的，也就是说很多 bug 的解决没有找到本质的原因、没有用最佳的方法解决，需要慢慢练习、向他人学习。</p>
+<p>从一个 django 项目的练习中，可以发现哪些东西都要恶补，记录一下，加入到后续的学习计划中。</p>
+<ul>
+<li>HTTP </li>
+<li>数据库</li>
+<li>django 的官方文档</li>
+<li>前端，Vue</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+            <a href="/tags/Django/" rel="tag"># Django</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/06/21/2020/Django%20%E5%89%8D%E5%90%8E%E7%AB%AF%E4%BA%A4%E4%BA%92%E7%9A%84%E6%96%AD%E7%82%B9%E8%B0%83%E8%AF%95(Pycharm%20&%20F12-Console)/" rel="next" title="Django 前后端交互的断点调试(Pycharm & F12-Console)">
+                <i class="fa fa-chevron-left"></i> Django 前后端交互的断点调试(Pycharm & F12-Console)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2023/12/03/2024/Python%20%E6%9F%A5%E7%9C%8B%E6%9F%90%E4%B8%AA%E5%BA%93%E7%9A%84%E7%89%88%E6%9C%AC/" rel="prev" title="Python 查看某个库的版本">
+                Python 查看某个库的版本 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Magnolia" />
+            
+              <p class="site-author-name" itemprop="name">Magnolia</p>
+              <p class="site-description motion-element" itemprop="description">Python/测试开发</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/">
+              
+                  <span class="site-state-item-count">93</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://blog.csdn.net/qq_31362767" target="_blank" title="CSDN">
+                      
+                        <i class="fa fa-fw fa-cndn"></i>CSDN</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://gitee.com/zypdominate" target="_blank" title="Gitee">
+                      
+                        <i class="fa fa-fw fa-gitee"></i>Gitee</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/zypdominate" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:zypdominate@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83"><span class="nav-text">1. 虚拟环境</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-django-%E9%A1%B9%E7%9B%AE%E4%B9%8B%E5%A7%8B%E8%BF%81%E7%A7%BB%E6%96%87%E4%BB%B6"><span class="nav-text">2. django 项目之始迁移文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-mysqlclient-error"><span class="nav-text">3. mysqlclient error</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E8%BF%90%E8%A1%8C%E6%97%B6%E5%9C%A8-mysql-%E7%9A%84-operations-py-%E4%B8%AD%E6%8A%A5%E9%94%99"><span class="nav-text">4. 运行时在 mysql 的 operations.py 中报错</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E6%98%A0%E5%B0%84html%E5%87%BA%E9%97%AE%E9%A2%98%EF%BC%8C%E5%87%BD%E6%95%B0%E4%B8%8D%E5%AD%98%E5%9C%A8"><span class="nav-text">5. 映射html出问题，函数不存在</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-register%E9%A1%B5%E9%9D%A2%E6%B3%A8%E5%86%8C%E6%88%90%E5%8A%9F%E5%90%8E%E8%B7%B3%E8%BD%AC%E5%88%B0login%E9%A1%B5%E9%9D%A2%EF%BC%8C%E4%BD%86%E6%98%AFurl%E8%BF%98%E6%98%AFregister"><span class="nav-text">6. register页面注册成功后跳转到login页面，但是url还是register</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-as-view"><span class="nav-text">7. as_view()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-%E5%B0%8F%E7%BB%93"><span class="nav-text">8. 小结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Magnolia</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/jquery@2/dist/jquery.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/canvas_lines.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
