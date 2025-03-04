@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="tools," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Windows11 安装 wsl。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="windows上使用wsl">
+<meta property="og:url" content="http://example.com/2025/03/04/2025/windows%E4%B8%8A%E4%BD%BF%E7%94%A8wsl/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="Windows11 安装 wsl。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-03-04T13:00:00.000Z">
+<meta property="article:modified_time" content="2025-03-04T13:45:28.367Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="tools">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/2025/03/04/2025/windows上使用wsl/"/>
+
+
+
+
+
+  <title>windows上使用wsl | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Magnolia's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">持续成长</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/03/04/2025/windows%E4%B8%8A%E4%BD%BF%E7%94%A8wsl/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Magnolia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">windows上使用wsl</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2025-03-04T21:00:00+08:00">
+                2025-03-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%94%9F%E4%BA%A7%E5%8A%9B/" itemprop="url" rel="index">
+                    <span itemprop="name">生产力</span>
+                  </a>
+                </span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%94%9F%E4%BA%A7%E5%8A%9B/%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index">
+                    <span itemprop="name">工具</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+              <div class="post-description">
+                  Windows11 安装 wsl。
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>准备给 Windows11 上安装 wsl，没有安装前，搜索 wsl 后点击，弹出窗口并闪退。</p>
+<h3 id="检查状态"><a href="#检查状态" class="headerlink" title="检查状态"></a>检查状态</h3><p> <code>wsl --status</code></p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;wsl --status</span><br><span class="line">默认版本: <span class="number">2</span></span><br><span class="line">当前计算机配置不支持 WSL1。</span><br><span class="line">若要使用 WSL1，请启用“Windows Subsystem <span class="keyword">for</span> Linux”可选组件。</span><br><span class="line">当前计算机配置不支持 WSL2。</span><br><span class="line">请启用“虚拟机平台”可选组件，并确保在 BIOS 中启用虚拟化。</span><br><span class="line">通过运行以下命令启用“虚拟机平台”: wsl.exe --install --no-distribution</span><br><span class="line">有关信息，请访问 https://aka.ms/enablevirtualization</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>打开”控制面板” &gt; “程序” &gt; “启用或关闭 Windows 功能”</li>
+<li>勾选以下选项后重启：<ul>
+<li>“Hyper-V” （我的win11上无）</li>
+<li>“Windows 虚拟机监控程序平台”</li>
+<li>“Windows Subsystem for Linux”</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt;wsl --status</span><br><span class="line">默认版本: <span class="number">2</span></span><br><span class="line"></span><br><span class="line">&gt;wsl --list --verbose</span><br><span class="line">适用于 Linux 的 Windows 子系统没有已安装的分发。</span><br><span class="line">可通过安装包含以下说明的分发来解决此问题：</span><br><span class="line"></span><br><span class="line">使用“wsl.exe --list --online&#x27; ”列出可用的分发</span><br><span class="line">和 “wsl.exe --install &lt;Distro&gt;” 进行安装。</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装-wsl"><a href="#安装-wsl" class="headerlink" title="安装 wsl"></a>安装 wsl</h3><p><code>wsl --install Ubuntu</code></p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&gt;wsl --list --online</span><br><span class="line">以下是可安装的有效分发的列表。</span><br><span class="line">使用 &#x27;wsl.exe --install &lt;Distro&gt;&#x27; 安装。</span><br><span class="line"></span><br><span class="line">NAME                            FRIENDLY NAME</span><br><span class="line">Debian                          Debian GNU/Linux</span><br><span class="line">SUSE-Linux-Enterprise-<span class="number">15</span>-SP5    SUSE Linux Enterprise <span class="number">15</span> SP5</span><br><span class="line">SUSE-Linux-Enterprise-<span class="number">15</span>-SP6    SUSE Linux Enterprise <span class="number">15</span> SP6</span><br><span class="line">Ubuntu                          Ubuntu</span><br><span class="line">Ubuntu-<span class="number">24</span>.<span class="number">04</span>                    Ubuntu <span class="number">24</span>.<span class="number">04</span> LTS</span><br><span class="line">kali-linux                      Kali Linux Rolling</span><br><span class="line">openSUSE-Tumbleweed             openSUSE Tumbleweed</span><br><span class="line">openSUSE-Leap-<span class="number">15</span>.<span class="number">6</span>              openSUSE Leap <span class="number">15</span>.<span class="number">6</span></span><br><span class="line">Ubuntu-<span class="number">18</span>.<span class="number">04</span>                    Ubuntu <span class="number">18</span>.<span class="number">04</span> LTS</span><br><span class="line">Ubuntu-<span class="number">20</span>.<span class="number">04</span>                    Ubuntu <span class="number">20</span>.<span class="number">04</span> LTS</span><br><span class="line">Ubuntu-<span class="number">22</span>.<span class="number">04</span>                    Ubuntu <span class="number">22</span>.<span class="number">04</span> LTS</span><br><span class="line">OracleLinux_7_9                 Oracle Linux <span class="number">7</span>.<span class="number">9</span></span><br><span class="line">OracleLinux_8_7                 Oracle Linux <span class="number">8</span>.<span class="number">7</span></span><br><span class="line">OracleLinux_9_1                 Oracle Linux <span class="number">9</span>.<span class="number">1</span></span><br><span class="line"></span><br><span class="line">&gt;wsl --install Ubuntu</span><br><span class="line">正在下载: Ubuntu</span><br><span class="line">正在安装: Ubuntu</span><br><span class="line">已成功安装分发。它可通过 “wsl.exe -d Ubuntu” 启动</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">wsl: 检测到 <span class="title">localhost</span> 代理配置，但未镜像到 <span class="title">WSL</span>。<span class="title">NAT</span> 模式下的 <span class="title">WSL</span> 不支持 <span class="title">localhost</span> 代理。</span></span><br><span class="line"><span class="function"><span class="title">Provisioning</span> <span class="title">the</span> <span class="title">new</span> <span class="title">WSL</span> <span class="title">instance</span> <span class="title">Ubuntu</span></span></span><br><span class="line"><span class="function"><span class="title">This</span> <span class="title">might</span> <span class="title">take</span> <span class="title">a</span> <span class="title">while</span>...</span></span><br><span class="line"><span class="function"><span class="title">Create</span> <span class="title">a</span> <span class="title">default</span> <span class="title">Unix</span> <span class="title">user</span> <span class="title">account</span>: <span class="title">Magnolia</span></span></span><br><span class="line"><span class="function"><span class="title">Invalid</span> <span class="title">username</span>. <span class="title">A</span> <span class="title">valid</span> <span class="title">username</span> <span class="title">must</span> <span class="title">start</span> <span class="title">with</span> <span class="title">a</span> <span class="title">lowercase</span> <span class="title">letter</span> <span class="title">or</span> <span class="title">underscore</span>, <span class="title">and</span> <span class="title">can</span> <span class="title">contain</span> <span class="title">lowercase</span> <span class="title">letters</span>, <span class="title">digits</span>, <span class="title">underscores</span>, <span class="title">and</span> <span class="title">dashes</span>.</span></span><br><span class="line"><span class="function"><span class="title">Create</span> <span class="title">a</span> <span class="title">default</span> <span class="title">Unix</span> <span class="title">user</span> <span class="title">account</span>: <span class="title">magnolia</span></span></span><br><span class="line"><span class="function"><span class="title">New</span> <span class="title">password</span>:</span></span><br><span class="line"><span class="function"><span class="title">Retype</span> <span class="title">new</span> <span class="title">password</span>:</span></span><br><span class="line"><span class="function"><span class="title">passwd</span>: <span class="title">password</span> <span class="title">updated</span> <span class="title">successfully</span></span></span><br><span class="line"><span class="function"><span class="title">To</span> <span class="title">run</span> <span class="title">a</span> <span class="title">command</span> <span class="title">as</span> <span class="title">administrator</span> (<span class="title">user</span> &quot;<span class="title">root</span>&quot;), <span class="title">use</span> &quot;<span class="title">sudo</span> &lt;<span class="title">command</span>&gt;&quot;.</span></span><br><span class="line"><span class="function"><span class="title">See</span> &quot;<span class="title">man</span> <span class="title">sudo_root</span>&quot; <span class="title">for</span> <span class="title">details</span>.</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">Welcome</span> <span class="title">to</span> <span class="title">Ubuntu</span> 24.04.2 <span class="title">LTS</span> (<span class="title">GNU</span>/<span class="title">Linux</span> 5.15.167.4-<span class="title">microsoft</span>-<span class="title">standard</span>-<span class="title">WSL2</span> <span class="title">x86_64</span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"> * <span class="title">Documentation</span>:  <span class="title">https</span>://<span class="title">help.ubuntu.com</span></span></span><br><span class="line"><span class="function"> * <span class="title">Management</span>:     <span class="title">https</span>://<span class="title">landscape.canonical.com</span></span></span><br><span class="line"><span class="function"> * <span class="title">Support</span>:        <span class="title">https</span>://<span class="title">ubuntu.com</span>/<span class="title">pro</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"> <span class="title">System</span> <span class="title">information</span> <span class="title">as</span> <span class="title">of</span> <span class="title">Tue</span> <span class="title">Mar</span>  4 21:26:59 <span class="title">CST</span> 2025</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">  <span class="title">System</span> <span class="title">load</span>:  0.03                <span class="title">Processes</span>:             36</span></span><br><span class="line"><span class="function">  <span class="title">Usage</span> <span class="title">of</span> /:   0.1% <span class="title">of</span> 1006.85<span class="title">GB</span>   <span class="title">Users</span> <span class="title">logged</span> <span class="title">in</span>:       0</span></span><br><span class="line"><span class="function">  <span class="title">Memory</span> <span class="title">usage</span>: 3%                  <span class="title">IPv4</span> <span class="title">address</span> <span class="title">for</span> <span class="title">eth0</span>: 172.20.107.81</span></span><br><span class="line"><span class="function">  <span class="title">Swap</span> <span class="title">usage</span>:   0%</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">This</span> <span class="title">message</span> <span class="title">is</span> <span class="title">shown</span> <span class="title">once</span> <span class="title">a</span> <span class="title">day</span>. <span class="title">To</span> <span class="title">disable</span> <span class="title">it</span> <span class="title">please</span> <span class="title">create</span> <span class="title">the</span></span></span><br><span class="line"><span class="function">/<span class="title">home</span>/<span class="title">magnolia</span>/.<span class="title">hushlogin</span> <span class="title">file</span>.</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h3><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">wsl --list --verbose  # 查看可用的 WSL 发行版</span><br><span class="line">wsl --shutdown  # 重启WSL</span><br><span class="line">wsl pwd  # 可以查看当前路径，来验证 WSL 是否正常工作</span><br><span class="line">wsl ls</span><br><span class="line">wsl --update</span><br><span class="line"></span><br><span class="line"># 收集 WSL 诊断信息</span><br><span class="line">wsl --status</span><br><span class="line">wsl --systeminfo</span><br></pre></td></tr></table></figure>
+
+<p>在 Windows 命令行</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">C:\<span class="title">Users</span>\<span class="title">username</span>&gt;<span class="title">wsl</span> <span class="title">pwd</span></span></span><br><span class="line"><span class="function">/<span class="title">mnt</span>/<span class="title">c</span>/<span class="title">Users</span>/<span class="title">username</span></span></span><br></pre></td></tr></table></figure>
+
+<p>创建 <code>/etc/wsl.conf</code>，禁用 Windows 访问 Linux 文件系统：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">iniCopyEdit[automount]</span><br><span class="line">enabled = true</span><br><span class="line">options = &quot;metadata&quot;</span><br><span class="line">mountFsTab = false</span><br></pre></td></tr></table></figure>
+
+<p>这样可以 <strong>加速 WSL 访问 Windows 文件系统</strong>，避免不必要的同步。</p>
+<p>使用 <code>wsl --shutdown</code> 释放 WSL 资源：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl --shutdown</span><br></pre></td></tr></table></figure>
+
+
+
+<p>访问 WSL 目录</p>
+<p>在 Windows 资源管理器 中访问 WSL 目录：</p>
+<ol>
+<li>打开 资源管理器 - 地址栏 <code>\\wsl$</code>，看到 WSL 安装的所有 Linux 发行版，比如 <code>Ubuntu</code>。</li>
+<li>进入 <code>\\wsl$\Ubuntu\home\yourname</code>，像管理普通文件一样操作 WSL 里的文件。</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/tools/" rel="tag"># tools</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2025/03/02/2025/GitLab%20Pages%20%E6%89%98%E7%AE%A1%E9%9D%99%E6%80%81%E7%BD%91%E7%AB%99/" rel="next" title="GitLab Pages 托管静态网站">
+                <i class="fa fa-chevron-left"></i> GitLab Pages 托管静态网站
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Magnolia" />
+            
+              <p class="site-author-name" itemprop="name">Magnolia</p>
+              <p class="site-description motion-element" itemprop="description">Python/测试开发</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/">
+              
+                  <span class="site-state-item-count">96</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://blog.csdn.net/qq_31362767" target="_blank" title="CSDN">
+                      
+                        <i class="fa fa-fw fa-cndn"></i>CSDN</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://gitee.com/zypdominate" target="_blank" title="Gitee">
+                      
+                        <i class="fa fa-fw fa-gitee"></i>Gitee</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/zypdominate" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:zypdominate@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A3%80%E6%9F%A5%E7%8A%B6%E6%80%81"><span class="nav-text">检查状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-wsl"><span class="nav-text">安装 wsl</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4"><span class="nav-text">命令</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Magnolia</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/jquery@2/dist/jquery.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/canvas_lines.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

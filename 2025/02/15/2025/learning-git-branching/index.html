@@ -70,7 +70,7 @@
 
 
 
-  <meta name="keywords" content="Python," />
+  <meta name="keywords" content="Git," />
 
 
 
@@ -84,15 +84,17 @@
 <meta name="description" content="一个学习 git 的小工具，复习一下 git 技能">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Learning git branching">
-<meta property="og:url" content="http://example.com/2024/02/15/2024/learning-git-branching/index.html">
+<meta property="og:url" content="http://example.com/2025/02/15/2025/learning-git-branching/index.html">
 <meta property="og:site_name" content="Magnolia&#39;s Blog">
 <meta property="og:description" content="一个学习 git 的小工具，复习一下 git 技能">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2024-02-15T15:08:18.000Z">
-<meta property="article:modified_time" content="2025-02-15T17:02:04.211Z">
+<meta property="og:image" content="http://example.com/images/2025/git-merge.gif">
+<meta property="article:published_time" content="2025-02-15T15:08:18.000Z">
+<meta property="article:modified_time" content="2025-03-04T15:33:24.004Z">
 <meta property="article:author" content="Magnolia">
-<meta property="article:tag" content="Python">
+<meta property="article:tag" content="Git">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/2025/git-merge.gif">
 
 
 
@@ -122,7 +124,7 @@
 
 
 
-  <link rel="canonical" href="http://example.com/2024/02/15/2024/learning-git-branching/"/>
+  <link rel="canonical" href="http://example.com/2025/02/15/2025/learning-git-branching/"/>
 
 
 
@@ -265,7 +267,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/02/15/2024/learning-git-branching/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/02/15/2025/learning-git-branching/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Magnolia">
@@ -294,8 +296,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2024-02-15T23:08:18+08:00">
-                2024-02-15
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2025-02-15T23:08:18+08:00">
+                2025-02-15
               </time>
             
 
@@ -328,8 +330,8 @@
                 
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%8A%80%E6%9C%AF/Python/" itemprop="url" rel="index">
-                    <span itemprop="name">Python</span>
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/Git/" itemprop="url" rel="index">
+                    <span itemprop="name">Git</span>
                   </a>
                 </span>
 
@@ -380,7 +382,7 @@
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b bugFix</span><br><span class="line">git commit </span><br><span class="line">git checkout main</span><br><span class="line">git commit</span><br><span class="line">git merge bugFix</span><br></pre></td></tr></table></figure>
 
-<p>![git merge](..&#x2F;..&#x2F;..&#x2F;..&#x2F;images&#x2F;2024&#x2F;2024&#x2F;git merge.gif)</p>
+<p><img src="/../../images/2025/git-merge.gif" alt="git merge"></p>
 <h3 id="rebase"><a href="#rebase" class="headerlink" title="rebase"></a>rebase</h3><p>操作：</p>
 <ul>
 <li>新建并切换到 <code>bugFix</code> 分支</li>
@@ -390,43 +392,43 @@
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b bugFix</span><br><span class="line">git commit </span><br><span class="line">git checkout main</span><br><span class="line">git commit</span><br><span class="line">git checkout bugFix</span><br><span class="line">git rebase main</span><br></pre></td></tr></table></figure>
 
-<p>![git rebase](..&#x2F;..&#x2F;images&#x2F;2024&#x2F;git rebase.gif)</p>
+<p>![git rebase](..&#x2F;..&#x2F;images&#x2F;2025&#x2F;git rebase.gif)</p>
 <h3 id="分离-HEAD"><a href="#分离-HEAD" class="headerlink" title="分离 HEAD"></a>分离 HEAD</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout c4</span><br></pre></td></tr></table></figure>
 
-<p>![git 分离HEAD](..&#x2F;..&#x2F;images&#x2F;2024&#x2F;git 分离HEAD.gif)</p>
+<p>![git 分离HEAD](..&#x2F;..&#x2F;images&#x2F;2025&#x2F;git 分离HEAD.gif)</p>
 <h3 id="相对引用"><a href="#相对引用" class="headerlink" title="相对引用"></a>相对引用</h3><h4 id="利用父节点"><a href="#利用父节点" class="headerlink" title="利用父节点"></a>利用父节点</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout HEAD^</span><br></pre></td></tr></table></figure>
 
 <p>寻找 bugFix 的父节点</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout bugFix^</span><br></pre></td></tr></table></figure>
 
-<p>![git 相对引用](..&#x2F;..&#x2F;images&#x2F;2024&#x2F;git 相对引用.gif)</p>
+<p>![git 相对引用](..&#x2F;..&#x2F;images&#x2F;2025&#x2F;git 相对引用.gif)</p>
 <h4 id="branch-f"><a href="#branch-f" class="headerlink" title="branch -f"></a>branch -f</h4><p>强制修改分支位置</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git branch -f bugFix c0</span><br><span class="line">git branch -f main c6</span><br><span class="line">git checkout c1</span><br></pre></td></tr></table></figure>
 
-<p>![git 强制修改分支位置](..&#x2F;..&#x2F;images&#x2F;2024&#x2F;git 强制修改分支位置.gif)</p>
+<p>![git 强制修改分支位置](..&#x2F;..&#x2F;images&#x2F;2025&#x2F;git 强制修改分支位置.gif)</p>
 <p>或者</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git checkout c1</span><br><span class="line">git branch -f bugFix HEAD~1</span><br><span class="line">git branch -f main c6</span><br></pre></td></tr></table></figure>
 
-<p>![git 强制修改分支位置2](..&#x2F;..&#x2F;images&#x2F;2024&#x2F;git 强制修改分支位置2.gif)</p>
+<p>![git 强制修改分支位置2](..&#x2F;..&#x2F;images&#x2F;2025&#x2F;git 强制修改分支位置2.gif)</p>
 <h3 id="撤销变更"><a href="#撤销变更" class="headerlink" title="撤销变更"></a>撤销变更</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git reset HEAD~1</span><br><span class="line">git checkout pushed</span><br><span class="line">git revert HEAD</span><br></pre></td></tr></table></figure>
 
-<p>![git 撤销变更](..&#x2F;..&#x2F;images&#x2F;2024&#x2F;git 撤销变更.gif)</p>
+<p>![git 撤销变更](..&#x2F;..&#x2F;images&#x2F;2025&#x2F;git 撤销变更.gif)</p>
 <h3 id="cherry-pick"><a href="#cherry-pick" class="headerlink" title="cherry-pick"></a>cherry-pick</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git cherry-pick c3 c4 c7</span><br></pre></td></tr></table></figure>
 
-<p>![git cherry-pick](..&#x2F;..&#x2F;images&#x2F;2024&#x2F;git cherry-pick.gif)</p>
+<p>![git cherry-pick](..&#x2F;..&#x2F;images&#x2F;2025&#x2F;git cherry-pick.gif)</p>
 <h3 id="交互式-rebase"><a href="#交互式-rebase" class="headerlink" title="交互式 rebase"></a>交互式 rebase</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rebase -i HEAD~4</span><br></pre></td></tr></table></figure>
 
-<p>![git 交互式rebase](..&#x2F;..&#x2F;images&#x2F;2024&#x2F;git 交互式rebase.gif)</p>
+<p>![git 交互式rebase](..&#x2F;..&#x2F;images&#x2F;2025&#x2F;git 交互式rebase.gif)</p>
 <h3 id="只取一个提交记录"><a href="#只取一个提交记录" class="headerlink" title="只取一个提交记录"></a>只取一个提交记录</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git rebase -i main</span><br><span class="line">git branch -f main bugFix</span><br></pre></td></tr></table></figure>
 
-<p>![git 只提交一个记录](..&#x2F;..&#x2F;images&#x2F;2024&#x2F;git 只提交一个记录.gif)</p>
+<p>![git 只提交一个记录](..&#x2F;..&#x2F;images&#x2F;2025&#x2F;git 只提交一个记录.gif)</p>
 <p>或者</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git checkout main</span><br><span class="line">git cherry-pick bugFix</span><br></pre></td></tr></table></figure>
 
-<p>![git 只提交一个记录2](..&#x2F;..&#x2F;images&#x2F;2024&#x2F;git 只提交一个记录2.gif)</p>
+<p>![git 只提交一个记录2](..&#x2F;..&#x2F;images&#x2F;2025&#x2F;git 只提交一个记录2.gif)</p>
 <h3 id="提交的技巧"><a href="#提交的技巧" class="headerlink" title="提交的技巧"></a>提交的技巧</h3><h4 id="rebase-在上一次提交上amend"><a href="#rebase-在上一次提交上amend" class="headerlink" title="rebase 在上一次提交上amend"></a>rebase 在上一次提交上amend</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git rebase -i main</span><br><span class="line">git commit --amend</span><br><span class="line">git rebase -i main</span><br><span class="line">git branch -f main caption</span><br></pre></td></tr></table></figure>
 
-<p>![git 提交的技巧1](..&#x2F;..&#x2F;images&#x2F;2024&#x2F;git 提交的技巧1.gif)</p>
+<p>![git 提交的技巧1](..&#x2F;..&#x2F;images&#x2F;2025&#x2F;git 提交的技巧1.gif)</p>
 <p>或者（多种方法尝试）</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git rebase -i caption~2</span><br><span class="line">git commit --amend</span><br><span class="line">git rebase -i HEAD~2</span><br><span class="line">git branch -f main caption</span><br></pre></td></tr></table></figure>
 
@@ -434,60 +436,60 @@
 
 <h4 id="cherry-pick-在上一次提交上-amend"><a href="#cherry-pick-在上一次提交上-amend" class="headerlink" title="cherry-pick 在上一次提交上 amend"></a>cherry-pick 在上一次提交上 amend</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git checkout main</span><br><span class="line">git cherry-pick newImage</span><br><span class="line">git commit --amend</span><br><span class="line">git cherry-pick caption</span><br></pre></td></tr></table></figure>
 
-<p>![git 提交的技巧2](..&#x2F;..&#x2F;images&#x2F;2024&#x2F;git 提交的技巧2.gif)</p>
+<p>![git 提交的技巧2](..&#x2F;..&#x2F;images&#x2F;2025&#x2F;git 提交的技巧2.gif)</p>
 <h3 id="tag"><a href="#tag" class="headerlink" title="tag"></a>tag</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git tag v0 c1</span><br><span class="line">git tag v1 c2</span><br><span class="line">git checkout v1</span><br></pre></td></tr></table></figure>
 
-<p>![git tag](..&#x2F;..&#x2F;images&#x2F;2024&#x2F;git tag.gif)</p>
+<p>![git tag](..&#x2F;..&#x2F;images&#x2F;2025&#x2F;git tag.gif)</p>
 <h3 id="多分支-rebase"><a href="#多分支-rebase" class="headerlink" title="多分支 rebase"></a>多分支 rebase</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git rebase main bugFix</span><br><span class="line">git rebase bugFix side</span><br><span class="line">git rebase side another</span><br><span class="line">git branch -f main another</span><br></pre></td></tr></table></figure>
 
-<p>![git 多分支rebase](..&#x2F;..&#x2F;images&#x2F;2024&#x2F;git 多分支rebase.gif)</p>
+<p>![git 多分支rebase](..&#x2F;..&#x2F;images&#x2F;2025&#x2F;git 多分支rebase.gif)</p>
 <h3 id="两个parent节点"><a href="#两个parent节点" class="headerlink" title="两个parent节点"></a>两个parent节点</h3><p>操作符 <code>^</code> 与 <code>~</code> 符一样，后面也可以跟一个数字。</p>
 <p>但是该操作符后面的数字与 <code>~</code> 后面的不同，并不是用来指定向上返回几代，而是指定合并提交记录的某个 parent 提交。还记得前面提到过的一个合并提交有两个 parent 提交吧，所以遇到这样的节点时该选择哪条路径就不是很清晰了。</p>
 <p>Git 默认选择合并提交的“第一个” parent 提交，在操作符 <code>^</code> 后跟一个数字可以改变这一默认行为。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git checkout HEAD~^2~</span><br><span class="line">git branch -f bugWork HEAD  <span class="comment"># git branch -f bugWork</span></span><br><span class="line">git checkout main</span><br></pre></td></tr></table></figure>
 
-<p>![git 两个parent1](..&#x2F;..&#x2F;images&#x2F;2024&#x2F;git 两个parent1.gif)</p>
+<p>![git 两个parent1](..&#x2F;..&#x2F;images&#x2F;2025&#x2F;git 两个parent1.gif)</p>
 <p>或者</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch bugWork HEAD~^2~</span><br></pre></td></tr></table></figure>
 
-<p>![git 两个parent2](..&#x2F;..&#x2F;images&#x2F;2024&#x2F;git 两个parent2.gif)</p>
+<p>![git 两个parent2](..&#x2F;..&#x2F;images&#x2F;2025&#x2F;git 两个parent2.gif)</p>
 <h3 id="纠缠不清的分支"><a href="#纠缠不清的分支" class="headerlink" title="纠缠不清的分支"></a>纠缠不清的分支</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git checkout one</span><br><span class="line">git cherry-pick c4 c3 c2</span><br><span class="line">git checkout two</span><br><span class="line">git cherry-pick c5 c4 c3 c2</span><br><span class="line">git branch -f three c2</span><br></pre></td></tr></table></figure>
 
-<p>![git 纠缠不清的分支](..&#x2F;..&#x2F;images&#x2F;2024&#x2F;git 纠缠不清的分支.gif)</p>
+<p>![git 纠缠不清的分支](..&#x2F;..&#x2F;images&#x2F;2025&#x2F;git 纠缠不清的分支.gif)</p>
 <h3 id="偏离的提交历史"><a href="#偏离的提交历史" class="headerlink" title="偏离的提交历史"></a>偏离的提交历史</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span></span><br><span class="line">git fakeTeamwork</span><br><span class="line">git commit</span><br><span class="line">git fetch</span><br><span class="line">git rebase o/main</span><br><span class="line">git push</span><br></pre></td></tr></table></figure>
 
-<p>![](..&#x2F;..&#x2F;images&#x2F;2024&#x2F;git 偏离的提交历史.gif)</p>
+<p>![](..&#x2F;..&#x2F;images&#x2F;2025&#x2F;git 偏离的提交历史.gif)</p>
 <p>或者</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span></span><br><span class="line">git fakeTeamwork</span><br><span class="line">git commit</span><br><span class="line">git pull --rebase</span><br><span class="line">git push</span><br></pre></td></tr></table></figure>
 
-<p>![](..&#x2F;..&#x2F;images&#x2F;2024&#x2F;git 偏离的提交历史2.gif)</p>
+<p>![](..&#x2F;..&#x2F;images&#x2F;2025&#x2F;git 偏离的提交历史2.gif)</p>
 <h3 id="锁定的Main"><a href="#锁定的Main" class="headerlink" title="锁定的Main"></a>锁定的Main</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard o/main</span><br><span class="line">git checkout -b feature c2</span><br><span class="line">git push   <span class="comment"># git push origin feature</span></span><br></pre></td></tr></table></figure>
 
-<p>![](..&#x2F;..&#x2F;images&#x2F;2024&#x2F;git 锁定的main.gif)</p>
+<p>![](..&#x2F;..&#x2F;images&#x2F;2025&#x2F;git 锁定的main.gif)</p>
 <h3 id="推送主分支"><a href="#推送主分支" class="headerlink" title="推送主分支"></a>推送主分支</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">git fetch</span><br><span class="line">git rebase o/main side1</span><br><span class="line">git rebase side1 side2</span><br><span class="line">git rebase side2 side3</span><br><span class="line">git rebase side3 main</span><br><span class="line">git push</span><br></pre></td></tr></table></figure>
 
-<p>![](..&#x2F;..&#x2F;images&#x2F;2024&#x2F;git 推送主分支.gif)</p>
+<p>![](..&#x2F;..&#x2F;images&#x2F;2025&#x2F;git 推送主分支.gif)</p>
 <h3 id="合并远程仓库"><a href="#合并远程仓库" class="headerlink" title="合并远程仓库"></a>合并远程仓库</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">git fetch</span><br><span class="line">git rebase o/main main</span><br><span class="line">git merge side1</span><br><span class="line">git merge side2</span><br><span class="line">git merge side3</span><br><span class="line">git push</span><br></pre></td></tr></table></figure>
 
-<p>![](..&#x2F;..&#x2F;images&#x2F;2024&#x2F;git 合并远程仓库.gif)</p>
+<p>![](..&#x2F;..&#x2F;images&#x2F;2025&#x2F;git 合并远程仓库.gif)</p>
 <h3 id="远程跟踪"><a href="#远程跟踪" class="headerlink" title="远程跟踪"></a>远程跟踪</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b side o/main</span><br><span class="line">git commit</span><br><span class="line">git fetch</span><br><span class="line">git rebase o/main side</span><br><span class="line">git push</span><br></pre></td></tr></table></figure>
 
 <p>或者</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b side o/main</span><br><span class="line">git commit</span><br><span class="line">git pull --rebase</span><br><span class="line">git push</span><br></pre></td></tr></table></figure>
 
-<p>![](..&#x2F;..&#x2F;images&#x2F;2024&#x2F;git 远程跟踪.gif)</p>
+<p>![](..&#x2F;..&#x2F;images&#x2F;2025&#x2F;git 远程跟踪.gif)</p>
 <h3 id="push-的参数"><a href="#push-的参数" class="headerlink" title="push 的参数"></a>push 的参数</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git push origin main</span><br><span class="line">git push origin foo</span><br></pre></td></tr></table></figure>
 
-<p>![](..&#x2F;..&#x2F;images&#x2F;2024&#x2F;git push的参数.gif)</p>
+<p>![](..&#x2F;..&#x2F;images&#x2F;2025&#x2F;git push的参数.gif)</p>
 <h3 id="push-的参数2"><a href="#push-的参数2" class="headerlink" title="push 的参数2"></a>push 的参数2</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git push origin foo:main</span><br><span class="line">git push origin main^:foo</span><br></pre></td></tr></table></figure>
 
-<p>![](..&#x2F;..&#x2F;images&#x2F;2024&#x2F;git push的参数2.gif)</p>
+<p>![](..&#x2F;..&#x2F;images&#x2F;2025&#x2F;git push的参数2.gif)</p>
 <h3 id="fetch-的参数"><a href="#fetch-的参数" class="headerlink" title="fetch 的参数"></a>fetch 的参数</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git fetch origin c3:foo</span><br><span class="line">git fetch origin c6:main</span><br><span class="line">git checkout foo</span><br><span class="line">git merge main</span><br></pre></td></tr></table></figure>
 
-<p>![](..&#x2F;..&#x2F;images&#x2F;2024&#x2F;git fetch的参数.gif)</p>
+<p>![](..&#x2F;..&#x2F;images&#x2F;2025&#x2F;git fetch的参数.gif)</p>
 <h3 id="没有-source-的-source"><a href="#没有-source-的-source" class="headerlink" title="没有 source 的 source"></a>没有 source 的 source</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git push origin :foo</span><br><span class="line">git fetch origin :bar</span><br></pre></td></tr></table></figure>
 
-<p>![](..&#x2F;..&#x2F;images&#x2F;2024&#x2F;git 没有 source 的 source.gif)</p>
+<p>![](..&#x2F;..&#x2F;images&#x2F;2025&#x2F;git 没有 source 的 source.gif)</p>
 <h3 id="pull-参数"><a href="#pull-参数" class="headerlink" title="pull 参数"></a>pull 参数</h3><p>git pull 到头来就是 fetch 后跟 merge 的缩写。可以理解为用同样的参数执行 git fetch，然后再 merge 所抓取到的提交记录。</p>
 <p><code>git pull origin foo</code> 相当于：<code>git fetch origin foo; git merge o/foo</code></p>
 <p><code>git pull origin bar:bugFix</code> 相当于：<code>git fetch origin bar:bugFix; git merge bugFix</code></p>
@@ -496,7 +498,7 @@
 <p>或者</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git pull origin c3:foo</span><br><span class="line">git pull origin c2:side</span><br></pre></td></tr></table></figure>
 
-<p>![](..&#x2F;..&#x2F;images&#x2F;2024&#x2F;git pull参数.gif)</p>
+<p>![](..&#x2F;..&#x2F;images&#x2F;2025&#x2F;git pull参数.gif)</p>
 
       
     </div>
@@ -514,7 +516,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Python/" rel="tag"># Python</a>
+            <a href="/tags/Git/" rel="tag"># Git</a>
           
         </div>
       
@@ -527,8 +529,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2024/02/11/2024/gitlab-runner.exe%20exec%20%E8%B0%83%E8%AF%95%20ci%20%E9%85%8D%E7%BD%AE/" rel="next" title="gitlab-runner.exe exec 调试 ci 配置">
-                <i class="fa fa-chevron-left"></i> gitlab-runner.exe exec 调试 ci 配置
+              <a href="/2025/02/09/2024/Jenkins%E6%95%B0%E6%8D%AE%E5%A4%87%E4%BB%BD%E5%88%B0windows%20FTP%E6%9C%8D%E5%8A%A1%E5%99%A8/" rel="next" title="Jenkins 数据备份到 Windows FTP 服务器">
+                <i class="fa fa-chevron-left"></i> Jenkins 数据备份到 Windows FTP 服务器
               </a>
             
           </div>
@@ -537,8 +539,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2024/07/01/2024/iOS%E5%B9%B3%E5%8F%B0%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E5%8D%87%E7%BA%A7/" rel="prev" title="iOS 平台自动化测试升级">
-                iOS 平台自动化测试升级 <i class="fa fa-chevron-right"></i>
+              <a href="/2025/03/02/2025/GitLab%20Pages%20%E6%89%98%E7%AE%A1%E9%9D%99%E6%80%81%E7%BD%91%E7%AB%99/" rel="prev" title="GitLab Pages 托管静态网站">
+                GitLab Pages 托管静态网站 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -620,7 +622,7 @@
               
                 <a href="/">
               
-                  <span class="site-state-item-count">95</span>
+                  <span class="site-state-item-count">96</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
                 </a>
