@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Python," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="在 Python 中，import 语句会被执行，也就是在导入某个模块的的类、函数等时候，会执行该模块，此时如果该模块中有实例化的对象或者可以执行的函数，那么就会执行，由此可能会产生一些问题。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="不恰当的import导致的问题">
+<meta property="og:url" content="http://example.com/2024/07/01/2025/TEMPLATE/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="在 Python 中，import 语句会被执行，也就是在导入某个模块的的类、函数等时候，会执行该模块，此时如果该模块中有实例化的对象或者可以执行的函数，那么就会执行，由此可能会产生一些问题。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="d:\Developer\keeplearning\Python\Bug\screenshot\import%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%980.png">
+<meta property="og:image" content="d:\Developer\keeplearning\Python\Bug\screenshot\import%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%981.png">
+<meta property="og:image" content="d:\Developer\keeplearning\Python\Bug\screenshot\import%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%982.png">
+<meta property="og:image" content="d:\Developer\keeplearning\Python\Bug\screenshot\import%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%983.png">
+<meta property="article:published_time" content="2024-07-01T11:45:18.000Z">
+<meta property="article:modified_time" content="2025-03-30T13:46:16.174Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="d:\Developer\keeplearning\Python\Bug\screenshot\import%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%980.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/2024/07/01/2025/TEMPLATE/"/>
+
+
+
+
+
+  <title>不恰当的import导致的问题 | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Magnolia's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">持续成长</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/07/01/2025/TEMPLATE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Magnolia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">不恰当的import导致的问题</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2024-07-01T19:45:18+08:00">
+                2024-07-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+              <div class="post-description">
+                  在 Python 中，import 语句会被执行，也就是在导入某个模块的的类、函数等时候，会执行该模块，此时如果该模块中有实例化的对象或者可以执行的函数，那么就会执行，由此可能会产生一些问题。
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="1-直接执行被导入模块的代码"><a href="#1-直接执行被导入模块的代码" class="headerlink" title="1. 直接执行被导入模块的代码"></a>1. 直接执行被导入模块的代码</h3><p>在 Python 中，import 语句会被执行，也就是在导入某个模块的的类、函数等时候，会执行该模块，此时如果该模块中有实例化的对象或者可以执行的函数，那么就会执行。用一个工作中遇到的问题来解释：</p>
+<p>（关于业务的描述可以忽略）在执行工装测试套时，正确填写好需要测试的工装IPC的信息后，发现实际执行的是默认的IP值是device_info.json文件中默认值，而不是当时需要测试的203.1.2.35。</p>
+<p><img src="D:\Developer\keeplearning\Python\Bug\screenshot\import导致的问题0.png" alt="img"></p>
+<p>在 pycharm 本地调试 main_tooling.py，发现是一个导包问题导致的：引入了一个类的实例化（业务：破解设备二层的模块）。</p>
+<p>解决过程：</p>
+<p>首先是复制console打印日志中的“查看update -v异常”，到Utest工程中全局查找，发现只有在破二层的地方出现，于是在这边添加断点：</p>
+<p><img src="D:\Developer\keeplearning\Python\Bug\screenshot\import导致的问题1.png" alt="wps2"></p>
+<p>通过debug可以回溯前面调用的地方：</p>
+<p><img src="D:\Developer\keeplearning\Python\Bug\screenshot\import导致的问题2.png" alt="img"></p>
+<p>通过 git 历史提交记录发现是同事处理某个问题时引入：</p>
+<p><img src="D:\Developer\keeplearning\Python\Bug\screenshot\import导致的问题3.png" alt="img"></p>
+<p>通过回溯回顾，发现：</p>
+<p>在最初执行的 <code>main_tooling.py</code> 中调用 <code>liveoperator</code>模块中的类 ：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> src.components.liveoperator <span class="keyword">import</span> LiveOperator</span><br></pre></td></tr></table></figure>
+
+<p>在 <code>liveoperator.py</code> 中调用 <code>videoaction</code> 模块中的类 ：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> src.components.videoaction <span class="keyword">import</span> VideoActionLapi</span><br></pre></td></tr></table></figure>
+
+<p>在 <code>videoaction.py</code> 中调用 <code>video_parameters</code> 模块中的类：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> src.parameters.video_parameters <span class="keyword">import</span> videoparameters</span><br></pre></td></tr></table></figure>
+
+<p>在 <code>video_parameters.py</code> 中实例化了 <code>VideoParameters</code> 类：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">videoparameters = VideoParameters()</span><br></pre></td></tr></table></figure>
+
+<p>在实例化过程中，就出现了问题的原因所在，抛开业务来说就是<strong>在不合适的时机，实例化了我不想实例化的类</strong>，我还没做 xxx 呢，你现在就给我实例化，我不能让你这么做。</p>
+<p>解决办法：</p>
+<p>可以在将 <code>main_tooling.py</code> 中导入liveoperator 的代码放入需要执行的地方，而不是放在文件的首部，这样可以等到我做了某一业务操作后再执行导入就没有问题了，也就是一个先后问题。</p>
+<hr>
+<h3 id="2-import-循环"><a href="#2-import-循环" class="headerlink" title="2. import 循环"></a>2. import 循环</h3><p>Python 是可以循环引用的，只要循环引用中的模块并不是在定义阶段就马上使用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># module1.py</span></span><br><span class="line"><span class="keyword">import</span> module2</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ModuleDemo</span>():</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">module2_func</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">print</span>(module2.module2_func)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># module2.py</span></span><br><span class="line"><span class="keyword">import</span> module1</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">module2_func</span>():</span><br><span class="line">    <span class="built_in">print</span>(module1.ModuleDemo)</span><br></pre></td></tr></table></figure>
+
+<p>由于示例中只有在函数内部使用，只要 import 阶段没有执行到相应的用到 import 位置的代码就没有问题。正常使用时要避免三种使用方法：</p>
+<ol>
+<li>from … import … （如果有循环导入的，考虑把这种形式的去掉）</li>
+<li>直接执行的代码 （避免导入直接执行的代码）</li>
+<li>类的继承（避免基类的模块去 import 派生类的模块）</li>
+</ol>
+<p>还有其他方法：用到时再导入，而不是放在模块顶部。比如将 import 放到函数里面，可以解决问题，但治标不治本，治本的还是要重新划分模块，逻辑理顺了就不会出现循环 import 。</p>
+<p>错误示范，出现 ImportError：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># module1.py</span></span><br><span class="line"><span class="keyword">from</span> module2 <span class="keyword">import</span> module2_func</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ModuleDemo</span>():</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">module2_func</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">print</span>(module2_func)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># module2.py</span></span><br><span class="line"><span class="keyword">from</span> module1 <span class="keyword">import</span> ModuleDemo</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">module2_func</span>():</span><br><span class="line">    <span class="built_in">print</span>(ModuleDemo)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="3-如何拥有导入的模块"><a href="#3-如何拥有导入的模块" class="headerlink" title="3. 如何拥有导入的模块"></a>3. 如何拥有导入的模块</h3><p>假设有以下模块：</p>
+<p>foo.py：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> bar <span class="keyword">import</span> bar_var</span><br><span class="line">foo_var = <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>bar.py：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> foo <span class="keyword">import</span> foo_var</span><br><span class="line">bar_var = <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<p>问题在于解释器将执行以下步骤：</p>
+<ul>
+<li>python 的 main 主函数 import 导入 foo（执行 foo 模块）</li>
+<li>为 foo 创建空的全局变量</li>
+<li>foo 被编译并开始执行</li>
+<li>foo 导入 bar （即 from bar import bar_var）</li>
+<li>创建 bar 的空全局变量</li>
+<li>bar 被编译并开始执行</li>
+<li>在 bar 模块中，导入foo（因为前面已经有一个名为foo的模块，所以它是空操作）</li>
+<li>bar.foo_var &#x3D; foo.foo_var</li>
+</ul>
+<p>最后一步失败了，因为 Python 尚未完成解释<code>foo</code>，并且的全局符号字典<code>foo</code>仍然为空。</p>
+<p>同样的事情会发生：使用 <code>import foo</code> ，然后在全局代码中访问 <code>foo.foo_var</code> 。</p>
+<p>foo.py：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> bar</span><br><span class="line">foo_var = <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>bar.py：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> foo</span><br><span class="line">bar_var = <span class="number">2</span></span><br><span class="line"><span class="built_in">print</span>(foo.foo_var) </span><br></pre></td></tr></table></figure>
+
+<p>执行 bar.py 会出现 <code>AttributeError: module &#39;foo&#39; has no attribute &#39;foo_var&#39;</code>。</p>
+<hr>
+<p>Guido van Rossum 建议避免使用 <code>from &lt;module&gt; import ...</code> 的所有用法，并将所有代码放在函数中。全局变量和类变量的初始化应仅使用常量或内置函数。这意味着来自导入模块的所有内容都被引用为<code>&lt;module&gt;.&lt;name&gt;</code>。</p>
+<p>Jim Roskind建议在每个模块中按以下顺序执行步骤：</p>
+<ul>
+<li>导出（不需要导入基类的全局变量，函数和类）</li>
+<li><code>import</code> 语句</li>
+<li>激活代码（包括从导入值初始化的全局变量）。</li>
+</ul>
+<p>van Rossum 不太喜欢这种方法，因为这种导入语句会出现在一个奇怪的地方，但是也确实可行。</p>
+<p>Matthias Urlichs建议重组代码，这样一开始就不需要递归导入（循环导入）。</p>
+<p>以上这些解决方案不是互斥的。</p>
+<p><a target="_blank" rel="noopener" href="https://docs.python.org/3/faq/programming.html#how-can-i-have-modules-that-mutually-import-each-other">Reference</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2024/02/11/2024/gitlab-runner.exe%20exec%20%E8%B0%83%E8%AF%95%20ci%20%E9%85%8D%E7%BD%AE/" rel="next" title="gitlab-runner.exe exec 调试 ci 配置">
+                <i class="fa fa-chevron-left"></i> gitlab-runner.exe exec 调试 ci 配置
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2024/07/01/2024/iOS%E5%B9%B3%E5%8F%B0%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E5%8D%87%E7%BA%A7/" rel="prev" title="iOS 平台自动化测试升级">
+                iOS 平台自动化测试升级 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Magnolia" />
+            
+              <p class="site-author-name" itemprop="name">Magnolia</p>
+              <p class="site-description motion-element" itemprop="description">Python/测试开发</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/">
+              
+                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://blog.csdn.net/qq_31362767" target="_blank" title="CSDN">
+                      
+                        <i class="fa fa-fw fa-cndn"></i>CSDN</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://gitee.com/zypdominate" target="_blank" title="Gitee">
+                      
+                        <i class="fa fa-fw fa-gitee"></i>Gitee</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/zypdominate" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:zypdominate@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%9B%B4%E6%8E%A5%E6%89%A7%E8%A1%8C%E8%A2%AB%E5%AF%BC%E5%85%A5%E6%A8%A1%E5%9D%97%E7%9A%84%E4%BB%A3%E7%A0%81"><span class="nav-text">1. 直接执行被导入模块的代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-import-%E5%BE%AA%E7%8E%AF"><span class="nav-text">2. import 循环</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%A6%82%E4%BD%95%E6%8B%A5%E6%9C%89%E5%AF%BC%E5%85%A5%E7%9A%84%E6%A8%A1%E5%9D%97"><span class="nav-text">3. 如何拥有导入的模块</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Magnolia</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/jquery@2/dist/jquery.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/canvas_lines.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
