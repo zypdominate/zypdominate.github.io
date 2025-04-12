@@ -84,20 +84,20 @@
 <meta name="description" content="在 Python 中，import 语句会被执行，也就是在导入某个模块的的类、函数等时候，会执行该模块，此时如果该模块中有实例化的对象或者可以执行的函数，那么就会执行，由此可能会产生一些问题。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="不恰当的import导致的问题">
-<meta property="og:url" content="http://example.com/2024/07/01/2025/TEMPLATE/index.html">
+<meta property="og:url" content="http://example.com/2020/07/05/2025/%E4%B8%8D%E6%81%B0%E5%BD%93%E7%9A%84import%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%98/index.html">
 <meta property="og:site_name" content="Magnolia&#39;s Blog">
 <meta property="og:description" content="在 Python 中，import 语句会被执行，也就是在导入某个模块的的类、函数等时候，会执行该模块，此时如果该模块中有实例化的对象或者可以执行的函数，那么就会执行，由此可能会产生一些问题。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="d:\Developer\keeplearning\Python\Bug\screenshot\import%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%980.png">
-<meta property="og:image" content="d:\Developer\keeplearning\Python\Bug\screenshot\import%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%981.png">
-<meta property="og:image" content="d:\Developer\keeplearning\Python\Bug\screenshot\import%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%982.png">
-<meta property="og:image" content="d:\Developer\keeplearning\Python\Bug\screenshot\import%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%983.png">
-<meta property="article:published_time" content="2024-07-01T11:45:18.000Z">
-<meta property="article:modified_time" content="2025-03-30T13:46:16.174Z">
+<meta property="og:image" content="http://example.com/images/2020/import%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%980.png">
+<meta property="og:image" content="http://example.com/images/2020/import%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%981.png">
+<meta property="og:image" content="http://example.com/images/2020/import%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%982.png">
+<meta property="og:image" content="http://example.com/images/2020/import%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%983.png">
+<meta property="article:published_time" content="2020-07-05T02:49:21.000Z">
+<meta property="article:modified_time" content="2025-04-12T06:39:39.513Z">
 <meta property="article:author" content="Magnolia">
 <meta property="article:tag" content="Python">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="d:\Developer\keeplearning\Python\Bug\screenshot\import%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%980.png">
+<meta name="twitter:image" content="http://example.com/images/2020/import%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%980.png">
 
 
 
@@ -127,7 +127,7 @@
 
 
 
-  <link rel="canonical" href="http://example.com/2024/07/01/2025/TEMPLATE/"/>
+  <link rel="canonical" href="http://example.com/2020/07/05/2025/不恰当的import导致的问题/"/>
 
 
 
@@ -270,7 +270,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/07/01/2025/TEMPLATE/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/07/05/2025/%E4%B8%8D%E6%81%B0%E5%BD%93%E7%9A%84import%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Magnolia">
@@ -299,8 +299,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2024-07-01T19:45:18+08:00">
-                2024-07-01
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-07-05T10:49:21+08:00">
+                2020-07-05
               </time>
             
 
@@ -376,15 +376,15 @@
       
         <h3 id="1-直接执行被导入模块的代码"><a href="#1-直接执行被导入模块的代码" class="headerlink" title="1. 直接执行被导入模块的代码"></a>1. 直接执行被导入模块的代码</h3><p>在 Python 中，import 语句会被执行，也就是在导入某个模块的的类、函数等时候，会执行该模块，此时如果该模块中有实例化的对象或者可以执行的函数，那么就会执行。用一个工作中遇到的问题来解释：</p>
 <p>（关于业务的描述可以忽略）在执行工装测试套时，正确填写好需要测试的工装IPC的信息后，发现实际执行的是默认的IP值是device_info.json文件中默认值，而不是当时需要测试的203.1.2.35。</p>
-<p><img src="D:\Developer\keeplearning\Python\Bug\screenshot\import导致的问题0.png" alt="img"></p>
-<p>在 pycharm 本地调试 main_tooling.py，发现是一个导包问题导致的：引入了一个类的实例化（业务：破解设备二层的模块）。</p>
+<p><img src="/../../images/2020/import%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%980.png" alt="img"></p>
+<p>在 pycharm 本地调试 main_tooling.py，发现是一个导包问题导致的：引入了一个类的实例化。</p>
 <p>解决过程：</p>
-<p>首先是复制console打印日志中的“查看update -v异常”，到Utest工程中全局查找，发现只有在破二层的地方出现，于是在这边添加断点：</p>
-<p><img src="D:\Developer\keeplearning\Python\Bug\screenshot\import导致的问题1.png" alt="wps2"></p>
+<p>首先是复制console打印日志中的“查看update -v异常”，到Utest工程中全局查找，发现只有在xxx的地方出现，于是在这边添加断点：</p>
+<p><img src="/../../images/2020/import%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%981.png" alt="wps2"></p>
 <p>通过debug可以回溯前面调用的地方：</p>
-<p><img src="D:\Developer\keeplearning\Python\Bug\screenshot\import导致的问题2.png" alt="img"></p>
+<p><img src="/../../images/2020/import%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%982.png" alt="img"></p>
 <p>通过 git 历史提交记录发现是同事处理某个问题时引入：</p>
-<p><img src="D:\Developer\keeplearning\Python\Bug\screenshot\import导致的问题3.png" alt="img"></p>
+<p><img src="/../../images/2020/import%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%983.png" alt="img"></p>
 <p>通过回溯回顾，发现：</p>
 <p>在最初执行的 <code>main_tooling.py</code> 中调用 <code>liveoperator</code>模块中的类 ：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> src.components.liveoperator <span class="keyword">import</span> LiveOperator</span><br></pre></td></tr></table></figure>
@@ -489,8 +489,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2024/02/11/2024/gitlab-runner.exe%20exec%20%E8%B0%83%E8%AF%95%20ci%20%E9%85%8D%E7%BD%AE/" rel="next" title="gitlab-runner.exe exec 调试 ci 配置">
-                <i class="fa fa-chevron-left"></i> gitlab-runner.exe exec 调试 ci 配置
+              <a href="/2020/07/04/2020/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E2%80%94%E9%83%A8%E5%88%86%E5%B7%A5%E4%BD%9C%E5%B0%8F%E7%BB%93/" rel="next" title="自动化测试—部分工作小结">
+                <i class="fa fa-chevron-left"></i> 自动化测试—部分工作小结
               </a>
             
           </div>
@@ -499,8 +499,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2024/07/01/2024/iOS%E5%B9%B3%E5%8F%B0%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E5%8D%87%E7%BA%A7/" rel="prev" title="iOS 平台自动化测试升级">
-                iOS 平台自动化测试升级 <i class="fa fa-chevron-right"></i>
+              <a href="/2023/12/03/2024/Python%20%E6%9F%A5%E7%9C%8B%E6%9F%90%E4%B8%AA%E5%BA%93%E7%9A%84%E7%89%88%E6%9C%AC/" rel="prev" title="Python 查看某个库的版本">
+                Python 查看某个库的版本 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -582,7 +582,7 @@
               
                 <a href="/">
               
-                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-count">101</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
                 </a>
