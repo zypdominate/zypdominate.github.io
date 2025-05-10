@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="elasticsearch,docker," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="记录在 CentOS 系统上通过 Docker 安装 Elasticsearch、Kibana 和 Filebeat 的全过程，涵盖安装 Docker Engine、Docker - Compose 以及各组件的具体步骤，给出实例配置文件及相关命令，还列举了安装过程中遇到的诸多问题及解决办法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker 中安装 Elasticsearch + Kibana + Filebeat">
+<meta property="og:url" content="http://example.com/2020/10/15/2020/Docker%20%E4%B8%AD%E5%AE%89%E8%A3%85%20Elasticsearch%20+%20Kibana%20+%20Filebeat/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="记录在 CentOS 系统上通过 Docker 安装 Elasticsearch、Kibana 和 Filebeat 的全过程，涵盖安装 Docker Engine、Docker - Compose 以及各组件的具体步骤，给出实例配置文件及相关命令，还列举了安装过程中遇到的诸多问题及解决办法。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/2020/es/Elasticsearch_server_is_ok.png">
+<meta property="og:image" content="http://example.com/images/2020/es/Kibana_server_is_ok.png">
+<meta property="og:image" content="http://example.com/images/2020/es/Kibana%E9%85%8D%E7%BD%AE%E7%B4%A2%E5%BC%951.png">
+<meta property="og:image" content="http://example.com/images/2020/es/Kibana%E9%85%8D%E7%BD%AE%E7%B4%A2%E5%BC%952.png">
+<meta property="og:image" content="http://example.com/images/2020/es/Kibana%E9%85%8D%E7%BD%AE%E7%B4%A2%E5%BC%953.png">
+<meta property="og:image" content="http://example.com/images/2020/es/Kibana_server_is_not_ready_yet1.png">
+<meta property="og:image" content="http://example.com/images/2020/es/Kibana_server_is_not_ready_yet2.png">
+<meta property="og:image" content="http://example.com/images/2020/es/Kibana%E8%BF%9E%E6%8E%A5es%E6%8A%A5%E9%94%991.png">
+<meta property="og:image" content="http://example.com/images/2020/es/Kibana%E8%BF%9E%E6%8E%A5es%E6%8A%A5%E9%94%992.png">
+<meta property="article:published_time" content="2020-10-15T12:43:51.000Z">
+<meta property="article:modified_time" content="2025-05-10T08:10:16.129Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="elasticsearch">
+<meta property="article:tag" content="docker">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/2020/es/Elasticsearch_server_is_ok.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/2020/10/15/2020/Docker 中安装 Elasticsearch + Kibana + Filebeat/"/>
+
+
+
+
+
+  <title>Docker 中安装 Elasticsearch + Kibana + Filebeat | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Magnolia's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">持续成长</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/15/2020/Docker%20%E4%B8%AD%E5%AE%89%E8%A3%85%20Elasticsearch%20+%20Kibana%20+%20Filebeat/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Magnolia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Docker 中安装 Elasticsearch + Kibana + Filebeat</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-10-15T20:43:51+08:00">
+                2020-10-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/Elasticsearch/" itemprop="url" rel="index">
+                    <span itemprop="name">Elasticsearch</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+              <div class="post-description">
+                  记录在 CentOS 系统上通过 Docker 安装 Elasticsearch、Kibana 和 Filebeat 的全过程，涵盖安装 Docker Engine、Docker - Compose 以及各组件的具体步骤，给出实例配置文件及相关命令，还列举了安装过程中遇到的诸多问题及解决办法。
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="在-Docker-中安装-Elasticsearch-Kibana-Filebeat"><a href="#在-Docker-中安装-Elasticsearch-Kibana-Filebeat" class="headerlink" title="在 Docker 中安装 Elasticsearch + Kibana + Filebeat"></a>在 Docker 中安装 <code>Elasticsearch + Kibana + Filebeat</code></h3><h4 id="在-CentOS上安装-Docker-Engine"><a href="#在-CentOS上安装-Docker-Engine" class="headerlink" title="在 CentOS上安装 Docker Engine"></a><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/install/centos/">在 CentOS上安装 Docker Engine</a></h4><p>先更新一下 yum 软件源的缓存，安装依赖包</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo yum update</span><br><span class="line">sudo yum install -y yum-utils device-mapper-persistent-data lvm2</span><br></pre></td></tr></table></figure>
+
+<p>添加国内下载源</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum-config-manager --add-repo https://mirrors.ustc.edu.cn/docker-ce/linux/centos/docker-ce.repo</span><br></pre></td></tr></table></figure>
+
+<p>安装比较稳定的版本 Docker CE </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo yum makecache fast</span><br><span class="line">sudo yum install docker-ce</span><br></pre></td></tr></table></figure>
+
+<p>配置开机启动，并启动 Docker CE ：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl enable docker</span><br><span class="line">sudo systemctl start docker</span><br></pre></td></tr></table></figure>
+
+<p>测试是否正确安装了 Docker Engine:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run hello-world</span><br></pre></td></tr></table></figure>
+
+<p>建立 docker 组，将当前用户加入 docker 组：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo groupadd docker</span><br><span class="line">sudo usermod -aG docker $USER</span><br></pre></td></tr></table></figure>
+
+<p>再次执行 <code>docker run hello-world</code> 测试是否可以执行。</p>
+<h4 id="安装-Docker-Compose"><a href="#安装-Docker-Compose" class="headerlink" title="安装 Docker-Compose"></a><a target="_blank" rel="noopener" href="https://docs.docker.com/compose/install/">安装 Docker-Compose</a></h4><p>在线安装，下载一个 Docker-Compose</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo curl -L &quot;https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)&quot; -o /usr/local/bin/docker-compose</span><br></pre></td></tr></table></figure>
+
+<p>给文件执行权限</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo chmod +x /usr/local/bin/docker-compose</span><br></pre></td></tr></table></figure>
+
+<p>创建指向 <code>/usr/bin</code> 的链接</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose</span><br></pre></td></tr></table></figure>
+
+<p>查看版本</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose --version</span><br></pre></td></tr></table></figure>
+
+<h4 id="安装-Elasticsearch"><a href="#安装-Elasticsearch" class="headerlink" title="安装 Elasticsearch"></a><a target="_blank" rel="noopener" href="https://www.xttblog.com/?p=4408">安装 Elasticsearch</a></h4><p>在 Docker-hub 中搜索 Elasticsearch 版本</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker search Elasticsearch</span><br></pre></td></tr></table></figure>
+
+<p>安装 Elasticsearch 7.2 的版本</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull docker.elastic.co/elasticsearch/elasticsearch:7.2.0</span><br></pre></td></tr></table></figure>
+
+<p>安装完成后，执行 <code>docker images</code> 或者 <code>docker image ls</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon /]# docker images</span><br><span class="line">REPOSITORY                      TAG         IMAGE ID        CREATED         SIZE</span><br><span class="line">hello-world                     latest      bf756fb1ae65    9 months ago    13.3kB</span><br><span class="line">docker.elastic.co/elasticsearch/elasticsearch   7.2.0       0efa6a3de177    15 months ago    861MB</span><br></pre></td></tr></table></figure>
+
+<h4 id="Docker-Elasticsearch-Kibana-Filebeat-实例"><a href="#Docker-Elasticsearch-Kibana-Filebeat-实例" class="headerlink" title="Docker + Elasticsearch + Kibana + Filebeat 实例"></a>Docker + Elasticsearch + Kibana + Filebeat 实例</h4><p>我的 test_docker 文件夹，目录层级</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon test_docker]# tree</span><br><span class="line">.</span><br><span class="line">├── docker-compose.yaml</span><br><span class="line">└── filebeat</span><br><span class="line">    ├── conf</span><br><span class="line">    │   └── filebeat.yml</span><br><span class="line">    ├── data</span><br><span class="line">    │   ├── meta.json</span><br><span class="line">    │   └── registry</span><br><span class="line">    │       └── filebeat</span><br><span class="line">    │           ├── data.json</span><br><span class="line">    │           └── meta.json</span><br><span class="line">    └── logs</span><br><span class="line"></span><br><span class="line">6 directories, 5 files</span><br></pre></td></tr></table></figure>
+
+<p>新建一个 <code>docker-compose.yml</code> 文件</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&#x27;2.2&#x27;</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">cerebro:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">lmenezes/cerebro:0.8.3</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">cerebro</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;9000:9000&quot;</span></span><br><span class="line">    <span class="attr">command:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">-Dhosts.0.host=http://elasticsearch:9200</span></span><br><span class="line">  <span class="attr">kibana:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">docker.elastic.co/kibana/kibana:7.1.0</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">kibana7</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">I18N_LOCALE=zh-CN</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">XPACK_GRAPH_ENABLED=true</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">TIMELION_ENABLED=true</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">XPACK_MONITORING_COLLECTION_ENABLED=&quot;true&quot;</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;5601:5601&quot;</span></span><br><span class="line">  <span class="attr">elasticsearch:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">docker.elastic.co/elasticsearch/elasticsearch:7.1.0</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">es7_01</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">cluster.name=zhuyuping</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">node.name=es7_01</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">bootstrap.memory_lock=true</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;ES_JAVA_OPTS=-Xms512m -Xmx512m&quot;</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">discovery.seed_hosts=es7_01</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">cluster.initial_master_nodes=es7_01</span> <span class="comment">#,es7_02</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">path.data:/data/elasticsearch</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">path.logs:/data/log/elasticsearch</span></span><br><span class="line">    <span class="attr">ulimits:</span></span><br><span class="line">      <span class="attr">memlock:</span></span><br><span class="line">        <span class="attr">soft:</span> <span class="number">-1</span></span><br><span class="line">        <span class="attr">hard:</span> <span class="number">-1</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">es7data1:/usr/share/elasticsearch/data</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">9200</span><span class="string">:9200</span></span><br><span class="line">  <span class="attr">filebeat:</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">filebeat</span></span><br><span class="line">    <span class="attr">hostname:</span> <span class="string">filebeat</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">docker.elastic.co/beats/filebeat:7.1.1</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">    <span class="attr">user:</span> <span class="string">root</span></span><br><span class="line">    <span class="attr">links:</span>  <span class="comment"># 需要链接es，不然存在报错</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">es7_01</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./filebeat/conf/filebeat.yml:/usr/share/filebeat/filebeat.yml</span></span><br><span class="line">      <span class="comment"># 映射到容器中[作为数据源]</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./filebeat/logs:/usr/share/filebeat/logs</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./filebeat/data:/usr/share/filebeat/data</span></span><br><span class="line"></span><br><span class="line"><span class="attr">volumes:</span></span><br><span class="line">  <span class="attr">es7data1:</span></span><br><span class="line">    <span class="attr">driver:</span> <span class="string">local</span></span><br><span class="line">  <span class="attr">es7data2:</span></span><br><span class="line">    <span class="attr">driver:</span> <span class="string">local</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#elasticsearch2:</span></span><br><span class="line"><span class="comment">#image: docker.elastic.co/elasticsearch/elasticsearch:7.1.0</span></span><br><span class="line"><span class="comment">#container_name: es7_02</span></span><br><span class="line"><span class="comment">#environment:</span></span><br><span class="line">  <span class="comment">#- cluster.name=zhuyuping</span></span><br><span class="line">  <span class="comment">#- node.name=es7_02</span></span><br><span class="line">  <span class="comment">#- bootstrap.memory_lock=true</span></span><br><span class="line">  <span class="comment">#- &quot;ES_JAVA_OPTS=-Xms512m -Xmx512m&quot;</span></span><br><span class="line">  <span class="comment">#- discovery.seed_hosts=es7_01</span></span><br><span class="line">  <span class="comment">#- cluster.initial_master_nodes=es7_01,es7_02</span></span><br><span class="line"><span class="comment">#ulimits:</span></span><br><span class="line">  <span class="comment">#memlock:</span></span><br><span class="line">    <span class="comment">#soft: -1</span></span><br><span class="line">    <span class="comment">#hard: -1</span></span><br><span class="line"><span class="comment">#volumes:</span></span><br><span class="line">  <span class="comment">#- es7data2:/usr/share/elasticsearch/data</span></span><br></pre></td></tr></table></figure>
+
+<p>关于 <code>filebeat.yml</code> 的配置</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 日志输入配置</span></span><br><span class="line"><span class="attr">filebeat.inputs:</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">type:</span> <span class="string">log</span></span><br><span class="line">  <span class="attr">enabled:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">paths:</span></span><br><span class="line">  <span class="comment"># 需要收集的日志所在的位置，可使用通配符进行配置</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">/var/log/*.log</span></span><br><span class="line">  <span class="comment">#- /data/fxqalog/*.txt</span></span><br><span class="line"></span><br><span class="line"><span class="attr">output.elasticsearch:</span></span><br><span class="line">  <span class="comment">#hosts: [&#x27;10.103.131.242:9200&#x27;]</span></span><br><span class="line">  <span class="attr">hosts:</span> [<span class="string">&quot;es7_01:9200&quot;</span>]    <span class="comment">#定义的es的url，之前名字取为es7_01，需要保持一致，不能使用localhost</span></span><br><span class="line">  </span><br><span class="line"><span class="comment">#日志输出配置(采用 logstash 收集日志，5044为logstash端口)</span></span><br><span class="line"><span class="comment">#output.logstash:</span></span><br><span class="line">  <span class="comment">#hosts: [&quot;10.103.131.242:5044&quot;]</span></span><br><span class="line">  <span class="comment">#hosts: [&quot;es7_01:5044&quot;]</span></span><br></pre></td></tr></table></figure>
+
+<p>启动容器</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon test_docker]# docker-compose up</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"># 一些docker 命令</span><br><span class="line"># 启动、停止容器</span><br><span class="line">docker-compose up</span><br><span class="line">docker-compose down</span><br><span class="line"></span><br><span class="line"># 停止容器并且移除数据</span><br><span class="line">docker-compose down -v</span><br><span class="line"></span><br><span class="line">docker ps -a  # 正在运行的容器</span><br><span class="line">docker container ls  # 存在的容器</span><br><span class="line"></span><br><span class="line"># 停止、启动、杀死、重启一个容器</span><br><span class="line">$docker stop Name/ID  </span><br><span class="line">$docker start Name/ID  </span><br><span class="line">$docker kill Name/ID  </span><br><span class="line">$docker restart name/ID</span><br><span class="line"></span><br><span class="line"># 删除 image (例如删除REPOSITORY为prima/filebeat的image)</span><br><span class="line">$docker images</span><br><span class="line">$docker rmi prima/filebeat</span><br><span class="line"></span><br><span class="line"># 删除单个容器</span><br><span class="line">$docker rm Name/ID</span><br><span class="line"># 删除所有容器</span><br><span class="line">$docker rm `docker ps -a -q` </span><br></pre></td></tr></table></figure>
+
+<p>接着通过浏览器查看 Elasticsearch、Kibana 服务<br><img src="/../../images/2020/es/Elasticsearch_server_is_ok.png" alt="image-20201015170144312"></p>
+<p><img src="/../../images/2020/es/Kibana_server_is_ok.png" alt="img"></p>
+<p>配置 Kibana 索引</p>
+<p>浏览器中打开 <code>http://10.103.131.242:5601/</code><img src="/../../images/2020/es/Kibana%E9%85%8D%E7%BD%AE%E7%B4%A2%E5%BC%951.png" alt="image-20201015135515263"></p>
+<p>在 <code>索引模式</code> 中输入 filebeat 后，下面会有匹配到索引，然后点击下一步，选择 <code>时间筛选字段名称</code>，最后点击<code>创建索引模式</code>。<br>查看现有的索引：<code>http://10.103.131.242:9200/_cat/indices?v</code></p>
+<p><img src="/../../images/2020/es/Kibana%E9%85%8D%E7%BD%AE%E7%B4%A2%E5%BC%952.png" alt="image-20201015135817530"></p>
+<p>当前 health 状态是 green，如果一开始是 yellow，则需要查看索引的配置信息，修改分片数：目前我只是一台机器，所以设置成0，然后再刷新后就变绿了。</p>
+<p><img src="/../../images/2020/es/Kibana%E9%85%8D%E7%BD%AE%E7%B4%A2%E5%BC%953.png" alt="image-20201015141015327"></p>
+<hr>
+<h3 id="遇到的问题及解决"><a href="#遇到的问题及解决" class="headerlink" title="遇到的问题及解决"></a>遇到的问题及解决</h3><ul>
+<li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/testcs_dn/article/details/48711805">Another app is currently holding the yum lock; waiting for it to exit…</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_41688455/article/details/86690143">执行yum报错error: rpmdb: BDB0113 Thread&#x2F;process 23226 failed: BDB1507 Thread died in Berkeley D</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_37886429/article/details/75009382">yum的卸载与重新安装</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_38791223/article/details/107036834">windows Elasticsearch启动报此处不应有Files\elascsearch-7.8.0\jdk解决办法一</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_43437874/article/details/106546749">Kibana报错Failed to create Beat meta file: open &#x2F;usr&#x2F;share&#x2F;filebeat&#x2F;data&#x2F;meta.json.new: permission denied</a></p>
+</li>
+<li><p>浏览器界面提示 <code>Kibana server is not ready yet</code></p>
+<p>执行 <code>docker-compose up</code> 后，在浏览器上查看 Kibana 服务，发现提示 <code>Kibana server is not ready yet</code>。</p>
+<p>通过 <code>docker ps</code> 查看，只启动了 cerebro 和 kibana，elasticsearch 没启动成功</p>
+<p><img src="/../../images/2020/es/Kibana_server_is_not_ready_yet1.png" alt="img"></p>
+<p>在 <code>/etc/sysctl.conf</code> 中增加配置 <code>vm.max_map_count=262144</code>，保存后执行 <code>sysctl -p</code> ，重新再启动服务就ok了</p>
+<p><img src="/../../images/2020/es/Kibana_server_is_not_ready_yet2.png" alt="img"></p>
+</li>
+<li><p>windows 下启动 logstash 报错 <code>Unrecognized VM option &#39;UseConcMarkSweepGC&#39;</code></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/elastic/logstash/issues/9316">根据类似的错误</a>，将 logstash 的 config 目录下的 <code>jvm.options</code> 文件中的以下3行注释掉：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">## -XX:+UseConcMarkSweepGC</span><br><span class="line">## -XX:CMSInitiatingOccupancyFraction=75</span><br><span class="line">## -XX:+UseCMSInitiatingOccupancyOnly</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>ERROR：filebeat 连接不了 elasticsearch</p>
+<p>报错：<code>Failed to connect to backoff(elasticsearch(http://localhost:9200)):Get http://localhost:9200:dail tcp 127.0.0.1:9200:connect:connection refused</code>，后面一行又尝试 reconnect 了7次都失败了</p>
+<p><img src="/../../images/2020/es/Kibana%E8%BF%9E%E6%8E%A5es%E6%8A%A5%E9%94%991.png" alt="image-20201015142530194"></p>
+<p>原因：在 <code>filebeat.yml</code> 中配置的问题，将 <code>hosts: [&quot;localhost:9200&quot;]</code> 改为 <code>hosts: [&quot;es7_01:9200&quot;]</code>，其中 <code>es7_01</code> 是我在 <code>docker-compose.yml</code> 中 <code>elasticsearch</code> 的配置 <code>container_name: es7_01</code>，地址需要保持一致。</p>
+<p>这个问题找了很久，在网上一直没有找到 docker 下部署的出现这个问题的资料，最后在相关群里问人才解决。连接成功的结果：</p>
+<p><img src="/../../images/2020/es/Kibana%E8%BF%9E%E6%8E%A5es%E6%8A%A5%E9%94%992.png"></p>
+</li>
+</ul>
+<hr>
+<h3 id="学习记录"><a href="#学习记录" class="headerlink" title="学习记录"></a>学习记录</h3><ul>
+<li><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/xhyan/p/6593075.html">Docker容器进入的4种方式</a></p>
+<p>其中最便捷的一种：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon test_docker]# docker ps</span><br><span class="line">CONTAINER ID        IMAGE                                                 COMMAND                  CREATED             STATUS              PORTS                              NAMES</span><br><span class="line">a313438333f4        docker.elastic.co/elasticsearch/elasticsearch:7.1.0   &quot;/usr/local/bin/dock…&quot;   4 hours ago         Up 41 minutes       0.0.0.0:9200-&gt;9200/tcp, 9300/tcp   es7_01</span><br><span class="line">ece44e259317        lmenezes/cerebro:0.8.3                                &quot;/opt/cerebro/bin/ce…&quot;   4 hours ago         Up 41 minutes       0.0.0.0:9000-&gt;9000/tcp             cerebro</span><br><span class="line">d85ff4c04999        docker.elastic.co/beats/filebeat:7.1.1                &quot;/usr/local/bin/dock…&quot;   4 hours ago         Up 41 minutes                                          filebeat</span><br><span class="line">6b9f47643a7a        docker.elastic.co/kibana/kibana:7.1.0                 &quot;/usr/local/bin/kiba…&quot;   4 hours ago         Up 41 minutes       0.0.0.0:5601-&gt;5601/tcp             kibana7</span><br><span class="line"></span><br><span class="line">[root@bogon test_docker]# docker exec -it a313438333f4 /bin/bash</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>elasticsearch.yml</code> 配置项详解</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">bin ：脚本文件，包括 ES 启动 &amp; 安装插件等等</span><br><span class="line">config ： elasticsearch.yml（ES 配置文件）、jvm.options（JVM 配置文件）、日志配置文件等等</span><br><span class="line">JDK ： 内置的 JDK，JAVA_VERSION=“12.0.1“</span><br><span class="line">lib ： 类库</span><br><span class="line">logs ： 日志文件</span><br><span class="line">modules ： ES 所有模块，包括 X-pack 等</span><br><span class="line">plugins ： ES 已经安装的插件。默认没有插件</span><br><span class="line">data ： ES 启动的时候，会有该目录，用来存储文档数据。该目录可以设置</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/install/centos/">Install Docker Engine on CentOS</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.docker.com/compose/install/">Install Docker Compose</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/elastic/elasticsearch/edit/7.9/docs/reference/setup/install/docker.asciidoc">Install Elasticsearch with Docker</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/kibana/current/docker.html#docker">Install Kibana with Docker</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/geektime-geekbang/geektime-ELK/tree/master/part-1/2.3-%E5%9C%A8Docker%E5%AE%B9%E5%99%A8%E4%B8%AD%E8%BF%90%E8%A1%8CElasticsearch%2CKibana%E5%92%8CCerebro">在Docker容器中运行Elasticsearch, Kibana和Cerebro</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/7.8/index.html">Elasticsearch Reference</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/elasticsearch/" rel="tag"># elasticsearch</a>
+          
+            <a href="/tags/docker/" rel="tag"># docker</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/10/15/2020/Windows%20%E5%AE%89%E8%A3%85%20Elasticsearch%E3%80%81Kibana%E3%80%81Logstash/" rel="next" title="Windows 安装 Elasticsearch、Kibana、Logstash">
+                <i class="fa fa-chevron-left"></i> Windows 安装 Elasticsearch、Kibana、Logstash
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2023/12/03/2024/Python%20%E6%9F%A5%E7%9C%8B%E6%9F%90%E4%B8%AA%E5%BA%93%E7%9A%84%E7%89%88%E6%9C%AC/" rel="prev" title="Python 查看某个库的版本">
+                Python 查看某个库的版本 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Magnolia" />
+            
+              <p class="site-author-name" itemprop="name">Magnolia</p>
+              <p class="site-description motion-element" itemprop="description">Python/测试开发</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/">
+              
+                  <span class="site-state-item-count">112</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://blog.csdn.net/qq_31362767" target="_blank" title="CSDN">
+                      
+                        <i class="fa fa-fw fa-cndn"></i>CSDN</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://gitee.com/zypdominate" target="_blank" title="Gitee">
+                      
+                        <i class="fa fa-fw fa-gitee"></i>Gitee</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/zypdominate" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:zypdominate@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8-Docker-%E4%B8%AD%E5%AE%89%E8%A3%85-Elasticsearch-Kibana-Filebeat"><span class="nav-text">在 Docker 中安装 Elasticsearch + Kibana + Filebeat</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%A8-CentOS%E4%B8%8A%E5%AE%89%E8%A3%85-Docker-Engine"><span class="nav-text">在 CentOS上安装 Docker Engine</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-Docker-Compose"><span class="nav-text">安装 Docker-Compose</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-Elasticsearch"><span class="nav-text">安装 Elasticsearch</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Docker-Elasticsearch-Kibana-Filebeat-%E5%AE%9E%E4%BE%8B"><span class="nav-text">Docker + Elasticsearch + Kibana + Filebeat 实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3"><span class="nav-text">遇到的问题及解决</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95"><span class="nav-text">学习记录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Magnolia</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/jquery@2/dist/jquery.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/canvas_lines.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
