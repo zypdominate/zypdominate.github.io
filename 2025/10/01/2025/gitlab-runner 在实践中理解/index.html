@@ -70,7 +70,7 @@
 
 
 
-  <meta name="keywords" content="gitlab," />
+  <meta name="keywords" content="Gitlab,Linux," />
 
 
 
@@ -89,9 +89,10 @@
 <meta property="og:description" content="在 Linux 上安装、注册 gitlab-runner，触发 pipeline，解决 runner 上线状态异常、无法触发、systemd service异常等问题。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2025-10-01T15:15:18.000Z">
-<meta property="article:modified_time" content="2025-10-02T08:03:09.593Z">
+<meta property="article:modified_time" content="2025-10-04T08:02:36.982Z">
 <meta property="article:author" content="Magnolia">
-<meta property="article:tag" content="gitlab">
+<meta property="article:tag" content="Gitlab">
+<meta property="article:tag" content="Linux">
 <meta name="twitter:card" content="summary">
 
 
@@ -362,8 +363,8 @@
                 
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%8A%80%E6%9C%AF/gitlab/" itemprop="url" rel="index">
-                    <span itemprop="name">gitlab</span>
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/Gitlab/" itemprop="url" rel="index">
+                    <span itemprop="name">Gitlab</span>
                   </a>
                 </span>
 
@@ -456,10 +457,15 @@
 
 <p><strong>小结</strong></p>
 <p>提炼的安装、启动方式</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 下载、赋予执行权限</span></span><br><span class="line">curl -L --output /usr/local/bin/gitlab-runner <span class="string">&quot;https://s3.dualstack.us-east-1.amazonaws.com/gitlab-runner-downloads/latest/binaries/gitlab-runner-linux-amd64&quot;</span></span><br><span class="line"><span class="built_in">chmod</span> +x /usr/local/bin/gitlab-runner</span><br><span class="line"><span class="comment"># 创建用户</span></span><br><span class="line">useradd --comment <span class="string">&#x27;GitLab Runner&#x27;</span> --create-home gitlab-runner --shell /bin/bash</span><br><span class="line"><span class="comment"># 这一步创建了 systemd 服务！此时 systemd 知道了 gitlab-runner 服务的存在</span></span><br><span class="line">gitlab-runner install --user=gitlab-runner --working-directory=/home/tools/gitlab-runner</span><br><span class="line"><span class="comment"># 此时最好不要用 gitlab-runner start 启动，而是用 systemd</span></span><br><span class="line">systemctl start gitlab-runner</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 下载、赋予执行权限</span></span><br><span class="line">curl -L --output /usr/local/bin/gitlab-runner <span class="string">&quot;https://s3.dualstack.us-east-1.amazonaws.com/gitlab-runner-downloads/latest/binaries/gitlab-runner-linux-amd64&quot;</span></span><br><span class="line"><span class="built_in">chmod</span> +x /usr/local/bin/gitlab-runner</span><br><span class="line"><span class="comment"># 创建用户</span></span><br><span class="line"><span class="built_in">id</span> gitlab-runner || useradd --comment <span class="string">&#x27;GitLab Runner&#x27;</span> --create-home gitlab-runner --shell /bin/bash</span><br><span class="line"><span class="comment"># 这一步创建了 systemd 服务！此时 systemd 知道了 gitlab-runner 服务的存在</span></span><br><span class="line">gitlab-runner install --user=gitlab-runner --working-directory=/home/tools/gitlab-runner</span><br><span class="line"><span class="comment"># 此时最好不要用 gitlab-runner start 启动，而是用 systemd</span></span><br><span class="line">systemctl start gitlab-runner</span><br></pre></td></tr></table></figure>
 
-
-
+<p>备注：<a target="_blank" rel="noopener" href="https://docs.gitlab.com/runner/install/linux-manually/">Install GitLab Runner manually on GNU&#x2F;Linux | GitLab Docs</a> 官方指导中，先用了 <code>gitlab-runner install</code>，后用了 <code>gitlab-runner start</code> 是不好的。</p>
+<p><strong>安全考虑</strong></p>
+<ol>
+<li>安装阶段：需要 root 权限（使用 <code>sudo</code>）</li>
+<li>运行阶段：应该使用<strong>专用的普通用户</strong>（默认是 <code>gitlab-runner</code> 用户）</li>
+<li>注册：使用 sudo 注册（配置文件需要写入系统目录）</li>
+</ol>
 <h2 id="gitlab-runner-用户"><a href="#gitlab-runner-用户" class="headerlink" title="gitlab-runner 用户"></a>gitlab-runner 用户</h2><p><strong>报错</strong></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">set</span> -euo pipefail <span class="comment"># collapsed multi-line command</span></span><br><span class="line">error: could not lock config file /home/gitlab-runner/.gitconfig: No such file or directory，</span><br></pre></td></tr></table></figure>
 
@@ -521,7 +527,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/gitlab/" rel="tag"># gitlab</a>
+            <a href="/tags/Gitlab/" rel="tag"># Gitlab</a>
+          
+            <a href="/tags/Linux/" rel="tag"># Linux</a>
           
         </div>
       
@@ -543,6 +551,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2025/10/04/2025/%E6%8F%90%E5%8D%87%E6%95%88%E7%8E%87%E5%92%8C%E7%AE%A1%E7%90%86%E7%9A%84%20systemd/" rel="prev" title="提升效率和管理的 systemd">
+                提升效率和管理的 systemd <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -623,7 +635,7 @@
               
                 <a href="/">
               
-                  <span class="site-state-item-count">119</span>
+                  <span class="site-state-item-count">120</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
                 </a>
@@ -635,7 +647,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-count">24</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -646,7 +658,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
