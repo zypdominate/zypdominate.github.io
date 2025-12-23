@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="一个技术迁移期的常见困扰：工具的默认行为变了，但我们的认知还停留在过去。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SSH 密钥从 RSA 到 Ed25519">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2025/11/01/28740/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="一个技术迁移期的常见困扰：工具的默认行为变了，但我们的认知还停留在过去。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-11-01T02:50:18.000Z">
+<meta property="article:modified_time" content="2025-12-23T14:07:49.173Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="Git">
+<meta property="article:tag" content="SSH">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2025/11/01/28740/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2025/11/01/28740/","path":"posts/2025/11/01/28740/","title":"SSH 密钥从 RSA 到 Ed25519"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>SSH 密钥从 RSA 到 Ed25519 | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E8%83%8C%E6%99%AF"><span class="nav-text">问题背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E5%87%BA%E7%8E%B0-Ed25519"><span class="nav-text">为什么会出现 Ed25519</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SSH-%E5%AF%86%E9%92%A5%E7%AE%97%E6%B3%95%E7%9A%84%E5%8F%98%E8%BF%81"><span class="nav-text">SSH 密钥算法的变迁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E5%BC%80%E5%A7%8B%E5%8F%98%E5%8C%96%E7%9A%84"><span class="nav-text">什么时候开始变化的</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ed25519-%E5%88%B0%E5%BA%95%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-text">Ed25519 到底是什么</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8A%80%E6%9C%AF%E5%B1%82%E9%9D%A2%E7%9A%84%E4%BC%98%E5%8A%BF"><span class="nav-text">技术层面的优势</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E9%99%85%E4%BD%BF%E7%94%A8%E4%B8%AD%E7%9A%84%E4%BD%93%E9%AA%8C"><span class="nav-text">实际使用中的体验</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E5%85%8B%E9%9A%86%E9%97%AE%E9%A2%98"><span class="nav-text">如何解决克隆问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5%EF%BC%9A%E7%A1%AE%E8%AE%A4%E4%BD%A0%E7%9A%84%E5%AF%86%E9%92%A5"><span class="nav-text">第一步：确认你的密钥</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5%EF%BC%9A%E6%9F%A5%E7%9C%8B%E4%BD%A0%E6%B7%BB%E5%8A%A0%E5%88%B0-Git-%E5%B9%B3%E5%8F%B0%E7%9A%84%E6%98%AF%E5%93%AA%E4%B8%AA%E5%85%AC%E9%92%A5"><span class="nav-text">第二步：查看你添加到 Git 平台的是哪个公钥</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E6%AD%A5%EF%BC%9A%E6%B7%BB%E5%8A%A0%E6%AD%A3%E7%A1%AE%E7%9A%84%E5%85%AC%E9%92%A5"><span class="nav-text">第三步：添加正确的公钥</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E5%9B%9B%E6%AD%A5%EF%BC%9A%E6%B5%8B%E8%AF%95%E8%BF%9E%E6%8E%A5"><span class="nav-text">第四步：测试连接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E6%9E%9C%E4%BD%A0%E6%9C%89%E5%A4%9A%E4%B8%AA%E5%AF%86%E9%92%A5"><span class="nav-text">如果你有多个密钥</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8B%93%E5%B1%95%E7%9F%A5%E8%AF%86"><span class="nav-text">拓展知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E6%9E%9C%E6%88%91%E6%83%B3%E7%BB%A7%E7%BB%AD%E7%94%A8-RSA-%E5%91%A2"><span class="nav-text">如果我想继续用 RSA 呢</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E7%9A%84%E5%AF%86%E9%92%A5%E7%AE%97%E6%B3%95"><span class="nav-text">其他的密钥算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%86%E9%92%A5%E7%9A%84%E5%AE%89%E5%85%A8%E7%AE%A1%E7%90%86"><span class="nav-text">密钥的安全管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%86%E9%92%A5%E6%9D%83%E9%99%90%E9%97%AE%E9%A2%98"><span class="nav-text">密钥权限问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%86%E9%92%A5%E7%9A%84%E5%A4%87%E4%BB%BD"><span class="nav-text">密钥的备份</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Git-%E5%B9%B3%E5%8F%B0%E7%9A%84%E6%94%AF%E6%8C%81%E6%83%85%E5%86%B5"><span class="nav-text">Git 平台的支持情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E9%9C%80%E8%A6%81%E9%87%8D%E6%96%B0%E7%94%9F%E6%88%90%E5%AF%86%E9%92%A5"><span class="nav-text">什么时候需要重新生成密钥</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2025/11/01/28740/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="SSH 密钥从 RSA 到 Ed25519 | Magnolia's Blog">
+      <meta itemprop="description" content="一个技术迁移期的常见困扰：工具的默认行为变了，但我们的认知还停留在过去。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SSH 密钥从 RSA 到 Ed25519
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2025-11-01 10:50:18" itemprop="dateCreated datePublished" datetime="2025-11-01T10:50:18+08:00">2025-11-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/Git/" itemprop="url" rel="index"><span itemprop="name">Git</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>3.7k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>3 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">一个技术迁移期的常见困扰：工具的默认行为变了，但我们的认知还停留在过去。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a>问题背景</h2><p>最近帮几个同事排查 git clone 失败的问题，发现了一个有意思的现象。他们的报错信息都类似：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Permission denied (publickey).</span><br><span class="line">fatal: Could not read from remote repository.</span><br></pre></td></tr></table></figure>
+
+<p>一开始以为是网络问题、权限配置错了、生成sshkey时添加了密码，结果检查发现，这些同事的 .ssh 目录下都有密钥文件，但文件名多了两个，而且不是我们熟悉的 id_rsa 和 id_rsa.pub，而是 id_ed25519 和 id_ed25519.pub。</p>
+<p>更有意思的是，他们都说自己按照网上教程生成了 SSH 密钥，也把公钥添加到了 GitLab 上。把原来配置到 gitlab 上的公钥删除，将 id_rsa.pub 里的文本拷贝重新添加，还是会提示报错。</p>
+<p>这个问题其实挺典型的，反映了一个技术迁移期的常见困扰：工具的默认行为变了，但我们的认知还停留在过去。</p>
+<h2 id="为什么会出现-Ed25519"><a href="#为什么会出现-Ed25519" class="headerlink" title="为什么会出现 Ed25519"></a>为什么会出现 Ed25519</h2><p>先说结论：这不是 bug，而是一种进步。</p>
+<h3 id="SSH-密钥算法的变迁"><a href="#SSH-密钥算法的变迁" class="headerlink" title="SSH 密钥算法的变迁"></a>SSH 密钥算法的变迁</h3><p>早些年，当运行 ssh-keygen 命令时，默认生成的是 RSA 算法的密钥对。RSA 是一种非常成熟的非对称加密算法，从 1977 年就开始使用了，安全性经过了时间的检验。</p>
+<p>但随着计算能力的提升和密码学研究的发展，RSA 也暴露出一些问题。比如为了保证安全性，RSA 密钥长度需要不断增加，现在通常推荐使用 2048 位甚至 4096 位。密钥越长，生成和验证的时间就越长。</p>
+<p>Ed25519 是基于椭圆曲线密码学的一种算法，在 2011 年左右被提出。它的设计目标就是在保证安全性的同时，提供更好的性能。</p>
+<h3 id="什么时候开始变化的"><a href="#什么时候开始变化的" class="headerlink" title="什么时候开始变化的"></a>什么时候开始变化的</h3><p>OpenSSH 在较新的版本中开始推荐使用 Ed25519。具体来说：</p>
+<ul>
+<li>OpenSSH 6.5 版本（2014 年）开始支持 Ed25519</li>
+<li>一些 Linux 发行版和 macOS 的新版本中，ssh-keygen 的默认行为开始倾向于 Ed25519</li>
+<li>Git 官方文档和 GitHub 的帮助文档也开始推荐 Ed25519</li>
+</ul>
+<p>所以如果你最近重装了系统，或者升级了 Git 和 OpenSSH，很可能就会遇到这个变化。</p>
+<h2 id="Ed25519-到底是什么"><a href="#Ed25519-到底是什么" class="headerlink" title="Ed25519 到底是什么"></a>Ed25519 到底是什么</h2><p>简单来说，Ed25519 是一种现代的公钥加密算法，专门为数字签名设计。</p>
+<h3 id="技术层面的优势"><a href="#技术层面的优势" class="headerlink" title="技术层面的优势"></a>技术层面的优势</h3><p>和 RSA 相比，Ed25519 有这些特点：</p>
+<p><strong>安全性更高</strong></p>
+<p>Ed25519 使用 256 位的密钥长度，但提供的安全强度相当于 RSA 3072 位。这得益于椭圆曲线密码学的数学特性。而且它的设计从一开始就考虑了各种已知的攻击方式，包括侧信道攻击。</p>
+<p><strong>性能更好</strong></p>
+<p>密钥生成速度快很多。在我的机器上测试，生成一个 Ed25519 密钥几乎是瞬间完成，而生成 RSA 4096 位密钥需要几秒钟。</p>
+<p>签名和验证的速度也更快。虽然在日常使用中这个差异不太明显，但在需要频繁进行 SSH 连接的场景下，累积起来还是能感觉到的。</p>
+<p><strong>密钥更短</strong></p>
+<p>Ed25519 的公钥只有 68 个字符左右，而 RSA 2048 位的公钥有 372 个字符以上。这让复制粘贴变得更方便，出错的概率也更小。</p>
+<h3 id="实际使用中的体验"><a href="#实际使用中的体验" class="headerlink" title="实际使用中的体验"></a>实际使用中的体验</h3><p>老实说，对于普通用户来说，RSA 和 Ed25519 在日常使用中的差异几乎感觉不到。你不会因为换了 Ed25519 就觉得 git clone 快了多少。</p>
+<p>但从技术债务的角度考虑，现在开始用 Ed25519 是个明智的选择。它代表了未来的方向，各大平台的支持也越来越好。</p>
+<h2 id="如何解决克隆问题"><a href="#如何解决克隆问题" class="headerlink" title="如何解决克隆问题"></a>如何解决克隆问题</h2><p>回到最开始的问题，既然本地生成的是 Ed25519 密钥，那解决方案其实很简单。</p>
+<h3 id="第一步：确认你的密钥"><a href="#第一步：确认你的密钥" class="headerlink" title="第一步：确认你的密钥"></a>第一步：确认你的密钥</h3><p>先看看你的 .ssh 目录下有什么：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ls</span> -la ~/.ssh/</span><br></pre></td></tr></table></figure>
+
+<p>你可能会看到这些文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">id_rsa</span><br><span class="line">id_rsa.pub</span><br><span class="line">id_ed25519</span><br><span class="line">id_ed25519.pub</span><br></pre></td></tr></table></figure>
+
+<p>如果同时存在 RSA 和 Ed25519 密钥，那说明你之前生成过 RSA，后来又生成了 Ed25519。</p>
+<h3 id="第二步：查看你添加到-Git-平台的是哪个公钥"><a href="#第二步：查看你添加到-Git-平台的是哪个公钥" class="headerlink" title="第二步：查看你添加到 Git 平台的是哪个公钥"></a>第二步：查看你添加到 Git 平台的是哪个公钥</h3><p>登录 GitHub、GitLab 或者 Gitee，进入 SSH Keys 的设置页面，看看你之前添加的公钥内容。</p>
+<p>RSA 公钥通常以 <code>ssh-rsa AAAA...</code> 开头。<br>Ed25519 公钥以 <code>ssh-ed25519 AAAA...</code> 开头。</p>
+<h3 id="第三步：添加正确的公钥"><a href="#第三步：添加正确的公钥" class="headerlink" title="第三步：添加正确的公钥"></a>第三步：添加正确的公钥</h3><p>如果你想用 Ed25519（推荐），那就把新公钥添加到 Git 平台：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> ~/.ssh/id_ed25519.pub</span><br></pre></td></tr></table></figure>
+
+<p>复制输出的内容，不同的平台配置路径不同：</p>
+<ul>
+<li>GitHub：Settings → SSH and GPG keys → New SSH key</li>
+<li>GitLab：Preferences → SSH Keys</li>
+<li>Gitee：设置 → SSH 公钥</li>
+</ul>
+<p>把复制的内容粘贴进去，给这个密钥起个名字（比如”我的工作电脑”，默认会生成一个名字），保存。</p>
+<h3 id="第四步：测试连接"><a href="#第四步：测试连接" class="headerlink" title="第四步：测试连接"></a>第四步：测试连接</h3><p>添加完公钥后，测试一下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -T git@github.com</span><br></pre></td></tr></table></figure>
+
+<p>如果看到类似”Hi username! You’ve successfully authenticated”的消息，就说明配置成功了。</p>
+<h3 id="如果你有多个密钥"><a href="#如果你有多个密钥" class="headerlink" title="如果你有多个密钥"></a>如果你有多个密钥</h3><p>有些人可能需要在同一台机器上使用多个 Git 账号，或者需要连接多个不同的 Git 服务器。这时候就需要配置 SSH config 文件。</p>
+<p>创建或编辑 ~&#x2F;.ssh&#x2F;config 文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nano ~/.ssh/config</span><br></pre></td></tr></table></figure>
+
+<p>添加类似这样的配置：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Host github.com</span><br><span class="line">    HostName github.com</span><br><span class="line">    User git</span><br><span class="line">    IdentityFile ~/.ssh/id_ed25519</span><br><span class="line"></span><br><span class="line">Host github-work</span><br><span class="line">    HostName github.com</span><br><span class="line">    User git</span><br><span class="line">    IdentityFile ~/.ssh/id_rsa_work</span><br><span class="line"></span><br><span class="line">Host gitlab.com</span><br><span class="line">    HostName gitlab.com</span><br><span class="line">    User git</span><br><span class="line">    IdentityFile ~/.ssh/id_ed25519</span><br></pre></td></tr></table></figure>
+
+<p>这样你就可以为不同的 Host 指定不同的密钥。使用时，可以这样克隆：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> git@github-work:company/repo.git</span><br></pre></td></tr></table></figure>
+
+<h2 id="拓展知识"><a href="#拓展知识" class="headerlink" title="拓展知识"></a>拓展知识</h2><h3 id="如果我想继续用-RSA-呢"><a href="#如果我想继续用-RSA-呢" class="headerlink" title="如果我想继续用 RSA 呢"></a>如果我想继续用 RSA 呢</h3><p>虽然不推荐，但如果你确实需要生成 RSA 密钥（比如要连接的服务器太老，不支持 Ed25519），可以这样：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -b 4096 -C <span class="string">&quot;your_email@example.com&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>这里 -t 指定算法类型，-b 指定密钥长度，-C 添加一个注释（通常用邮箱）。</p>
+<h3 id="其他的密钥算法"><a href="#其他的密钥算法" class="headerlink" title="其他的密钥算法"></a>其他的密钥算法</h3><p>除了 RSA 和 Ed25519，还有其他一些算法：</p>
+<p><strong>ECDSA</strong></p>
+<p>这也是基于椭圆曲线的算法，在 Ed25519 流行之前比较常用。但现在一般直接推荐 Ed25519，因为它的设计更简洁，安全性审查更充分。</p>
+<p><strong>DSA</strong></p>
+<p>这是很老的算法了，OpenSSH 7.0 之后已经默认禁用。如果你看到 id_dsa 这样的文件，强烈建议换掉。</p>
+<h3 id="密钥的安全管理"><a href="#密钥的安全管理" class="headerlink" title="密钥的安全管理"></a>密钥的安全管理</h3><p>生成密钥时，ssh-keygen 会询问你是否设置 passphrase（密码短语）。这是一个额外的保护层：即使有人拿到了你的私钥文件，没有 passphrase 也无法使用。</p>
+<p>建议设置 passphrase，但这样每次使用密钥时都需要输入。可以配合 ssh-agent 使用，输入一次密码后，在当前会话中就不用重复输入了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">eval</span> <span class="string">&quot;<span class="subst">$(ssh-agent -s)</span>&quot;</span></span><br><span class="line">ssh-add ~/.ssh/id_ed25519</span><br></pre></td></tr></table></figure>
+
+<p>在 macOS 上，还可以把密码存到 Keychain 里：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-add --apple-use-keychain ~/.ssh/id_ed25519</span><br></pre></td></tr></table></figure>
+
+<h3 id="密钥权限问题"><a href="#密钥权限问题" class="headerlink" title="密钥权限问题"></a>密钥权限问题</h3><p>SSH 对密钥文件的权限要求很严格。私钥文件必须只有所有者可读：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chmod</span> 600 ~/.ssh/id_ed25519</span><br><span class="line"><span class="built_in">chmod</span> 644 ~/.ssh/id_ed25519.pub</span><br></pre></td></tr></table></figure>
+
+<p>.ssh 目录本身的权限也要正确：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chmod</span> 700 ~/.ssh</span><br></pre></td></tr></table></figure>
+
+<p>如果权限不对，SSH 会拒绝使用这个密钥，这也是一个常见的报错原因。</p>
+<h3 id="密钥的备份"><a href="#密钥的备份" class="headerlink" title="密钥的备份"></a>密钥的备份</h3><p>私钥是你身份认证的唯一凭证，丢了就麻烦了。建议：</p>
+<ul>
+<li>把私钥备份到安全的地方（加密的移动硬盘、密码管理器等）</li>
+<li>不要把私钥存到云盘或者发给别人</li>
+<li>如果怀疑私钥泄露，立即删除对应的公钥，重新生成新的密钥对</li>
+</ul>
+<h3 id="Git-平台的支持情况"><a href="#Git-平台的支持情况" class="headerlink" title="Git 平台的支持情况"></a>Git 平台的支持情况</h3><p>主流的 Git 托管平台都已经支持 Ed25519：</p>
+<ul>
+<li>GitHub：完全支持，推荐使用</li>
+<li>GitLab：完全支持</li>
+<li>Gitee：支持</li>
+<li>Bitbucket：支持</li>
+<li>自建的 GitLab&#x2F;Gitea&#x2F;Gogs：取决于服务器的 OpenSSH 版本</li>
+</ul>
+<p>如果你的公司使用的是很老的自建 Git 服务器，可能需要确认一下是否支持 Ed25519。</p>
+<h3 id="什么时候需要重新生成密钥"><a href="#什么时候需要重新生成密钥" class="headerlink" title="什么时候需要重新生成密钥"></a>什么时候需要重新生成密钥</h3><p>这些情况下建议重新生成：</p>
+<ul>
+<li>私钥可能泄露了</li>
+<li>电脑丢失或被盗</li>
+<li>离职换工作</li>
+<li>很多年没有更新过（虽然密钥理论上可以一直用，但定期更换是个好习惯）</li>
+<li>当前使用的是很老的算法（比如 DSA 或者短密钥的 RSA）</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>从 RSA 到 Ed25519，这是技术进步的必然趋势。虽然在迁移过程中会遇到一些小问题，但长远来看，使用更现代、更安全的算法是值得的。</p>
+<p>如果你现在正在配置新的开发环境，建议直接使用 Ed25519。如果你已经在使用 RSA 密钥且运行良好，也不用急着换，等到下次重装系统或者遇到问题时再切换也不迟。</p>
+<p>最重要的是理解这个变化的原因和背景，这样遇到问题时就不会慌张，知道该往哪个方向排查。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/Git/" rel="tag"># Git</a>
+              <a href="/tags/SSH/" rel="tag"># SSH</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2025/10/19/38531/" rel="prev" title="Jenkins Pipeline Shell 脚本编写指南">
+                  <i class="fa fa-angle-left"></i> Jenkins Pipeline Shell 脚本编写指南
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2025/11/25/26198/" rel="next" title="从 Node.js 依赖痛点到 Docker 化 CLI：一次跨环境部署的实战记录">
+                  从 Node.js 依赖痛点到 Docker 化 CLI：一次跨环境部署的实战记录 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">691k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:28</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

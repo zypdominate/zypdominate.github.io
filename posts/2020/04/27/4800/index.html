@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="本文主要介绍了 MySQL 数据库的多个方面内容，包括 null 的注意事项、索引类型、表的存储类型、更改表结构、数据的添加等。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL 基本操作">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2020/04/27/4800/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="本文主要介绍了 MySQL 数据库的多个方面内容，包括 null 的注意事项、索引类型、表的存储类型、更改表结构、数据的添加等。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-04-26T16:19:11.000Z">
+<meta property="article:modified_time" content="2025-12-23T14:07:49.073Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2020/04/27/4800/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2020/04/27/4800/","path":"posts/2020/04/27/4800/","title":"MySQL 基本操作"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>MySQL 基本操作 | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81null%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-text">一、null的注意事项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81mysql%E7%9A%84%E7%B4%A2%E5%BC%95"><span class="nav-text">二、mysql的索引</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E4%B8%BB%E9%94%AE%E7%B4%A2%E5%BC%95"><span class="nav-text">(1)  主键索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%94%AF%E4%B8%80%E7%B4%A2%E5%BC%95"><span class="nav-text">(2) 唯一索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E5%B8%B8%E8%A7%84%E7%B4%A2%E5%BC%95"><span class="nav-text">(3) 常规索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E5%85%A8%E6%96%87%E7%B4%A2%E5%BC%95"><span class="nav-text">(4) 全文索引</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E8%A1%A8%E7%9A%84%E5%AD%98%E5%82%A8%E7%B1%BB%E5%9E%8B"><span class="nav-text">三、表的存储类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MyISAM%E5%92%8CInnoDB%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">MyISAM和InnoDB的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-MyISAM%E7%9A%84%E6%96%87%E4%BB%B6%E8%AF%B4%E6%98%8E"><span class="nav-text">(1) MyISAM的文件说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-InnoDB%E7%9A%84%E6%96%87%E4%BB%B6%E8%AF%B4%E6%98%8E"><span class="nav-text">(2) InnoDB的文件说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-innodb%E4%BA%8B%E7%89%A9%E5%A4%84%E7%90%86%E6%93%8D%E4%BD%9C"><span class="nav-text">(3) innodb事物处理操作</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B0%86%E5%BD%93%E5%89%8D%E8%A1%A8%E6%96%87%E4%BB%B6%E5%AD%98%E5%82%A8%E7%B1%BB%E5%9E%8B%E6%94%B9%E4%B8%BA-innodb"><span class="nav-text">将当前表文件存储类型改为 innodb</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E5%BD%93%E5%89%8D%E8%A1%A8%E7%9A%84%E6%8F%90%E4%BA%A4%E7%B1%BB%E5%9E%8B"><span class="nav-text">查看当前表的提交类型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%94%B9%E4%B8%BA%E6%89%8B%E5%8A%A8%E6%8F%90%E4%BA%A4%EF%BC%88%E5%BC%80%E5%90%AF%E4%BA%8B%E7%89%A9%EF%BC%89"><span class="nav-text">改为手动提交（开启事物）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BA%8B%E7%89%A9%E5%BC%80%E5%A7%8B"><span class="nav-text">事物开始</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%89%A7%E8%A1%8C%E5%90%84%E7%A7%8DSQL%E8%AF%AD%E5%8F%A5"><span class="nav-text">执行各种SQL语句</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%8F%90%E4%BA%A4%E6%88%96%E8%80%85%E5%9B%9E%E6%BB%9A"><span class="nav-text">提交或者回滚</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E6%9B%B4%E6%94%B9%E8%A1%A8%E7%BB%93%E6%9E%84"><span class="nav-text">四、更改表结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E7%BB%99%E5%BD%93%E5%89%8D%E7%9A%84%E8%A1%A8%E6%B7%BB%E5%8A%A0%E4%B8%80%E4%B8%AA%E6%96%B0%E7%9A%84%E5%AD%97%E6%AE%B5-add"><span class="nav-text">1. 给当前的表添加一个新的字段    add</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%88%A0%E9%99%A4%E4%B8%80%E4%B8%AA%E5%AD%97%E6%AE%B5drop"><span class="nav-text">2. 删除一个字段drop</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E6%B7%BB%E5%8A%A0%E6%96%B0%E5%AD%97%E6%AE%B5%E5%9C%A8%E7%AC%AC%E4%B8%80%E4%BD%8D-first"><span class="nav-text">3. 添加新字段在第一位   first</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E6%96%B0%E5%AD%97%E6%AE%B5%E5%9C%A8%E6%9F%90%E4%B8%AA%E5%AD%97%E6%AE%B5%E7%9A%84%E5%90%8E%E9%9D%A2-after"><span class="nav-text">添加新字段在某个字段的后面  after</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E6%9B%B4%E6%94%B9%E5%AD%97%E6%AE%B5%E5%90%8D%E7%A7%B0%E5%B9%B6%E6%9B%B4%E6%94%B9%E5%AD%97%E6%AE%B5%E9%A1%BA%E5%BA%8F-change"><span class="nav-text">4. 更改字段名称并更改字段顺序   change</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E6%9B%B4%E6%94%B9%E5%AD%97%E6%AE%B5%E7%B1%BB%E5%9E%8B-modify"><span class="nav-text">5. 更改字段类型  modify</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-%E6%B7%BB%E5%8A%A0%E5%AD%97%E6%AE%B5%E7%B4%A2%E5%BC%95"><span class="nav-text">6. 添加字段索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-%E5%88%A0%E9%99%A4%E7%B4%A2%E5%BC%95"><span class="nav-text">7. 删除索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E8%A1%A8b%E5%92%8C%E8%A1%A8a%E4%B8%80%E6%A0%B7"><span class="nav-text">8. 创建一个表b和表a一样</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-%E6%9F%A5%E7%9C%8B%E6%89%80%E6%9C%89%E7%9A%84%E7%B4%A2%E5%BC%95"><span class="nav-text">9. 查看所有的索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-%E6%9B%B4%E6%94%B9%E5%AD%97%E6%AE%B5%E7%9A%84%E5%AD%97%E7%AC%A6%E9%9B%86"><span class="nav-text">10. 更改字段的字符集</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81INSERT-%E6%95%B0%E6%8D%AE%E7%9A%84%E6%B7%BB%E5%8A%A0"><span class="nav-text">五、INSERT 数据的添加</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E6%8C%87%E5%AE%9A%E5%AD%97%E6%AE%B5%E5%90%8D%E7%A7%B0%E6%B7%BB%E5%8A%A0%E6%95%B0%E6%8D%AE"><span class="nav-text">1. 指定字段名称添加数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E4%B8%8D%E6%8C%87%E5%AE%9A%E5%AD%97%E6%AE%B5%E6%B7%BB%E5%8A%A0%E5%80%BC%EF%BC%88%E9%9C%80%E8%A6%81%E5%B0%86%E6%89%80%E6%9C%89%E5%AD%97%E6%AE%B5%E9%83%BD%E6%8F%92%E5%85%A5%E5%80%BC%EF%BC%89"><span class="nav-text">2. 不指定字段添加值（需要将所有字段都插入值）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E6%8C%87%E5%AE%9A%E5%AD%97%E6%AE%B5%E6%B7%BB%E5%8A%A0%E5%A4%9A%E4%B8%AA%E5%80%BC"><span class="nav-text">3. 指定字段添加多个值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E4%B8%8D%E6%8C%87%E5%AE%9A%E5%AD%97%E6%AE%B5%E6%B7%BB%E5%8A%A0%E5%A4%9A%E4%B8%AA%E5%80%BC"><span class="nav-text">4. 不指定字段添加多个值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E6%94%B9%E5%AD%97%E6%AE%B5%E4%B8%AD%E7%9A%84%E6%9F%90%E4%B8%AA%E4%BF%A1%E6%81%AF%EF%BC%9Aupdate"><span class="nav-text">5. 改字段中的某个信息：update</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AD%E3%80%81SELECT-%E6%95%B0%E6%8D%AE%E7%9A%84%E6%9F%A5%E8%AF%A2"><span class="nav-text">六、SELECT 数据的查询</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E4%B8%8D%E6%8C%87%E5%AE%9A%E5%AD%97%E6%AE%B5%E6%9F%A5%E8%AF%A2%EF%BC%88%E6%9F%A5%E8%AF%A2%E6%89%80%E6%9C%89%E5%AD%97%E6%AE%B5%EF%BC%89"><span class="nav-text">1. 不指定字段查询（查询所有字段）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E6%8C%87%E5%AE%9A%E5%AD%97%E6%AE%B5%E6%9F%A5%E8%AF%A2"><span class="nav-text">2. 指定字段查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E6%9F%A5%E8%AF%A2%E5%AD%97%E6%AE%B5%E5%B9%B6%E8%BF%90%E7%AE%97"><span class="nav-text">3. 查询字段并运算</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E8%B5%B7%E5%88%AB%E5%90%8D"><span class="nav-text">4. 起别名</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%83%E3%80%81where-%E6%9D%A1%E4%BB%B6"><span class="nav-text">七、where 条件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E6%AF%94%E8%BE%83%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-text">(1) 比较运算符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-text">(2) 逻辑运算符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-order-by-%E6%8E%92%E5%BA%8F"><span class="nav-text">(3) order by  排序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-is-is-not"><span class="nav-text">(4) is  is not</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-limit"><span class="nav-text">(5) limit</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%86%E9%A1%B5%E8%AE%A1%E7%AE%97%EF%BC%9A"><span class="nav-text">分页计算：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-%E6%A8%A1%E7%B3%8A%E6%9F%A5%E8%AF%A2-like"><span class="nav-text">(6) 模糊查询  like</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AB%E3%80%81%E8%81%9A%E5%90%88%E5%87%BD%E6%95%B0"><span class="nav-text">八、聚合函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E6%9C%80%E5%A4%A7%E5%80%BC"><span class="nav-text">1. 最大值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E6%9C%80%E5%B0%8F%E5%80%BC"><span class="nav-text">2. 最小值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E7%BB%9F%E8%AE%A1"><span class="nav-text">3. 统计</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E5%B9%B3%E5%9D%87%E5%80%BC"><span class="nav-text">4. 平均值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E6%B1%82%E5%92%8C"><span class="nav-text">5. 求和</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B9%9D%E3%80%81group-by-%E5%88%86%E7%BB%84"><span class="nav-text">九、group by 分组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%81%E3%80%81delete-%E5%88%A0%E9%99%A4"><span class="nav-text">十、delete 删除</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%81%E4%B8%80%E3%80%81update-%E4%BF%AE%E6%94%B9"><span class="nav-text">十一、update 修改</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%81%E4%BA%8C%E3%80%81%E5%A4%9A%E8%A1%A8%E8%81%94%E6%9F%A5"><span class="nav-text">十二、多表联查</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E9%9A%90%E5%BC%8F%E5%86%85%E8%BF%9E%E6%8E%A5"><span class="nav-text">(1) 隐式内连接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E6%98%BE%E7%A4%BA%E5%86%85%E8%BF%9E%E6%8E%A5-inner-join-on"><span class="nav-text">(2) 显示内连接 inner join  on</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E5%B7%A6%E9%93%BE%E6%8E%A5-left-join-on"><span class="nav-text">(3) 左链接  left join  on</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2020/04/27/4800/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="MySQL 基本操作 | Magnolia's Blog">
+      <meta itemprop="description" content="本文主要介绍了 MySQL 数据库的多个方面内容，包括 null 的注意事项、索引类型、表的存储类型、更改表结构、数据的添加等。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          MySQL 基本操作
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-04-27 00:19:11" itemprop="dateCreated datePublished" datetime="2020-04-27T00:19:11+08:00">2020-04-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>19k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>17 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">本文主要介绍了 MySQL 数据库的多个方面内容，包括 null 的注意事项、索引类型、表的存储类型、更改表结构、数据的添加等。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="一、null的注意事项"><a href="#一、null的注意事项" class="headerlink" title="一、null的注意事项"></a>一、null的注意事项</h2><ol>
+<li>null意味着没有值 或者 未知值</li>
+<li>可以测试某个值是否为null  is null</li>
+<li>不能对null进行算数运算  </li>
+<li>所有和null进行运算的都为null</li>
+</ol>
+<hr>
+<h2 id="二、mysql的索引"><a href="#二、mysql的索引" class="headerlink" title="二、mysql的索引"></a>二、mysql的索引</h2><ol>
+<li>主键索引 primary key</li>
+<li>唯一索引  unique</li>
+<li>常规索引  index</li>
+<li>全文索引 fulltext</li>
+</ol>
+<p>PRI主键约束；  UNI唯一约束；  MUL可以重复。 </p>
+<h4 id="1-主键索引"><a href="#1-主键索引" class="headerlink" title="(1)  主键索引"></a>(1)  主键索引</h4><p>主键索引是数据库中最常见的索引类型， 主要确定数据表里数据记录的位置，给字段添加 primary key 来确定索引值</p>
+<p><strong>注意：</strong> </p>
+<ol>
+<li><p>每个表中 只能有一个主键索引</p>
+</li>
+<li><p>每个表中最好有一个主键索引 并不是必须的</p>
+</li>
+<li><p>主键索引可以有很多的候选项 （auto_increment，not null）</p>
+</li>
+<li><p>当表中的数据 被删除以后 auto_increment 依然记录着下一个数据插入的行号值  </p>
+<ul>
+<li><code>truncate 表名</code>   清空表  并将自增归位    —–&gt; truncate myindex;</li>
+<li><code>alter table 表名 auto_increment=1</code></li>
+</ul>
+</li>
+</ol>
+<p><strong>实例</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create table myindex(</span><br><span class="line">    -&gt; id int unsigned primary key auto_increment not null</span><br><span class="line">    -&gt; );</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-唯一索引"><a href="#2-唯一索引" class="headerlink" title="(2) 唯一索引"></a>(2) 唯一索引</h4><p>唯一索引和主键索引 都一样，不能插入重复的值；不同的是 主键一个表只能存在一个，唯一索引可以存在多个</p>
+<p><strong>实例</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create table myunique(</span><br><span class="line">    -&gt; username varchar(20) unique not null</span><br><span class="line">    -&gt; );</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-常规索引"><a href="#3-常规索引" class="headerlink" title="(3) 常规索引"></a>(3) 常规索引</h4><p>常规索引 只作为提高数据的查询效率来使用的 </p>
+<p>缺点：</p>
+<ol>
+<li>提高了查询效率 但是降低了增删改的效率</li>
+<li>索引文件 占用磁盘空间</li>
+</ol>
+<p>数据库文件存放的位置</p>
+<p><strong>windwos:</strong>  C:\ProgramData\MySQL\MySQL Server 5.7\Data\performance_schema</p>
+<p><strong>ubuntu:</strong> &#x2F;var&#x2F;lib&#x2F;mysql</p>
+<h4 id="4-全文索引"><a href="#4-全文索引" class="headerlink" title="(4) 全文索引"></a>(4) 全文索引</h4><p>fulltext</p>
+<p><code>alter table 表名  add fulltext  索引名称(索引字段)</code></p>
+<p><strong>创建表并添加索引的完整写法</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create table user(</span><br><span class="line">-&gt; id int unsigned primary key auto_increment not null,</span><br><span class="line">-&gt; username varchar(20) unique,</span><br><span class="line">-&gt; age tinyint,</span><br><span class="line">-&gt; index(age)</span><br><span class="line">-&gt; #unique(username)</span><br><span class="line">-&gt; );</span><br><span class="line"></span><br><span class="line">#给索引添加索引名称</span><br><span class="line">mysql&gt; create table user2(</span><br><span class="line">    -&gt; username varchar(20),</span><br><span class="line">    -&gt; age tinyint,</span><br><span class="line">    -&gt; unique myname(username),</span><br><span class="line">    -&gt; index aindex(age)</span><br><span class="line">    -&gt; );</span><br></pre></td></tr></table></figure>
+<p><strong>例子的创建表</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create table test(</span><br><span class="line">    -&gt; id int unsigned primary key auto_increment not null,</span><br><span class="line">    -&gt; username varchar(50) not null,</span><br><span class="line">    -&gt; userpass varchar(50) not null,</span><br><span class="line">    -&gt; telno varchar(20) not null,</span><br><span class="line">    -&gt; sex enum(&#x27;w&#x27;,&#x27;m&#x27;) not null default &#x27;m&#x27;,</span><br><span class="line">    -&gt; birthday date not null default &#x27;0000-00-00&#x27;,</span><br><span class="line">    -&gt; index(username),</span><br><span class="line">    -&gt; index(userpass),</span><br><span class="line">    -&gt; unique(telno)</span><br><span class="line">    -&gt; );</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="三、表的存储类型"><a href="#三、表的存储类型" class="headerlink" title="三、表的存储类型"></a>三、表的存储类型</h2><p>MyISAM 和 InnoDB</p>
+<p><strong>修改类型</strong></p>
+<p><code>alter table 表名 engine=表存储类型;</code></p>
+<h3 id="MyISAM和InnoDB的区别"><a href="#MyISAM和InnoDB的区别" class="headerlink" title="MyISAM和InnoDB的区别"></a>MyISAM和InnoDB的区别</h3><ol>
+<li>MyISAM表的存储文件为3个，InnoDB为2个</li>
+<li>MyISAM不支持事物 innodb支持</li>
+<li>MyISAM不支持外键  innodb支持</li>
+<li>MyISAM表的查询效率高于innodb，但是innodb的安全性高于MyISAM</li>
+</ol>
+<h3 id="1-MyISAM的文件说明"><a href="#1-MyISAM的文件说明" class="headerlink" title="(1) MyISAM的文件说明"></a>(1) MyISAM的文件说明</h3><ol>
+<li><p>frm文件 存储当前表结构的文件</p>
+<p>在innodb和MyISAM中都存在</p>
+</li>
+<li><p>MYD：即MY DATA   存储表数据的文件</p>
+</li>
+<li><p>MYI：即 MY INDEX   存储表索引的文件</p>
+</li>
+</ol>
+<h3 id="2-InnoDB的文件说明"><a href="#2-InnoDB的文件说明" class="headerlink" title="(2) InnoDB的文件说明"></a>(2) InnoDB的文件说明</h3><ol>
+<li><p>frm文件 存储当前表结构的文件</p>
+<p>在innodb和MyISAM中都存在</p>
+</li>
+<li><p>ibd   存储表数据和索引</p>
+</li>
+</ol>
+<h3 id="3-innodb事物处理操作"><a href="#3-innodb事物处理操作" class="headerlink" title="(3) innodb事物处理操作"></a>(3) innodb事物处理操作</h3><ol>
+<li><h5 id="将当前表文件存储类型改为-innodb"><a href="#将当前表文件存储类型改为-innodb" class="headerlink" title="将当前表文件存储类型改为 innodb"></a>将当前表文件存储类型改为 innodb</h5><p><code>alter table 表名 engine=innodb;</code></p>
+</li>
+<li><h5 id="查看当前表的提交类型"><a href="#查看当前表的提交类型" class="headerlink" title="查看当前表的提交类型"></a>查看当前表的提交类型</h5><p><code>select  @@autocommit</code></p>
+<p>如果值为1 则为自动提交</p>
+</li>
+<li><h5 id="改为手动提交（开启事物）"><a href="#改为手动提交（开启事物）" class="headerlink" title="改为手动提交（开启事物）"></a>改为手动提交（开启事物）</h5><p><code>set autocommit=0</code></p>
+</li>
+<li><h5 id="事物开始"><a href="#事物开始" class="headerlink" title="事物开始"></a>事物开始</h5><p><code>begin;</code></p>
+</li>
+<li><h5 id="执行各种SQL语句"><a href="#执行各种SQL语句" class="headerlink" title="执行各种SQL语句"></a>执行各种SQL语句</h5></li>
+<li><h5 id="提交或者回滚"><a href="#提交或者回滚" class="headerlink" title="提交或者回滚"></a>提交或者回滚</h5><ol>
+<li><code>commit work;</code></li>
+<li><code>rollback work;</code></li>
+</ol>
+</li>
+</ol>
+<p><strong>注意：</strong></p>
+<p>事物是针对库中表的数据来操作的  并不是针对你当前的库 如果库被干掉了，那就一切都不存在。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show tables;</span><br><span class="line">+--------------------+</span><br><span class="line">| Tables_in_practice |</span><br><span class="line">+--------------------+</span><br><span class="line">| user               |</span><br><span class="line">| user2              |</span><br><span class="line">+--------------------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select @@autocommit;</span><br><span class="line">+--------------+</span><br><span class="line">| @@autocommit |</span><br><span class="line">+--------------+</span><br><span class="line">|            1 |</span><br><span class="line">+--------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; set autocommit=0;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select @@autocommit;</span><br><span class="line">+--------------+</span><br><span class="line">| @@autocommit |</span><br><span class="line">+--------------+</span><br><span class="line">|            0 |</span><br><span class="line">+--------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; begin;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from user;</span><br><span class="line">Empty set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; desc user;</span><br><span class="line">+----------+------------------+------+-----+---------+----------------+</span><br><span class="line">| Field    | Type             | Null | Key | Default | Extra          |</span><br><span class="line">+----------+------------------+------+-----+---------+----------------+</span><br><span class="line">| id       | int(10) unsigned | NO   | PRI | NULL    | auto_increment |</span><br><span class="line">| username | varchar(20)      | YES  | UNI | NULL    |                |</span><br><span class="line">| age      | tinyint(4)       | YES  | MUL | NULL    |                |</span><br><span class="line">+----------+------------------+------+-----+---------+----------------+</span><br><span class="line">3 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; insert into user values(null, &#x27;张三&#x27;, 20);</span><br><span class="line">Query OK, 1 row affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from user;</span><br><span class="line">+----+----------+------+</span><br><span class="line">| id | username | age  |</span><br><span class="line">+----+----------+------+</span><br><span class="line">|  1 | 张三     |   20 |</span><br><span class="line">+----+----------+------+</span><br><span class="line">1 row in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; commit work;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; begin;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; insert into user values(null, &#x27;李四&#x27;, 21);</span><br><span class="line">Query OK, 1 row affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from user;</span><br><span class="line">+----+----------+------+</span><br><span class="line">| id | username | age  |</span><br><span class="line">+----+----------+------+</span><br><span class="line">|  1 | 张三     |   20 |</span><br><span class="line">|  2 | 李四     |   21 |</span><br><span class="line">+----+----------+------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; rollback work;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from user;</span><br><span class="line">+----+----------+------+</span><br><span class="line">| id | username | age  |</span><br><span class="line">+----+----------+------+</span><br><span class="line">|  1 | 张三     |   20 |</span><br><span class="line">+----+----------+------+</span><br><span class="line">1 row in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; show create table user \G</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">       Table: user</span><br><span class="line">Create Table: CREATE TABLE `user` (</span><br><span class="line">  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,</span><br><span class="line">  `username` varchar(20) DEFAULT NULL,</span><br><span class="line">  `age` tinyint(4) DEFAULT NULL,</span><br><span class="line">  PRIMARY KEY (`id`),</span><br><span class="line">  UNIQUE KEY `username` (`username`),</span><br><span class="line">  KEY `age` (`age`)</span><br><span class="line">) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p>这里的auto-increment变成3了！说明有数据来过，但是又没有保留下来。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; begin;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; insert into user values(null, &#x27;王武&#x27;, 22);</span><br><span class="line">Query OK, 1 row affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from user;</span><br><span class="line">+----+----------+------+</span><br><span class="line">| id | username | age  |</span><br><span class="line">+----+----------+------+</span><br><span class="line">|  1 | 张三     |   20 |</span><br><span class="line">|  3 | 王武     |   22 |</span><br><span class="line">+----+----------+------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; \q   # 退出</span><br><span class="line">Bye</span><br><span class="line"></span><br><span class="line">C:\Users\zyp&gt;mysql -uroot -p  # 重启mysql</span><br><span class="line">Enter password: ****</span><br><span class="line">Welcome to the MySQL monitor.</span><br><span class="line"></span><br><span class="line">mysql&gt; use practice;</span><br><span class="line">Database changed</span><br><span class="line">mysql&gt; select * from user;</span><br><span class="line">+----+----------+------+</span><br><span class="line">| id | username | age  |</span><br><span class="line">+----+----------+------+</span><br><span class="line">|  1 | 张三     |   20 |</span><br><span class="line">+----+----------+------+</span><br><span class="line">1 row in set (0.01 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; show create table user\G;</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">       Table: user</span><br><span class="line">Create Table: CREATE TABLE `user` (</span><br><span class="line">  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,</span><br><span class="line">  `username` varchar(20) DEFAULT NULL,</span><br><span class="line">  `age` tinyint(4) DEFAULT NULL,</span><br><span class="line">  PRIMARY KEY (`id`),</span><br><span class="line">  UNIQUE KEY `username` (`username`),</span><br><span class="line">  KEY `age` (`age`)</span><br><span class="line">) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="四、更改表结构"><a href="#四、更改表结构" class="headerlink" title="四、更改表结构"></a>四、更改表结构</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; use practice;</span><br><span class="line">Database changed</span><br><span class="line">mysql&gt; select * from user;</span><br><span class="line">+----+----------+------+</span><br><span class="line">| id | username | age  |</span><br><span class="line">+----+----------+------+</span><br><span class="line">|  1 | 张三     |   20 |</span><br><span class="line">|  4 | 赵柳     |   23 |</span><br><span class="line">+----+----------+------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-给当前的表添加一个新的字段-add"><a href="#1-给当前的表添加一个新的字段-add" class="headerlink" title="1. 给当前的表添加一个新的字段    add"></a>1. 给当前的表添加一个新的字段    add</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table user add sex enum(&#x27;w&#x27;,&#x27;m&#x27;) default &#x27;w&#x27;;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; alter table user add sex enum(&#x27;w&#x27;,&#x27;m&#x27;) default &#x27;w&#x27;;</span><br><span class="line">Query OK, 0 rows affected (0.15 sec)</span><br><span class="line">Records: 0  Duplicates: 0  Warnings: 0</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from user;</span><br><span class="line">+----+----------+------+------+</span><br><span class="line">| id | username | age  | sex  |</span><br><span class="line">+----+----------+------+------+</span><br><span class="line">|  1 | 张三     |   20 | w    |</span><br><span class="line">|  4 | 赵柳     |   23 | w    |</span><br><span class="line">+----+----------+------+------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-删除一个字段drop"><a href="#2-删除一个字段drop" class="headerlink" title="2. 删除一个字段drop"></a>2. 删除一个字段drop</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table user drop sex/id /info/age/money....</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; alter table user drop sex;</span><br><span class="line">Query OK, 0 rows affected (0.12 sec)</span><br><span class="line">Records: 0  Duplicates: 0  Warnings: 0</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from user;</span><br><span class="line">+----+----------+------+</span><br><span class="line">| id | username | age  |</span><br><span class="line">+----+----------+------+</span><br><span class="line">|  1 | 张三     |   20 |</span><br><span class="line">|  4 | 赵柳     |   23 |</span><br><span class="line">+----+----------+------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-添加新字段在第一位-first"><a href="#3-添加新字段在第一位-first" class="headerlink" title="3. 添加新字段在第一位   first"></a>3. 添加新字段在第一位   first</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table user add info varchar(100) default &#x27;个人说明&#x27; first;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; alter table user add info varchar(100) default &#x27;个人说明&#x27; first;</span><br><span class="line">Query OK, 0 rows affected (0.12 sec)</span><br><span class="line">Records: 0  Duplicates: 0  Warnings: 0</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from user;</span><br><span class="line">+----------+----+----------+------+</span><br><span class="line">| info     | id | username | age  |</span><br><span class="line">+----------+----+----------+------+</span><br><span class="line">| 个人说明 |  1 | 张三     |   20 |</span><br><span class="line">| 个人说明 |  4 | 赵柳     |   23 |</span><br><span class="line">+----------+----+----------+------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><h5 id="添加新字段在某个字段的后面-after"><a href="#添加新字段在某个字段的后面-after" class="headerlink" title="添加新字段在某个字段的后面  after"></a>添加新字段在某个字段的后面  after</h5></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table user add backinfo varchar(100) default &#x27;备注&#x27; after age;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; alter table user add backinfo varchar(100) default &#x27;备注&#x27; after age;</span><br><span class="line">Query OK, 0 rows affected (0.12 sec)</span><br><span class="line">Records: 0  Duplicates: 0  Warnings: 0</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from user;</span><br><span class="line">+----------+----+----------+------+----------+</span><br><span class="line">| info     | id | username | age  | backinfo |</span><br><span class="line">+----------+----+----------+------+----------+</span><br><span class="line">| 个人说明 |  1 | 张三     |   20 | 备注     |</span><br><span class="line">| 个人说明 |  4 | 赵柳     |   23 | 备注     |</span><br><span class="line">+----------+----+----------+------+----------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-更改字段名称并更改字段顺序-change"><a href="#4-更改字段名称并更改字段顺序-change" class="headerlink" title="4. 更改字段名称并更改字段顺序   change"></a>4. 更改字段名称并更改字段顺序   change</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; alter table user change age money decimal(6,2);</span><br><span class="line">Query OK, 2 rows affected (0.13 sec)</span><br><span class="line">Records: 2  Duplicates: 0  Warnings: 0</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from user;</span><br><span class="line">+----------+----+----------+-------+----------+</span><br><span class="line">| info     | id | username | money | backinfo |</span><br><span class="line">+----------+----+----------+-------+----------+</span><br><span class="line">| 个人说明 |  1 | 张三     | 20.00 | 备注     |</span><br><span class="line">| 个人说明 |  4 | 赵柳     | 23.00 | 备注     |</span><br><span class="line">+----------+----+----------+-------+----------+</span><br><span class="line">2 rows in set (0.01 sec)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; alter table user change money age tinyint;</span><br><span class="line">Query OK, 2 rows affected (0.11 sec)</span><br><span class="line">Records: 2  Duplicates: 0  Warnings: 0</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from user;</span><br><span class="line">+----------+----+----------+------+----------+</span><br><span class="line">| info     | id | username | age  | backinfo |</span><br><span class="line">+----------+----+----------+------+----------+</span><br><span class="line">| 个人说明 |  1 | 张三     |   20 | 备注     |</span><br><span class="line">| 个人说明 |  4 | 赵柳     |   23 | 备注     |</span><br><span class="line">+----------+----+----------+------+----------+</span><br><span class="line">2 rows in set (0.01 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; alter table user change age money decimal(6,2) after backinfo;</span><br><span class="line">Query OK, 2 rows affected (0.12 sec)</span><br><span class="line">Records: 2  Duplicates: 0  Warnings: 0</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from user;</span><br><span class="line">+----------+----+----------+----------+-------+</span><br><span class="line">| info     | id | username | backinfo | money |</span><br><span class="line">+----------+----+----------+----------+-------+</span><br><span class="line">| 个人说明 |  1 | 张三     | 备注     | 20.00 |</span><br><span class="line">| 个人说明 |  4 | 赵柳     | 备注     | 23.00 |</span><br><span class="line">+----------+----+----------+----------+-------+</span><br><span class="line">2 rows in set (0.01 sec)</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-更改字段类型-modify"><a href="#5-更改字段类型-modify" class="headerlink" title="5. 更改字段类型  modify"></a>5. 更改字段类型  modify</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; alter table user modify username char(11);</span><br><span class="line">Query OK, 2 rows affected (0.12 sec)</span><br><span class="line">Records: 2  Duplicates: 0  Warnings: 0</span><br><span class="line"></span><br><span class="line">mysql&gt; desc user;</span><br><span class="line">+----------+------------------+------+-----+----------+----------------+</span><br><span class="line">| Field    | Type             | Null | Key | Default  | Extra          |</span><br><span class="line">+----------+------------------+------+-----+----------+----------------+</span><br><span class="line">| info     | varchar(100)     | YES  |     | 个人说明 |                |</span><br><span class="line">| id       | int(10) unsigned | NO   | PRI | NULL     | auto_increment |</span><br><span class="line">| username | char(11)         | YES  | UNI | NULL     |                |</span><br><span class="line">| backinfo | varchar(100)     | YES  |     | 备注     |                |</span><br><span class="line">| money    | decimal(6,2)     | YES  | MUL | NULL     |                |</span><br><span class="line">+----------+------------------+------+-----+----------+----------------+</span><br><span class="line">5 rows in set (0.01 sec)</span><br></pre></td></tr></table></figure>
+
+<h4 id="6-添加字段索引"><a href="#6-添加字段索引" class="headerlink" title="6. 添加字段索引"></a>6. 添加字段索引</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table user add index(username);  # 添加常规索引</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table user add unique(username);  # 添加唯一索引</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table user add index infoindex(info);  # 添加索引并添加索引名</span><br></pre></td></tr></table></figure>
+
+<h4 id="7-删除索引"><a href="#7-删除索引" class="headerlink" title="7. 删除索引"></a>7. 删除索引</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table user drop key username;</span><br></pre></td></tr></table></figure>
+
+<h4 id="8-创建一个表b和表a一样"><a href="#8-创建一个表b和表a一样" class="headerlink" title="8. 创建一个表b和表a一样"></a>8. 创建一个表b和表a一样</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create table copy_user like user;</span><br></pre></td></tr></table></figure>
+
+<h4 id="9-查看所有的索引"><a href="#9-查看所有的索引" class="headerlink" title="9. 查看所有的索引"></a>9. 查看所有的索引</h4><p>show index from 表名;</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show index from user;</span><br><span class="line">+-------+------------+------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+</span><br><span class="line">| Table | Non_unique | Key_name   | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |</span><br><span class="line">+-------+------------+------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+</span><br><span class="line">| user  |          0 | PRIMARY    |            1 | id          | A         |           2 |     NULL | NULL   |      | BTREE      |         |               |</span><br><span class="line">| user  |          0 | username_3 |            1 | username    | A         |           2 |     NULL | NULL   | YES  | BTREE      |         |               |</span><br><span class="line">| user  |          1 | age        |            1 | money       | A         |           2 |     NULL | NULL   | YES  | BTREE      |         |               |</span><br><span class="line">| user  |          1 | username_2 |            1 | username    | A         |           2 |     NULL | NULL   | YES  | BTREE      |         |               |</span><br><span class="line">| user  |          1 | infoindex  |            1 | info        | A         |           1 |     NULL | NULL   | YES  | BTREE      |         |               |</span><br><span class="line">+-------+------------+------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+</span><br><span class="line">5 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h4 id="10-更改字段的字符集"><a href="#10-更改字段的字符集" class="headerlink" title="10. 更改字段的字符集"></a>10. 更改字段的字符集</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter database  xxx_ku  character set utf8;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table  xxx(user)  character set utf8;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table  xxx(user)  modify username varchar(20) character set utf8;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="五、INSERT-数据的添加"><a href="#五、INSERT-数据的添加" class="headerlink" title="五、INSERT 数据的添加"></a>五、INSERT 数据的添加</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; desc user;</span><br><span class="line">+----------+------------------+------+-----+----------+----------------+</span><br><span class="line">| Field    | Type             | Null | Key | Default  | Extra          |</span><br><span class="line">+----------+------------------+------+-----+----------+----------------+</span><br><span class="line">| info     | varchar(100)     | YES  | MUL | 个人说明 |                |</span><br><span class="line">| id       | int(10) unsigned | NO   | PRI | NULL     | auto_increment |</span><br><span class="line">| username | char(11)         | YES  | UNI | NULL     |                |</span><br><span class="line">| backinfo | varchar(100)     | YES  |     | 备注     |                |</span><br><span class="line">| money    | decimal(6,2)     | YES  | MUL | NULL     |                |</span><br><span class="line">+----------+------------------+------+-----+----------+----------------+</span><br><span class="line">5 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-指定字段名称添加数据"><a href="#1-指定字段名称添加数据" class="headerlink" title="1. 指定字段名称添加数据"></a>1. 指定字段名称添加数据</h4><p><code>insert into user(username, money) values(&#39;王五&#39;, 24);</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; insert into user(username, money) values(&#x27;王五&#x27;, 24);</span><br><span class="line">Query OK, 1 row affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from user;</span><br><span class="line">+----------+----+----------+----------+-------+</span><br><span class="line">| info     | id | username | backinfo | money |</span><br><span class="line">+----------+----+----------+----------+-------+</span><br><span class="line">| 个人说明 |  1 | 张三     | 备注     | 20.00 |</span><br><span class="line">| 个人说明 |  4 | 赵柳     | 备注     | 23.00 |</span><br><span class="line">| 个人说明 |  6 | 李斯     | 备注     | 21.10 |</span><br><span class="line">| 个人说明 |  7 | 王五     | 备注     | 24.00 |</span><br><span class="line">+----------+----+----------+----------+-------+</span><br><span class="line">4 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p>需要注意：如果有字段不为空且没有默认值 那么必须插入值</p>
+<h4 id="2-不指定字段添加值（需要将所有字段都插入值）"><a href="#2-不指定字段添加值（需要将所有字段都插入值）" class="headerlink" title="2. 不指定字段添加值（需要将所有字段都插入值）"></a>2. 不指定字段添加值（需要将所有字段都插入值）</h4><p><code>insert into user values(&#39;个人说明&#39;, null, &#39;钱强&#39;,&#39;备注&#39;, 25);</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; insert into user values(&#x27;个人说明&#x27;, null, &#x27;钱强&#x27;,&#x27;备注&#x27;, 25);</span><br><span class="line">Query OK, 1 row affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from user;</span><br><span class="line">+----------+----+----------+----------+-------+</span><br><span class="line">| info     | id | username | backinfo | money |</span><br><span class="line">+----------+----+----------+----------+-------+</span><br><span class="line">| 个人说明 |  1 | 张三     | 备注     | 20.00 |</span><br><span class="line">| 个人说明 |  4 | 赵柳     | 备注     | 23.00 |</span><br><span class="line">| 个人说明 |  6 | 李斯     | 备注     | 21.10 |</span><br><span class="line">| 个人说明 |  7 | 王五     | 备注     | 24.00 |</span><br><span class="line">| 个人说明 |  8 | 钱强     | 备注     | 25.00 |</span><br><span class="line">+----------+----+----------+----------+-------+</span><br><span class="line">5 rows in set (0.00 sec</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-指定字段添加多个值"><a href="#3-指定字段添加多个值" class="headerlink" title="3. 指定字段添加多个值"></a>3. 指定字段添加多个值</h4><p><code>insert into user(username, money) values(&#39;诸葛&#39;,26),(&#39;孔明&#39;,27);</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; insert into user(username, money) values(&#x27;诸葛&#x27;,26),(&#x27;孔明&#x27;,27);</span><br><span class="line">Query OK, 2 rows affected (0.00 sec)</span><br><span class="line">Records: 2  Duplicates: 0  Warnings: 0</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from user;</span><br><span class="line">+----------+----+----------+----------+-------+</span><br><span class="line">| info     | id | username | backinfo | money |</span><br><span class="line">+----------+----+----------+----------+-------+</span><br><span class="line">| 个人说明 |  1 | 张三     | 备注     | 20.00 |</span><br><span class="line">| 个人说明 |  4 | 赵柳     | 备注     | 23.00 |</span><br><span class="line">| 个人说明 |  6 | 李斯     | 备注     | 21.10 |</span><br><span class="line">| 个人说明 |  7 | 王五     | 备注     | 24.00 |</span><br><span class="line">| 个人说明 |  8 | 钱强     | 备注     | 25.00 |</span><br><span class="line">| 个人说明 |  9 | 诸葛     | 备注     | 26.00 |</span><br><span class="line">| 个人说明 | 10 | 孔明     | 备注     | 27.00 |</span><br><span class="line">+----------+----+----------+----------+-------+</span><br><span class="line">7 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-不指定字段添加多个值"><a href="#4-不指定字段添加多个值" class="headerlink" title="4. 不指定字段添加多个值"></a>4. 不指定字段添加多个值</h4><p><code>insert into user values(&#39;个人说明&#39;,null,&#39;欧阳&#39;,&#39;备注&#39;,28),(&#39;个人说明&#39;,null,&#39;夏丹&#39;,&#39;备注&#39;,29);</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; insert into user values(&#x27;个人说明&#x27;,null,&#x27;欧阳&#x27;,&#x27;备注&#x27;,28),(&#x27;个人说明&#x27;,null,&#x27;夏丹&#x27;,&#x27;备注&#x27;,29);</span><br><span class="line">Query OK, 2 rows affected (0.00 sec)</span><br><span class="line">Records: 2  Duplicates: 0  Warnings: 0</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from user;</span><br><span class="line">+----------+----+----------+----------+-------+</span><br><span class="line">| info     | id | username | backinfo | money |</span><br><span class="line">+----------+----+----------+----------+-------+</span><br><span class="line">| 个人说明 |  1 | 张三     | 备注     | 20.00 |</span><br><span class="line">| 个人说明 |  4 | 赵柳     | 备注     | 23.00 |</span><br><span class="line">| 个人说明 |  6 | 李斯     | 备注     | 21.10 |</span><br><span class="line">| 个人说明 |  7 | 王五     | 备注     | 24.00 |</span><br><span class="line">| 个人说明 |  8 | 钱强     | 备注     | 25.00 |</span><br><span class="line">| 个人说明 |  9 | 诸葛     | 备注     | 26.00 |</span><br><span class="line">| 个人说明 | 10 | 孔明     | 备注     | 27.00 |</span><br><span class="line">| 个人说明 | 11 | 欧阳     | 备注     | 28.00 |</span><br><span class="line">| 个人说明 | 12 | 夏丹     | 备注     | 29.00 |</span><br><span class="line">+----------+----+----------+----------+-------+</span><br><span class="line">9 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p>让字段可以重复，去掉key</p>
+<p><code>alter table user drop key username;</code></p>
+<h4 id="5-改字段中的某个信息：update"><a href="#5-改字段中的某个信息：update" class="headerlink" title="5. 改字段中的某个信息：update"></a>5. 改字段中的某个信息：update</h4><p><code>update user set username=&#39;王二&#39; where id=7;</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; update user set username=&#x27;王二&#x27; where id=7;</span><br><span class="line">Query OK, 1 row affected (0.00 sec)</span><br><span class="line">Rows matched: 1  Changed: 1  Warnings: 0</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from user;</span><br><span class="line">+----------+----+----------+----------+-------+</span><br><span class="line">| info     | id | username | backinfo | money |</span><br><span class="line">+----------+----+----------+----------+-------+</span><br><span class="line">| 个人说明 |  1 | 张三     | 备注     | 20.00 |</span><br><span class="line">| 个人说明 |  4 | 赵柳     | 备注     | 23.00 |</span><br><span class="line">| 个人说明 |  6 | 李斯     | 备注     | 21.10 |</span><br><span class="line">| 个人说明 |  7 | 王二     | 备注     | 24.00 |</span><br><span class="line">| 个人说明 |  8 | 钱强     | 备注     | 25.00 |</span><br><span class="line">| 个人说明 |  9 | 诸葛     | 备注     | 26.00 |</span><br><span class="line">| 个人说明 | 10 | 孔明     | 备注     | 27.00 |</span><br><span class="line">| 个人说明 | 11 | 欧阳     | 备注     | 28.00 |</span><br><span class="line">| 个人说明 | 12 | 夏丹     | 备注     | 29.00 |</span><br><span class="line">+----------+----+----------+----------+-------+</span><br><span class="line">9 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="六、SELECT-数据的查询"><a href="#六、SELECT-数据的查询" class="headerlink" title="六、SELECT 数据的查询"></a>六、SELECT 数据的查询</h2><h4 id="1-不指定字段查询（查询所有字段）"><a href="#1-不指定字段查询（查询所有字段）" class="headerlink" title="1. 不指定字段查询（查询所有字段）"></a>1. 不指定字段查询（查询所有字段）</h4><p><code>select * from 表名;</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from user;</span><br><span class="line">+----------+----+----------+----------+-------+</span><br><span class="line">| info     | id | username | backinfo | money |</span><br><span class="line">+----------+----+----------+----------+-------+</span><br><span class="line">| 个人说明 |  1 | 张三     | 备注     | 20.00 |</span><br><span class="line">| 个人说明 |  4 | 赵柳     | 备注     | 23.00 |</span><br><span class="line">| 个人说明 |  6 | 李斯     | 备注     | 21.10 |</span><br><span class="line">| 个人说明 |  7 | 王二     | 备注     | 24.00 |</span><br><span class="line">| 个人说明 |  8 | 钱强     | 备注     | 25.00 |</span><br><span class="line">| 个人说明 |  9 | 诸葛     | 备注     | 26.00 |</span><br><span class="line">| 个人说明 | 10 | 孔明     | 备注     | 27.00 |</span><br><span class="line">| 个人说明 | 11 | 欧阳     | 备注     | 28.00 |</span><br><span class="line">| 个人说明 | 12 | 夏丹     | 备注     | 29.00 |</span><br><span class="line">+----------+----+----------+----------+-------+</span><br><span class="line">9 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-指定字段查询"><a href="#2-指定字段查询" class="headerlink" title="2. 指定字段查询"></a>2. 指定字段查询</h4><p><code>select 字段名1,字段名2...  from 表名;</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select username from user;</span><br><span class="line">+----------+</span><br><span class="line">| username |</span><br><span class="line">+----------+</span><br><span class="line">| 夏丹     |</span><br><span class="line">| 孔明     |</span><br><span class="line">| 张三     |</span><br><span class="line">| 李斯     |</span><br><span class="line">| 欧阳     |</span><br><span class="line">| 王二     |</span><br><span class="line">| 诸葛     |</span><br><span class="line">| 赵柳     |</span><br><span class="line">| 钱强     |</span><br><span class="line">+----------+</span><br><span class="line">9 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-查询字段并运算"><a href="#3-查询字段并运算" class="headerlink" title="3. 查询字段并运算"></a>3. 查询字段并运算</h4><p><code>select id+money from user;</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select id + money from user;</span><br><span class="line">+------------+</span><br><span class="line">| id + money |</span><br><span class="line">+------------+</span><br><span class="line">|      21.00 |</span><br><span class="line">|      27.10 |</span><br><span class="line">|      27.00 |</span><br><span class="line">|      31.00 |</span><br><span class="line">|      33.00 |</span><br><span class="line">|      35.00 |</span><br><span class="line">|      37.00 |</span><br><span class="line">|      39.00 |</span><br><span class="line">|      41.00 |</span><br><span class="line">+------------+</span><br><span class="line">9 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-起别名"><a href="#4-起别名" class="headerlink" title="4. 起别名"></a>4. 起别名</h4><p><code>select username as name from 表名;</code></p>
+<p><code>select username name from 表名;</code></p>
+<hr>
+<h2 id="七、where-条件"><a href="#七、where-条件" class="headerlink" title="七、where 条件"></a>七、where 条件</h2><h4 id="1-比较运算符"><a href="#1-比较运算符" class="headerlink" title="(1) 比较运算符"></a>(1) 比较运算符</h4><ol>
+<li>&gt;</li>
+<li>&lt;</li>
+<li>&gt;&#x3D;</li>
+<li>&lt;&#x3D;</li>
+<li>!&#x3D;&#x2F;&lt;&gt;</li>
+<li>&#x3D;</li>
+</ol>
+<h4 id="2-逻辑运算符"><a href="#2-逻辑运算符" class="headerlink" title="(2) 逻辑运算符"></a>(2) 逻辑运算符</h4><ol>
+<li><p>逻辑与 and</p>
+<p><code>select * from user where username=&#39;苍老师&#39; and age&lt;=30;</code></p>
+<p>两侧为真才为真</p>
+</li>
+<li><p>逻辑或 or</p>
+<p><code>select * from user where username=&#39;苍老师&#39; or age&lt;=30;</code></p>
+<p>只要满足一个就为真</p>
+</li>
+<li><p>and 和 or 一起使用</p>
+<p><code>select * from user where id=1 or (age=18 and sex=&#39;w&#39;);</code></p>
+</li>
+<li><p>在…内 in</p>
+<p><code>select * from user where id in(1,3,5,6,7);</code>   </p>
+<p><code>select * from user where id=1 or id=2 or id=6; </code></p>
+</li>
+<li><p>不在…内 not  in</p>
+<p><code>select * from user where id not in(1,3,5,6,7); </code>   </p>
+<p><code>select * from user where id!=1 and id!=2 and id!=6; </code></p>
+</li>
+<li><p>在…范围内 between … and …</p>
+<p><code>select * from user where age between 20 and 33;</code> &#96;</p>
+<p><code>select * from user where age&gt;=20 and age&lt;=33;</code></p>
+</li>
+<li><p>不在…范围内 not between … and …</p>
+<p><code>select * from user where age not between 20 and 33; </code></p>
+</li>
+</ol>
+<h4 id="3-order-by-排序"><a href="#3-order-by-排序" class="headerlink" title="(3) order by  排序"></a>(3) order by  排序</h4><ol>
+<li><p>默认升序  asc</p>
+<p> <code>select * from user order by age;</code></p>
+<p> <code>select * from user order by age asc;</code></p>
+</li>
+<li><p>降序  desc</p>
+<p><code>select * from user order by age desc;</code></p>
+</li>
+</ol>
+<h4 id="4-is-is-not"><a href="#4-is-is-not" class="headerlink" title="(4) is  is not"></a>(4) is  is not</h4><ol>
+<li><p>is not</p>
+<p> <code>select * from user where username is not null;</code></p>
+</li>
+<li><p>is</p>
+<p> <code>select * from user where username is null;</code></p>
+</li>
+</ol>
+<h4 id="5-limit"><a href="#5-limit" class="headerlink" title="(5) limit"></a>(5) limit</h4><p>limit num   直接取出num条数据</p>
+<p><code>select * from user order by age desc limit 1; </code> # 取出年龄最大的一条数据</p>
+<p>limit x,num  从 x 的位置开始，取出 num 条数据</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from user;</span><br><span class="line">+----------+----+----------+----------+-------+</span><br><span class="line">| info     | id | username | backinfo | money |</span><br><span class="line">+----------+----+----------+----------+-------+</span><br><span class="line">| 个人说明 |  1 | 张三     | 备注     | 20.00 |</span><br><span class="line">| 个人说明 |  4 | 赵柳     | 备注     | 23.00 |</span><br><span class="line">| 个人说明 |  6 | 李斯     | 备注     | 21.10 |</span><br><span class="line">| 个人说明 |  7 | 王二     | 备注     | 24.00 |</span><br><span class="line">| 个人说明 |  8 | 钱强     | 备注     | 25.00 |</span><br><span class="line">| 个人说明 |  9 | 诸葛     | 备注     | 26.00 |</span><br><span class="line">| 个人说明 | 10 | 孔明     | 备注     | 27.00 |</span><br><span class="line">| 个人说明 | 11 | 欧阳     | 备注     | 28.00 |</span><br><span class="line">| 个人说明 | 12 | 夏丹     | 备注     | 29.00 |</span><br><span class="line">+----------+----+----------+----------+-------+</span><br><span class="line">9 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from user order by money desc limit 3;  # 取出money最多的3个</span><br><span class="line">+----------+----+----------+----------+-------+</span><br><span class="line">| info     | id | username | backinfo | money |</span><br><span class="line">+----------+----+----------+----------+-------+</span><br><span class="line">| 个人说明 | 12 | 夏丹     | 备注     | 29.00 |</span><br><span class="line">| 个人说明 | 11 | 欧阳     | 备注     | 28.00 |</span><br><span class="line">| 个人说明 | 10 | 孔明     | 备注     | 27.00 |</span><br><span class="line">+----------+----+----------+----------+-------+</span><br><span class="line">3 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from user order by money desc limit 3, 2;  # 从3个位置开始，取出2个钱多的</span><br><span class="line">+----------+----+----------+----------+-------+</span><br><span class="line">| info     | id | username | backinfo | money |</span><br><span class="line">+----------+----+----------+----------+-------+</span><br><span class="line">| 个人说明 |  9 | 诸葛     | 备注     | 26.00 |</span><br><span class="line">| 个人说明 |  8 | 钱强     | 备注     | 25.00 |</span><br><span class="line">+----------+----+----------+----------+-------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong></p>
+<p>如果是从头取出num条数据  limit num  &#x3D;&#x3D;  limit 0,num</p>
+<h5 id="分页计算："><a href="#分页计算：" class="headerlink" title="分页计算："></a>分页计算：</h5><p>求分页取值的偏移量：（nowPage-1）* everyPage</p>
+<h4 id="6-模糊查询-like"><a href="#6-模糊查询-like" class="headerlink" title="(6) 模糊查询  like"></a>(6) 模糊查询  like</h4><ol>
+<li><p>包含查询</p>
+<p>like ‘%字符%’</p>
+</li>
+<li><p>以某个字符开头的查询</p>
+<p>like ‘字符%’</p>
+</li>
+<li><p>以某个字符结尾的查询</p>
+<p>like  ‘%字符’</p>
+</li>
+</ol>
+<hr>
+<h2 id="八、聚合函数"><a href="#八、聚合函数" class="headerlink" title="八、聚合函数"></a>八、聚合函数</h2><h4 id="1-最大值"><a href="#1-最大值" class="headerlink" title="1. 最大值"></a>1. 最大值</h4><p>max()   </p>
+<p><code>select max(age) from user;</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select max(money) from user;</span><br><span class="line">+------------+</span><br><span class="line">| max(money) |</span><br><span class="line">+------------+</span><br><span class="line">|      29.00 |</span><br><span class="line">+------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-最小值"><a href="#2-最小值" class="headerlink" title="2. 最小值"></a>2. 最小值</h4><p>min()</p>
+<p><code>select min(age) from user;</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select min(id) from user;</span><br><span class="line">+---------+</span><br><span class="line">| min(id) |</span><br><span class="line">+---------+</span><br><span class="line">|       1 |</span><br><span class="line">+---------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-统计"><a href="#3-统计" class="headerlink" title="3. 统计"></a>3. 统计</h4><p>count()</p>
+<p><code>select count(*) from user</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select count(*) from user;</span><br><span class="line">+----------+</span><br><span class="line">| count(*) |</span><br><span class="line">+----------+</span><br><span class="line">|        9 |</span><br><span class="line">+----------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-平均值"><a href="#4-平均值" class="headerlink" title="4. 平均值"></a>4. 平均值</h4><p>avg()</p>
+<p><code>select avg(age) from user;</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select avg(money) from user;</span><br><span class="line">+------------+</span><br><span class="line">| avg(money) |</span><br><span class="line">+------------+</span><br><span class="line">|  24.788889 |</span><br><span class="line">+------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-求和"><a href="#5-求和" class="headerlink" title="5. 求和"></a>5. 求和</h4><p>sum()</p>
+<p><code>select sum(age) from user;</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select sum(money) from user;</span><br><span class="line">+------------+</span><br><span class="line">| sum(money) |</span><br><span class="line">+------------+</span><br><span class="line">|     223.10 |</span><br><span class="line">+------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="九、group-by-分组"><a href="#九、group-by-分组" class="headerlink" title="九、group by 分组"></a>九、group by 分组</h2><p>查询男女分别多少人</p>
+<p><code>select sex,count(*) from user group by sex;</code></p>
+<p>统计每个年龄段分别多少人</p>
+<p><code>select age,count(*) from user group by age;</code></p>
+<p>统计每个年龄段的男女分别有多少人</p>
+<p><code>select sex,age,count(*) from user group by sex,age;</code></p>
+<p>groub by  having   其中的having相当于where</p>
+<p>查询每个年龄段人数大于1人的数据</p>
+<p><code>select age,count(*) as count from user group by age having count&gt;1;</code></p>
+<p>查询每个年龄段人数大于1人的数据 并且年龄小于40</p>
+<p><code>select age,count(*) as count from user group by age having count&gt;1 and age&lt;40;</code></p>
+<p>查询每个年龄段人数大于1人的数据 并且年龄为10,20,30</p>
+<p><code>select age,count(*) as count from user group by age having age in(18,20,30);</code></p>
+<hr>
+<h2 id="十、delete-删除"><a href="#十、delete-删除" class="headerlink" title="十、delete 删除"></a>十、delete 删除</h2><p>delete from 表名 [where…]</p>
+<p><strong>注意：</strong> where 应该加 如果没有where条件删除所有数据</p>
+<p>实例: <code>delete from user where username=&#39;xxx&#39;;</code></p>
+<hr>
+<h2 id="十一、update-修改"><a href="#十一、update-修改" class="headerlink" title="十一、update 修改"></a>十一、update 修改</h2><p>update 表名 set 字段名&#x3D;字段值,[字段名&#x3D;字段值…[where…..]] </p>
+<p><strong>注意：</strong> 不要忘记where条件  否则修改全部</p>
+<p><strong>实例：</strong> <code>update user set sex=&#39;m&#39; where age in(18,20);</code></p>
+<hr>
+<h2 id="十二、多表联查"><a href="#十二、多表联查" class="headerlink" title="十二、多表联查"></a>十二、多表联查</h2><p><strong>关联条件</strong></p>
+<p><strong>外键</strong></p>
+<h4 id="1-隐式内连接"><a href="#1-隐式内连接" class="headerlink" title="(1) 隐式内连接"></a>(1) 隐式内连接</h4><p><code>select * from user,goods where user.id=goods.uid</code><br><code>select user.username,user.age,goods.goodsname from user,goods where user.id=goods.uid</code></p>
+<p><strong>起别名</strong></p>
+<p><code>select u.username,g.goodsname from user u,goods g where u.id=g.uid</code></p>
+<h4 id="2-显示内连接-inner-join-on"><a href="#2-显示内连接-inner-join-on" class="headerlink" title="(2) 显示内连接 inner join  on"></a>(2) 显示内连接 inner join  on</h4><p><code>select * from user INNER JOIN goods ON user.id=goods.uid and goods.uid=1</code></p>
+<p><code>select u.username,g.goodsname from user u INNER JOIN goods g ON u.id=g.uid and g.uid=1</code></p>
+<p><strong>注意：</strong> 隐式内连接和显示内连接其实是同一个查询  会将<strong>关联</strong>的数据全部查询出来</p>
+<h4 id="3-左链接-left-join-on"><a href="#3-左链接-left-join-on" class="headerlink" title="(3) 左链接  left join  on"></a>(3) 左链接  left join  on</h4><p><code>select u.username,g.goodsname from user u LEFT JOIN goods g ON u.id=g.uid</code></p>
+<p><strong>注意：</strong> 左链接会将左表作为主表 右表为辅表 会将主表所有数据查询出来 辅表没有关联的数据使用null来占</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/MySQL/" rel="tag"># MySQL</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2020/04/26/11242/" rel="prev" title="MySQL 初识">
+                  <i class="fa fa-angle-left"></i> MySQL 初识
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2020/05/03/58377/" rel="next" title="基于华三交换机，限制其他网段的IP访问">
+                  基于华三交换机，限制其他网段的IP访问 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">691k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:28</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="Selenium 运行原理，元素定位的方法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Selenium 通识">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2020/08/02/47242/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="Selenium 运行原理，元素定位的方法。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://zypdominate.github.io/images/2020/selenium/selenium1.1.png">
+<meta property="og:image" content="https://zypdominate.github.io/images/2020/selenium/selenium2.1.png">
+<meta property="og:image" content="https://zypdominate.github.io/images/2020/selenium/selenium2.2.png">
+<meta property="article:published_time" content="2020-08-01T17:02:01.000Z">
+<meta property="article:modified_time" content="2025-12-23T14:07:49.081Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="Selenium">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zypdominate.github.io/images/2020/selenium/selenium1.1.png">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2020/08/02/47242/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2020/08/02/47242/","path":"posts/2020/08/02/47242/","title":"Selenium 通识"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Selenium 通识 | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#WebDriver%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86"><span class="nav-text">WebDriver运行原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%83%E7%B4%A0%E5%AE%9A%E4%BD%8D%E7%9A%848%E7%A7%8D%E6%96%B9%E6%B3%95"><span class="nav-text">元素定位的8种方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Selenium-WebElement"><span class="nav-text">Selenium WebElement</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#WebElement-%E5%B1%9E%E6%80%A7"><span class="nav-text">WebElement 属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95"><span class="nav-text">常用方法</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2020/08/02/47242/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Selenium 通识 | Magnolia's Blog">
+      <meta itemprop="description" content="Selenium 运行原理，元素定位的方法。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Selenium 通识
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-08-02 01:02:01" itemprop="dateCreated datePublished" datetime="2020-08-02T01:02:01+08:00">2020-08-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/Selenium/" itemprop="url" rel="index"><span itemprop="name">Selenium</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>4.9k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>4 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">Selenium 运行原理，元素定位的方法。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="WebDriver运行原理"><a href="#WebDriver运行原理" class="headerlink" title="WebDriver运行原理"></a>WebDriver运行原理</h2><p>执行 selenium 测试过程：</p>
+<ol>
+<li>工程师写的自动化测试代码：自动化测试代码发送请求给浏览器的驱动（Chrome驱动，FireFox驱动）</li>
+<li>浏览器驱动：解析自动化测试代码，解析后将其发送给浏览器</li>
+<li>浏览器：执行浏览器驱动发来的指令，完成工程师想要的操作</li>
+</ol>
+<p>Selenium WebDriver 如何与浏览器通信：</p>
+<ol>
+<li>对于每一条 selenium 脚本，对应一个 http 请求会被创建并且发送给浏览器的驱动；</li>
+<li>浏览器驱动中包含了一个 HTTP Server，接受 http 请求；</li>
+<li>HTTP Server 接受到请求后根据请求来具体控制浏览器；</li>
+<li>浏览器执行具体的测试步骤；</li>
+<li>浏览器将步骤执行结果返回给 HTTP Server；</li>
+<li>HTTP Server 将结果返回给 Selenium 脚本，如果是错误的 http 代码则会在控制台中看到报错信息；</li>
+</ol>
+<p><img data-src="/../../images/2020/selenium/selenium1.1.png" alt="image-20200725002005595"></p>
+<p>WebDriver的协议：</p>
+<ul>
+<li>WebDriver使用的协议是：JSON Wire protocol</li>
+<li>通信的数据格式是 json</li>
+</ul>
+<hr>
+<h2 id="元素定位的8种方法"><a href="#元素定位的8种方法" class="headerlink" title="元素定位的8种方法"></a>元素定位的8种方法</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"><span class="keyword">from</span> selenium.webdriver.common.by <span class="keyword">import</span> By</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TestCase</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="comment"># from .chrome.webdriver import WebDriver as Chrome  # noqa</span></span><br><span class="line">        <span class="variable language_">self</span>.driver = webdriver.Chrome()</span><br><span class="line">        <span class="variable language_">self</span>.driver.get(<span class="string">&quot;http://www.baidu.com&quot;</span>)</span><br><span class="line">        <span class="variable language_">self</span>.driver.maximize_window()</span><br><span class="line">        time.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">execute_click_su</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.driver.find_element_by_id(<span class="string">&#x27;su&#x27;</span>).click()</span><br><span class="line">        time.sleep(<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">quit_driver</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.driver.quit()</span><br></pre></td></tr></table></figure>
+
+<p>最常用的是使用 id 来定位：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># id 定位元素</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_id</span>(<span class="params">self</span>):</span><br><span class="line">    element = <span class="variable language_">self</span>.driver.find_element_by_id(<span class="string">&#x27;kw&#x27;</span>)</span><br><span class="line">    element.send_keys(<span class="string">&#x27;selenium&#x27;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">type</span>(element))</span><br><span class="line">    <span class="variable language_">self</span>.execute_click_su()</span><br></pre></td></tr></table></figure>
+
+<p>元素名定位：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># name 定位</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_name</span>(<span class="params">self</span>):</span><br><span class="line">    <span class="comment"># find_element_by_name 可能找到多个name元素，返回第一个</span></span><br><span class="line">    element = <span class="variable language_">self</span>.driver.find_element_by_name(<span class="string">&#x27;wd&#x27;</span>)</span><br><span class="line">    element.send_keys(<span class="string">&#x27;selenium&#x27;</span>)</span><br><span class="line">    <span class="variable language_">self</span>.execute_click_su()</span><br></pre></td></tr></table></figure>
+
+<p>链接文本定位：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 链接文本定位</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_linktext</span>(<span class="params">self</span>):</span><br><span class="line">    <span class="variable language_">self</span>.test_id()</span><br><span class="line">    <span class="variable language_">self</span>.driver.find_element_by_link_text(<span class="string">&quot;百度首页&quot;</span>).click()</span><br><span class="line">    time.sleep(<span class="number">3</span>)</span><br><span class="line">    </span><br><span class="line"><span class="comment"># 部分链接定位</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_partial_linktext</span>(<span class="params">self</span>):</span><br><span class="line">    <span class="variable language_">self</span>.test_id()</span><br><span class="line">    <span class="variable language_">self</span>.driver.find_element_by_partial_link_text(<span class="string">&quot;首页&quot;</span>).click()</span><br><span class="line">    time.sleep(<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+
+<p>xpath 定位</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># xpath 定位</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_xpath</span>(<span class="params">self</span>):</span><br><span class="line">    <span class="comment"># self.driver.find_element_by_xpath(&quot;//*[@id=&#x27;kw&#x27;]&quot;).send_keys(&quot;github&quot;)</span></span><br><span class="line">    <span class="variable language_">self</span>.driver.find_element_by_xpath(<span class="string">&quot;//input[@id=&#x27;kw&#x27;]&quot;</span>).send_keys(<span class="string">&quot;github&quot;</span>)</span><br><span class="line">    <span class="variable language_">self</span>.execute_click_su()</span><br><span class="line">    time.sleep(<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+
+<p>tag 标签定位</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># tag 标签名称定位</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_tag</span>(<span class="params">self</span>):</span><br><span class="line">    element = <span class="variable language_">self</span>.driver.find_elements_by_tag_name(<span class="string">&#x27;input&#x27;</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">17</span>):</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            element[i].send_keys(<span class="string">&#x27;git&#x27;</span>)</span><br><span class="line">            <span class="variable language_">self</span>.execute_click_su()</span><br><span class="line">            time.sleep(<span class="number">3</span>)</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            <span class="built_in">print</span>(e)</span><br><span class="line">    <span class="built_in">print</span>(element)</span><br><span class="line">    <span class="comment"># time.sleep(10)</span></span><br></pre></td></tr></table></figure>
+
+<p>css selector 定位</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># css selector 定位</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_css_selector</span>(<span class="params">self</span>):</span><br><span class="line">    <span class="variable language_">self</span>.driver.find_element_by_css_selector(<span class="string">&#x27;#kw&#x27;</span>).send_keys(<span class="string">&#x27;github&#x27;</span>)</span><br><span class="line">    <span class="variable language_">self</span>.execute_click_su()</span><br><span class="line">    time.sleep(<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+
+<p>类名定位</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 类名定位</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_class_name</span>(<span class="params">self</span>):</span><br><span class="line">    <span class="variable language_">self</span>.driver.find_element_by_class_name(<span class="string">&#x27;s_ipt&#x27;</span>).send_keys(<span class="string">&#x27;github&#x27;</span>)</span><br><span class="line">    <span class="variable language_">self</span>.execute_click_su()</span><br><span class="line">    time.sleep(<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+
+<p>通用的指定定位方式来定位</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 指定定位方式，可选</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_all</span>(<span class="params">self</span>):</span><br><span class="line">    <span class="variable language_">self</span>.driver.find_element(By.ID, value=<span class="string">&#x27;kw&#x27;</span>).send_keys(<span class="string">&#x27;git&#x27;</span>)</span><br><span class="line">    <span class="variable language_">self</span>.execute_click_su()</span><br><span class="line">    time.sleep(<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+
+<p>运行：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="keyword">case</span> = TestCase()</span><br><span class="line">    <span class="comment"># 8种元素定位方法：</span></span><br><span class="line">    <span class="keyword">case</span>.test_id()</span><br><span class="line">    <span class="keyword">case</span>.test_name()</span><br><span class="line">    <span class="keyword">case</span>.test_linktext()</span><br><span class="line">    <span class="keyword">case</span>.test_partial_linktext()</span><br><span class="line">    <span class="keyword">case</span>.test_xpath()</span><br><span class="line">    <span class="keyword">case</span>.test_tag()</span><br><span class="line">    <span class="keyword">case</span>.test_css_selector()</span><br><span class="line">    <span class="keyword">case</span>.test_class_name()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">case</span>.test_all()</span><br><span class="line">    <span class="keyword">case</span>.quit_driver()</span><br></pre></td></tr></table></figure>
+
+<p>封装写法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"><span class="keyword">from</span> selenium.webdriver.common.by <span class="keyword">import</span> By</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_element</span>(<span class="params">driver, *loc</span>):</span><br><span class="line">    element = driver.find_element(*loc)</span><br><span class="line">    <span class="keyword">return</span> element</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    driver = webdriver.Chrome()</span><br><span class="line">    driver.get(<span class="string">&quot;http://www.baidu.com&quot;</span>)</span><br><span class="line">    loc1 = (By.ID, <span class="string">&#x27;kw&#x27;</span>)</span><br><span class="line">    <span class="comment"># loc2 = (By.ID, &#x27;su&#x27;)</span></span><br><span class="line">    get_element(driver, *loc1).send_keys(<span class="string">&quot;pornhub&quot;</span>)</span><br><span class="line">    get_element(driver, By.ID, <span class="string">&#x27;su&#x27;</span>).click()</span><br><span class="line">    time.sleep(<span class="number">3</span>)</span><br><span class="line">    driver.quit()</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>Selenium WebDriver 属性</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>属性</th>
+<th>属性描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>driver.name</td>
+<td>浏览器名称</td>
+</tr>
+<tr>
+<td>2</td>
+<td>driver.current_url</td>
+<td>当前url</td>
+</tr>
+<tr>
+<td>3</td>
+<td>driver.title</td>
+<td>当前页面标题</td>
+</tr>
+<tr>
+<td>4</td>
+<td>driver.page_source</td>
+<td>当前页面源码</td>
+</tr>
+<tr>
+<td>5</td>
+<td>driver.current_window_handle</td>
+<td>窗口句柄</td>
+</tr>
+<tr>
+<td>6</td>
+<td>driver.window_handles</td>
+<td>当前窗口所有句柄</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="Selenium-WebElement"><a href="#Selenium-WebElement" class="headerlink" title="Selenium WebElement"></a>Selenium WebElement</h2><h3 id="WebElement-属性"><a href="#WebElement-属性" class="headerlink" title="WebElement 属性"></a>WebElement 属性</h3><p>使用 WebDriver 的 find 方法定位到元素后，会返回一个 WebElement 对象，该对象用来描述 web 页面上的一个元素。</p>
+<p>WebElement 常用属性：</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>属性</th>
+<th>属性描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>id</td>
+<td>标示</td>
+</tr>
+<tr>
+<td>2</td>
+<td>size</td>
+<td>宽高</td>
+</tr>
+<tr>
+<td>3</td>
+<td>rect</td>
+<td>宽高和坐标</td>
+</tr>
+<tr>
+<td>4</td>
+<td>tag_name</td>
+<td>标签名称</td>
+</tr>
+<tr>
+<td>5</td>
+<td>text</td>
+<td>文本内容</td>
+</tr>
+</tbody></table>
+<p>示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"><span class="keyword">from</span> selenium.webdriver.remote.webelement <span class="keyword">import</span> WebElement</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TestCase</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.driver = webdriver.Chrome()</span><br><span class="line">        <span class="variable language_">self</span>.driver.get(<span class="string">&quot;http://sahitest.com/demo/linkTest.htm&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_webelement_prop</span>(<span class="params">self</span>):</span><br><span class="line">        e = <span class="variable language_">self</span>.driver.find_element_by_id(<span class="string">&#x27;t1&#x27;</span>)</span><br><span class="line">        <span class="comment"># e1 = WebElement</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="built_in">type</span>(e))</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="keyword">case</span> = TestCase()</span><br><span class="line">    <span class="keyword">case</span>.test_webelement_prop()</span><br></pre></td></tr></table></figure>
+
+<p>通过 debug 查看：</p>
+<p><img data-src="/./../../images/2020/selenium/selenium2.1.png" alt="image-20200726132755700"></p>
+<h3 id="常用方法"><a href="#常用方法" class="headerlink" title="常用方法"></a>常用方法</h3><table>
+<thead>
+<tr>
+<th>#</th>
+<th>方法</th>
+<th>方法描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>send_keys()</td>
+<td>输入内容</td>
+</tr>
+<tr>
+<td>2</td>
+<td>clear()</td>
+<td>清空内容</td>
+</tr>
+<tr>
+<td>3</td>
+<td>click()</td>
+<td>单击</td>
+</tr>
+<tr>
+<td>4</td>
+<td>get_attribute()</td>
+<td>获得属性值</td>
+</tr>
+<tr>
+<td>5</td>
+<td>is_selected()</td>
+<td>是否被选中</td>
+</tr>
+<tr>
+<td>6</td>
+<td>is_enabled()</td>
+<td>是否可用</td>
+</tr>
+<tr>
+<td>7</td>
+<td>is_displayed()</td>
+<td>是否显示</td>
+</tr>
+<tr>
+<td>8</td>
+<td>value_of_css_property()</td>
+<td>css属性值</td>
+</tr>
+</tbody></table>
+<p>示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">test_webElement_method</span>(<span class="params">self</span>):</span><br><span class="line">    e = <span class="variable language_">self</span>.driver.find_element_by_id(<span class="string">&#x27;t1&#x27;</span>)</span><br><span class="line">    e.send_keys(<span class="string">&#x27;test selenium&#x27;</span>)</span><br><span class="line">    time.sleep(<span class="number">2</span>)</span><br><span class="line">    <span class="built_in">print</span>(e.get_attribute(<span class="string">&#x27;type&#x27;</span>))</span><br><span class="line">    <span class="built_in">print</span>(e.get_attribute(<span class="string">&#x27;name&#x27;</span>))</span><br><span class="line">    <span class="built_in">print</span>(e.get_attribute(<span class="string">&#x27;value&#x27;</span>))</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(e.value_of_css_property(<span class="string">&#x27;font&#x27;</span>))</span><br><span class="line">    <span class="built_in">print</span>(e.value_of_css_property(<span class="string">&#x27;color&#x27;</span>))</span><br><span class="line"></span><br><span class="line">    time.sleep(<span class="number">2</span>)</span><br><span class="line">    e.clear()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_webElement_method2</span>(<span class="params">self</span>):</span><br><span class="line">    <span class="comment"># id 为 t1 的元素是在 form 表单里，所以也可以先找到 form 表单，再去找 t1</span></span><br><span class="line">    form_ele = <span class="variable language_">self</span>.driver.find_element_by_xpath(<span class="string">&quot;//input[@id=&#x27;t1&#x27;]&quot;</span>)</span><br><span class="line">    form_ele.find_element_by_id(<span class="string">&#x27;t1&#x27;</span>).send_keys(<span class="string">&#x27;666&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>方法截图：</p>
+<p><img data-src="/./../../images/2020/selenium/selenium2.2.png" alt="image-20200726135435507"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/Selenium/" rel="tag"># Selenium</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2020/08/02/23731/" rel="prev" title="Selenium 常用操作汇总">
+                  <i class="fa fa-angle-left"></i> Selenium 常用操作汇总
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2020/08/02/17662/" rel="next" title="Selenium IDE 简介">
+                  Selenium IDE 简介 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">691k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:28</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

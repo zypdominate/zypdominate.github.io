@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="想用新的 AI 命令行工具，却遇到各种报错无法安装，本文介绍一种最佳实践：用 Docker 给 CLI 工具穿上一层隔离服，通过几行简单的 Bash 配置，把一个运行在 Docker 里的工具，伪装成电脑里的本地软件。不懂 Node.js、不熟 Docker 都没关系。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从 Node.js 依赖痛点到 Docker 化 CLI：一次跨环境部署的实战记录">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2025/11/25/26198/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="想用新的 AI 命令行工具，却遇到各种报错无法安装，本文介绍一种最佳实践：用 Docker 给 CLI 工具穿上一层隔离服，通过几行简单的 Bash 配置，把一个运行在 Docker 里的工具，伪装成电脑里的本地软件。不懂 Node.js、不熟 Docker 都没关系。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-11-25T13:38:18.000Z">
+<meta property="article:modified_time" content="2025-12-23T14:07:49.182Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="Docker">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2025/11/25/26198/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2025/11/25/26198/","path":"posts/2025/11/25/26198/","title":"从 Node.js 依赖痛点到 Docker 化 CLI：一次跨环境部署的实战记录"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>从 Node.js 依赖痛点到 Docker 化 CLI：一次跨环境部署的实战记录 | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E8%83%8C%E6%99%AF"><span class="nav-text">问题背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-text">解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%88%9B%E5%BB%BA-Dockerfile"><span class="nav-text">1. 创建 Dockerfile</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%9E%84%E5%BB%BA%E9%95%9C%E5%83%8F"><span class="nav-text">2. 构建镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%85%8D%E7%BD%AE-Bash-%E5%87%BD%E6%95%B0%EF%BC%88%E6%94%AF%E6%8C%81%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96%EF%BC%89"><span class="nav-text">3. 配置 Bash 函数（支持数据持久化）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E8%AE%A4%E8%AF%81%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86"><span class="nav-text">网络认证问题处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E9%98%B6%E9%85%8D%E7%BD%AE"><span class="nav-text">进阶配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E5%B7%A5%E5%85%B7%E6%94%AF%E6%8C%81"><span class="nav-text">多工具支持</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E5%AE%B9%E5%99%A8%E5%86%85%E9%83%A8%EF%BC%88%E8%B0%83%E8%AF%95%E7%94%A8%EF%BC%89"><span class="nav-text">查看容器内部（调试用）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="nav-text">常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Q-%E4%B8%BA%E4%BB%80%E4%B9%88-Dockerfile-%E9%87%8C%E7%94%A8-apt-get-%E8%80%8C%E4%B8%8D%E6%98%AF-yum%EF%BC%9F"><span class="nav-text">Q: 为什么 Dockerfile 里用 apt-get 而不是 yum？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q-%E6%95%B0%E6%8D%AE%E4%BF%9D%E5%AD%98%E5%9C%A8%E5%93%AA%E9%87%8C%EF%BC%9F"><span class="nav-text">Q: 数据保存在哪里？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q-%E5%A6%82%E4%BD%95%E6%9B%B4%E6%96%B0%E5%B7%A5%E5%85%B7%E7%89%88%E6%9C%AC%EF%BC%9F"><span class="nav-text">Q: 如何更新工具版本？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%98%E5%8A%BF%E6%80%BB%E7%BB%93"><span class="nav-text">优势总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%B9%E5%99%A8%E5%8C%96-CLI-%E8%A7%A3%E9%87%8A"><span class="nav-text">容器化 CLI 解释</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%9A%E4%BF%97%E8%A7%A3%E9%87%8A"><span class="nav-text">通俗解释</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E8%83%BD%E7%9B%B4%E6%8E%A5%E5%AE%89%E8%A3%85%EF%BC%9F%EF%BC%88%E2%80%9C%E5%9C%B0%E5%9F%BA%E4%B8%8D%E5%8C%B9%E9%85%8D%E2%80%9D%E7%9A%84%E9%97%AE%E9%A2%98%EF%BC%89"><span class="nav-text">1. 为什么不能直接安装？（“地基不匹配”的问题）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E4%B8%BA%E4%BB%80%E4%B9%88-Docker-%E8%83%BD%E8%A7%A3%E5%86%B3%EF%BC%9F%EF%BC%88%E2%80%9C%E6%88%BF%E8%BD%A6%E2%80%9D%E6%96%B9%E6%A1%88%EF%BC%89"><span class="nav-text">2. 为什么 Docker 能解决？（“房车”方案）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%83%BD%E5%9C%A8%E5%AE%BF%E4%B8%BB%E6%9C%BA%E7%94%A8%EF%BC%9F%E5%AE%83%E6%98%AF%E6%80%8E%E4%B9%88%E2%80%9C%E7%A9%BF%E5%A2%99%E2%80%9D%E7%9A%84%EF%BC%9F"><span class="nav-text">3. 为什么能在宿主机用？它是怎么“穿墙”的？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF%E6%8A%BD%E8%B1%A1%E4%B8%8E%E9%80%9A%E7%94%A8%E5%AE%9E%E8%B7%B5"><span class="nav-text">场景抽象与通用实践</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E6%A0%B8%E5%BF%83%E6%8A%BD%E8%B1%A1"><span class="nav-text">1. 核心抽象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E6%9E%B6%E6%9E%84%E5%9B%BE%E8%A7%A3"><span class="nav-text">2. 架构图解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E9%80%9A%E7%94%A8%E7%9A%84%E5%AE%9E%E8%B7%B5%E6%96%B9%E5%BC%8F%E5%88%97%E4%B8%BE"><span class="nav-text">3. 通用的实践方式列举</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2025/11/25/26198/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="从 Node.js 依赖痛点到 Docker 化 CLI：一次跨环境部署的实战记录 | Magnolia's Blog">
+      <meta itemprop="description" content="想用新的 AI 命令行工具，却遇到各种报错无法安装，本文介绍一种最佳实践：用 Docker 给 CLI 工具穿上一层隔离服，通过几行简单的 Bash 配置，把一个运行在 Docker 里的工具，伪装成电脑里的本地软件。不懂 Node.js、不熟 Docker 都没关系。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          从 Node.js 依赖痛点到 Docker 化 CLI：一次跨环境部署的实战记录
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2025-11-25 21:38:18" itemprop="dateCreated datePublished" datetime="2025-11-25T21:38:18+08:00">2025-11-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>3.9k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>4 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">想用新的 AI 命令行工具，却遇到各种报错无法安装，本文介绍一种最佳实践：用 Docker 给 CLI 工具穿上一层隔离服，通过几行简单的 Bash 配置，把一个运行在 Docker 里的工具，伪装成电脑里的本地软件。不懂 Node.js、不熟 Docker 都没关系。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a>问题背景</h2><p>在 Linux 机器上，使用 node.js 开发的某 aicode 工具，需要使用 npm 安装：<code>npm install -g @xxx/aicode-cli --registry=https://npm.xxxx.xyz/</code>，安装过程中出现了一系列报错，包括：在 CentOS 7 等旧系统上运行 Node.js 18+ 时，会遇到 GLIBC 版本过低的问题。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">node: /lib64/libc.so.6: version `GLIBC_2.27&#x27; not found</span><br><span class="line">node: /lib64/libstdc++.so.6: version `GLIBCXX_3.4.20&#x27; not found</span><br></pre></td></tr></table></figure>
+
+<p>几乎所有在 Linux 上运行的程序（包括 Node.js 运行时）都需要调用 GLIBC 提供的功能，程序在编译时会依赖特定版本的 GLIBC。如果一个程序（例如 Node.js 18+）是针对<strong>高版本</strong>的 GLIBC 编译的，那么它就无法在安装了<strong>低版本</strong> GLIBC 的旧系统（例如 CentOS 7）上运行。试图手动升级 GLIBC 版本非常危险，极易导致整个操作系统崩溃。</p>
+<p>因此，尝试使用 Docker 完全隔离系统依赖来解决问题。</p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><h3 id="1-创建-Dockerfile"><a href="#1-创建-Dockerfile" class="headerlink" title="1. 创建 Dockerfile"></a>1. 创建 Dockerfile</h3><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> node:<span class="number">20</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> apt-get update &amp;&amp; apt-get install -y procps &amp;&amp; <span class="built_in">rm</span> -rf /var/lib/apt/lists/*</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> npm install -g @xxx/aicode-cli --registry=https://npm.xxxx.xyz/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /workspace</span></span><br><span class="line"><span class="keyword">ENTRYPOINT</span><span class="language-bash"> [<span class="string">&quot;aicode&quot;</span>]</span></span><br></pre></td></tr></table></figure>
+
+<p>说明：</p>
+<ul>
+<li>使用 node:20 标准镜像（基于 Debian）</li>
+<li>安装 procps 提供完整的 ps 命令</li>
+<li>apt-get 是在容器内运行，与宿主机的 CentOS 无关</li>
+</ul>
+<h3 id="2-构建镜像"><a href="#2-构建镜像" class="headerlink" title="2. 构建镜像"></a>2. 构建镜像</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t my-aicode .</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-配置-Bash-函数（支持数据持久化）"><a href="#3-配置-Bash-函数（支持数据持久化）" class="headerlink" title="3. 配置 Bash 函数（支持数据持久化）"></a>3. 配置 Bash 函数（支持数据持久化）</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> &gt;&gt; ~/.bashrc &lt;&lt; <span class="string">&#x27;EOF&#x27;</span></span><br><span class="line"><span class="function"><span class="title">aicode</span></span>() &#123;</span><br><span class="line">    <span class="built_in">mkdir</span> -p ~/.aicode-home</span><br><span class="line"></span><br><span class="line">    docker run -it --<span class="built_in">rm</span> \</span><br><span class="line">        -v $(<span class="built_in">pwd</span>):/workspace:z \</span><br><span class="line">        -v ~/.aicode-home:/root:z \</span><br><span class="line">        --network host \</span><br><span class="line">        my-aicode <span class="string">&quot;<span class="variable">$@</span>&quot;</span></span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<p>持久化说明：</p>
+<p><code>~/.aicode-home</code> 保存工具的配置和数据，宿主机器上保存 aicode 在登录后生成的文件 <code>.xxxinfo</code>，避免需要反复登录。</p>
+<p>使用方式：在命令行中输入 <code>aicode</code>，使用体验与本地安装完全一致。</p>
+<hr>
+<h2 id="网络认证问题处理"><a href="#网络认证问题处理" class="headerlink" title="网络认证问题处理"></a>网络认证问题处理</h2><p>如果工具需要浏览器登录认证，必须使用 <code>--network host</code> 参数，让容器共享宿主机网络栈，使 localhost 回调地址正常工作。</p>
+<p>注意：使用 <code>--network host</code> 时不需要 <code>-p</code> 端口映射参数。</p>
+<h2 id="进阶配置"><a href="#进阶配置" class="headerlink" title="进阶配置"></a>进阶配置</h2><h3 id="多工具支持"><a href="#多工具支持" class="headerlink" title="多工具支持"></a>多工具支持</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 为不同工具创建独立持久化目录</span></span><br><span class="line"><span class="function"><span class="title">toolname</span></span>() &#123;</span><br><span class="line">    <span class="built_in">mkdir</span> -p ~/.data-<span class="variable">$&#123;FUNCNAME[0]&#125;</span></span><br><span class="line">    docker run -it --<span class="built_in">rm</span> \</span><br><span class="line">        -v $(<span class="built_in">pwd</span>):/workspace:z \</span><br><span class="line">        -v ~/.<span class="variable">$&#123;FUNCNAME[0]&#125;</span>-data:/root/.config:z \</span><br><span class="line">        --network host \</span><br><span class="line">        my-<span class="variable">$&#123;FUNCNAME[0]&#125;</span> <span class="string">&quot;<span class="variable">$@</span>&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看容器内部（调试用）"><a href="#查看容器内部（调试用）" class="headerlink" title="查看容器内部（调试用）"></a>查看容器内部（调试用）</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --<span class="built_in">rm</span> --entrypoint sh my-aicode</span><br></pre></td></tr></table></figure>
+
+<h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><h3 id="Q-为什么-Dockerfile-里用-apt-get-而不是-yum？"><a href="#Q-为什么-Dockerfile-里用-apt-get-而不是-yum？" class="headerlink" title="Q: 为什么 Dockerfile 里用 apt-get 而不是 yum？"></a>Q: 为什么 Dockerfile 里用 apt-get 而不是 yum？</h3><p>A: Dockerfile 中的命令在容器内执行。node:20 镜像基于 Debian 系统，所以使用 apt-get。宿主机的 CentOS 只负责运行 Docker。</p>
+<h3 id="Q-数据保存在哪里？"><a href="#Q-数据保存在哪里？" class="headerlink" title="Q: 数据保存在哪里？"></a>Q: 数据保存在哪里？</h3><p>A: 通过 <code>-v ~/.aicode-data:/root/.aicode:z</code> 映射到宿主机的 <code>~/.aicode-data</code> 目录。</p>
+<h3 id="Q-如何更新工具版本？"><a href="#Q-如何更新工具版本？" class="headerlink" title="Q: 如何更新工具版本？"></a>Q: 如何更新工具版本？</h3><p>A: 修改 Dockerfile 中的版本号或删除版本限制，重新执行 <code>docker build</code>。</p>
+<h2 id="优势总结"><a href="#优势总结" class="headerlink" title="优势总结"></a>优势总结</h2><ul>
+<li>完全隔离系统依赖，无需升级宿主机 GLIBC</li>
+<li>数据持久化，配置和缓存不丢失</li>
+<li>使用体验与本地安装一致</li>
+<li>易于维护和版本管理</li>
+</ul>
+<hr>
+<h2 id="容器化-CLI-解释"><a href="#容器化-CLI-解释" class="headerlink" title="容器化 CLI 解释"></a>容器化 CLI 解释</h2><p>对于不懂 Node.js 也不熟悉 Docker 的人，我们可以通过<strong>“类比”</strong>来解释原理，再通过<strong>“模式抽象”</strong>来总结这种通用做法。</p>
+<p><strong>“把软件连同它运行所需的所有环境，打包进一个随用随丢的盒子里，通过传送门（挂载）处理你手头的数据。”</strong>。</p>
+<p>它让复杂的软件安装变得像使用“绿色版&#x2F;免安装版”软件一样简单，且不污染你的系统。</p>
+<h3 id="通俗解释"><a href="#通俗解释" class="headerlink" title="通俗解释"></a>通俗解释</h3><h4 id="1-为什么不能直接安装？（“地基不匹配”的问题）"><a href="#1-为什么不能直接安装？（“地基不匹配”的问题）" class="headerlink" title="1. 为什么不能直接安装？（“地基不匹配”的问题）"></a>1. 为什么不能直接安装？（“地基不匹配”的问题）</h4><p>想象你在装修房子。</p>
+<ul>
+<li><strong>你的电脑（CentOS 7）</strong> 是一栋建于 10 年前的老房子，它的<strong>地基</strong>（操作系统底层依赖，即 GLIBC）是老款式的。</li>
+<li><strong>aicode 工具（基于 Node.js 18+）</strong> 是一套最新的全智能家居系统。</li>
+<li><strong>冲突点：</strong> 这套新系统要求地基必须是“2023 新款抗震地基”。如果你强行在老房子里装这套系统，或者试图强行把老房子的地基挖了换新的，房子（操作系统）可能会塌（崩溃），或者根本装不上。</li>
+</ul>
+<h4 id="2-为什么-Docker-能解决？（“房车”方案）"><a href="#2-为什么-Docker-能解决？（“房车”方案）" class="headerlink" title="2. 为什么 Docker 能解决？（“房车”方案）"></a>2. 为什么 Docker 能解决？（“房车”方案）</h4><p>Docker 就像是一辆<strong>自给自足的房车</strong>。</p>
+<ul>
+<li><strong>镜像（Image）：</strong> 这辆房车内部已经自带了“2023 新款地基”和那套“全智能家居系统”。它不依赖你老房子的地基，它自带环境。</li>
+<li><strong>隔离：</strong> 房车停在你家门口，它内部怎么折腾，都不会影响你老房子的结构。</li>
+</ul>
+<h4 id="3-为什么能在宿主机用？它是怎么“穿墙”的？"><a href="#3-为什么能在宿主机用？它是怎么“穿墙”的？" class="headerlink" title="3. 为什么能在宿主机用？它是怎么“穿墙”的？"></a>3. 为什么能在宿主机用？它是怎么“穿墙”的？</h4><p>你可能会问：“既然是在房车里运行，为什么感觉像是在我房子里用一样？”</p>
+<p>这里有两个关键动作：</p>
+<ol>
+<li><strong>打通管道（挂载映射 <code>-v</code>）：</strong><ul>
+<li>我们在房车和你家之间接了一根管道。</li>
+<li>**<code>-v $(pwd):/workspace</code>**：这意味着，你把当前手头的工作文件（比如一份文档），顺着管道递进房车里。</li>
+<li>**<code>-v ~/.aicode-home:/root</code>**：这是给房车接了个“外置硬盘”，专门存在你家里。这样房车关机后，你的登录信息、配置习惯还能保存在你自己家里，下次开机不用重新设置。</li>
+</ul>
+</li>
+<li><strong>遥控器（Bash 函数）：</strong><ul>
+<li>那个 <code>aicode() &#123; ... &#125;</code> 的配置，就是一个<strong>遥控器</strong>。</li>
+<li>当你输入 <code>aicode</code> 时，你并没有真的在本地运行程序。实际上，系统背地里帮你按下了遥控器，启动了门口的房车，让房车干完活，再把结果通过管道递回给你。</li>
+<li><strong>体验：</strong> 对你来说，你完全感觉不到房车的存在，你只是下令，然后得到结果。</li>
+</ul>
+</li>
+</ol>
+<h3 id="场景抽象与通用实践"><a href="#场景抽象与通用实践" class="headerlink" title="场景抽象与通用实践"></a>场景抽象与通用实践</h3><p>这种模式在技术界通常被称为 <strong>“Containerized CLI Tools”（容器化命令行工具）</strong> 或 <strong>“Shim Wrapper”（垫片封装）</strong>。</p>
+<h4 id="1-核心抽象"><a href="#1-核心抽象" class="headerlink" title="1. 核心抽象"></a>1. 核心抽象</h4><p>当我们遇到以下情况时，都可以使用这种模式：</p>
+<ul>
+<li><strong>环境依赖冲突：</strong> 软件需要的依赖库（Lib）与主机系统版本不兼容。</li>
+<li><strong>洁癖需求：</strong> 不想在自己电脑上安装一大堆乱七八糟的语言环境（Node, Python, Go, Java 等）。</li>
+<li><strong>团队统一：</strong> 确保所有团队成员使用的工具版本完全一致，不受个人电脑环境影响。</li>
+</ul>
+<h4 id="2-架构图解"><a href="#2-架构图解" class="headerlink" title="2. 架构图解"></a>2. 架构图解</h4><pre class="mermaid">sequenceDiagram
+    autonumber
+    participant User as 👤 用户
+    participant Host as 💻 宿主机 Shell
+    participant Docker as 🐳 Docker 容器
+    participant Disk as 💾 宿主机磁盘
+
+    User->>Host: 输入命令 `aicode`
+    Note over Host: 触发 .bashrc 中的函数
+    
+    Host->>Docker: 启动容器 (docker run -it --rm)
+    activate Docker
+    
+    Note right of Host: 关键动作：挂载本地目录
+    Docker->>Disk: 读取当前目录 /workspace
+    Docker->>Disk: 加载配置文件 /root
+    
+    Docker->>Docker: 在 Node:20 环境中运行计算
+    
+    Docker->>Disk: 写入结果文件 (持久化)
+    Docker-->>Host: 输出控制台信息
+    
+    deactivate Docker
+    Note over Docker: 任务结束，容器自动销毁
+    
+    Host-->>User: 显示最终结果</pre>
+
+<h4 id="3-通用的实践方式列举"><a href="#3-通用的实践方式列举" class="headerlink" title="3. 通用的实践方式列举"></a>3. 通用的实践方式列举</h4><p>除了 Node.js 工具，这种模式广泛应用于以下场景：</p>
+<table>
+<thead>
+<tr>
+<th><strong>场景分类</strong></th>
+<th><strong>具体案例</strong></th>
+<th><strong>解决的问题</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>多版本管理</strong></td>
+<td><strong>Terraform &#x2F; Ansible</strong></td>
+<td>公司的项目 A 需要 Terraform 0.12，项目 B 需要 1.0。直接安装很麻烦，用 Docker 封装两个别名 <code>tf12</code> 和 <code>tf1</code> 即可完美共存。</td>
+</tr>
+<tr>
+<td><strong>开发环境隔离</strong></td>
+<td><strong>Python &#x2F; Conda</strong></td>
+<td>需要运行一个 AI 模型，依赖复杂的 CUDA 版本和 Python 库。直接把整个环境打包成 Docker，别人想跑代码，不需要自己配半天环境，一行命令搞定。</td>
+</tr>
+<tr>
+<td><strong>一次性工具</strong></td>
+<td><strong>数据库客户端</strong></td>
+<td>比如你需要连一下 MySQL 数据库，但不想在电脑上安装几百兆的 MySQL 软件。直接 <code>docker run -it --rm mysql mysql-client ...</code>，用完即走，电脑干干净净。</td>
+</tr>
+<tr>
+<td><strong>编译构建</strong></td>
+<td><strong>Java &#x2F; Maven &#x2F; Gradle</strong></td>
+<td>你的电脑是 Java 17，但有个老项目必须用 Java 8 编译。使用 Docker 里的 Java 8 镜像挂载代码目录进行编译，生成 jar 包后扔回宿主机。</td>
+</tr>
+<tr>
+<td><strong>安全性沙箱</strong></td>
+<td><strong>运行不明脚本</strong></td>
+<td>网上下载了一个脚本不敢在自己电脑跑？在 Docker 里跑。就算它是病毒，也只能炸掉那个“房车”，你的“老房子”毫发无损。</td>
+</tr>
+</tbody></table>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/Docker/" rel="tag"># Docker</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2025/11/01/28740/" rel="prev" title="SSH 密钥从 RSA 到 Ed25519">
+                  <i class="fa fa-angle-left"></i> SSH 密钥从 RSA 到 Ed25519
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2025/12/10/19377/" rel="next" title="Docker 从入门到掌握，必知必会">
+                  Docker 从入门到掌握，必知必会 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">691k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:28</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

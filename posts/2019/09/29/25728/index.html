@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="掌握常见的一些 python 语法，可以很大程度上提高编码效率">
+<meta property="og:type" content="article">
+<meta property="og:title" content="编写高质量代码：Python中的常见语法">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2019/09/29/25728/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="掌握常见的一些 python 语法，可以很大程度上提高编码效率">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://zypdominate.github.io/images/2019/%E7%BC%96%E5%86%99%E9%AB%98%E8%B4%A8%E9%87%8F%E4%BB%A3%E7%A0%81%EF%BC%8C%E5%B8%B8%E7%94%A8%E8%AF%AD%E6%B3%951.png">
+<meta property="og:image" content="https://zypdominate.github.io/images/2019/%E7%BC%96%E5%86%99%E9%AB%98%E8%B4%A8%E9%87%8F%E4%BB%A3%E7%A0%81%EF%BC%8C%E5%B8%B8%E7%94%A8%E8%AF%AD%E6%B3%952.png">
+<meta property="article:published_time" content="2019-09-29T12:00:40.000Z">
+<meta property="article:modified_time" content="2025-12-23T14:07:49.138Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zypdominate.github.io/images/2019/%E7%BC%96%E5%86%99%E9%AB%98%E8%B4%A8%E9%87%8F%E4%BB%A3%E7%A0%81%EF%BC%8C%E5%B8%B8%E7%94%A8%E8%AF%AD%E6%B3%951.png">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2019/09/29/25728/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2019/09/29/25728/","path":"posts/2019/09/29/25728/","title":"编写高质量代码：Python中的常见语法"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>编写高质量代码：Python中的常见语法 | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%89%E8%8A%82%E5%88%B6%E5%9C%B0%E4%BD%BF%E7%94%A8from%E2%80%A6-import%E8%AF%AD%E5%8F%A5"><span class="nav-text">有节制地使用from… import语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%98%E5%85%88%E4%BD%BF%E7%94%A8absolute-import"><span class="nav-text">优先使用absolute import</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%BC%98%E5%85%88%E4%BD%BF%E7%94%A8join"><span class="nav-text">连接字符串优先使用join</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#try%E2%80%A6except%E2%80%A6finally%E2%80%A6"><span class="nav-text">try…except…finally…</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%98%E5%85%88%E4%BD%BF%E7%94%A8%E5%88%97%E8%A1%A8%E7%94%9F%E6%88%90%E5%BC%8F"><span class="nav-text">优先使用列表生成式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E4%BC%A0%E5%8F%82%E6%97%A2%E4%B8%8D%E6%98%AF%E4%BC%A0%E5%80%BC%E4%B9%9F%E4%B8%8D%E6%98%AF%E4%BC%A0%E5%BC%95%E7%94%A8"><span class="nav-text">函数传参既不是传值也不是传引用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AD%A6%E6%83%95%E9%BB%98%E8%AE%A4%E5%8F%82%E6%95%B0%E6%BD%9C%E5%9C%A8%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-text">警惕默认参数潜在的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E5%AE%9A%E9%95%BF%E5%8F%82%E6%95%B0%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-text">不定长参数的使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#str-%E5%92%8C-repr-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">str() 和 repr()的区别</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2019/09/29/25728/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="编写高质量代码：Python中的常见语法 | Magnolia's Blog">
+      <meta itemprop="description" content="掌握常见的一些 python 语法，可以很大程度上提高编码效率">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          编写高质量代码：Python中的常见语法
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-09-29 20:00:40" itemprop="dateCreated datePublished" datetime="2019-09-29T20:00:40+08:00">2019-09-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>6.4k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>6 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">掌握常见的一些 python 语法，可以很大程度上提高编码效率</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p><strong>Rome was not built in one day， coding will not advance vigorously with one effort.</strong></p>
+<h2 id="有节制地使用from…-import语句"><a href="#有节制地使用from…-import语句" class="headerlink" title="有节制地使用from… import语句"></a>有节制地使用from… import语句</h2><ul>
+<li>尽量优先使用import a形式，如访问B需要使用a.B的形式</li>
+<li>有节制的使用from a import B， 可以直接访问B<ul>
+<li>无节制使用可能会导致：命名空间的冲突、循环嵌套导入</li>
+</ul>
+</li>
+<li>最好不使用from a import * ，这会导致污染命名空间，且无法清楚得知导入了哪些对象</li>
+</ul>
+<p>Python的import机制：在初始化环境的时候会预先加载一批内建模块到内存中，这些模块相关信息被存放在sys.modules中，可以通过sys.modules.items()查看。</p>
+<p>加载一个模块时，解释器实际要做以下操作：</p>
+<ol>
+<li>在sys.modules中进行搜索看该模块是否已经存在， 如果存在则将其导入到当前局部命名空间，加载结束；</li>
+<li>如果在sys.modules中没有找到对应模块的名称，则为需要导入的模块创建一个字典对象，并将该对象信息插入到sys.modules中；</li>
+<li>加载前确认是否需要对模块对应的文件进行编译，如果需要则先进行编译；</li>
+<li>执行动态加载，在当前模块的命名空间中执行编译后的字节码，并将其中所有的对象放入模块对应的字典中；</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># test_module.py</span></span><br><span class="line">a = <span class="number">1</span></span><br><span class="line">b = <span class="string">&#x27;b&#x27;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;this is test_module.py&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># other.py</span></span><br><span class="line"><span class="built_in">dir</span>()</span><br><span class="line"><span class="comment"># [&#x27;__annotations__&#x27;, &#x27;__builtins__&#x27;, &#x27;__cached__&#x27;, &#x27;__doc__&#x27;, &#x27;__file__&#x27;, &#x27;__loader__&#x27;, &#x27;__name__&#x27;, &#x27;__package__&#x27;, &#x27;__spec__&#x27;]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> test_module</span><br><span class="line"></span><br><span class="line"><span class="built_in">dir</span>()</span><br><span class="line"><span class="comment"># [&#x27;__annotations__&#x27;, &#x27;__builtins__&#x27;, &#x27;__cached__&#x27;, &#x27;__doc__&#x27;, &#x27;__file__&#x27;, &#x27;__loader__&#x27;, &#x27;__name__&#x27;, &#x27;__package__&#x27;, &#x27;__spec__&#x27;, &#x27;sys&#x27;, &#x27;test_module&#x27;]</span></span><br><span class="line"><span class="comment"># from test_module import a  # 将 a 加入到sys.module中</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span> <span class="string">&#x27;test_module&#x27;</span> <span class="keyword">in</span> sys.modules.keys()</span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span> <span class="built_in">id</span>(test_module) == <span class="built_in">id</span>(sys.modules[<span class="string">&#x27;test_module&#x27;</span>])</span><br><span class="line"></span><br><span class="line"><span class="built_in">dir</span>(test_module)</span><br><span class="line"><span class="comment"># [&#x27;__builtins__&#x27;, &#x27;__cached__&#x27;, &#x27;__doc__&#x27;, &#x27;__file__&#x27;, &#x27;__loader__&#x27;, &#x27;__name__&#x27;, &#x27;__package__&#x27;, &#x27;__spec__&#x27;, &#x27;a&#x27;, &#x27;b&#x27;]</span></span><br></pre></td></tr></table></figure>
+
+<p>从以上结果看，对于用户定义的模块，import机制会创建一个新的module将其加入到当前的局部命名空间中，与此同时，sys.modules也会加入了该模块的相关信息。</p>
+<p>脚本文件所在的目录中的<code>__pycache__</code>中多了一个test_module.cpython-36.pyc文件，该文件为解释器生成的模块相对应的字节码，从import之后的输出“this is test_module.py“可以看出模块同时被执行，而a和b被写入test_module所对应的字典信息中。</p>
+<h2 id="优先使用absolute-import"><a href="#优先使用absolute-import" class="headerlink" title="优先使用absolute import"></a>优先使用absolute import</h2><p>absolute import 可读性和出现问题后可跟踪性更好，而使用relative import可能会导致命名冲突、语义含糊。</p>
+<h2 id="连接字符串优先使用join"><a href="#连接字符串优先使用join" class="headerlink" title="连接字符串优先使用join"></a>连接字符串优先使用join</h2><h2 id="try…except…finally…"><a href="#try…except…finally…" class="headerlink" title="try…except…finally…"></a>try…except…finally…</h2><p>无论try中是否有异常抛出，finally语句总会被执行。</p>
+<p>try块中发生异常的时候，如果在except语句中找不到对应的异常处理，异常将会被临时保存起来，当finally语句中产生了新的异常、或执行了return、或break语句那么临时保存的异常将被丢失，从而导致异常被屏蔽。</p>
+<p>另外不推荐在finally中使用return语句进行返回，这种处理方式不仅会带来误解，可能还会导致严重的错误。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">test_finally</span>(<span class="params">n</span>):</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">if</span> n &lt;= <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">&#x27;data is negative&#x27;</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> n</span><br><span class="line">    <span class="keyword">except</span> ValueError <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(e)</span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(test_finally(<span class="number">0</span>))  <span class="comment"># -1</span></span><br><span class="line"><span class="built_in">print</span>(test_finally(<span class="number">2</span>))  <span class="comment"># -1</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="优先使用列表生成式"><a href="#优先使用列表生成式" class="headerlink" title="优先使用列表生成式"></a>优先使用列表生成式</h2><ul>
+<li>使用列表生成式更为直观清晰、代码更加简洁。</li>
+<li>列表生成式的效率更高</li>
+</ul>
+<p>举例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">words = [<span class="string">&#x27;  a&#x27;</span>, <span class="string">&#x27;awk&#x27;</span>, <span class="string">&#x27;backup&#x27;</span>, <span class="string">&#x27;Advance&#x27;</span>, <span class="string">&#x27;Street&#x27;</span>]</span><br><span class="line"></span><br><span class="line">new_words = []</span><br><span class="line"><span class="keyword">for</span> word <span class="keyword">in</span> words:</span><br><span class="line">    <span class="keyword">if</span> word.strip().istitle():</span><br><span class="line">        new_words.append(word)</span><br><span class="line"><span class="built_in">print</span>(new_words)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 列表生成式</span></span><br><span class="line">new_words2 = [word <span class="keyword">for</span> word <span class="keyword">in</span> words <span class="keyword">if</span> word.strip().istitle()]</span><br><span class="line"><span class="built_in">print</span>(new_words2)</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line">xlist = [random.randint(<span class="number">0</span>, <span class="number">10</span>) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">3</span>)]</span><br><span class="line">ylist = [random.randint(-<span class="number">10</span>, <span class="number">0</span>) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">3</span>)]</span><br><span class="line">point = [(x, y) <span class="keyword">for</span> x, y <span class="keyword">in</span> <span class="built_in">zip</span>(xlist, ylist)]</span><br><span class="line"><span class="comment"># [(5, -8), (6, -3), (1, -10)]</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="函数传参既不是传值也不是传引用"><a href="#函数传参既不是传值也不是传引用" class="headerlink" title="函数传参既不是传值也不是传引用"></a>函数传参既不是传值也不是传引用</h2><p><strong>Python函数参数传对象，或者说是传对象的引用。</strong></p>
+<ul>
+<li>函数参数在传递的过程中将整个对象传入，对<strong>可变对象</strong>的修改在函数内外都可见，调用者和被调用者之间共享这个对象；</li>
+<li>对于是<strong>不可变对象</strong>的参数，并不能真正被改变，是通过生成一个新对象后赋值来实现改变。我的理解是：一个是实参，一个是形参；</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 两个例子：</span></span><br><span class="line"><span class="comment"># 1、作为不可变对象：参数传值</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_invarible</span>(<span class="params">var</span>):</span><br><span class="line">    <span class="built_in">print</span>(var, <span class="built_in">id</span>(var))</span><br><span class="line">    var += <span class="number">1</span></span><br><span class="line">    <span class="built_in">print</span>(var, <span class="built_in">id</span>(var))</span><br><span class="line"></span><br><span class="line">var = <span class="number">1</span></span><br><span class="line"><span class="built_in">print</span>(var, <span class="built_in">id</span>(var))</span><br><span class="line">test_invarible(var)</span><br><span class="line"><span class="built_in">print</span>(var, <span class="built_in">id</span>(var))</span><br><span class="line"><span class="comment"># 1 1380754528</span></span><br><span class="line"><span class="comment"># 1 1380754528</span></span><br><span class="line"><span class="comment"># 2 1380754560</span></span><br><span class="line"><span class="comment"># 1 1380754528</span></span><br><span class="line"><span class="comment"># 如果是引用，函数中var的id应该是不变的，且最后的var打印应该为2。</span></span><br><span class="line"><span class="comment"># var是不可变对象，可以这么理解：外部的var=1是实参，test_invarible入参var是形参，函数中的形参改变了，var重新申请了内存地址，不影响实参</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2、作为可变对象：参数引用</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_varibale</span>(<span class="params">varlist</span>):</span><br><span class="line">    <span class="built_in">print</span>(varlist, <span class="built_in">id</span>(varlist))</span><br><span class="line">    varlist.append(<span class="string">&quot;func&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(varlist, <span class="built_in">id</span>(varlist))</span><br><span class="line"></span><br><span class="line">originlist = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">test_varibale(originlist)</span><br><span class="line"><span class="built_in">print</span>(originlist, <span class="built_in">id</span>(originlist))</span><br><span class="line"><span class="comment"># [1, 2, 3] 1486999385800</span></span><br><span class="line"><span class="comment"># [1, 2, 3, &#x27;func&#x27;] 1486999385800</span></span><br><span class="line"><span class="comment"># [1, 2, 3, &#x27;func&#x27;] 1486999385800</span></span><br><span class="line"><span class="comment"># 如果是传值，且最后的originlist打印应该为最初的[1, 2, 3]。</span></span><br><span class="line"><span class="comment"># originlist是可变对象，函数内外使用同一片内存地址，只要不重新给它分配内存地址，originlist的id是不变的（这里的append是在varlist对象上做的改变，没有重新开辟内存地址）</span></span><br></pre></td></tr></table></figure>
+
+<p>小结：id到底变不变，一看<strong>参数是否为可变对象</strong>，二看<strong>是否重新开辟内存地址</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">function_param</span>(<span class="params">origin_list</span>):</span><br><span class="line">    new_list = origin_list  <span class="comment"># new_list和origin_list引用同一个内存地址</span></span><br><span class="line">    <span class="built_in">print</span>(origin_list, <span class="built_in">id</span>(origin_list))</span><br><span class="line">    <span class="built_in">print</span>(new_list, <span class="built_in">id</span>(new_list))</span><br><span class="line">    <span class="comment"># new_list = [0, 0, 0]  # case1：给new_list重新分配内存地址，id改变</span></span><br><span class="line">    new_list.append(<span class="string">&#x27;a&#x27;</span>)  <span class="comment"># case2：在new_list对象上更改，内存地址不变，id不变</span></span><br><span class="line">    <span class="built_in">print</span>(new_list, <span class="built_in">id</span>(new_list))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">origin_list = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">function_param(origin_list)</span><br><span class="line"><span class="built_in">print</span>(origin_list, <span class="built_in">id</span>(origin_list))</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">new_list = [0, 0, 0]时</span></span><br><span class="line"><span class="string">[1, 2, 3] 1990045687496</span></span><br><span class="line"><span class="string">[1, 2, 3] 1990045687496</span></span><br><span class="line"><span class="string">[0, 0, 0] 1990045619720</span></span><br><span class="line"><span class="string">[1, 2, 3] 1990045687496</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">new_list.append(&#x27;a&#x27;)时</span></span><br><span class="line"><span class="string">[1, 2, 3] 2733052026568</span></span><br><span class="line"><span class="string">[1, 2, 3] 2733052026568</span></span><br><span class="line"><span class="string">[1, 2, 3, &#x27;a&#x27;] 2733052026568</span></span><br><span class="line"><span class="string">[1, 2, 3, &#x27;a&#x27;] 2733052026568</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p> Python中的赋值  VS  C&#x2F;C++中的赋值：背后的内存地址分配</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a = 1</span><br><span class="line">b = a</span><br><span class="line">b = 2</span><br></pre></td></tr></table></figure>
+
+<p>C&#x2F;C++：</p>
+<ul>
+<li>执行<code>b=a</code>时，在内存中申请一块内存并将a的值复制到该内存中</li>
+<li>执行<code>b=2</code>时，将b对应的值从原来的1修改为2</li>
+</ul>
+<p>Python：</p>
+<ul>
+<li>Python中的赋值不是复制，<code>b=a</code>使b与a引用同一个对象，而<code>b=2</code>是将b指向对象2</li>
+</ul>
+<p><img data-src="/../../images/2019/%E7%BC%96%E5%86%99%E9%AB%98%E8%B4%A8%E9%87%8F%E4%BB%A3%E7%A0%81%EF%BC%8C%E5%B8%B8%E7%94%A8%E8%AF%AD%E6%B3%951.png" alt="image-20241208204836486"></p>
+<h2 id="警惕默认参数潜在的问题"><a href="#警惕默认参数潜在的问题" class="headerlink" title="警惕默认参数潜在的问题"></a>警惕默认参数潜在的问题</h2><p><strong>可变对象不能作为默认参数传递</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">test_default</span>(<span class="params">paramlist=[]</span>):</span><br><span class="line">    paramlist.append(<span class="string">&#x27;a&#x27;</span>)</span><br><span class="line">    <span class="keyword">return</span> paramlist</span><br><span class="line">  </span><br><span class="line">test_default()</span><br><span class="line">Out[<span class="number">5</span>]: [<span class="string">&#x27;a&#x27;</span>]</span><br><span class="line">test_default.__defaults__</span><br><span class="line">Out[<span class="number">6</span>]: ([<span class="string">&#x27;a&#x27;</span>],)</span><br><span class="line">  </span><br><span class="line">test_default()</span><br><span class="line">Out[<span class="number">7</span>]: [<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;a&#x27;</span>]</span><br><span class="line">test_default.__defaults__</span><br><span class="line">Out[<span class="number">8</span>]: ([<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;a&#x27;</span>],)</span><br></pre></td></tr></table></figure>
+
+<p><strong>def</strong> 在Python中是一个可执行的语句，当解释器执行 def 时，默认参数也会被计算，并存在函数的<code>__defaults__</code>属性中。</p>
+<p>如果 不想让默认参数所指向的对象在所有的函数调用中被共享，而是在函数调用的过程中动态生成，可以在定义时使用None对象作为占位符。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">test_default</span>(<span class="params">paramlist=<span class="literal">None</span></span>):</span><br><span class="line">    <span class="keyword">if</span> paramlist <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        paramlist = []</span><br><span class="line">    paramlist.append(<span class="string">&#x27;a&#x27;</span>)</span><br><span class="line">    <span class="keyword">return</span> paramlist</span><br></pre></td></tr></table></figure>
+
+
+
+<p>一个问题：假设某个函数需要传入当时系统的时间并做一些处理，下面两种哪种正确？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test</span>(<span class="params">when = time.time</span>):</span><br><span class="line">    <span class="built_in">print</span>(when())</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test2</span>(<span class="params">when = time.time(<span class="params"></span>)</span>):</span><br><span class="line">    <span class="built_in">print</span>(when)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">我的理解是第一种正确。</span></span><br><span class="line"><span class="string">第二种在解释器执行def时就计算了when的值，这并不是代码中调用该函数的时间，</span></span><br><span class="line"><span class="string">更不可能是函数内存某个时刻调用的时间，不符合需求。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test1</span>(<span class="params">when = time.time</span>):</span><br><span class="line">    <span class="built_in">print</span>(when())</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test2</span>(<span class="params">when = time.time</span>):</span><br><span class="line">    time.sleep(<span class="number">3</span>)  <span class="comment"># 加入延时3秒</span></span><br><span class="line">    <span class="built_in">print</span>(when())</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test3</span>(<span class="params">when = time.time(<span class="params"></span>)</span>):</span><br><span class="line">    <span class="built_in">print</span>(when)</span><br><span class="line"></span><br><span class="line">test1()</span><br><span class="line">test2()</span><br><span class="line">test3()</span><br><span class="line"><span class="comment"># 1569592866.623606</span></span><br><span class="line"><span class="comment"># 1569592869.6237614</span></span><br><span class="line"><span class="comment"># 1569592866.623606</span></span><br><span class="line"><span class="comment"># 由结果可知，test2虽然比test3早调用，但是test2的when比test3的大</span></span><br><span class="line"><span class="comment"># 另外，test3和test1的when相等，</span></span><br><span class="line"><span class="comment"># 说明test3函数的when在解释器执行def时就计算了time.time()的值。</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="不定长参数的使用"><a href="#不定长参数的使用" class="headerlink" title="不定长参数的使用"></a>不定长参数的使用</h2><p>*args 实现可变列表，**kwargs接受字典的关键字参数列表</p>
+<p>可变长参数的使用场景：</p>
+<ul>
+<li>为函数添加一个装饰器</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">decorate</span>(<span class="params">func</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">originfunc</span>(<span class="params">*args, **kwargs</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;decorate&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> func(*args, **kwargs)</span><br><span class="line">    <span class="keyword">return</span> originfunc</span><br><span class="line"></span><br><span class="line"><span class="meta">@decorate</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test</span>(<span class="params">var,var2=<span class="number">1</span></span>):</span><br><span class="line">    <span class="built_in">print</span>(var)</span><br><span class="line">    <span class="built_in">print</span>(var2)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>参数的数量不确定，可以考虑使用可变长参数</li>
+<li>实现函数的多态或者在继承情况下子类需要调用父类的某些方法</li>
+</ul>
+<h2 id="str-和-repr-的区别"><a href="#str-和-repr-的区别" class="headerlink" title="str() 和 repr()的区别"></a>str() 和 repr()的区别</h2><p>对于不同类型的输入，对比两者的差异：</p>
+<ul>
+<li>两者的面向的对象不同：str()主要是面向用户，其目的是可读性，返回形式为用户友好性和可读性都较强的字符串类型。而repr()面向的是python解释器、程序员，返回值为Python解释器内部的含义，常作为debug用。</li>
+<li>在解释器中直接输入a时默认调用repr(）函数，而print(a)是调用str()函数</li>
+<li>repr()返回值一般可以用eval()函数来还原对象：obj &#x3D;&#x3D; eval(repr(obj))</li>
+<li>两个方法分别调用内建的<code>__str__</code> 、<code>__repr__</code>方法，一般来说在类中都应该定义<code>__repr__</code>方法，而<code>__str__</code>方法是可选的，若没有定义<code>__str__</code>方法，默认使用<code>__repr__</code></li>
+</ul>
+<p><img data-src="/../../images/2019/%E7%BC%96%E5%86%99%E9%AB%98%E8%B4%A8%E9%87%8F%E4%BB%A3%E7%A0%81%EF%BC%8C%E5%B8%B8%E7%94%A8%E8%AF%AD%E6%B3%952.png" alt="image-20241208205138860"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2019/09/22/37783/" rel="prev" title="编写高质量代码：Python中的惯用法">
+                  <i class="fa fa-angle-left"></i> 编写高质量代码：Python中的惯用法
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2019/10/06/12508/" rel="next" title="编写高质量代码：Python中的常见库">
+                  编写高质量代码：Python中的常见库 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">691k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:28</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

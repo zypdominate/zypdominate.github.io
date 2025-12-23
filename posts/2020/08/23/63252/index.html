@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="Linux 网络管理相关知识，涵盖网络状态查看、配置、路由命令、故障管理及常用网络配置文件等内容，并列举了 ifconfig、route、ping 等多种实用命令及其用法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux网络管理">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2020/08/23/63252/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="Linux 网络管理相关知识，涵盖网络状态查看、配置、路由命令、故障管理及常用网络配置文件等内容，并列举了 ifconfig、route、ping 等多种实用命令及其用法。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-08-23T11:21:50.000Z">
+<meta property="article:modified_time" content="2025-12-23T14:07:49.072Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="network">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2020/08/23/63252/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2020/08/23/63252/","path":"posts/2020/08/23/63252/","title":"Linux网络管理"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Linux网络管理 | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E7%8A%B6%E6%80%81%E6%9F%A5%E7%9C%8B"><span class="nav-text">网络状态查看</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE"><span class="nav-text">网络配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B7%AF%E7%94%B1%E5%91%BD%E4%BB%A4"><span class="nav-text">路由命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E6%95%85%E9%9A%9C%E7%AE%A1%E7%90%86"><span class="nav-text">网络故障管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-text">常用网络配置文件</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2020/08/23/63252/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Linux网络管理 | Magnolia's Blog">
+      <meta itemprop="description" content="Linux 网络管理相关知识，涵盖网络状态查看、配置、路由命令、故障管理及常用网络配置文件等内容，并列举了 ifconfig、route、ping 等多种实用命令及其用法。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux网络管理
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-08-23 19:21:50" itemprop="dateCreated datePublished" datetime="2020-08-23T19:21:50+08:00">2020-08-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/Network/" itemprop="url" rel="index"><span itemprop="name">Network</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>4.8k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>4 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">Linux 网络管理相关知识，涵盖网络状态查看、配置、路由命令、故障管理及常用网络配置文件等内容，并列举了 ifconfig、route、ping 等多种实用命令及其用法。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h4 id="网络状态查看"><a href="#网络状态查看" class="headerlink" title="网络状态查看"></a>网络状态查看</h4><ul>
+<li><p>ifconfig</p>
+<p>eth0 第一块网卡（网络接口）</p>
+<p>这里我的是Ubuntu虚拟机，第一个网络接口是 eth0 </p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">root@zyp-virtual-machine:/# ifconfig</span><br><span class="line">eth0      Link encap:以太网  硬件地址 <span class="number">00</span>:<span class="number">0</span>c:<span class="number">29</span>:cb:<span class="number">3</span>d:<span class="number">56</span>  </span><br><span class="line">          inet 地址:<span class="number">192</span>.<span class="number">168</span>.<span class="number">171</span>.<span class="number">129</span>  广播:<span class="number">192</span>.<span class="number">168</span>.<span class="number">171</span>.<span class="number">255</span>  掩码:<span class="number">255</span>.<span class="number">255</span>.<span class="number">255</span>.<span class="number">0</span></span><br><span class="line">          inet6 地址: fe80::<span class="number">20</span>c:<span class="number">29</span>ff:fecb:<span class="number">3</span>d56/<span class="number">64</span> Scope:Link</span><br><span class="line">          UP BROADCAST RUNNING MULTICAST  MTU:<span class="number">1500</span>  跃点数:<span class="number">1</span></span><br><span class="line">          接收数据包:<span class="number">40109</span> 错误:<span class="number">0</span> 丢弃:<span class="number">0</span> 过载:<span class="number">0</span> 帧数:<span class="number">0</span></span><br><span class="line">          发送数据包:<span class="number">44089</span> 错误:<span class="number">0</span> 丢弃:<span class="number">0</span> 过载:<span class="number">0</span> 载波:<span class="number">0</span></span><br><span class="line">          碰撞:<span class="number">0</span> 发送队列长度:<span class="number">1000</span> </span><br><span class="line">          接收字节:<span class="number">4456689</span> (<span class="number">4</span>.<span class="number">4</span> MB)  发送字节:<span class="number">10033944</span> (<span class="number">10</span>.<span class="number">0</span> MB)</span><br><span class="line"></span><br><span class="line">lo        Link encap:本地环回  </span><br><span class="line">          inet 地址:<span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>  掩码:<span class="number">255</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span></span><br><span class="line">          inet6 地址: ::<span class="number">1</span>/<span class="number">128</span> Scope:Host</span><br><span class="line">          UP LOOPBACK RUNNING  MTU:<span class="number">65536</span>  跃点数:<span class="number">1</span></span><br><span class="line">          接收数据包:<span class="number">1446</span> 错误:<span class="number">0</span> 丢弃:<span class="number">0</span> 过载:<span class="number">0</span> 帧数:<span class="number">0</span></span><br><span class="line">          发送数据包:<span class="number">1446</span> 错误:<span class="number">0</span> 丢弃:<span class="number">0</span> 过载:<span class="number">0</span> 载波:<span class="number">0</span></span><br><span class="line">          碰撞:<span class="number">0</span> 发送队列长度:<span class="number">1000</span> </span><br><span class="line">          接收字节:<span class="number">112637</span> (<span class="number">112</span>.<span class="number">6</span> KB)  发送字节:<span class="number">112637</span> (<span class="number">112</span>.<span class="number">6</span> KB)</span><br></pre></td></tr></table></figure>
+
+<p>第一网络接口的其他名称：</p>
+<ul>
+<li>eno1 板载网卡</li>
+<li>ens33  PCI-E 网卡</li>
+<li>enp0s3 无法获取物理信息的PCI-E网卡</li>
+</ul>
+</li>
+<li><p>网络接口命令修改（网卡名称固定之后，方便编写多主机批量控制脚本）</p>
+<ul>
+<li><p>网卡命名规则受 biosdevname 和 net.ifnames 两个参数影响</p>
+</li>
+<li><p>编辑 &#x2F;etc&#x2F;default&#x2F;grub 文件， 增加 biosdevname&#x3D;0 net.ifnames&#x3D;0</p>
+<p><code>GRUB_CMDLINE_LINUX=&quot;biosdevname=0 net.ifnames=0&quot;</code></p>
+</li>
+<li><p>更新 grub： 执行命令 <code>update-grub</code>或者<code>grub-mkconfig -o /boot/grub/grub.dfg</code></p>
+</li>
+<li><p>编辑 &#x2F;etc&#x2F;network&#x2F;interfaces文件，这边是动态配置：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">auto eth0</span><br><span class="line">iface eth0 inet dhcp</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>重启 reboot</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>biosdevname</th>
+<th>net.ifnames</th>
+<th>网卡名</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>默认</td>
+<td>0</td>
+<td>1</td>
+<td>ens33</td>
+</tr>
+<tr>
+<td>组合1</td>
+<td>1</td>
+<td>0</td>
+<td>em1</td>
+</tr>
+<tr>
+<td>组合2</td>
+<td>0</td>
+<td>0</td>
+<td>eth0</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+</li>
+<li><p>mii-tool eth0  查看网卡物理连接情况</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@zyp-virtual-machine:/# mii-tool eth0</span><br><span class="line"><span class="function">eth0: <span class="title">negotiated</span> 1000<span class="title">baseT</span>-<span class="title">FD</span> <span class="title">flow</span>-<span class="title">control</span>, <span class="title">link</span> <span class="title">ok</span></span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>route  查看网关</p>
+<ul>
+<li>route -n</li>
+</ul>
+</li>
+</ul>
+<h4 id="网络配置"><a href="#网络配置" class="headerlink" title="网络配置"></a>网络配置</h4><ul>
+<li><p>网卡配置</p>
+<ul>
+<li><code>ifconfig &lt;接口&gt; &lt;IP地址&gt; [netmask 子网掩码]</code> 设置 IP 地址<ul>
+<li><code>ifconfig eth0 192.168.171.126</code></li>
+<li><code>ifconfig eth0 192.168.171.126 netmask 255.255.255.0</code></li>
+</ul>
+</li>
+<li><code>ifup &lt;接口&gt;</code>  网卡启用<ul>
+<li><code>ifup eth0</code></li>
+</ul>
+</li>
+<li><code>ifdown &lt;接口&gt;</code>   网卡关闭<ul>
+<li><code>ifdown eth0</code></li>
+</ul>
+</li>
+<li><code>service networking restart</code> 重启网络配置</li>
+</ul>
+</li>
+<li><p>ip 命令</p>
+<ul>
+<li><code>ip addr ls </code><ul>
+<li>ifconfig</li>
+</ul>
+</li>
+<li><code>ip link set dev eth0 up</code><ul>
+<li>ifup eth0</li>
+</ul>
+</li>
+<li><code>ip addr add xxx.0.0.1/24 dev eth1</code><ul>
+<li>ifconfig eth1 xxx.0.0.1 netmask 255.255.255.0</li>
+</ul>
+</li>
+<li><code>ip route add xxx.0.0.1/24 via 192.168.0.1</code><ul>
+<li>route add -net xxx.0.0.0 netmask 255.255.255.0 gw 192.168.0.1</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="路由命令"><a href="#路由命令" class="headerlink" title="路由命令"></a>路由命令</h4><p>添加、删除网关</p>
+<ul>
+<li><p><code>route -n</code> 查看网关</p>
+</li>
+<li><p><code>route add default gw &lt;网关ip&gt; </code></p>
+</li>
+<li><p><code>route add -host &lt;指定ip&gt; gw &lt;网关ip&gt;</code></p>
+<p>例如<code>route add -host 192.168.171.11 gw 192.168.171.1</code></p>
+</li>
+<li><p><code>route add -net &lt;指定网段&gt; netmask &lt;子网掩码&gt; gw &lt;网关ip&gt;</code></p>
+<p>例如<code>route add -net 192.168.0.0 netmask 255.255.255.0 gw 192.168.171.11</code></p>
+</li>
+<li><p>删除时将 add 改为 del</p>
+</li>
+</ul>
+<h4 id="网络故障管理"><a href="#网络故障管理" class="headerlink" title="网络故障管理"></a>网络故障管理</h4><ul>
+<li><p>我当前的 Ubuntu 路由状态：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">root@zyp-virtual-machine:/# route -n</span><br><span class="line">内核 IP 路由表</span><br><span class="line">目标            网关            子网掩码        标志  跃点   引用  使用 接口</span><br><span class="line"><span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>         <span class="number">192</span>.<span class="number">168</span>.<span class="number">171</span>.<span class="number">2</span>   <span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>         UG    <span class="number">0</span>      <span class="number">0</span>        <span class="number">0</span> eth0</span><br><span class="line"><span class="number">169</span>.<span class="number">254</span>.<span class="number">0</span>.<span class="number">0</span>     <span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>         <span class="number">255</span>.<span class="number">255</span>.<span class="number">0</span>.<span class="number">0</span>     U     <span class="number">1000</span>   <span class="number">0</span>        <span class="number">0</span> eth0</span><br><span class="line"><span class="number">192</span>.<span class="number">168</span>.<span class="number">171</span>.<span class="number">0</span>   <span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>         <span class="number">255</span>.<span class="number">255</span>.<span class="number">255</span>.<span class="number">0</span>   U     <span class="number">0</span>      <span class="number">0</span>        <span class="number">0</span> eth0</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>ping  查看当前主机和目标主机是否畅通</p>
+</li>
+<li><p>trackroute  追踪路由、服务器的每一跳</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@zyp-virtual-machine:/# traceroute -w <span class="number">1</span> www.baidu.com</span><br><span class="line">traceroute to www.baidu.com (<span class="number">182</span>.<span class="number">61</span>.<span class="number">200</span>.<span class="number">7</span>), <span class="number">30</span> hops max, <span class="number">60</span> byte packets</span><br><span class="line"> <span class="number">1</span>  <span class="number">192</span>.<span class="number">168</span>.<span class="number">171</span>.<span class="number">2</span> (<span class="number">192</span>.<span class="number">168</span>.<span class="number">171</span>.<span class="number">2</span>)  <span class="number">0</span>.<span class="number">370</span> ms  <span class="number">0</span>.<span class="number">204</span> ms  <span class="number">0</span>.<span class="number">577</span> ms</span><br><span class="line"> <span class="number">2</span>  * * *  (中间的主机如果不支持traceroute，以*的方式展示)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>mtr  看是否有数据包丢失</p>
+</li>
+<li><p>nslookup  查看域名对应的 ip </p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">root@zyp-virtual-machine:/# nslookup www.baidu.com</span><br><span class="line"><span class="function">Server:		114.114.114.114   这里可以看出是通过哪个<span class="title">DNS</span>服务器来进行的域名解析</span></span><br><span class="line"><span class="function"><span class="title">Address</span>:	114.114.114.114#53</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">Non</span>-<span class="title">authoritative</span> <span class="title">answer</span>:</span></span><br><span class="line"><span class="function"><span class="title">www.baidu.com</span>	<span class="title">canonical</span> <span class="title">name</span> = <span class="title">www.a.shifen.com</span>.</span></span><br><span class="line"><span class="function"><span class="title">Name</span>:	<span class="title">www.a.shifen.com</span></span></span><br><span class="line"><span class="function"><span class="title">Address</span>: 182.61.200.7</span></span><br><span class="line"><span class="function"><span class="title">Name</span>:	<span class="title">www.a.shifen.com</span></span></span><br><span class="line"><span class="function"><span class="title">Address</span>: 182.61.200.6</span></span><br><span class="line"><span class="function"></span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>telnet</p>
+<p>畅通：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@zyp-virtual-machine:/# telnet www.baid.com <span class="number">80</span></span><br><span class="line">Trying <span class="number">47</span>.<span class="number">254</span>.<span class="number">33</span>.<span class="number">193</span>...</span><br><span class="line">Connected to www.baid.com.</span><br><span class="line">Escape character is &#x27;^]&#x27;.   </span><br></pre></td></tr></table></figure>
+
+<p>端口不可达：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@zyp-virtual-machine:/# telnet www.baid.com <span class="number">890</span></span><br><span class="line">Trying <span class="number">47</span>.<span class="number">254</span>.<span class="number">33</span>.<span class="number">193</span>...</span><br><span class="line"><span class="function">telnet: <span class="title">Unable</span> <span class="title">to</span> <span class="title">connect</span> <span class="title">to</span> <span class="title">remote</span> <span class="title">host</span>: <span class="title">Connection</span> <span class="title">refused</span></span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>tcpdump</p>
+<ul>
+<li><p><code>port xx</code>  指定端口 </p>
+<p>抓取 任意的网卡、80端口的数据包</p>
+<p><code> tcpdump -i any -n port 80</code></p>
+</li>
+<li><p><code>host xxx.xxx.xxx.xxx</code>  指定主机地址 </p>
+<p>抓取 host 为192.168.171.129、端口为80 的数据</p>
+<p><code>tcpdump -i any -n host 192.168.171.129 and port 80</code></p>
+</li>
+<li><p><code>-w filename</code>  将抓包数据保存到一个文件里</p>
+<p><code>tcpdump -i any -n host 192.168.171.1 -w fileb</code></p>
+</li>
+</ul>
+</li>
+<li><p>netstat</p>
+<p><code>netstat -ntpl</code>  查看服务器监听地址</p>
+<p>-n 显示ip地址、不显示域名</p>
+<p>-t 以TCP协议截取想要显示的内容</p>
+<p>-p 进程</p>
+<p>-l  表示tcp的一个状态LISTEN</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">root@zyp-virtual-machine:/home/zyp/tmp# netstat -ntpl</span><br><span class="line">激活Internet连接 (仅服务器)</span><br><span class="line">Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name</span><br><span class="line">tcp        <span class="number">0</span>      <span class="number">0</span> <span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">3306</span>          <span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>:*               LISTEN      <span class="number">1394</span>/mysqld     </span><br><span class="line">tcp        <span class="number">0</span>      <span class="number">0</span> <span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">6379</span>          <span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>:*               LISTEN      <span class="number">1401</span>/redis-server <span class="number">1</span></span><br><span class="line">tcp        <span class="number">0</span>      <span class="number">0</span> <span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>:<span class="number">80</span>              <span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>:*               LISTEN      <span class="number">1419</span>/nginx -g daemo</span><br><span class="line">tcp        <span class="number">0</span>      <span class="number">0</span> <span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>:<span class="number">22</span>              <span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>:*               LISTEN      <span class="number">1400</span>/sshd       </span><br><span class="line">tcp        <span class="number">0</span>      <span class="number">0</span> <span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">631</span>           <span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>:*               LISTEN      <span class="number">2094</span>/cupsd      </span><br><span class="line">tcp        <span class="number">0</span>      <span class="number">0</span> <span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">6010</span>          <span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>:*               LISTEN      <span class="number">6915</span>/<span class="number">8</span>          </span><br><span class="line">tcp        <span class="number">0</span>      <span class="number">0</span> <span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">6011</span>          <span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>:*               LISTEN      <span class="number">7113</span>/<span class="number">9</span>          </span><br><span class="line">tcp6       <span class="number">0</span>      <span class="number">0</span> :::<span class="number">21</span>                   :::*                    LISTEN      <span class="number">1365</span>/vsftpd     </span><br><span class="line">tcp6       <span class="number">0</span>      <span class="number">0</span> :::<span class="number">22</span>                   :::*                    LISTEN      <span class="number">1400</span>/sshd       </span><br><span class="line">tcp6       <span class="number">0</span>      <span class="number">0</span> ::<span class="number">1</span>:<span class="number">631</span>                 :::*                    LISTEN      <span class="number">2094</span>/cupsd      </span><br><span class="line">tcp6       <span class="number">0</span>      <span class="number">0</span> ::<span class="number">1</span>:<span class="number">6010</span>                :::*                    LISTEN      <span class="number">6915</span>/<span class="number">8</span>          </span><br><span class="line">tcp6       <span class="number">0</span>      <span class="number">0</span> ::<span class="number">1</span>:<span class="number">6011</span>                :::*                    LISTN      <span class="number">7113</span>/<span class="number">9</span> </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>ss </p>
+<p><code>ss -ntpl</code> 使用方法和 <code>netstat -npl</code> 相似。</p>
+</li>
+</ul>
+<h4 id="常用网络配置文件"><a href="#常用网络配置文件" class="headerlink" title="常用网络配置文件"></a>常用网络配置文件</h4><p>网络服务管理程序分为两种：SysV、systemd</p>
+<ul>
+<li><p><code>service network status|start|stop|restart</code></p>
+</li>
+<li><p><code>chkconfig -list network</code>  如果不支持，使用 systemctl</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">root@zyp-virtual-machine:/# systemctl list-unit-files|grep network</span><br><span class="line">systemd-networkd-resolvconf-update.<span class="built_in">path</span>    static  </span><br><span class="line">dbus-org.freedesktop.network1.service      disabled</span><br><span class="line">network-manager.service                    enabled </span><br><span class="line">networking.service                         enabled </span><br><span class="line">systemd-networkd-resolvconf-update.service static  </span><br><span class="line">systemd-networkd-wait-online.service       disabled</span><br><span class="line">systemd-networkd.service                   disabled</span><br><span class="line">systemd-networkd.socket                    disabled</span><br><span class="line">network-online.target                      static  </span><br><span class="line">network-pre.target                         static  </span><br><span class="line">network.target                             static </span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p><code>systemctl list-unit-files NetworkManager.service</code></p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@zyp-virtual-machine:/# systemctl list-unit-files NetworkManager.service</span><br><span class="line">UNIT FILE              STATE  </span><br><span class="line">NetworkManager.service enabled</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>systemctl start|stop|reload|restart NetworkManager</code></p>
+</li>
+<li><p><code>systemctl enabled|disable NetworkManger</code></p>
+</li>
+<li><p><code>systemctl list-units</code> 查看活跃的单元</p>
+</li>
+<li><p><code>systemctl status xxx </code> 查看某个xxx服务的状态</p>
+</li>
+<li><p><code>systemctl list-unit-files|grep enabled</code> 查看已启动的服务列表</p>
+</li>
+<li><p><code>systemctl --failed</code> 查看启动失败的服务列表</p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/network/" rel="tag"># network</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2020/08/09/49677/" rel="prev" title="Python 调用 OCR">
+                  <i class="fa fa-angle-left"></i> Python 调用 OCR
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2020/10/15/26094/" rel="next" title="Windows 安装 Elasticsearch、Kibana、Logstash">
+                  Windows 安装 Elasticsearch、Kibana、Logstash <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">691k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:28</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

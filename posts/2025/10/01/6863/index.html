@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="在 Linux 上安装、注册 gitlab-runner，触发 pipeline，解决 runner 上线状态异常、无法触发、systemd service异常等问题。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="gitlab-runner在实践中理解">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2025/10/01/6863/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="在 Linux 上安装、注册 gitlab-runner，触发 pipeline，解决 runner 上线状态异常、无法触发、systemd service异常等问题。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-10-01T15:15:18.000Z">
+<meta property="article:modified_time" content="2025-12-23T14:07:49.177Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="Gitlab">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2025/10/01/6863/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2025/10/01/6863/","path":"posts/2025/10/01/6863/","title":"gitlab-runner在实践中理解"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>gitlab-runner在实践中理解 | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%83%8C%E6%99%AF"><span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B4%A6%E6%88%B7%E5%B7%AE%E5%BC%82%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-text">账户差异导致的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E6%96%B9%E5%BC%8F%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-text">启动方式导致的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gitlab-runner-%E7%94%A8%E6%88%B7"><span class="nav-text">gitlab-runner 用户</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E4%BB%93%E5%BA%93%E6%9D%83%E9%99%90"><span class="nav-text">代码仓库权限</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gitlab-runner-%E6%97%A5%E5%BF%97"><span class="nav-text">gitlab runner 日志</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2025/10/01/6863/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="gitlab-runner在实践中理解 | Magnolia's Blog">
+      <meta itemprop="description" content="在 Linux 上安装、注册 gitlab-runner，触发 pipeline，解决 runner 上线状态异常、无法触发、systemd service异常等问题。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          gitlab-runner在实践中理解
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2025-10-01 23:15:18" itemprop="dateCreated datePublished" datetime="2025-10-01T23:15:18+08:00">2025-10-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/Gitlab/" itemprop="url" rel="index"><span itemprop="name">Gitlab</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>11k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>10 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">在 Linux 上安装、注册 gitlab-runner，触发 pipeline，解决 runner 上线状态异常、无法触发、systemd service异常等问题。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>以前在 Mac、windows 上使用过 gitlab 的 pipeline，安装配置过 gitlab-runner。现在需要在 Linux 上再走一遍流程，一开始觉得应该挺容易的，流程比较熟悉，和其他平台大致相似吧，应该很快就搞好了。然而，实际操作时，发现有些不同，出现踩坑的原因也有环境的限制（部分网络无法访问），也有对 gitlab-runner 机制的不理解。现在整理一下遇到的问题吧。</p>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><ul>
+<li>环境网络设备特殊，很多要求权限的步骤，在普通用户下无法直接使用 sudo，只能在 root 账户下操作</li>
+<li>一台公共的 Linux 设备，通过不同的个人账号登录</li>
+<li>配置的 pipeline 中有调用 python 脚本，后者里面有拉取多个工程仓库代码</li>
+<li>官方操作指导文档，亦有小问题，混用 install gitlab-runner 与启动方式</li>
+</ul>
+<h2 id="账户差异导致的问题"><a href="#账户差异导致的问题" class="headerlink" title="账户差异导致的问题"></a>账户差异导致的问题</h2><p><strong>代码仓无法下载、访问</strong></p>
+<p>如果是手动登录 Linux 机器，进行 git 克隆代码仓库，无法下载，出现如下报错，肯定第一时间就知道是没权限等原因，一般都去排查一下 ssh 秘钥有没配置、是否需要更新。</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git clone git@qcp-gitlab.xxx.xyz:abc/abcdef.git</span><br><span class="line">Cloning into &#x27;abcdef&#x27;...</span><br><span class="line"><span class="function">GitLab: <span class="title">The</span> <span class="title">project</span> <span class="title">you</span> <span class="title">were</span> <span class="title">looking</span> <span class="title">for</span> <span class="title">could</span> <span class="title">not</span> <span class="title">be</span> <span class="title">found</span>.</span></span><br><span class="line"><span class="function"><span class="title">fatal</span>: <span class="title">Could</span> <span class="title">not</span> <span class="title">read</span> <span class="title">from</span> <span class="title">remote</span> <span class="title">repository</span>.</span></span><br><span class="line"><span class="function"><span class="title">Please</span> <span class="title">make</span> <span class="title">sure</span> <span class="title">you</span> <span class="title">have</span> <span class="title">the</span> <span class="title">correct</span> <span class="title">access</span> <span class="title">rights</span></span></span><br></pre></td></tr></table></figure>
+
+<p>但是，如果是通过 gitlab-runner、jenkins agent 等工具在机器上执行拉取仓库出现同样的问题时，可能让人会有疑惑。</p>
+<p>ssh 秘钥对应不同的 gitlab 账户，root账户使用的SSH密钥(<code>/root/.ssh/id_rsa.pub</code>)和普通用户的SSH密钥对应的是<strong>不同的GitLab账户</strong>，而root对应的GitLab账户可能没有该仓库的访问权限。</p>
+<p>需要注意的是：在普通用户下配置了自己账户的秘钥，而 root 对应的秘钥也需要配置，同时将用户账号加入到项目成员中。</p>
+<p>检查 ssh 连接的 gitlab 的用户身份：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># root 账户下，显示的是机器定制配置的名字</span><br><span class="line">ssh -T git@qcp-gitlab.xxxx.xyz</span><br><span class="line">Welcome to GitLab,  qcpmaster!</span><br><span class="line"></span><br><span class="line"># autotest 账户下，会显示用户的名字</span><br><span class="line">ssh -T git@qcp-gitlab.xxxx.xyz</span><br><span class="line">Welcome to GitLab, 周星星!</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>目录或文件无法访问</strong></p>
+<p>在安装 gitlab-runner 时，有的指导文档会使用 <code>--user=gitlab-runner</code> 参数，指定用户来安装，导致后续启动、执行时也是该用户。</p>
+<p>该用户可能没有权限访问很多目录，导致在执行 pipeline 遇到创建目录或者文件时，就会提示 no permission。</p>
+<p><strong>解决办法</strong></p>
+<p>对于<strong>代码仓无法下载</strong></p>
+<ul>
+<li>如果是账户没有配置秘钥，那么只要切换到对应用户环境，生成公钥，配置到 gitlab 上</li>
+<li>在 gitlab 项目中，给执行环境的用户（比如这里的qcpmaster）添加为成员（至少 <strong>Developer</strong> 或 <strong>Reporter</strong>），让用户可以访问该仓库代码</li>
+</ul>
+<p>对于<strong>目录或文件无法访问</strong></p>
+<ul>
+<li><p>给 gitlab-runner 用户必要的权限，比如特定目录访问权限（pipeline中配置的）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># root账户下，或者加上sudo执行</span></span><br><span class="line"><span class="built_in">chown</span> -R gitlab-runner:gitlab-runner /home/tools/gitlab-runner</span><br><span class="line"><span class="built_in">chmod</span> -R 755 /home/tools/gitlab-runner</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>确保 gitlab 构建缓存目录有权限</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> <span class="built_in">chown</span> -R gitlab-runner:gitlab-runner /home/gitlab-runner</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="启动方式导致的问题"><a href="#启动方式导致的问题" class="headerlink" title="启动方式导致的问题"></a>启动方式导致的问题</h2><p><strong>重要提示</strong>：不要混用 <code>gitlab-runner start/stop</code> 和 <code>systemctl</code> 命令！</p>
+<p><strong>学到了</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ✅ 正确方式（通过 systemd 管理）</span></span><br><span class="line"><span class="built_in">sudo</span> systemctl start gitlab-runner</span><br><span class="line"><span class="built_in">sudo</span> systemctl stop gitlab-runner</span><br><span class="line"><span class="built_in">sudo</span> systemctl restart gitlab-runner</span><br><span class="line"><span class="built_in">sudo</span> systemctl status gitlab-runner</span><br><span class="line"></span><br><span class="line"><span class="comment"># ❌ 不好的方式（直接命令，不通过 systemd）</span></span><br><span class="line">gitlab-runner start</span><br><span class="line">gitlab-runner stop</span><br></pre></td></tr></table></figure>
+
+<p><strong>问题复述</strong></p>
+<p>runner 明明已经启动了，但是 gitlab 上的 job 一直处于 pending 状态，于是去查看 runner 状态，发现服务启动失败了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">(base) [root@dgvxl2905 tools]# gitlab-runner status</span><br><span class="line">Runtime platform                                    <span class="built_in">arch</span>=amd64 os=linux pid=26119 revision=139a0ac0 version=18.4.0</span><br><span class="line">gitlab-runner: Service is running</span><br><span class="line">(base) [root@dgvxl2905 tools]# gitlab-runner stop</span><br><span class="line">Runtime platform                                    <span class="built_in">arch</span>=amd64 os=linux pid=26150 revision=139a0ac0 version=18.4.0</span><br><span class="line">(base) [root@dgvxl2905 tools]# gitlab-runner start</span><br><span class="line">Runtime platform                                    <span class="built_in">arch</span>=amd64 os=linux pid=26205 revision=139a0ac0 version=18.4.0</span><br><span class="line">(base) [root@dgvxl2905 tools]#</span><br><span class="line">(base) [root@dgvxl2905 tools]# systemctl status gitlab-runner</span><br><span class="line">● gitlab-runner.service - GitLab Runner</span><br><span class="line">   Loaded: loaded (/etc/systemd/system/gitlab-runner.service; enabled; vendor preset: disabled)</span><br><span class="line">   Active: activating (auto-restart) (Result: exit-code) since Tue 2025-09-30 16:53:57 CST; 5s ago</span><br><span class="line">  Process: 26218 ExecStart=/usr/local/bin/gitlab-runner run --config /etc/gitlab-runner/config.toml --working-directory /home/tools/gitlab-runner --service gitlab-runner --user gitlab-runner (code=exited, status=1/FAILURE)</span><br><span class="line"> Main PID: 26218 (code=exited, status=1/FAILURE)</span><br><span class="line">Sep 30 16:53:57 dgvxl2905 systemd[1]: Unit gitlab-runner.service entered failed state.</span><br><span class="line">Sep 30 16:53:57 dgvxl2905 systemd[1]: gitlab-runner.service failed.</span><br></pre></td></tr></table></figure>
+
+<p>原因：多次启动了 gitlab-runner 服务，配置文件混乱，有的 runner 已经从 gitlab 页面上删除，但是机器上还保留着安装时对应的 toml 配置文件，导致每次使用 gitlab-runner start 启动都是旧的配置，看起来是在 running，但服务又 failed。</p>
+<p><strong>解决</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 以下均在 root 下执行，不再添加 sudo 了</span></span><br><span class="line"><span class="comment"># 1. 停止所有进程</span></span><br><span class="line">pkill -9 gitlab-runner</span><br><span class="line"><span class="comment"># 2. 检查并修复用户</span></span><br><span class="line"><span class="built_in">id</span> gitlab-runner || useradd --system --shell /bin/bash --home /home/gitlab-runner gitlab-runner</span><br><span class="line"><span class="comment"># 3. 修复工作目录，防止文件夹不存在</span></span><br><span class="line"><span class="built_in">mkdir</span> -p /home/tools/gitlab-runner</span><br><span class="line"><span class="built_in">chown</span> -R gitlab-runner:gitlab-runner /home/tools/gitlab-runner</span><br><span class="line"><span class="comment"># 使用 systemd 启动服务，而不是直接命令</span></span><br><span class="line">gitlab-runner verify</span><br><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl start gitlab-runner</span><br><span class="line">systemctl status gitlab-runner</span><br></pre></td></tr></table></figure>
+
+<p>记录的服务启动失败，到解决并成功启动的日志：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line">(base) [root@dgvxl2905 tools]# systemctl status gitlab-runner</span><br><span class="line">● gitlab-runner.service - GitLab Runner</span><br><span class="line">   Loaded: loaded (/etc/systemd/system/gitlab-runner.service; enabled; vendor preset: disabled)</span><br><span class="line">   Active: inactive (dead) (Result: exit-code) since Tue 2025-09-30 17:01:28 CST; 12s ago</span><br><span class="line">  Process: 28734 ExecStart=/usr/local/bin/gitlab-runner run --config /etc/gitlab-runner/config.toml --working-directory /home/tools/gitlab-runner --service gitlab-runner --user gitlab-runner (code=exited, status=1/FAILURE)</span><br><span class="line"> Main PID: 28734 (code=exited, status=1/FAILURE)</span><br><span class="line"></span><br><span class="line">Sep 30 16:59:56 dgvxl2905 systemd[1]: Unit gitlab-runner.service entered failed state.</span><br><span class="line">Sep 30 16:59:56 dgvxl2905 systemd[1]: gitlab-runner.service failed.</span><br><span class="line">Sep 30 17:01:28 dgvxl2905 systemd[1]: Stopped GitLab Runner.</span><br><span class="line">(base) [root@dgvxl2905 tools]# pkill -9 gitlab-runner</span><br><span class="line">(base) [root@dgvxl2905 tools]# <span class="built_in">id</span> gitlab-runner || <span class="built_in">sudo</span> useradd --system --shell /bin/bash --home /home/gitlab-runner gitlab-runner</span><br><span class="line">uid=5993(gitlab-runner) gid=5993(gitlab-runner) <span class="built_in">groups</span>=5993(gitlab-runner)</span><br><span class="line">(base) [root@dgvxl2905 tools]# <span class="built_in">mkdir</span> -p /home/tools/gitlab-runner</span><br><span class="line">(base) [root@dgvxl2905 tools]# <span class="built_in">chown</span> -R gitlab-runner:gitlab-runner /home/tools/gitlab-runner</span><br><span class="line">(base) [root@dgvxl2905 tools]# <span class="built_in">ls</span> /home/tools/gitlab-runner/</span><br><span class="line">(base) [root@dgvxl2905 tools]# <span class="built_in">cat</span> /etc/gitlab-runner/config.toml</span><br><span class="line">concurrent = 1</span><br><span class="line">check_interval = 0</span><br><span class="line">connection_max_age = <span class="string">&quot;15m0s&quot;</span></span><br><span class="line">shutdown_timeout = 0</span><br><span class="line"></span><br><span class="line">[session_server]</span><br><span class="line">  session_timeout = 1800</span><br><span class="line"></span><br><span class="line">[[runners]]</span><br><span class="line">  name = <span class="string">&quot;build aws-doc&quot;</span></span><br><span class="line">  url = <span class="string">&quot;https://gitlab.vmic.xyz/&quot;</span></span><br><span class="line">  <span class="built_in">id</span> = 3347</span><br><span class="line">  token = <span class="string">&quot;_pzPmGi-Nb3WByU1uS1E&quot;</span></span><br><span class="line">  token_obtained_at = 2025-09-30T08:31:35Z</span><br><span class="line">  token_expires_at = 0001-01-01T00:00:00Z</span><br><span class="line">  executor = <span class="string">&quot;shell&quot;</span></span><br><span class="line">  [runners.cache]</span><br><span class="line">    MaxUploadedArchiveSize = 0</span><br><span class="line">    [runners.cache.s3]</span><br><span class="line">    [runners.cache.gcs]</span><br><span class="line">    [runners.cache.azure]</span><br><span class="line">(base) [root@dgvxl2905 tools]# gitlab-runner verify</span><br><span class="line">Runtime platform                                    <span class="built_in">arch</span>=amd64 os=linux pid=30312 revision=139a0ac0 version=18.4.0</span><br><span class="line">Running <span class="keyword">in</span> system-mode.</span><br><span class="line"></span><br><span class="line">Verifying runner... is alive                        correlation_id=01K6CXRD9MN5Q0VH6TCFAFAEDV runner=_pzPmGi-N</span><br><span class="line">(base) [root@dgvxl2905 tools]# systemctl status gitlab-runner</span><br><span class="line">● gitlab-runner.service - GitLab Runner</span><br><span class="line">   Loaded: loaded (/etc/systemd/system/gitlab-runner.service; enabled; vendor preset: disabled)</span><br><span class="line">   Active: inactive (dead) (Result: exit-code) since Tue 2025-09-30 17:01:28 CST; 1min 36s ago</span><br><span class="line">  Process: 28734 ExecStart=/usr/local/bin/gitlab-runner run --config /etc/gitlab-runner/config.toml --working-directory /home/tools/gitlab-runner --service gitlab-runner --user gitlab-runner (code=exited, status=1/FAILURE)</span><br><span class="line"> Main PID: 28734 (code=exited, status=1/FAILURE)</span><br><span class="line"></span><br><span class="line">Sep 30 16:59:56 dgvxl2905 systemd[1]: Unit gitlab-runner.service entered failed state.</span><br><span class="line">Sep 30 16:59:56 dgvxl2905 systemd[1]: gitlab-runner.service failed.</span><br><span class="line">Sep 30 17:01:28 dgvxl2905 systemd[1]: Stopped GitLab Runner.</span><br><span class="line">(base) [root@dgvxl2905 tools]# systemctl daemon-reload</span><br><span class="line">(base) [root@dgvxl2905 tools]# systemctl start gitlab-runner</span><br><span class="line">(base) [root@dgvxl2905 tools]# systemctl status gitlab-runner</span><br><span class="line">● gitlab-runner.service - GitLab Runner</span><br><span class="line">   Loaded: loaded (/etc/systemd/system/gitlab-runner.service; enabled; vendor preset: disabled)</span><br><span class="line">   Active: active (running) since Tue 2025-09-30 17:03:17 CST; 22s ago</span><br><span class="line"> Main PID: 30494 (gitlab-runner)</span><br><span class="line">    Tasks: 13</span><br><span class="line">   Memory: 22.7M</span><br><span class="line">   CGroup: /system.slice/gitlab-runner.service</span><br><span class="line">           └─30494 /usr/local/bin/gitlab-runner run --config /etc/gitlab-runner/config.toml --working-directory /home/tools/gitlab-runner --service gitlab-runner --user gitlab-runner</span><br><span class="line"></span><br><span class="line">Sep 30 17:03:18 dgvxl2905 su[30521]: (to gitlab-runner) root on none</span><br><span class="line">Sep 30 17:03:18 dgvxl2905 su[30549]: (to gitlab-runner) root on none</span><br><span class="line">Sep 30 17:03:20 dgvxl2905 su[30609]: (to gitlab-runner) root on none</span><br><span class="line">Sep 30 17:03:20 dgvxl2905 su[30637]: (to gitlab-runner) root on none</span><br><span class="line">Sep 30 17:03:20 dgvxl2905 gitlab-runner[30494]: WARNING: Job failed: <span class="built_in">exit</span> status 1</span><br><span class="line">Sep 30 17:03:20 dgvxl2905 gitlab-runner[30494]:   duration_s=0 job=508688 project=61926 runner=_pzPmGi-N</span><br><span class="line">Sep 30 17:03:20 dgvxl2905 gitlab-runner[30494]: Appending trace to coordinator...ok                 code=202 correlation_id=01K6CXSBK54JNYV0JKE1GSSV9K job=508688 job-log=0-1504 job-status=ru...e-interval=3s</span><br><span class="line">Sep 30 17:03:20 dgvxl2905 gitlab-runner[30494]: Updating job...                                     bytesize=1504 checksum=crc32:268fa141 job=508688 runner=_pzPmGi-N</span><br><span class="line">Sep 30 17:03:20 dgvxl2905 gitlab-runner[30494]: Submitting job to coordinator...ok                  bytesize=1504 checksum=crc32:268fa141 code=200 correlation_id=01K6CXSBPW8M8CX40YVG25DN7X j...e-interval=0s</span><br><span class="line">Sep 30 17:03:20 dgvxl2905 gitlab-runner[30494]: Removed job from processing list                    builds=0 job=508688 max_builds=1 project=61926 queue_depth=0 queue_size=0 repo_url=https:/...eue_seconds=0</span><br><span class="line">Hint: Some lines were ellipsized, use -l to show <span class="keyword">in</span> full.</span><br></pre></td></tr></table></figure>
+
+<p><strong>小结</strong></p>
+<p>提炼的安装、启动方式</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 下载、赋予执行权限</span></span><br><span class="line">curl -L --output /usr/local/bin/gitlab-runner <span class="string">&quot;https://s3.dualstack.us-east-1.amazonaws.com/gitlab-runner-downloads/latest/binaries/gitlab-runner-linux-amd64&quot;</span></span><br><span class="line"><span class="built_in">chmod</span> +x /usr/local/bin/gitlab-runner</span><br><span class="line"><span class="comment"># 创建用户</span></span><br><span class="line"><span class="built_in">id</span> gitlab-runner || useradd --comment <span class="string">&#x27;GitLab Runner&#x27;</span> --create-home gitlab-runner --shell /bin/bash</span><br><span class="line"><span class="comment"># 这一步创建了 systemd 服务！此时 systemd 知道了 gitlab-runner 服务的存在</span></span><br><span class="line">gitlab-runner install --user=gitlab-runner --working-directory=/home/tools/gitlab-runner</span><br><span class="line"><span class="comment"># 此时最好不要用 gitlab-runner start 启动，而是用 systemd</span></span><br><span class="line">systemctl start gitlab-runner</span><br></pre></td></tr></table></figure>
+
+<p>备注：<a target="_blank" rel="noopener" href="https://docs.gitlab.com/runner/install/linux-manually/">Install GitLab Runner manually on GNU&#x2F;Linux | GitLab Docs</a> 官方指导中，先用了 <code>gitlab-runner install</code>，后用了 <code>gitlab-runner start</code> 是不好的。</p>
+<p><strong>安全考虑</strong></p>
+<ol>
+<li>安装阶段：需要 root 权限（使用 <code>sudo</code>）</li>
+<li>运行阶段：应该使用<strong>专用的普通用户</strong>（默认是 <code>gitlab-runner</code> 用户）</li>
+<li>注册：使用 sudo 注册（配置文件需要写入系统目录）</li>
+</ol>
+<h2 id="gitlab-runner-用户"><a href="#gitlab-runner-用户" class="headerlink" title="gitlab-runner 用户"></a>gitlab-runner 用户</h2><p><strong>报错</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">set</span> -euo pipefail <span class="comment"># collapsed multi-line command</span></span><br><span class="line">error: could not lock config file /home/gitlab-runner/.gitconfig: No such file or directory，</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span>: cannot create directory ‘/home/autotest’: Permission denied</span><br></pre></td></tr></table></figure>
+
+<p><strong>原因</strong></p>
+<ul>
+<li>Git 配置文件权限问题。GitLab Runner 在执行任务时，以 <code>gitlab-runner</code> 用户运行，但该用户的家目录配置不完整</li>
+<li><code>.gitlab-ci.yml</code> 配置上，gitlab-runner 用户没有权限创建或访问 <code>/home/autotest</code> 目录及其子目录。</li>
+</ul>
+<p><strong>解决</strong></p>
+<p>创建并修复 gitlab-runner 家目录。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> <span class="built_in">mkdir</span> -p /home/gitlab-runner</span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">chown</span> -R gitlab-runner:gitlab-runner /home/gitlab-runner</span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">chmod</span> 755 /home/gitlab-runner</span><br><span class="line"><span class="built_in">sudo</span> -u gitlab-runner <span class="built_in">touch</span> /home/gitlab-runner/.gitconfig</span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">chmod</span> 644 /home/gitlab-runner/.gitconfig</span><br></pre></td></tr></table></figure>
+
+<p>yml 中使用 CI 环境</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">variables:</span></span><br><span class="line">  <span class="comment"># 使用 CI 工作目录或共享目录</span></span><br><span class="line">  <span class="attr">TARGET_BUILD_DIR:</span> <span class="string">&quot;$&#123;CI_PROJECT_DIR&#125;/doc/build&quot;</span></span><br><span class="line">  <span class="attr">LOG_DIR:</span> <span class="string">&quot;$&#123;CI_PROJECT_DIR&#125;/logs&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>给 gitlab-runner 用户访问权限（如果必须使用 <code>/home/autotest</code> 路径）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 方法 A：将 gitlab-runner 加入 autotest 组</span></span><br><span class="line"><span class="built_in">sudo</span> usermod -aG autotest gitlab-runner</span><br><span class="line"></span><br><span class="line"><span class="comment"># 方法 B: 设置目录权限，允许组成员访问</span></span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">chmod</span> 755 /home/autotest</span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">chmod</span> -R 755 /home/autotest/tools</span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">chmod</span> -R 755 /home/autotest/vlt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重启 gitlab-runner 使组权限生效</span></span><br><span class="line"><span class="built_in">sudo</span> systemctl restart gitlab-runner</span><br></pre></td></tr></table></figure>
+
+<p><code>755</code> 的含义:</p>
+<ul>
+<li><code>7</code> (owner): 读+写+执行</li>
+<li><code>5</code> (group): 读+执行</li>
+<li><code>5</code> (<strong>others</strong>): 读+执行 ← 这是关键，<strong>任何用户</strong>(包括 <code>gitlab-runner</code>)都可以读取和访问这些目录，<strong>不需要</strong>加入任何组</li>
+</ul>
+<h2 id="代码仓库权限"><a href="#代码仓库权限" class="headerlink" title="代码仓库权限"></a>代码仓库权限</h2><p>错误信息：</p>
+<ul>
+<li><code>Host key verification failed</code> - 缺少 known_hosts</li>
+<li><code>Could not read from remote repository</code> - 缺少 SSH 密钥或权限</li>
+</ul>
+<p>问题分析</p>
+<ol>
+<li><strong>手动可以克隆</strong>：用的是 root 或 autotest 用户，有配置好的 SSH 密钥</li>
+<li><strong>Pipeline 失败</strong>：gitlab-runner 用户没有 SSH 密钥，也没有 GitLab 服务器的 host key</li>
+</ol>
+<p>最佳解决：</p>
+<p>直接切换到 gitlab-runner 用户，ssh-keygen 生成并配置秘钥到仓库。</p>
+<h2 id="gitlab-runner-日志"><a href="#gitlab-runner-日志" class="headerlink" title="gitlab runner 日志"></a>gitlab runner 日志</h2><p>对于通过 systemd 管理的 Runner</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看实时日志</span></span><br><span class="line"><span class="built_in">sudo</span> journalctl -u gitlab-runner -f</span><br><span class="line"><span class="comment"># 查看最近的日志</span></span><br><span class="line"><span class="built_in">sudo</span> journalctl -u gitlab-runner -n 100</span><br><span class="line"><span class="comment"># 查看指定时间范围的日志</span></span><br><span class="line"><span class="built_in">sudo</span> journalctl -u gitlab-runner --since <span class="string">&quot;2024-09-30 10:00:00&quot;</span> --<span class="keyword">until</span> <span class="string">&quot;2024-09-30 12:00:00&quot;</span></span><br><span class="line"><span class="comment"># 查看今天的日志</span></span><br><span class="line"><span class="built_in">sudo</span> journalctl -u gitlab-runner --since today</span><br><span class="line"><span class="comment"># 只看错误级别日志</span></span><br><span class="line"><span class="built_in">sudo</span> journalctl -u gitlab-runner -p err</span><br></pre></td></tr></table></figure>
+
+<p>检查 Runner 状态</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看 Runner 服务状态</span></span><br><span class="line"><span class="built_in">sudo</span> systemctl status gitlab-runner</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看 Runner 版本和配置</span></span><br><span class="line"><span class="built_in">sudo</span> gitlab-runner --version</span><br><span class="line"><span class="built_in">sudo</span> gitlab-runner verify</span><br><span class="line"><span class="comment"># 查看配置文件内容、文件权限</span></span><br><span class="line"><span class="built_in">cat</span> /etc/gitlab-runner/config.toml</span><br><span class="line"><span class="built_in">ls</span> -la /etc/gitlab-runner/config.toml</span><br><span class="line"></span><br><span class="line"><span class="comment"># 列出所有注册的 Runner</span></span><br><span class="line"><span class="built_in">sudo</span> gitlab-runner list</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/Gitlab/" rel="tag"># Gitlab</a>
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2025/09/24/56935/" rel="prev" title="AI潮流下的新学习方式">
+                  <i class="fa fa-angle-left"></i> AI潮流下的新学习方式
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2025/10/04/31611/" rel="next" title="提升效率和管理的 systemd">
+                  提升效率和管理的 systemd <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">691k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:28</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

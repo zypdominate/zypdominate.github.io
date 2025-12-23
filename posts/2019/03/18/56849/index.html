@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="翻译了好久，终于把这篇文档翻完了，学到很多。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="翻译PEP8中学习 -- Style Guide for Python Code">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2019/03/18/56849/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="翻译了好久，终于把这篇文档翻完了，学到很多。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-03-18T15:31:14.000Z">
+<meta property="article:modified_time" content="2025-12-23T14:07:49.141Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="翻译">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2019/03/18/56849/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2019/03/18/56849/","path":"posts/2019/03/18/56849/","title":"翻译PEP8中学习 -- Style Guide for Python Code"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>翻译PEP8中学习 -- Style Guide for Python Code | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#A-Foolish-Consistency-is-the-Hobgoblin-of-Little-Minds"><span class="nav-text">A Foolish Consistency is the Hobgoblin of Little Minds</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Code-Lay-out"><span class="nav-text">Code Lay-out</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Indentation"><span class="nav-text">Indentation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tabs-or-Spaces"><span class="nav-text">Tabs or Spaces?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Maximum-Line-Length"><span class="nav-text">Maximum Line Length</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Should-a-Line-Break-Before-or-After-a-Binary-Operator"><span class="nav-text">Should a Line Break Before or After a Binary Operator?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Blank-Lines"><span class="nav-text">Blank Lines</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Source-File-Encoding"><span class="nav-text">Source File Encoding</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Imports"><span class="nav-text">Imports</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Module-Level-Dunder-Names"><span class="nav-text">Module Level Dunder Names</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#String-Quotes"><span class="nav-text">String Quotes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Whitespace-in-Expressions-and-Statements"><span class="nav-text">Whitespace in Expressions and Statements</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Pet-Peeves"><span class="nav-text">Pet Peeves</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Other-Recommendations"><span class="nav-text">Other Recommendations</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#When-to-Use-Trailing-Commas"><span class="nav-text">When to Use Trailing Commas</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Comments"><span class="nav-text">Comments</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Block-Comments"><span class="nav-text">Block Comments</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Inline-Comments"><span class="nav-text">Inline Comments</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Documentation-Strings"><span class="nav-text">Documentation Strings</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Naming-Conventions"><span class="nav-text">Naming Conventions</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Overriding-Principle"><span class="nav-text">Overriding Principle</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Descriptive-Naming-Styles"><span class="nav-text">Descriptive: Naming Styles</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Prescriptive-Naming-Conventions"><span class="nav-text">Prescriptive: Naming Conventions</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Names-to-Avoid"><span class="nav-text">Names to Avoid</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ASCII-Compatibility"><span class="nav-text">ASCII Compatibility</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Package-and-Module-Names"><span class="nav-text">Package and Module Names</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Class-Names"><span class="nav-text">Class Names</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Type-Variable-Names"><span class="nav-text">Type Variable Names</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Exception-Names"><span class="nav-text">Exception Names</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Global-Variable-Names"><span class="nav-text">Global Variable Names</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Function-and-Variable-Names"><span class="nav-text">Function and Variable Names</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Function-and-Method-Arguments"><span class="nav-text">Function and Method Arguments</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Method-Names-and-Instance-Variables"><span class="nav-text">Method Names and Instance Variables</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Constants"><span class="nav-text">Constants</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Designing-for-Inheritance"><span class="nav-text">Designing for Inheritance</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Public-and-Internal-Interfaces"><span class="nav-text">Public and Internal Interfaces</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Programming-Recommendations"><span class="nav-text">Programming Recommendations</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Function-Annotations"><span class="nav-text">Function Annotations</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Variable-Annotations"><span class="nav-text">Variable Annotations</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2019/03/18/56849/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="翻译PEP8中学习 -- Style Guide for Python Code | Magnolia's Blog">
+      <meta itemprop="description" content="翻译了好久，终于把这篇文档翻完了，学到很多。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          翻译PEP8中学习 -- Style Guide for Python Code
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-03-18 23:31:14" itemprop="dateCreated datePublished" datetime="2019-03-18T23:31:14+08:00">2019-03-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/%E7%BC%96%E7%A8%8B%E8%A7%84%E8%8C%83/" itemprop="url" rel="index"><span itemprop="name">编程规范</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>50k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>45 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">翻译了好久，终于把这篇文档翻完了，学到很多。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>官方原文:<br><a target="_blank" rel="noopener" href="https://www.python.org/dev/peps/pep-0008/#id27">PEP8 Style Guide for Python Code</a></p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>This document gives <strong>coding conventions</strong> for the Python code <strong>comprising</strong> the standard library in the main Python <strong>distribution</strong>. Please see the companion informational PEP describing style guidelines for the C code in the C implementation of Python.<br>本文档给出了<strong>包含</strong>主python<strong>发行版</strong>中标准库的python代码的<strong>编码约定</strong>。请参见公司信息PEP描述的用C实现的python中的C代码中的风格指南。</p>
+<p>This document and PEP 257 (Doc string Conventions) were adapted from Guido’s original Python Style Guide essay, with some additions from Barry’s style guide.<br>这篇文档和PEP 257 (约定文档) 改编自Guido最初的python代码风格指南文章, 并从Barry的风格指南总添加了一些内容.</p>
+<p>Many projects have their own coding style guidelines. <strong>In the event of</strong> any conflicts, such project-specific guides take precedence for that project.<br>许多项目有他们自己的代码风格指南. 如果<strong>发生</strong>任何的冲突, 这样一些具体明确的指南就可以优先于他们的项目.</p>
+<h2 id="A-Foolish-Consistency-is-the-Hobgoblin-of-Little-Minds"><a href="#A-Foolish-Consistency-is-the-Hobgoblin-of-Little-Minds" class="headerlink" title="A Foolish Consistency is the Hobgoblin of Little Minds"></a>A Foolish Consistency is the Hobgoblin of Little Minds</h2><p>愚蠢的一致性是弱智的妖精。</p>
+<p>One of Guido’s key insights is that code is read much more often than it is written. The guidelines provided here are intended to improve the readability of code and make it <strong>consistent across the wide spectrum of Python code</strong>. As PEP 20 says, “Readability counts”.<br>Guido关键的洞见之一就是代码的阅读频率远高于编写频率. 这里提供的指导方针旨在提高代码的可读性, 使得它可以<strong>在各种各样的python代码中保持一致</strong>. 正如PEP 20 说的, “可读性很重要”.</p>
+<p>A <strong>style guide</strong> is about consistency. <strong>Consistency with</strong> this style guide is important. Consistency within a project is more important.Consistency within one module or function is the most important.<br><strong>样式指南</strong>是关于一致性的. <strong>和</strong>样本指南<strong>一致</strong>是很重要的. 在一个项目中, 一致性就显得更加重要了. 在一个模块或者函数中, 一致性是最重要的.</p>
+<p>However, know when to be inconsistent – sometimes style guide recommendations just aren’t applicable. When in doubt, use your best judgment. Look at other examples and decide what looks best. And don’t hesitate to ask!<br>然而, 知道何时变得不一致 – 有时样式指南推荐方法是不适用的.  当存在疑惑时, 使用你最佳的判断力. 看一下其他例子然后决定哪种看上去最好. 不要犹豫问别人问题.</p>
+<p>In particular: do not break <strong>backwards compatibility</strong> just to <strong>comply with</strong> this PEP!<br>特别的: 不要仅仅为了<strong>遵守</strong>和这个PEP规范保持一致, 而破坏<strong>向后的兼容性</strong>.</p>
+<p>Some other good reasons to ignore a particular guideline:<br>一些其他可以忽略特殊规范的好的理由:</p>
+<ol>
+<li>When applying the guideline would make the code <strong>less readable</strong>, even for someone who <strong>is used to</strong> reading code that follows this PEP. (当使用这个规范会导致代码<strong>可读性下降</strong>时, 甚至对于<strong>习惯于</strong>阅读遵守这PEP规范的人也是如此)</li>
+<li>To be consistent with surrounding code that also breaks it (maybe for historic reasons) – although this is also an opportunity to clean up someone else’s mess (in true XP style).  (为了和周围代码保持一致有时也会打破这个规则(可能是历史原因), 尽管这是一个可以用来清理别人代码混乱的机会(正真的XP风格))</li>
+<li>Because the code in question <strong>predates</strong> the <strong>introduction of the guideline</strong> and there is no other reason to be modifying that code. (因为所讨论的代码<strong>早于</strong> <strong>准则的引入</strong>, 并且没有其他理由修改代码)</li>
+<li>When the code needs to remain compatible with older versions of Python that don’t support the feature recommended by the style guide. (当代码需要和老版本的python代码保持兼容性, 而老版本的代码不支持由样式指导推荐的特性)</li>
+</ol>
+<h2 id="Code-Lay-out"><a href="#Code-Lay-out" class="headerlink" title="Code Lay-out"></a>Code Lay-out</h2><p>代码布局</p>
+<h3 id="Indentation"><a href="#Indentation" class="headerlink" title="Indentation"></a>Indentation</h3><p>Use 4 spaces per indentation level.  (每个缩进级别使用4个空格)</p>
+<p>Continuation lines should <strong>align</strong> wrapped elements either vertically using Python’s <strong>implicit line</strong> joining inside parentheses, brackets and braces, or using a <strong>hanging indent</strong>. When using a hanging indent the following should be considered: there should be no arguments on the first line and further indentation should be used to clearly distinguish itself as a continuation line.<br>续行应使用 python的<strong>隐式行</strong>连接圆括号,括号,花括号, 或者使用一个<strong>悬挂缩进</strong>来<strong>对齐</strong>被包装的元素.  当使用一个悬挂时应该考虑一下内容: 这里起始行应没有参数, 应使用进一步的缩进将其作为一个续行而进行清楚地区分.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Yes:</span></span><br><span class="line"><span class="comment"># Aligned with opening delimiter (分隔符).</span></span><br><span class="line">foo = long_function_name(var_one, var_two,</span><br><span class="line">                         var_three, var_four)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Add 4 spaces (an extra level of indentation) to distinguish arguments from the rest.</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">long_function_name</span>(<span class="params"></span></span><br><span class="line"><span class="params">        var_one, var_two, var_three,</span></span><br><span class="line"><span class="params">        var_four</span>):</span><br><span class="line">    <span class="built_in">print</span>(var_one)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Hanging indents should add a level.</span></span><br><span class="line">foo = long_function_name(</span><br><span class="line">    var_one, var_two,</span><br><span class="line">    var_three, var_four)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># No:</span></span><br><span class="line"><span class="comment"># Arguments on first line forbidden when not using vertical alignment.</span></span><br><span class="line">foo = long_function_name(var_one, var_two,</span><br><span class="line">    var_three, var_four)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Further indentation required as indentation is not distinguishable.</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">long_function_name</span>(<span class="params"></span></span><br><span class="line"><span class="params">    var_one, var_two, var_three,</span></span><br><span class="line"><span class="params">    var_four</span>):</span><br><span class="line">    <span class="built_in">print</span>(var_one)</span><br></pre></td></tr></table></figure>
+
+<p>The 4-space rule is optional for continuation lines. (4个空格的规范对于 续行 来说也是可选的)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Hanging indents *may* be indented to other than 4 spaces.</span></span><br><span class="line">foo = long_function_name(</span><br><span class="line">  var_one, var_two,</span><br><span class="line">  var_three, var_four)</span><br></pre></td></tr></table></figure>
+
+<p>When the conditional part of an <code>if</code>-statement is long enough to require that it be written across multiple lines, it’s worth noting that the combination of a two character keyword (i.e. <code>if</code>), plus a single space, plus an opening parenthesis creates a natural 4-space indent for the subsequent lines of the multi line conditional.   This can produce a <strong>visual conflict</strong> with the indented suite of code <strong>nested</strong> inside the <code>if</code>-statement, which would also naturally be indented to 4 spaces. This PEP <strong>takes no explicit position</strong> on how (or whether) to further visually distinguish such conditional lines from the nested suite inside the <code>if</code>-statement. Acceptable options in this situation include, but are not limited to:<br>当条件语句部分的 if 语句足够长, 以至于需要跨行写, 值得注意的是: 两个字符的关键字(例如if), 加上一个空格, 加上一个左括号, 会为了后续行的多行条件语句, 创造一个自然的4个空格的缩进.  这可能会与 <strong>嵌套</strong>在if语句中的缩进的代码集产生<strong>视觉冲突</strong>,  而这同样会自然地缩进4空格.  PEP规范<strong>没有明确的立场</strong>关于如何(或者是否)进一步在视觉上区分这种条件行 与嵌套在里面的if语句. 这种情况下可接受的选项包括, 但是并不限于:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># No extra indentation.</span></span><br><span class="line"><span class="keyword">if</span> (this_is_one_thing <span class="keyword">and</span></span><br><span class="line">    that_is_another_thing):</span><br><span class="line">    do_something()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Add a comment, which will provide some distinction in editors</span></span><br><span class="line"><span class="comment"># supporting syntax highlighting.</span></span><br><span class="line"><span class="keyword">if</span> (this_is_one_thing <span class="keyword">and</span></span><br><span class="line">    that_is_another_thing):</span><br><span class="line">    <span class="comment"># Since both conditions are true, we can frobnicate.</span></span><br><span class="line">    do_something()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Add some extra indentation on the conditional continuation line.</span></span><br><span class="line"><span class="keyword">if</span> (this_is_one_thing</span><br><span class="line">        <span class="keyword">and</span> that_is_another_thing):</span><br><span class="line">    do_something()</span><br></pre></td></tr></table></figure>
+
+<p>(Also see the discussion of whether to <strong>break</strong> before or after binary operators below.)<br>（参见下面关于是否在二元运算符之前或之后<strong>中断</strong>的讨论。）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">my_list = [</span><br><span class="line">    <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>,</span><br><span class="line">    <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>,</span><br><span class="line">    ]</span><br><span class="line">result = some_function_that_takes_arguments(</span><br><span class="line">    <span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;d&#x27;</span>, <span class="string">&#x27;e&#x27;</span>, <span class="string">&#x27;f&#x27;</span>,</span><br><span class="line">    )</span><br></pre></td></tr></table></figure>
+
+<p>or it may be lined up under the first character of the line that starts the multi line construct, as in:<br>或者在开始多行结构的时, 它可以排列在行的第一个字符下面, 例如:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">my_list = [</span><br><span class="line">    <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>,</span><br><span class="line">    <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>,</span><br><span class="line">]</span><br><span class="line">result = some_function_that_takes_arguments(</span><br><span class="line">    <span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;d&#x27;</span>, <span class="string">&#x27;e&#x27;</span>, <span class="string">&#x27;f&#x27;</span>,</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="Tabs-or-Spaces"><a href="#Tabs-or-Spaces" class="headerlink" title="Tabs or Spaces?"></a>Tabs or Spaces?</h3><p>Spaces are the preferred indentation method.<br>空格是首选的缩进方法.</p>
+<p>Tabs should be used <strong>solely</strong> to remain consistent with code that is already indented with tabs.<br>Tabs 应该<strong>只能</strong>用在已经使用制表符来缩进的代码中, 以保持一致.</p>
+<p>Python 3 disallows mixing the use of tabs and spaces for indentation.<br>python 3 不允许混用tabs和空格来缩进.</p>
+<p>Python 2 code indented with a mixture of tabs and spaces should be converted to using spaces exclusively.<br>python 2 代码使用tabs和空格的混合来作为缩进, 应该被转换为单独使用空格.</p>
+<p>When <strong>invoking</strong> the Python 2 command line interpreter with the <code>-t</code> option, it issues warnings about code that illegally mixes tabs and spaces. When using <code>-tt</code> these warnings become errors. These options are highly recommended!<br>当使用-t 选项<strong>调用</strong>python 2 命令行解释器时, 它会发出警告: 非法混合tabs和空格的代码. 当使用 -tt 这样事, 警告会变成错误. 这些选项值得强烈推荐!</p>
+<h3 id="Maximum-Line-Length"><a href="#Maximum-Line-Length" class="headerlink" title="Maximum Line Length"></a>Maximum Line Length</h3><p>Limit all lines to a maximum of 79 characters.<br>对所有行来说, 最大容纳79字符.</p>
+<p>For flowing long blocks of text with fewer <strong>structural restrictions</strong> (doc strings or comments), the line length should be limited to 72 characters.<br>对于<strong>结构限制</strong>较少的长文本块（doc strings或注释），行长度应限制为72个字符。</p>
+<p>Limiting the required editor window width makes it possible to have several files <strong>open side-by-side</strong>, and works well when using code review tools that present the two versions in <strong>adjacent columns</strong>.<br>限制所需要的编辑窗口宽度, 可以使多个文件<strong>并排打开</strong>, 而且在使用<strong>相邻列</strong>中显示不同版本的代码检查工作时更好.</p>
+<p>The default wrapping in most tools disrupts the visual structure of the code, making it more difficult to understand. The limits are chosen to avoid wrapping in editors with the window width set to 80, even if the tool places a marker glyph in the final column when <strong>wrapping lines</strong>. Some web based tools may not offer dynamic line wrapping at all.<br>大多数工具中默认包装会破坏代码的视觉结构,  使得更加难以理解. 选择这个限制是为了避免在窗口宽度设置为80的编辑器中换行,  即使当在<strong>换行</strong>时工具会在最后一列放置一个glyph标志.  一些基于工具的web, 可能根本不会提供动态换行.</p>
+<p>Some teams strongly prefer a longer line length. For code <strong>maintained exclusively</strong> or primarily by a team that can reach agreement on this issue, it is okay to increase the line length limit up to 99 characters, provided that comments and doc strings are still wrapped at 72 characters.<br>一些团队强烈希望有一个更长的行长度. 对于<strong>专门维护</strong>或者主要由团队维护的代码, 可以对此达成统一见解. 延长行的最大长度限制至99字符是可以的, 前提是评论和doc string仍然需要限制在72字符以内.</p>
+<p>The Python standard library is conservative and requires limiting lines to 79 characters (and doc strings&#x2F;comments to 72).<br>python 标准库是保守的, 要求限制行数至79字符( doc string&#x2F;comment 至72)</p>
+<p>The preferred way of wrapping long lines is by using Python’s <strong>implied line</strong> continuation inside <strong>parentheses</strong>, brackets and braces. Long lines can be broken over multiple lines by wrapping expressions in parentheses. These should be used in preference to using a <strong>backslash</strong> for <strong>line continuation</strong>.<br>包装长的行的首选方法是在<strong>圆括号</strong>&#x2F;括号&#x2F;大括号内使用python的<strong>隐含行</strong>继续符, 长行可以通过将表达式括在括号中, 实现在多行上打断长行. 这些应该优先使用<strong>反斜杠</strong>作为<strong>行继续符</strong>.</p>
+<p>Backslashes may still be appropriate at times. For example, long, multiple <code>with</code>-statements cannot use <strong>implicit continuation</strong>, so backslashes are acceptable:<br>反斜杠有时候仍然是一个恰当的方法. 例如, 长的&#x2F;多重的with语句, 不能使用<strong>隐式延续</strong>,  因此可以接受反斜杠.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;/path/to/some/file/you/want/to/read&#x27;</span>) <span class="keyword">as</span> file_1, \</span><br><span class="line">     <span class="built_in">open</span>(<span class="string">&#x27;/path/to/some/file/being/written&#x27;</span>, <span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> file_2:</span><br><span class="line">    file_2.write(file_1.read())</span><br><span class="line"><span class="comment"># 卧槽, 还可以这样写, 涨知识了</span></span><br></pre></td></tr></table></figure>
+
+<p>Another such case is with <code>assert</code> statements.<br>另一个相似的例子是  assert 断言 语句.</p>
+<p>Make sure to indent the continued line appropriately.<br>确保适当地缩进连续行.</p>
+<h3 id="Should-a-Line-Break-Before-or-After-a-Binary-Operator"><a href="#Should-a-Line-Break-Before-or-After-a-Binary-Operator" class="headerlink" title="Should a Line Break Before or After a Binary Operator?"></a>Should a Line Break Before or After a Binary Operator?</h3><p>在二元运算符之前还是之后换行？</p>
+<p>For decades the recommended style was to break after binary <strong>operators</strong>. But this can hurt readability in two ways: the operators tend to <strong>get scattered across</strong> different columns on the screen, and each operator is moved away from its <strong>operand</strong> and onto the previous line. Here, the eye has to do extra work to tell which items are added and which are subtracted:<br>数十年来推荐的风格是在二元<strong>运算符</strong>后面进行中断. 但是有两种方式会损害可读性: 运算符往往<strong>分散</strong>在屏幕的不同列中,  并且每个运算符都会从其<strong>操作数</strong>移到前一行. 在这里, 眼睛不得不做额外的工作来区分哪些项目是增加的, 哪些项目是减去的:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># No: operators sit far away from their operands</span></span><br><span class="line">income = (gross_wages +</span><br><span class="line">          taxable_interest +</span><br><span class="line">          (dividends - qualified_dividends) -</span><br><span class="line">          ira_deduction -</span><br><span class="line">          student_loan_interest)</span><br></pre></td></tr></table></figure>
+
+<p>To solve this readability problem, mathematicians and their publishers follow the opposite <strong>convention</strong>. Donald Knuth explains the traditional rule in his <em>Computers and Typesetting</em> series: “Although <strong>formulas</strong> within a paragraph always <strong>break</strong> after binary operations and relations, displayed formulas always break before binary operations” .<br>为了解决这个可读性问题, 数学家和他们的出版商遵循了相反的<strong>惯例</strong>. Donald Knuth 在他的计算机和排版系列中解释了传统的规则: 尽管一个段落中的<strong>公式</strong>总是在二进制运算和关系之后<strong>中断</strong>, 但显示的公式总是在二进制运算之前中断.</p>
+<p>Following the tradition from mathematics usually results in more readable code:<br>遵循数学的传统通常会导致一些更加易读的代码:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Yes: easy to match operators with operands</span></span><br><span class="line">income = (gross_wages</span><br><span class="line">          + taxable_interest</span><br><span class="line">          + (dividends - qualified_dividends)</span><br><span class="line">          - ira_deduction</span><br><span class="line">          - student_loan_interest)</span><br></pre></td></tr></table></figure>
+
+<p>In Python code, it is permissible to break before or after a binary operator, as long as the convention is consistent locally. For new code Knuth’s style is suggested.<br>在python代码中, 在二元运算符前后中断都是允许的, 只要在本地的约定一致. 对于新的代码, 建议使用Knuth式.</p>
+<h3 id="Blank-Lines"><a href="#Blank-Lines" class="headerlink" title="Blank Lines"></a>Blank Lines</h3><p>Surround top-level function and class definitions with two blank lines.<br>用两个空行来围绕顶级函数和类的定义.</p>
+<p>Method definitions inside a class are surrounded by a single blank line.<br>在一个类中的方法定义, 是通过一个空白行来围绕的.</p>
+<p>Extra blank lines may be used (<strong>sparingly</strong>) to <strong>separate</strong> groups of related functions. Blank lines may be omitted between a bunch of related <strong>one-liners</strong> (e.g. a set of <strong>dummy implementations</strong>).<br>可以使用额外的空行(<strong>保守地,节约地</strong>)来<strong>分隔</strong>相关函数组. 在一组相关的<strong>一行程序</strong>(例如一组<strong>虚拟实现</strong>) 之间可以省略空行.</p>
+<p>Use blank lines in functions, sparingly, to indicate logical sections.<br>在函数中尽量使用空行可以表示逻辑部分.</p>
+<p>Python accepts the control-L (i.e. ^L) <strong>form feed</strong>  character as whitespace; Many tools treat these characters as page separators, so you may use them to separate pages of related sections of your file. Note, some editors and web-based code viewers may not recognize control-L as a form feed and will show another glyph in its place.<br>python接受 control-L <strong>表单提要</strong>字符作为空白. 一些工具把这些字符当做是页分隔符, 所以你可以使用它们来分隔文件的相关部分的页面. 注意, 一些编辑器和基于web的代码查看器可能不能识别control-L作为表单提要, 将会在该处用另一种glyph来标志.</p>
+<h3 id="Source-File-Encoding"><a href="#Source-File-Encoding" class="headerlink" title="Source File Encoding"></a>Source File Encoding</h3><p>Code in the core Python distribution should <strong>always</strong> use UTF-8 (or ASCII in Python 2).<br>在核心python发布版本中的代码, 应该<strong>始终</strong>使用UTF-8(在python2中使用ASCII).</p>
+<p>Files using ASCII (in Python 2) or UTF-8 (in Python 3) should not have an encoding declaration.<br>在python 2中使用ASCII或者在python 3中使用UTF-8的文件, 不应该有编码声明.</p>
+<p>In the standard library, non-default encodings should be used only for test purposes or when a <strong>comment</strong> or doc string needs to mention an author name that contains non-ASCII characters; otherwise, using <code>\x</code>, <code>\u</code>, <code>\U</code>, or <code>\N</code> <strong>escapes</strong> is the <strong>preferred way</strong> to include non-ASCII data in string literals.<br>在标准库中, 非默认的编码应该只用来测试目的或者当<strong>注释</strong>&#x2F;doc string 中有涉及包含非ASCII字符的作者名时使用. 否则, 使用\x, \u或者\N <strong>转义</strong> 是在字符串文本中来包含非ASCII数据的<strong>首选方法</strong>.</p>
+<p>For Python 3.0 and beyond, the following policy is prescribed for the standard library (see <a target="_blank" rel="noopener" href="https://www.python.org/dev/peps/pep-3131">PEP 3131</a>): All <strong>identifiers</strong> in the Python standard library <strong>MUST</strong> use ASCII-only identifiers, and <strong>SHOULD</strong> use English words wherever feasible (in many cases, abbreviations and technical terms are used which aren’t English). In addition, string literals and comments must also be in ASCII. The only exceptions are (a) <strong>test cases</strong> testing the non-ASCII features, and (b) names of authors. Authors whose names are not based on the Latin alphabet (latin-1, ISO&#x2F;IEC 8859-1 character set) MUST provide a <strong>transliteration</strong> of their names in this character set.<br>对于python 3.0 以及更高版本, 标准库规定了以下策略(看PEP 3131) : 在python 官方库中所有的<strong>标识符</strong>都<strong>必须</strong>使用仅ASCII标识符, 并且<strong>应</strong>在可行的情况下使用英文单词(在一些案例中, 缩写和技术词条不是英文的). 除此以外, 字符串文本和注释必须使用ASCII. 唯一的例外是测试非ASCII特性和作者名的<strong>测试用例</strong>. 名称不基于拉丁字母（拉丁-1，ISO&#x2F;IEC 8859-1字符集）的作者必须在此字符集中提供其名称的<strong>音译</strong>。</p>
+<p>Open source projects with a global audience are encouraged to <strong>adopt</strong> a similar policy.<br>鼓励那些拥有全球受众的开源项目来<strong>采用</strong>类似的策略.</p>
+<h3 id="Imports"><a href="#Imports" class="headerlink" title="Imports"></a>Imports</h3><p>Imports should usually be on separate lines:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Yes: <span class="keyword">import</span> os</span><br><span class="line">     <span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">No:  <span class="keyword">import</span> sys, os</span><br></pre></td></tr></table></figure>
+
+<p>It’s okay to say this though:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> subprocess <span class="keyword">import</span> Popen, PIPE</span><br></pre></td></tr></table></figure>
+
+<p>Imports are always put at the top of the file, just after any module comments and docstrings, and before module globals and constants.<br>Imports 总是放在文件的顶部, 在模块注释和doc string 的后面, 在模块的全局变量和常量的前面.</p>
+<p>Imports should be grouped in the following order:<br>imports 应该以下面顺序来分组:</p>
+<ol>
+<li>Standard library imports.<br>标准库的导入.</li>
+<li>Related third party imports.<br>相关三方库的导入.                            </li>
+<li>Local application&#x2F;library specific imports.<br>局部应用程序&#x2F;特定库的导入.</li>
+</ol>
+<p>You should put a blank line between each group of imports.<br>你应该将在每个导入的组之间添加空行.</p>
+<p>Absolute imports are recommended, as they are usually more readable and tend to be <strong>better behaved</strong> (or at least give better error messages) if the import system is incorrectly configured (such as when a directory inside a package ends up on <code>sys.path</code>):<br>建议使用绝对导入,  如果导入系统没有正确地配置(正如当包中的目录以 sys.path 结尾时) , 绝对导入通常更具可读性, 而且往往<strong>表现更好</strong>(至少给出更好的错误提示信息) ,</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> mypkg.sibling</span><br><span class="line"><span class="keyword">from</span> mypkg <span class="keyword">import</span> sibling</span><br><span class="line"><span class="keyword">from</span> mypkg.sibling <span class="keyword">import</span> example</span><br></pre></td></tr></table></figure>
+
+<p>However, explicit relative imports are an acceptable alternative to absolute imports, especially when dealing with complex package layouts where using absolute imports would be <strong>unnecessarily verbose</strong>:<br>然而, 显式相对导入对于绝对导入是一个可接受的选择, 尤其是当处理复杂的包布局时, 使用了绝对导入将<strong>不必要地冗长</strong>.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> . <span class="keyword">import</span> sibling</span><br><span class="line"><span class="keyword">from</span> .sibling <span class="keyword">import</span> example</span><br></pre></td></tr></table></figure>
+
+<p>Standard library code should avoid complex package layouts and always use absolute imports.<br>标准库代码应该避免复杂的包布局, 应始终使用绝对导入.</p>
+<p>Implicit relative imports should <em>never</em> be used and have been removed in Python 3.<br>隐式相对导入应该从不使用, 而且已经被python 3 移除了.</p>
+<p>When importing a class from a class-containing module, it’s usually okay to spell this:<br>当从一个包含类的模块中导入一个类时, 通常可以这样写:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> myclass <span class="keyword">import</span> MyClass</span><br><span class="line"><span class="keyword">from</span> foo.bar.yourclass <span class="keyword">import</span> YourClass</span><br></pre></td></tr></table></figure>
+
+<p>If this spelling causes local name clashes, then spell them explicitly:<br>如果这个拼写会导致本地名字冲突, 则显式拼写.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> myclass</span><br><span class="line"><span class="keyword">import</span> foo.bar.yourclass</span><br><span class="line"></span><br><span class="line"><span class="comment"># and use &quot;myclass.MyClass&quot; and &quot;foo.bar.yourclass.YourClass&quot;.</span></span><br></pre></td></tr></table></figure>
+
+<p>Wild card imports (<code>from &lt;module&gt; import *</code>) should be avoided, as they make it unclear which names are <strong>present</strong> in the <strong>name space</strong>, confusing both readers and many automated tools. There is one <strong>defensible</strong> use case for a wild card import, which is to republish an internal interface as part of a public API (for example, overwriting a pure Python implementation of an interface with the definitions from an optional accelerator module and exactly which definitions will be overwritten isn’t known in advance).<br>应避免使用通配符号导入( from <module> import * ) . 因为这样会使<strong>名称空间</strong>中<strong>存在</strong>哪些名称变得不清楚, 会让读者和自动化工具困惑.  通配符有一种<strong>可防御</strong>的用例, 即将内部的接口重新发布为公共API的一部分(例如, 重写一个可选择的加速器模块中定义的, 用纯粹的python实现的内部接口 , 确切的说哪些定义会被重写不能提前知道)</p>
+<p>When republishing names this way, the guidelines below regarding public and internal interfaces still apply.<br>当用这种方式重新发布名字时,  下面关于公共和外部的接口的指导原则仍然适合.</p>
+<h3 id="Module-Level-Dunder-Names"><a href="#Module-Level-Dunder-Names" class="headerlink" title="Module Level Dunder Names"></a>Module Level Dunder Names</h3><p>Module level “dunders” (i.e. names with two leading and two trailing underscores) such as <code>__all__</code>, <code>__author__</code>, <code>__version__</code>, etc. should be placed after the module doc string but before any import statements <em>except</em> <code>from __future__</code> imports. Python mandates that future-imports must appear in the module before any other code except doc strings:<br>模块级”dunders”( 即 名字带有两个前导和两个尾随下划线的名称), 例如__ all __ ,__ author __ , __ version __ 等, 应放在doc string 模块后面, 但是除了 from __ future __ imports 之外的任何导入语句的前面.  python要求将来的导入必须出现在模块中除了doc strings 之外的任何代码之前.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;&quot;&quot;This is the example module.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">This module does stuff.</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> barry_as_FLUFL</span><br><span class="line"></span><br><span class="line">__all__ = [<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>]</span><br><span class="line">__version__ = <span class="string">&#x27;0.1&#x27;</span></span><br><span class="line">__author__ = <span class="string">&#x27;Cardinal Biggles&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> sys</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="String-Quotes"><a href="#String-Quotes" class="headerlink" title="String Quotes"></a>String Quotes</h2><p>In Python, <strong>single-quoted</strong> strings and <strong>double-quoted</strong> strings are the same. This PEP does not make a recommendation for this. Pick a rule and stick to it. When a string contains single or double quote characters, however, use the other one to avoid backslashes in the string. It improves readability.<br>在python中, <strong>单引号</strong>字符串和<strong>双引号</strong>字符串是一样的. PEP规范没有提出建议. 选择一条规则并且坚持下去. 当一个字符串包含一个单引号或者双引号字符时, 当一个字符串包含单引号或者双引号时, 请使用另一种字符避免字符串中出现反斜杠.</p>
+<p>For triple-quoted strings, always use double quote characters to be consistent with the doc string <strong>convention</strong> in <a target="_blank" rel="noopener" href="https://www.python.org/dev/peps/pep-0257">PEP 257</a>.<br>对于三引号字符串, 始终使用双引号字符以符合PEP 257中的doc string<strong>约定</strong>.</p>
+<h2 id="Whitespace-in-Expressions-and-Statements"><a href="#Whitespace-in-Expressions-and-Statements" class="headerlink" title="Whitespace in Expressions and Statements"></a>Whitespace in Expressions and Statements</h2><h3 id="Pet-Peeves"><a href="#Pet-Peeves" class="headerlink" title="Pet Peeves"></a>Pet Peeves</h3><p>宠物的烦恼</p>
+<p>Avoid <strong>extraneous</strong> whitespace in the following situations:<br>以下情况, 避免出现<strong>外来</strong>空白:</p>
+<ul>
+<li>Immediately inside parentheses, brackets or braces.<br>括号内的括号或者括号的开始.</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Yes: spam(ham[<span class="number">1</span>], &#123;eggs: <span class="number">2</span>&#125;)</span><br><span class="line">No:  spam( ham[ <span class="number">1</span> ], &#123; eggs: <span class="number">2</span> &#125; )</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Between a trailing comma and a following close parenthesis.<br>在尾随逗号和后面的右括号之间.</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Yes: foo = (<span class="number">0</span>,)</span><br><span class="line">No:  bar = (<span class="number">0</span>, )</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Immediately before a comma, semicolon, or colon:<br>紧跟在逗号&#x2F;分号&#x2F;冒号之前:</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Yes: <span class="keyword">if</span> x == <span class="number">4</span>: <span class="built_in">print</span> x, y; x, y = y, x</span><br><span class="line">No:  <span class="keyword">if</span> x == <span class="number">4</span> : <span class="built_in">print</span> x , y ; x , y = y , x</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>However, in a slice the colon acts like a binary operator, and should have equal <strong>amounts</strong> <strong>on either side</strong> (treating it as the <strong>operator</strong> with the lowest priority). In an extended slice, both colons must have the same amount of <strong>spacing</strong> applied. Exception: when a slice parameter is omitted, the space is omitted.<br>然而, 在一个切片中, 冒号就像一个二元操作符, 并且应该<strong>在每一侧</strong>具有相等的<strong>数量</strong>(将其视为优先级最低的<strong>运算符</strong>). 在扩展切片中, 两个冒号必须有相同数量的<strong>间距</strong>. 例外: 当一个切片参数被省略时, 空格被省略.</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Yes: </span></span><br><span class="line">ham[<span class="number">1</span>:<span class="number">9</span>], ham[<span class="number">1</span>:<span class="number">9</span>:<span class="number">3</span>], ham[:<span class="number">9</span>:<span class="number">3</span>], ham[<span class="number">1</span>::<span class="number">3</span>], ham[<span class="number">1</span>:<span class="number">9</span>:]</span><br><span class="line">ham[lower:upper], ham[lower:upper:], ham[lower::step]</span><br><span class="line">ham[lower+offset : upper+offset]</span><br><span class="line">ham[: upper_fn(x) : step_fn(x)], ham[:: step_fn(x)]</span><br><span class="line">ham[lower + offset : upper + offset]</span><br><span class="line"></span><br><span class="line"><span class="comment"># No:</span></span><br><span class="line">ham[lower + offset:upper + offset]</span><br><span class="line">ham[<span class="number">1</span>: <span class="number">9</span>], ham[<span class="number">1</span> :<span class="number">9</span>], ham[<span class="number">1</span>:<span class="number">9</span> :<span class="number">3</span>]</span><br><span class="line">ham[lower : : upper]</span><br><span class="line">ham[ : upper]</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Immediately before the open parenthesis that starts the argument list of a <strong>function call</strong>:<br>在开始<strong>函数调用</strong>的参数列表的左括号之前:</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Yes: spam(<span class="number">1</span>)</span><br><span class="line">No:  spam (<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Immediately before the open parenthesis that starts an indexing or slicing:<br>在开始索引或者切片的左括号之前:</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Yes: dct[<span class="string">&#x27;key&#x27;</span>] = lst[index]</span><br><span class="line">No:  dct [<span class="string">&#x27;key&#x27;</span>] = lst [index]</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>More than one space around an assignment (or other) operator to align it with another.<br>多个空格围绕在一个分配(或者其他)运算符周围, 使得它和其他运算符对齐.</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Yes:</span></span><br><span class="line">x = <span class="number">1</span></span><br><span class="line">y = <span class="number">2</span></span><br><span class="line">long_variable = <span class="number">3</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># No:</span></span><br><span class="line">x             = <span class="number">1</span></span><br><span class="line">y             = <span class="number">2</span></span><br><span class="line">long_variable = <span class="number">3</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Other-Recommendations"><a href="#Other-Recommendations" class="headerlink" title="Other Recommendations"></a>Other Recommendations</h3><p>Avoid trailing whitespace anywhere. Because it’s usually invisible, it can be confusing: e.g. a backslash followed by a space and a newline does not count as a line continuation marker. Some editors don’t preserve it and many projects (like C Python itself) have pre-commit hooks that reject it.<br>避免在任何地方尾随空白. 因为它通常是不可见的, 所以可能会让人困惑: 例如, 反斜杠后面跟着空白, 换行符不算作行继续标记. 有些编辑器不保存它, 许多项目(例如C python本身) 都有预提交钩子来拒绝它.</p>
+<p>Always surround these binary operators with a single space on either side: <strong>assignment</strong> (<code>=</code>), <strong>augmented assignment</strong> (<code>+=</code>, <code>-=</code> etc.), comparisons (<code>==</code>, <code>&lt;</code>, <code>&gt;</code>, <code>!=</code>, <code>&lt;&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code>, <code>in</code>, <code>not in</code>, <code>is</code>, <code>is not</code>), Booleans (<code>and</code>, <code>or</code>, <code>not</code>).</p>
+<p>始终在这些二元运算符两边用一个空格包围:  <strong>赋值</strong>(&#x3D;), <strong>増广赋值</strong>(+&#x3D;, -&#x3D; 等), 比较(&#x3D;、&lt;、&gt;、！&#x3D;，&lt;&gt;，&lt;&#x3D;，&gt;&#x3D;，in，not in，is，is not），布尔值（and，or，not）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Yes:</span></span><br><span class="line">i = i + <span class="number">1</span></span><br><span class="line">submitted += <span class="number">1</span></span><br><span class="line">x = x*<span class="number">2</span> - <span class="number">1</span></span><br><span class="line">hypot2 = x*x + y*y</span><br><span class="line">c = (a+b) * (a-b)</span><br><span class="line"></span><br><span class="line"><span class="comment"># No:</span></span><br><span class="line">i=i+<span class="number">1</span></span><br><span class="line">submitted +=<span class="number">1</span></span><br><span class="line">x = x * <span class="number">2</span> - <span class="number">1</span></span><br><span class="line">hypot2 = x * x + y * y</span><br><span class="line">c = (a + b) * (a - b)</span><br></pre></td></tr></table></figure>
+
+<p>Function <strong>annotations</strong> should use the normal rules for colons and always have spaces around the <code>-&gt;</code> arrow if present. (See <a target="_blank" rel="noopener" href="https://www.python.org/dev/peps/pep-0008/#function-annotations">Function Annotations</a> below for more about function annotations.)<br>函数<strong>注释</strong>应该使用冒号的常规规则, 并且如果存在的话, 在-&gt;箭头周围总是有空格.  (有关函数注释的详细信息，请参见下面的函数注释。）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Yes</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">munge</span>(<span class="params"><span class="built_in">input</span>: AnyStr</span>): ...</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">munge</span>() -&gt; AnyStr: ...</span><br><span class="line">  </span><br><span class="line"><span class="comment"># No</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">munge</span>(<span class="params"><span class="built_in">input</span>:AnyStr</span>): ...</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">munge</span>()-&gt;PosInt: ...</span><br></pre></td></tr></table></figure>
+
+<p>Don’t use spaces around the <code>=</code> sign when used to indicate a keyword argument, or when used to indicate a default value for an <strong>unannotated</strong>  function parameter.<br>当用于指示关键字参数, 或用于指示<strong>未标记</strong>函数参数的默认值时, 不要在&#x3D; 号周围使用空格.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Yes:</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">complex</span>(<span class="params">real, imag=<span class="number">0.0</span></span>):</span><br><span class="line">    <span class="keyword">return</span> magic(r=real, i=imag)</span><br><span class="line"></span><br><span class="line"><span class="comment"># No:</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">complex</span>(<span class="params">real, imag = <span class="number">0.0</span></span>):</span><br><span class="line">    <span class="keyword">return</span> magic(r = real, i = imag)</span><br></pre></td></tr></table></figure>
+
+<p>When combining an argument <strong>annotation</strong> with a default value, however, do use spaces around the <code>=</code> sign:<br>当将参数<strong>批注</strong>与默认值组合时, 请在&#x3D; 符号周围使用空格:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Yes:</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">munge</span>(<span class="params">sep: AnyStr = <span class="literal">None</span></span>): ...</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">munge</span>(<span class="params"><span class="built_in">input</span>: AnyStr, sep: AnyStr = <span class="literal">None</span>, limit=<span class="number">1000</span></span>): ...</span><br><span class="line"></span><br><span class="line"><span class="comment"># No:</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">munge</span>(<span class="params"><span class="built_in">input</span>: AnyStr=<span class="literal">None</span></span>): ...</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">munge</span>(<span class="params"><span class="built_in">input</span>: AnyStr, limit = <span class="number">1000</span></span>): ...</span><br></pre></td></tr></table></figure>
+
+<p>Compound statements (multiple statements on the same line) are generally discouraged.<br>复合语句(多重声明在同一行) 一般是不鼓励的.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Yes:</span></span><br><span class="line"><span class="keyword">if</span> foo == <span class="string">&#x27;blah&#x27;</span>:</span><br><span class="line">    do_blah_thing()</span><br><span class="line">do_one()</span><br><span class="line">do_two()</span><br><span class="line">do_three()</span><br><span class="line"></span><br><span class="line"><span class="comment"># No:</span></span><br><span class="line"><span class="keyword">if</span> foo == <span class="string">&#x27;blah&#x27;</span>: do_blah_thing()</span><br><span class="line">do_one(); do_two(); do_three()</span><br></pre></td></tr></table></figure>
+
+<p>While sometimes it’s okay to put an if&#x2F;for&#x2F;while with a small body on the same line, never do this for multi-clause statements. Also avoid folding such long lines!<br>尽管有时可以把一个 if&#x2F;for&#x2F;while 和一个小的主体放在同一行, 但是不要这样用于复合语句.  同样避免折叠这么长的行.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># rather not</span></span><br><span class="line"><span class="keyword">if</span> foo == <span class="string">&#x27;blah&#x27;</span>: do_blah_thing()</span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> lst: total += x</span><br><span class="line"><span class="keyword">while</span> t &lt; <span class="number">10</span>: t = delay()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Definitely not:</span></span><br><span class="line"><span class="keyword">if</span> foo == <span class="string">&#x27;blah&#x27;</span>: do_blah_thing()</span><br><span class="line"><span class="keyword">else</span>: do_non_blah_thing()</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>: something()</span><br><span class="line"><span class="keyword">finally</span>: cleanup()</span><br><span class="line"></span><br><span class="line">do_one(); do_two(); do_three(long, argument,</span><br><span class="line">                             <span class="built_in">list</span>, like, this)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> foo == <span class="string">&#x27;blah&#x27;</span>: one(); two(); three()</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="When-to-Use-Trailing-Commas"><a href="#When-to-Use-Trailing-Commas" class="headerlink" title="When to Use Trailing Commas"></a>When to Use Trailing Commas</h2><p><strong>Trailing commas</strong> are usually optional, except they are <strong>mandatory</strong> when making a tuple of one element (and in Python 2 they have semantics for the <code>print</code> statement). For clarity, it is recommended to surround the latter in (technically <strong>redundant</strong>) parentheses.<br><strong>尾随逗号</strong>通常是可选的, 除非他们在构成一个元素的元组时是<strong>强制的</strong>(在python 2 中, 它们具有print语句的语义). 为了清楚起见, 建议将后者括在(技术上的<strong>冗余</strong>)括号中.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Yes:</span></span><br><span class="line">FILES = (<span class="string">&#x27;setup.cfg&#x27;</span>,)</span><br><span class="line"></span><br><span class="line"><span class="comment"># ok, but confusing:</span></span><br><span class="line">FILES = <span class="string">&#x27;setup.cfg&#x27;</span>,</span><br></pre></td></tr></table></figure>
+
+<p>When trailing commas are redundant, they are often helpful when a version control system is used, when a list of values, arguments or imported items is expected to be extended over time. The pattern is to put each value (etc.) on a line by itself, always adding a trailing comma, and add the close parenthesis&#x2F;bracket&#x2F;brace on the next line. However it does not make sense to have a trailing comma on the same line as the closing delimiter (except in the above case of singleton tuples).<br>当尾随逗号是冗余时, 当使用一个版本控制系统时,  在一系列值,参数或者导入项的列表随着时间的推移而扩展时, 尾随逗号通常是有用的. 模式是将每个值(等)单独放在一行上, 始终添加一个尾随逗号, 并在下一行添加右括号&#x2F;括号&#x2F;大括号. 但是, 在结束分隔符的同一行使用尾随逗号是没有意义的(上面的单例元组除外)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Yes:</span></span><br><span class="line">FILES = [</span><br><span class="line">    <span class="string">&#x27;setup.cfg&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;tox.ini&#x27;</span>,</span><br><span class="line">    ]</span><br><span class="line">initialize(FILES,</span><br><span class="line">           error=<span class="literal">True</span>,</span><br><span class="line">           )</span><br><span class="line"></span><br><span class="line"><span class="comment"># No:</span></span><br><span class="line">FILES = [<span class="string">&#x27;setup.cfg&#x27;</span>, <span class="string">&#x27;tox.ini&#x27;</span>,]</span><br><span class="line">initialize(FILES, error=<span class="literal">True</span>,)</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Comments"><a href="#Comments" class="headerlink" title="Comments"></a>Comments</h2><p>Comments that contradict the code are worse than no comments. Always make a priority of keeping the comments up-to-date when the code changes!<br>与代码冲突的注释比没有注释还糟糕. 当代码更改时, 始终保持优先更新注释.</p>
+<p>Comments should be <strong>complete</strong> sentences. The first word should be capitalized, unless it is an identifier that begins with a lower case letter (never alter the case of identifiers!).<br>注释应该是<strong>完整</strong>的句子. 第一个单词应该大写, 除非它是一个以小写字母开始的标识符(不要更改标识符).</p>
+<p>Block comments generally consist of one or more paragraphs <strong>built out of complete sentences</strong>, with each sentence ending in a period.<br>注释块一般由一个或者多个<strong>完整句子构成</strong>的段落组成,每个句子以句点结尾.</p>
+<p>You should use two spaces after a <strong>sentence-ending period</strong> in multi- sentence comments, except after the final sentence.<br>在多句评论中, <strong>句末句点</strong>后应使用两个空格,  最后一句除外.</p>
+<p>When writing English, follow Strunk and White.<br>当你写英语的时候，跟着斯特伦克和怀特.</p>
+<p>Python coders from non-English speaking countries: please write your comments in English, unless you are 120% sure that the code will never be read by people who don’t speak your language.<br>对于母语非英语的python 程序员: 请用英文写评论, 除非你有120%的把握确信这些代码以后绝不会被那些不会自己语言的人读到.</p>
+<h3 id="Block-Comments"><a href="#Block-Comments" class="headerlink" title="Block Comments"></a>Block Comments</h3><p>Block comments generally apply to some (or all) code that follows them, and are indented to the same level as that code. Each line of a block comment starts with a <code>#</code> and a single space (unless it is indented text inside the comment).<br>块注释一般适用于一些(或者所有)遵循他们并且在缩进方面是一个级别的代码. 块注释的每行评论都说以一个# 和一个空格开始(除非是在注释中缩进的文本)</p>
+<p>Paragraphs inside a block comment are separated by a line containing a single <code>#</code>.<br>块注释内的段落由包含单个# 的行分隔.</p>
+<h3 id="Inline-Comments"><a href="#Inline-Comments" class="headerlink" title="Inline Comments"></a>Inline Comments</h3><p>Use inline comments sparingly.<br>谨慎使用内联注释.</p>
+<p>An inline comment is a comment on the same line as a statement. Inline comments should be separated by at least two spaces from the statement. They should start with a # and a single space.<br>一个内联注释是与语句在同一行上的注释. 内联注释和语句应该至少有两个空格隔开. 他们应该以一个# 和一个空格开始.</p>
+<p>Inline comments are unnecessary and in fact distracting if they state the obvious. Don’t do this:<br>内联注释是不必要地, 事实上, 如果它们声明了明显的内容, 则会分散注意力. 不要这样:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">x = x + <span class="number">1</span>                 <span class="comment"># Increment x</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># But sometimes, this is useful:</span></span><br><span class="line">x = x + <span class="number">1</span>                 <span class="comment"># Compensate for border</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Documentation-Strings"><a href="#Documentation-Strings" class="headerlink" title="Documentation Strings"></a>Documentation Strings</h3><p>Conventions for writing good documentation strings (a.k.a. “doc strings”) are <strong>immortalized</strong> in <a target="_blank" rel="noopener" href="https://www.python.org/dev/peps/pep-0257">PEP 257</a>.<br>编写好文档字符串的约定(也称为”doc string”) 在PEP 257 中永久化.</p>
+<p>Write doc strings for all public modules, functions, classes, and methods. Doc strings are not necessary for non-public methods, but you should have a comment that describes what the method does. This comment should appear after the <code>def</code> line.<br>为了所有公共模块,函数,类和方法编写doc string. Doc string 不一定是为了非公共方法, 但是应该用一个注释来描述该方法的作用是什么. 这个注释应该出现在def行的后面.</p>
+<p><a target="_blank" rel="noopener" href="https://www.python.org/dev/peps/pep-0257">PEP 257</a> describes good doc string conventions. Note that most importantly, the <code>&quot;&quot;&quot;</code> that ends a multi line doc string should be on a line by itself:<br>PEP 257 描述了好的doc string 公约.  注意到最重要的是,  结束多行doc string 的””” 本身应该在一行上:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;&quot;&quot;Return a foobang</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Optional plotz says to frobnicate the bizbaz first.</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>For one liner doc strings, please keep the closing <code>&quot;&quot;&quot;</code> on the same line.<br>对于一行文档字符串, 请将结束符””” 保持在同一行.</p>
+<h2 id="Naming-Conventions"><a href="#Naming-Conventions" class="headerlink" title="Naming Conventions"></a>Naming Conventions</h2><p>The naming conventions of Python’s library are a bit of a mess, so we’ll never get this completely consistent – nevertheless, here are the currently recommended naming standards. New modules and packages (including third party frameworks) should be written to these standards, but where an existing library has a different style, internal consistency is preferred.<br>python 库的命名的约定有点混乱, 所以我们永远不能达成一致—- 然而, 这里是当前推荐的命名标准. 新的模块和包(包括三方框架) 应该按照这些标准来写, 但是当已经存在的库有不同的样式时, 更倾向于内部的一致性.</p>
+<h3 id="Overriding-Principle"><a href="#Overriding-Principle" class="headerlink" title="Overriding Principle"></a>Overriding Principle</h3><p>压倒性原则</p>
+<p>Names that are visible to the user as public parts of the API should follow conventions that reflect usage rather than implementation.<br>作为API的公共部分, 名字对于用户是可见的,  应该遵守反应语法而不是实现的约定.</p>
+<h3 id="Descriptive-Naming-Styles"><a href="#Descriptive-Naming-Styles" class="headerlink" title="Descriptive: Naming Styles"></a>Descriptive: Naming Styles</h3><p>There are a lot of different naming styles. It helps to be able to recognize what naming style is being used, independently from what they are used for.<br>这里有许多不同的命名样式. 它可以帮助人能够识别出正在使用的命名样式, 独立于它们的用途.</p>
+<p>The following naming styles are commonly distinguished:<br>以下命名样式通常是可区分的:</p>
+<ul>
+<li><code>b</code> (single lowercase letter)   </li>
+<li><code>B</code> (single uppercase letter)</li>
+<li>lowercase</li>
+<li>lower_case_with_underscores    (小写字母带下划线)</li>
+<li>UPPERCASE</li>
+<li>UPPER_CASE_WITH_UNDERSCORES</li>
+<li><code>CapitalizedWords</code> (or CapWords, or CamelCase – so named because of the <strong>bumpy look</strong> of its letters). This is also sometimes known as StudlyCaps.  (<strong>凹凸不平的样子</strong>)<br>Note: When using <strong>acronyms</strong> in CapWords, capitalize all the letters of the acronym. Thus HTTPServerError is better than HttpServerError.<br>注意: 在使用<strong>首字母缩略词</strong>时,  将首字母缩略词的所有字母大写. </li>
+<li><code>mixedCase</code> (differs from CapitalizedWords by initial lowercase character!)</li>
+<li><code>Capitalized_Words_With_Underscores</code> (ugly!)  (带下划线的大写单词)</li>
+</ul>
+<p>There’s also the style of using a short <strong>unique</strong> <strong>prefix</strong> to group related names together. This is not used much in Python, but <strong>it is mentioned for completeness</strong>. For example, the <code>os.stat()</code> function returns a tuple whose items traditionally have names like <code>st_mode</code>, <code>st_size</code>, <code>st_mtime</code> and so on. (This is done to emphasize the <strong>correspondence</strong> with the <strong>fields</strong> of the POSIX system call struct, which helps programmers familiar with that.)<br>有时也会使用短的 <strong>唯一</strong> 的<strong>前缀</strong>来将相关的命名组合在一起. 这在python中虽然不经常用, 但是<strong>为了完整起见, 本文提到了这一点</strong>. 例如, os.stat() 函数返回一个元组, 它的项传统上由像st_mode, st_mtime, st_size等命名. (这是用来强调和POSIX系统调用结构<strong>字段</strong>的<strong>对应关系</strong>, 它可以帮助编程人员熟悉它)</p>
+<p>In addition, the following special <strong>forms</strong> using leading or trailing underscores are recognized (these can generally be combined with any case convention):<br>此外, 还可以识别以下使用了前导或尾随下划线的特殊<strong>表单</strong>(这些一般能够和任意约定案例结合):</p>
+<ul>
+<li><p><code>_single_leading_underscore</code>: weak “internal use” <strong>indicator</strong>. E.g. <code>from M import *</code> does not import objects whose names start with an underscore.<br>_single_leading_underscore: 弱”内部使用”<strong>指标</strong>. 例如, 从 from M import * 不导入那些以下划线开头的对象.</p>
+</li>
+<li><p><code>single_trailing_underscore_</code>: used by convention to avoid conflicts with Python keyword, e.g.<br>single_trailing_underscore_:  约定用来避免和python关键字冲突:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Tkinter.Toplevel(master, class_=<span class="string">&#x27;ClassName&#x27;</span>)   <span class="comment"># class_</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>__double_leading_underscore</code>: when naming a class attribute, <strong>invokes</strong> <strong>name mangling</strong> (inside class FooBar, <code>__boo</code> becomes <code>_FooBar__boo</code>; see below).<br>__ double_leading_underscore: 当命名一个类属性时,  <strong>调用</strong> <strong>名称管理</strong>.</p>
+</li>
+<li><p><code>__double_leading_and_trailing_underscore__</code>: “magic” objects or attributes that live in user-controlled namespaces. E.g. <code>__init__</code>, <code>__import__</code> or <code>__file__</code>. Never invent such names; only use them as documented.<br>双&#x2F;前导&#x2F;尾随&#x2F;下划线:  存在于用户控制的命名空间中的”magic” 对象或者属性.</p>
+</li>
+</ul>
+<h3 id="Prescriptive-Naming-Conventions"><a href="#Prescriptive-Naming-Conventions" class="headerlink" title="Prescriptive: Naming Conventions"></a>Prescriptive: Naming Conventions</h3><p>说明性: 命名约定</p>
+<h4 id="Names-to-Avoid"><a href="#Names-to-Avoid" class="headerlink" title="Names to Avoid"></a>Names to Avoid</h4><p>Never use the characters ‘l’ (lowercase letter el), ‘O’ (uppercase letter oh), or ‘I’ (uppercase letter eye) as single character variable names.<br>不要使用字符”l” (小写字母l) , “O”(大写字母O), 或者”I” (大写字母) 作为单个字符变量名.</p>
+<p>In some fonts, these characters are indistinguishable from the numerals one and zero. When tempted to use ‘l’, use ‘L’ instead.<br>在一些字体中, 这些字符和其他数字和0分不清. 当试图使用”l” 时, 请使用”L”.</p>
+<h4 id="ASCII-Compatibility"><a href="#ASCII-Compatibility" class="headerlink" title="ASCII Compatibility"></a>ASCII Compatibility</h4><p>Identifiers used in the standard library must be ASCII compatible as described in the <a target="_blank" rel="noopener" href="https://www.python.org/dev/peps/pep-3131/#policy-specification">policy section</a> of PEP 3131<br>标识符在标准库中使用必须是与ASCII码兼容的, 入PEP 的策略部分所述.</p>
+<h4 id="Package-and-Module-Names"><a href="#Package-and-Module-Names" class="headerlink" title="Package and Module Names"></a>Package and Module Names</h4><p>Modules should have short, all-lowercase names. Underscores can be used in the module name if it improves readability. Python packages should also have short, all-lowercase names, although the use of underscores is discouraged.<br>模块应该是简短的, 都是小写的名称.  如果下划线可以提高可读性,  可以在模块名称中使用下划线.  尽管不鼓励使用下划线, python包应该也有简短的,都是小写的命名.</p>
+<h4 id="Class-Names"><a href="#Class-Names" class="headerlink" title="Class Names"></a>Class Names</h4><p>Class names should normally use the CapWords convention.<br>类名通常应该使用首字母大写的约定.</p>
+<p>The naming convention for functions may be used instead in cases where the interface is documented and used primarily as a callable.<br>对于函数的命名约定,可用于记录接口并当做主要的调用接口情况.</p>
+<p>Note that there is a <strong>separate</strong> convention for builtin names: most builtin names are single words (or two words run together), with the CapWords convention used only for exception names and builtin constants.<br>注意: 对于内置的命名有一个<strong>单独的</strong>约定: 大多数内置的命名是单一的单词(或者两个单词在一起), 以大写字母开始的约定只用在异常命名和内置的常量.</p>
+<h4 id="Type-Variable-Names"><a href="#Type-Variable-Names" class="headerlink" title="Type Variable Names"></a>Type Variable Names</h4><p>Names of type variables introduced in <a target="_blank" rel="noopener" href="https://www.python.org/dev/peps/pep-0484">PEP 484</a> should normally use CapWords <strong>preferring short names</strong>: <code>T</code>, <code>AnyStr</code>, <code>Num</code>. It is recommended to add suffixes <code>_co</code> or <code>_contra</code> to the variables used to declare <strong>covariant</strong> or contravariant behavior <strong>correspondingly</strong>:<br>PEP 484 中引入的不同种类的名称 通常应该使用以大写字母开头<strong>优先于短的名称</strong>: T, AnyStr, Num建议添加 _co 或者 _contra 的 后缀到变量中, 用来<strong>相应地</strong>声明<strong>协变的</strong>或者<strong>逆变的</strong>行为.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> TypeVar</span><br><span class="line"></span><br><span class="line">VT_co = TypeVar(<span class="string">&#x27;VT_co&#x27;</span>, covariant=<span class="literal">True</span>)</span><br><span class="line">KT_contra = TypeVar(<span class="string">&#x27;KT_contra&#x27;</span>, contravariant=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="Exception-Names"><a href="#Exception-Names" class="headerlink" title="Exception Names"></a>Exception Names</h4><p>Because exceptions should be classes, the class naming convention applies here. However, you should use the suffix “Error” on your exception names (if the exception actually is an error).<br>由于异常应该是类, 所以类的命名约定也同样适合这里. 然而, 你应该在你的异常名称中使用”Error”作为后缀(如果异常事实上是一个错误).</p>
+<h4 id="Global-Variable-Names"><a href="#Global-Variable-Names" class="headerlink" title="Global Variable Names"></a>Global Variable Names</h4><p>(Let’s hope that these variables are meant for use inside one module only.) <strong>The conventions are about the same as those for functions</strong>.<br>(希望这些变量仅仅意味着在一个模块中使用.) <strong>这些约定和对于函数的约定是大致相同的</strong>. </p>
+<p>Modules that are designed for use via <code>from M import *</code> should use the <code>__all__</code> mechanism to prevent exporting globals, or use the older convention of prefixing such globals with an underscore (which you might want to do to indicate these globals are “module non-public”).<br>为了使用 from M import * 而设计的模块, 应该使用 __ all __ 机制来避免导出全局变量, 或使用较旧的惯例, 在这些全局变量前面加下划线 (可能想表示这些全局变量是”非公共的模块”).</p>
+<h4 id="Function-and-Variable-Names"><a href="#Function-and-Variable-Names" class="headerlink" title="Function and Variable Names"></a>Function and Variable Names</h4><p>Function names should be lowercase, with <strong>words separated</strong> by underscores as necessary to improve readability.<br>函数名称应该是小写的, 通过下划线来<strong>分隔单词</strong>来提高可读性是有必要的.</p>
+<p>Variable names follow the same convention as function names.<br>变量名称和函数名称一样遵守相同的公约.</p>
+<p>mixedCase is allowed only in contexts where that’s already the prevailing style (e.g. threading.py), to retain backwards compatibility.<br>混合的例子 只有在那些已经流行的样式中的上下文中才能被允许(比如threading.py) , 为的是保留向后的兼容性.</p>
+<h4 id="Function-and-Method-Arguments"><a href="#Function-and-Method-Arguments" class="headerlink" title="Function and Method Arguments"></a>Function and Method Arguments</h4><p>Always use <code>self</code> for the first argument to <strong>instance methods</strong>.<br>始终把 self 作为<strong>实例方法</strong>的第一个参数.</p>
+<p>Always use <code>cls</code> for the first argument to <strong>class methods</strong>.<br>始终把 cls 作为<strong>类方法</strong>的第一个参数.</p>
+<p>If a function argument’s name clashes with a reserved keyword, it is generally better to append a single trailing underscore rather than use an <strong>abbreviation</strong> or <strong>spelling corruption</strong>. Thus <code>class_</code> is better than <code>clss</code>. (Perhaps better is to avoid such clashes by using a <strong>synonym</strong>.)<br>如果一个函数的参数名和一个保留的关键字冲突了, 通常更好的做法是附加一个单独的尾随下划线, 而不是用一个<strong>缩写</strong>或者<strong>拼写错误</strong>. 因此, class_ 相对于clss 更好. (最好是使用<strong>同义词</strong>避免这样的错误.).</p>
+<h4 id="Method-Names-and-Instance-Variables"><a href="#Method-Names-and-Instance-Variables" class="headerlink" title="Method Names and Instance Variables"></a>Method Names and Instance Variables</h4><p>Use the function naming rules: lowercase with words separated by underscores <strong>as necessary</strong> to improve readability.<br>使用函数命名的规则: <strong>根据需要</strong>用下划线分隔的小写单词.</p>
+<p>Use one leading underscore only for non-public methods and instance variables.<br>使用一个下划线开头仅仅是为了非公共的方法和实例变量.</p>
+<p>To avoid name clashes with subclasses, use two leading underscores to invoke Python’s <strong>name mangling rules</strong>.<br>为了避免名称和子类名称冲突, 使用两个前导下划线可以调用python的<strong>命名管理规定</strong>.</p>
+<p>Python mangles these names with the class name: if class Foo has an attribute named <code>__a</code>, it cannot be accessed by <code>Foo.__a</code>. (An <strong>insistent</strong> user could still gain access by calling <code>Foo._Foo__a</code>.) Generally, double leading underscores should be used only to avoid name conflicts with attributes in classes designed to be subclassed.<br>python用类名来管理这些名称: 如果Foo类有一个名称为 <code>__a</code> 的属性, 它不能通过 <code>Foo.__a</code> 来访问.(一个<strong>坚持</strong>的用户仍然能够通过调用  <code>Foo._Foo__a</code>来访问) 一般来说, 双前导下划线仅应为了避免与 设计成子类的类的属性 产生冲突.</p>
+<p>Note: there is some controversy about the use of <code>__names</code> (see below).<br>注意: 关于 <code>__names</code> 的用法有一些争议(如下):</p>
+<h4 id="Constants"><a href="#Constants" class="headerlink" title="Constants"></a>Constants</h4><p>Constants are usually defined on a module level and written in all capital letters with underscores separating words. Examples include <code>MAX_OVERFLOW</code> and <code>TOTAL</code>.<br>常量通常在模块级定义, 使用一些下划线分隔的单词, 所有的大写字母书写. 例如  <code>MAX_OVERFLOW</code> and <code>TOTAL</code>.</p>
+<h4 id="Designing-for-Inheritance"><a href="#Designing-for-Inheritance" class="headerlink" title="Designing for Inheritance"></a>Designing for Inheritance</h4><p>为了继承而设计</p>
+<p>Always decide whether a class’s methods and instance variables (<strong>collectively</strong>: “attributes”) should be public or non-public. If in doubt, choose non-public; <strong>it’s easier to make it public later than to make a public attribute non-public</strong>.<br>始终决定一个类方法和实例变量(<strong>统称</strong>为: “attributes”) 是否应该是公共的还是非公共的. 如果有疑问, 选择非公共的; <strong>相比较将公共属性设置为非公共的,  稍后将其变成公共的更容易</strong>.</p>
+<p>Public attributes are those that you expect unrelated clients of your class to use, with your commitment to avoid backwards incompatible changes. Non-public attributes are those that are <strong>not intended to</strong> be used by third parties; you make no guarantees that non-public attributes won’t change or even be removed.<br>公共属性是那些你希望类中使用的不相关的clients的属性, 并且你承诺避免向后不兼容的变更. 非公共的属性是那些<strong>不打算</strong>由第三方使用的属性.  你不能保证非公共属性将不会更改或者甚至被移除.</p>
+<p>We don’t use the term “private” here, since <strong>no attribute is really private in Python</strong> (without a generally unnecessary amount of work).<br>我们这里不使用”private”词条, 因为在<strong>python中没有正真私有的属性</strong>( 没有通常不必要地工作量).</p>
+<p>Another category of attributes are those that are part of the “subclass API” (often called “protected” in other languages). Some classes are designed to be inherited from, either to extend or modify aspects of the class’s behavior. When designing such a class, take care to make explicit decisions about which attributes are public, which are part of the subclass API, and which are truly only to be used by your base class.<br>另一类别属性是属于”子类API” ( 在其他语言中经常被称作”protected”). 一些类设计成继承自 类行为的扩展或者修改的层面.  当设计这样的类时, 要注意明确地决定: 哪些属性时公共的, 哪些是subclass API的部分, 哪些只是被基类使用的.</p>
+<p>With this in mind, here are the Pythonic guidelines:<br>考虑到这一点, 下面是pythonic 指南:</p>
+<ul>
+<li><p>Public attributes should have no leading underscores.<br>公共属性应该没有前导下划线</p>
+</li>
+<li><p>If your public attribute name collides with a reserved keyword, append a single trailing underscore to your attribute name. This is <strong>preferable</strong> to an abbreviation or corrupted spelling. (However, notwithstanding this rule, ‘cls’ is the preferred spelling for any variable or argument which is known to be a class, especially the first argument to a class method.)<br>如果你的公共属性名和一个保留的关键字冲突了, 在你的属性名后添加一个尾随下划线. 这比缩写或者拼写错误<strong>更可取</strong>. ( 但是, 尽管有这条规则的,  对于已知为类的任何变量或者参数, 尤其是作为一个类方法的第一个参数, “cls” 是首选拼写. )<br>Note 1: See the argument name recommendation above for class methods.<br>注意1: 对于类方法参看上面的参数命名建议.</p>
+</li>
+<li><p>For simple public data attributes, it is best to <strong>expose</strong> just the attribute name, without complicated accessor&#x2F;mutator methods. Keep in mind that Python provides an easy path to future enhancement, <strong>should</strong> you find that a simple data attribute needs to grow functional behavior. In that case, use properties to hide functional implementation behind simple data attribute access syntax.<br>对于简单的公共的数据属性, 最好只<strong>公开</strong>属性名, 而不使用复杂的访问器&#x2F;装换器方法. <strong>如果</strong>你发现一个简单的数据属性需要增长函数行为, 那么python对未来的加强提供了一个简单的途径, . 在那种情况下, 可以使用属性来隐藏 在简单数据属性访问语法背后的函数的实现.</p>
+<p>Note 1: Properties only work on new-style classes.<br>注意1: 属性仅适用于新式类.</p>
+<p>Note 2: Try to keep the functional behavior side-effect free, although side-effects such as caching are generally fine.<br>注意2: 尽量保持函数行为的副作用是免费的, 尽管缓存这样的副作用一般是较好的.</p>
+<p>Note 3: Avoid using properties for <strong>computationally expensive operations</strong>; the attribute notation makes the caller believe that access is (relatively) cheap.<br>注意3:  避免在<strong>计算代价高昂的操作</strong>中使用属性;  属性表示法使得调用者相信访问(相对) 低廉.</p>
+</li>
+<li><p>If your class is intended to be subclassed, and you have attributes that you do not want subclasses to use, consider naming them with double leading underscores and no trailing underscores. This <strong>invokes</strong> Python’s <strong>name mangling algorithm</strong>, where the name of the class is mangled into the attribute name. This helps avoid attribute name collisions <strong>should</strong> subclasses <strong>inadvertently</strong> contain attributes with the same name.<br>如果你的类是打算被子类化, 而且你有一些不希望子类使用拥有的属性,  那么考虑用双前导下划线和无尾随下划线来命名他们.  这会<strong>调用</strong>Python的<strong>命名管理算法</strong>, 其中类的名称被管理为属性名 . 这有助于避免属性名冲突, <strong>如果</strong>子类<strong>无意</strong>中包含有相同名称的属性.</p>
+<p>Note 1: Note that only the simple class name is used in the mangled name, so if a subclass chooses both the same class name and attribute name, you can still get name collisions.<br>注意1: 注意只有简单的类名可以在名称管理中被使用, 所以如果一个子类选择既有相同的类名,又有属性名, 那么你可以仍然会导致冲突.</p>
+<p>Note 2: Name mangling can make certain uses, such as debugging and <code>__getattr__()</code>, less convenient. However the name mangling algorithm is well documented and easy to perform manually.<br>注意2: 命名管理可以使得某些用途不是很方便, 例如调试和  <code>__getattr__()</code>. 然而, 命名管理算法可以有很好的文档记录并且容易手动实现.</p>
+</li>
+</ul>
+<h3 id="Public-and-Internal-Interfaces"><a href="#Public-and-Internal-Interfaces" class="headerlink" title="Public and Internal Interfaces"></a>Public and Internal Interfaces</h3><p>Any <strong>backwards compatibility</strong> guarantees apply only to public interfaces. Accordingly, it is important that users be able to clearly distinguish between public and internal interfaces.<br>任何<strong>向后兼容性</strong>的保证适用于 仅面向公共接口的. 因此,  用户必须能够清楚地区分公共和内部接口.</p>
+<p>Documented interfaces are considered public, unless the documentation explicitly declares them to be <strong>provisional</strong> or internal interfaces exempt from the usual backwards compatibility guarantees. All undocumented interfaces should be assumed to be internal.<br>文件化的接口被视为公共接口, 除非文件明确声明它们是**临时(暂定的)**接口或者内部接口, 不在通常的向后兼容性保证之内. 所有的未记录的接口都应该设计成内部接口.</p>
+<p>To better support introspection, modules should <strong>explicitly declare</strong> the names in their public API using the <code>__all__</code> attribute. Setting <code>__all__</code> to an empty list indicates that the module has no public API.<br>为了更好的支持自省, 模块应该使用<code>__all__</code>属性在其公共API中<strong>显式声明</strong>名称. 设置 <code>__all__</code>  为一个空列表预示着模块没有公共的API.</p>
+<p>Even with <code>__all__</code> set appropriately, internal interfaces (packages, modules, classes, functions, attributes or other names) should still be prefixed with a single leading underscore.<br>即使对 <code>__all__</code> 进行了适当地设置, 内部接口(包,模块, 类, 函数, 属性或者其他名称) 应该依然用一个单独的前导下划线来作为前缀.</p>
+<p>An interface is also considered internal if any containing namespace (package, module or class) is considered internal.<br>如果任何包含命名空间(包,模块或者类) 是内部的, 则也将接口视为内部的.</p>
+<p>Imported names should always <strong>be considered</strong> an implementation detail. Other modules must not rely on indirect access to such imported names unless they are an explicitly documented part of the containing module’s API, such as <code>os.path</code> or a package’s <code>__init__</code> module that <strong>exposes</strong> functionality from submodules.<br>导入名称应该永远<strong>视为</strong>一个实现细节. 其他模块必须不依赖于间接地访问这些类导入的名称, 除非他们是一个包含模块的API的明确记录部分, 例如os.path 或者包的 <code>__init__</code> 模块, 该模块<strong>公开</strong>子模块的功能.</p>
+<h2 id="Programming-Recommendations"><a href="#Programming-Recommendations" class="headerlink" title="Programming Recommendations"></a>Programming Recommendations</h2><ul>
+<li><p>Code should be written in a way that does not disadvantage other implementations of Python (PyPy, Jython, IronPython, Cython, Psyco, and such).<br>代码的编写方式不应影响其他Python实现.</p>
+<p>For example, do not rely on CPython’s efficient implementation of in-place string concatenation for statements in the form <code>a += b</code> or <code>a = a + b</code>. This <strong>optimization</strong> is <strong>fragile</strong> even in CPython (it only works for some types) and isn’t present at all in implementations that don’t use refcounting. In performance sensitive parts of the library, the <code>&#39;&#39;.join()</code> form should be used instead. This will ensure that concatenation occurs in linear time across various implementations.</p>
+<p>例如，不要依赖cpython对形式为a+&#x3D;b或a&#x3D;a+b的语句的就地字符串连接的有效实现。即使在cpython中，这种<strong>优化</strong>也是<strong>脆弱的</strong>（它只对于某些类型起作用），并且在不使用refcounting的情况下根本无法实现。在库的性能敏感部分中，应改用 <code>&#39;&#39;.join()</code> 形式。这将确保在不同实现之间以线性时间发生连接。</p>
+</li>
+<li><p>Comparisons to singletons like None should always be done with <code>is</code> or <code>is not</code>, never the equality operators.<br>像None这样的单例比较应该始终用is或者is not, 而不是使用 equality 运算符.</p>
+<p>Also, beware of writing <code>if x</code> when you really mean <code>if x is not None</code> – e.g. when testing whether a variable or argument that defaults to None was set to some other value. The other value might have a type (such as a container) that could be false in a boolean <strong>context</strong>!<br>同时, 当你真正想表达 if x is not None 时应该意识 if x 的书写 . – 例如, 当你测试一个的默认值为None的变量或者参数是否被设置为其他值时.  另一个值的类型(例如一个容纳) 可能在布尔<strong>上下文中</strong>是错误的.</p>
+</li>
+<li><p>Use <code>is not</code> operator rather than <code>not ... is</code>. While both expressions are functionally identical, the former is more readable and preferred.<br>使用 is not 运算符, 而不是 not … is . 尽管这两个表达式在功能上是相同的 ,  但是前者比后者更加具有可读性更加受欢迎.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Yes:</span></span><br><span class="line"><span class="keyword">if</span> foo <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line"></span><br><span class="line"><span class="comment"># No:</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> foo <span class="keyword">is</span> <span class="literal">None</span>:</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>When <strong>implementing</strong> ordering operations with rich comparisons, it is best to implement all six operations (<code>__eq__</code>, <code>__ne__</code>, <code>__lt__</code>, <code>__le__</code>, <code>__gt__</code>, <code>__ge__</code>) rather than relying on other code to only exercise a particular comparison.<br>在<strong>执行</strong>具有丰富的比较来实现排序操作时, 最好执行所有的六个操作(<code>__eq__</code>, <code>__ne__</code>, <code>__lt__</code>, <code>__le__</code>, <code>__gt__</code>, <code>__ge__</code>) , 而不是依赖其他代码仅仅运算一个特殊的比较.</p>
+<p>To minimize the effort involved, the <code>functools.total_ordering()</code> decorator provides a tool to generate missing comparison methods.<br>为了最小化所涉及的工作,  <code>functools.total_ordering()</code>装饰器提供了一个工具可以用来生成所缺的比较的方法.</p>
+<p>PEP 207 indicates that <strong>reflexivity</strong> rules <em>are</em> assumed by Python. Thus, the interpreter may swap <code>y &gt; x</code> with <code>x &lt; y</code>, <code>y &gt;= x</code> with <code>x &lt;= y</code>, and may swap the arguments of <code>x == y</code> and <code>x != y</code>. The <code>sort()</code> and <code>min()</code> operations are guaranteed to use the <code>&lt;</code> operator and the <code>max()</code> function uses the <code>&gt;</code> operator. However, it is best to implement all six operations so that confusion doesn’t arise in other contexts.<br>PEP207表示<strong>反射性</strong>规则由python假定。因此，解释器可以用x&lt;y交换y&gt;x，用x&lt;&#x3D;y交换y&gt;&#x3D;x，可以用x&#x3D;y和x交换参数 x!&#x3D;y .  Sort（）和Min（）操作保证使用&lt;运算符，Max（）函数使用&gt;运算符。但是，最好实现这六个操作，这样在其他上下文中就不会出现混淆。</p>
+</li>
+<li><p>Always use a def statement instead of an <strong>assignment statement</strong> that <strong>bind</strong>s a lambda expression directly to an identifier.<br>始终使用一个def 语句, 而不是将lambda表达式直接 <strong>绑</strong>到标识符的<strong>赋值语句</strong>.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Yes:</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">f</span>(<span class="params">x</span>): <span class="keyword">return</span> <span class="number">2</span>*x</span><br><span class="line"></span><br><span class="line"><span class="comment"># No:</span></span><br><span class="line">f = <span class="keyword">lambda</span> x: <span class="number">2</span>*x</span><br></pre></td></tr></table></figure>
+
+<p>The first form means that the name of the resulting function object is specifically ‘f’ instead of the generic ‘<lambda>‘. This is more useful for <strong>tracebacks</strong> and string representations in general. The use of the assignment statement <strong>eliminates</strong> the <strong>sole benefit</strong> a lambda expression can offer over an explicit def statement (i.e. that it can be <strong>embedded</strong> inside a larger expression)<br>第一个表单意思是结果函数对象的名称是一个特定的f 而不是一般的lambda. 这对于一般的<strong>回溯</strong>和字符串表示更有用. 使用赋值语句<strong>消除</strong>了lambda表达式相对于显式def语句所能提供的<strong>唯一好处</strong>( 即它可以<strong>嵌入</strong>到更大的表达式中).</p>
+</li>
+<li><p><strong>Derive</strong> exceptions from <code>Exception</code> rather than <code>BaseException</code>. Direct inheritance from <code>BaseException</code> is reserved for exceptions where catching them is almost always the wrong thing to do.<br>从Exception而不是BaseException<strong>派生</strong>异常.直接从BaseException继承是为异常保留的, 在异常中捕获它们几乎总是错误的.</p>
+<p>Design exception <strong>hierarchies</strong> based on the distinctions that code <em>catching</em> the exceptions is likely to need, rather than the locations where the exceptions are raised. Aim to answer the question “What went wrong?” programmatically, rather than only stating that “A problem occurred” (see <a target="_blank" rel="noopener" href="https://www.python.org/dev/peps/pep-3151">PEP 3151</a> for an example of this lesson being learned for the builtin exception hierarchy)<br>设计异常<strong>层次结构</strong>基于可能需要的代码捕获异常的差异, 而不是异常抛出的位置. 为了从编程角度回答”哪里出了问题”, 而不是仅仅陈述”一个问题发生了”(参看PEP 3151 中的一个示例, 关于从内置异常层次中学习到的课程)</p>
+<p>Class naming conventions apply here, although you should add the suffix “Error” to your exception classes if the exception is an error. <strong>Non-error exceptions</strong> that are used for <strong>non-local</strong> flow control or other forms of signaling <strong>need no special suffix</strong>.<br>类命名约定也适合这里, 尽管当异常是一个错误的时候, 你应该在你的异常类后面添加”Error”的后缀.  用作<strong>非本地</strong>流控制或者其他形式的信令的<strong>非错误异常</strong> <strong>不需要特殊后缀</strong>.</p>
+</li>
+<li><p>Use exception chaining appropriately. In Python 3, “raise X from Y” should be used to indicate explicit replacement without losing the original traceback.<br>恰当地使用异常链接. 在python3 中, “从Y中抛出X异常” 应该用来指示显式替换, 而不会丢失原始的回溯.</p>
+<p>When deliberately replacing an inner exception (using “raise X” in Python 2 or “raise X from None” in Python 3.3+), ensure that relevant details are <strong>transferred</strong> to the new exception (such as preserving the attribute name when converting KeyError to AttributeError, or embedding the text of the original exception in the new exception message).<br>当故意替换一个内部异常(在Python2 中使用”raise X” 或者在Python3.3+ 中使用”raise X from None”), 确保相关的细节被<strong>传输</strong>到新的异常(例如将关键字转换为属性错误时保留属性名, 或者在新异常信息中嵌入原始异常文本)</p>
+</li>
+<li><p>When raising an exception in Python 2, use <code>raise ValueError(&#39;message&#39;)</code> instead of the older form <code>raise ValueError, &#39;message&#39;</code>.<br>在python2中抛出异常, 请使用<code>raise ValueError(&#39;message&#39;)</code>, 而不是老的形式<code>raise ValueError, &#39;message&#39;</code>.</p>
+<p>The latter form is not legal Python 3 syntax.<br>后一种形式不是合法的python3语法.</p>
+<p>The paren-using form also means that when the exception arguments are long or include string formatting, you don’t need to use line continuation characters thanks to the containing parentheses.<br>当异常参数很长或者包含字符串格式的时候,   paren-using意味着由于包含括号, 不需要使用续行字符.</p>
+</li>
+<li><p>When catching exceptions, mention specific exceptions whenever possible instead of using a bare <code>except:</code>clause:<br>当捕获异常时, 尽可能提及特定的异常, 无论何时不要使用一个裸露的异常: 字句.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="keyword">import</span> platform_specific_module</span><br><span class="line"><span class="keyword">except</span> ImportError:</span><br><span class="line">    platform_specific_module = <span class="literal">None</span></span><br></pre></td></tr></table></figure>
+
+<p>A bare <code>except:</code> clause will catch SystemExit and KeyboardInterrupt exceptions, making it harder to interrupt a program with Control-C, and can <strong>disguise</strong> other problems. If you want to catch all exceptions that signal program errors, use <code>except Exception:</code> (bare except is equivalent to <code>except BaseException:</code>).<br>裸露的异常: 字句将会捕获SystemExit和 KeyboardInterrupt异常, 使得很难使用Ctrl+C来中断程序, 而且会<strong>掩盖</strong>其他问题.  如果想要捕获所有表示程序错误的异常, 请使用<code>except Exception:</code>( 裸露的异常等同于 <code>except BaseException:</code>)</p>
+<p><strong>A good rule of thumb</strong> is to limit use of bare ‘except’ clauses to two cases:<br><strong>一个好的经验法则</strong>是将”例外”语句的使用限制在两种情况下:</p>
+<ol>
+<li>If the exception handler will be printing out or logging the traceback; at least the user will be aware that an error has occurred.<br>如果异常处理器将打印输出或者日志记录到回溯, 至少使用者会意识到发生错误了.</li>
+<li>If the code needs to do some cleanup work, but then lets the exception <strong>propagate</strong> upwards with <code>raise</code>.<code>try...finally</code> can be a better way to handle this case.<br>如果代码需要做一些清理工作,  那么让异常随着<code>raise</code>.<code>try...finally</code><strong>传播</strong>可能是处理该案例的一个更好方法.</li>
+</ol>
+</li>
+<li><p>When binding caught exceptions to a name, <strong>prefer</strong> the <strong>explicit name binding syntax</strong> added in Python 2.6:<br>当将捕获的异常和一个名词绑定一起时, <strong>首选</strong>python2.6中添加的<strong>显式名称绑定语法</strong>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    process_data()</span><br><span class="line"><span class="keyword">except</span> Exception <span class="keyword">as</span> exc:</span><br><span class="line">    <span class="keyword">raise</span> DataProcessingFailedError(<span class="built_in">str</span>(exc))</span><br></pre></td></tr></table></figure>
+
+<p>This is the only syntax supported in Python 3, and avoids the <strong>ambiguity</strong> problems associated with the older comma-based syntax.<br>这是在Python3中仅支持的语法, 避免了 与旧的基于逗号语法的语法相关联的<strong>模糊性</strong>问题.</p>
+</li>
+<li><p>When catching operating system errors, <strong>prefer the explicit exception hierarchy introduced in Python 3.3 over introspection of <code>errno</code> values.</strong><br>当捕获操作系统错误时, <strong>优先选择Python3.3 中引入的显式异常层次结构, 而不是对errno值进行自省.</strong></p>
+</li>
+<li><p>Additionally, for all try&#x2F;except clauses, limit the <code>try</code> clause to the absolute minimum amount of code <strong>necessary</strong>. Again, this avoids masking bugs.<br>另外, 对于所有的try&#x2F;except 语句, 请将try字句限制为<strong>所需的</strong>绝对最小代码量. 而且, 这会避免隐藏的bugs.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Yes:</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    value = collection[key]</span><br><span class="line"><span class="keyword">except</span> KeyError:</span><br><span class="line">    <span class="keyword">return</span> key_not_found(key)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="keyword">return</span> handle_value(value)</span><br><span class="line"></span><br><span class="line"><span class="comment"># No:</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="comment"># Too broad!</span></span><br><span class="line">    <span class="keyword">return</span> handle_value(collection[key])</span><br><span class="line"><span class="keyword">except</span> KeyError:</span><br><span class="line">    <span class="comment"># Will also catch KeyError raised by handle_value()</span></span><br><span class="line">    <span class="keyword">return</span> key_not_found(key)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>When a resource is local to a particular section of code, use a <code>with</code> statement to ensure it is cleaned up <strong>promptly</strong> and reliably after use. A try&#x2F;finally statement is also acceptable.<br>当资源位于特定代码段的本地时 , 使用 with 语句确保在使用后能够<strong>及时</strong>可靠得清理资源. try&#x2F;finally 语句也是可以接受的. </p>
+</li>
+<li><p><strong>Context managers</strong> should be invoked through <strong>separate functions</strong> or methods whenever they do something <strong>other than</strong> acquire and release resources.<br>当<strong>上下文管理器</strong>执行<strong>除了</strong>获取和发布资源以外的其他操作时, 应该通过<strong>单独的函数</strong>或者模块来调用它们. </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Yes:</span></span><br><span class="line"><span class="keyword">with</span> conn.begin_transaction():</span><br><span class="line">    do_stuff_in_transaction(conn)</span><br><span class="line"></span><br><span class="line"><span class="comment"># No:</span></span><br><span class="line"><span class="keyword">with</span> conn:</span><br><span class="line">    do_stuff_in_transaction(conn)</span><br></pre></td></tr></table></figure>
+
+<p>The latter example doesn’t provide any information to indicate that the <code>__enter__</code> and <code>__exit__</code> methods are doing something other than closing the connection after a <strong>transaction</strong>. Being explicit is important in this case.<br>后者示例没有提供任何的信息来提示 <code>__enter__</code> and <code>__exit__</code> 方法做了什么, 而不是在<strong>事务</strong>后关闭了连接.在案例中保持明确是很重要的.</p>
+</li>
+<li><p>Be consistent in return statements. Either all return statements in a function should return an expression, or none of them should. If any return statement returns an expression, any return statements where no value is returned should explicitly state this as <code>return None</code>, and an explicit return statement should be present at the end of the function (if reachable).<br>在返回语句中保持一致.  要么函数中的return语句都应该返回一个表达式, 要么不反悔表达式. 如果任何return返回一个表达式,  任何没有返回值的return语句都应该显式得声明为返回None ,而且显式return语句应该出现在函数的末尾(如果可以到达的话).</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Yes:</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">foo</span>(<span class="params">x</span>):</span><br><span class="line">    <span class="keyword">if</span> x &gt;= <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> math.sqrt(x)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">bar</span>(<span class="params">x</span>):</span><br><span class="line">    <span class="keyword">if</span> x &lt; <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">    <span class="keyword">return</span> math.sqrt(x)</span><br><span class="line"></span><br><span class="line"><span class="comment"># No:</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">foo</span>(<span class="params">x</span>):</span><br><span class="line">    <span class="keyword">if</span> x &gt;= <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> math.sqrt(x)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">bar</span>(<span class="params">x</span>):</span><br><span class="line">    <span class="keyword">if</span> x &lt; <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">return</span> math.sqrt(x)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Use string methods instead of the string module.<br>使用字符串方法而不是字符串模块.</p>
+<p>String methods are always much faster and share the same API with unicode strings. <strong>Override</strong> this rule if <strong>backwards compatibility with Pythons older than 2.0 is required</strong>.<br>字符串方法始终更快一些,而且与unicode字符串共享相同的API.  如果<strong>需要向后兼容性大于2.0的</strong>Python, 则<strong>重写</strong>该规则.</p>
+</li>
+<li><p>Use <code>&#39;&#39;.startswith()</code> and <code>&#39;&#39;.endswith()</code> instead of string slicing to check for prefixes or suffixes.<br>使用<code>&#39;&#39;.startswith()</code> and <code>&#39;&#39;.endswith()</code>  取代字符串切片可以检查前缀和后缀.</p>
+<p>startswith() and endswith() are cleaner and less error prone:<br>startswith() and endswith() 更加干净也更不容易出错.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Yes: <span class="keyword">if</span> foo.startswith(<span class="string">&#x27;bar&#x27;</span>):</span><br><span class="line">No:  <span class="keyword">if</span> foo[:<span class="number">3</span>] == <span class="string">&#x27;bar&#x27;</span>:</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Object type comparisons should always use isinstance() instead of comparing types directly.<br>对象类型的比较应该始终使用 isinstance(), 而不是直接比较类型.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Yes: <span class="keyword">if</span> <span class="built_in">isinstance</span>(obj, <span class="built_in">int</span>):</span><br><span class="line"></span><br><span class="line">No:  <span class="keyword">if</span> <span class="built_in">type</span>(obj) <span class="keyword">is</span> <span class="built_in">type</span>(<span class="number">1</span>):</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>When checking if an object is a string, keep in mind that it might be a unicode string too! In Python 2, str and unicode have a common base class, basestring, so you can do:<br>当检查一个对象是否是字符串时, 记住它可能是一个unicode的字符串! 在Python2中, str和unicode 有相同的基类,基础字符串, 所以你可以这样做:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="built_in">isinstance</span>(obj, basestring):</span><br></pre></td></tr></table></figure>
+
+<p>Note that in Python 3, <code>unicode</code> and <code>basestring</code> no longer exist (there is only <code>str</code>) and a bytes object is no longer a kind of string (it is <strong>a sequence of integers</strong> instead).<br>注意在Python3中, unicode 和 basestring 不再存在(仅有str) 以及一个bytes 对象不再是一种string类型( 它是<strong>一个整数序列</strong>).</p>
+</li>
+<li><p>For sequences, (strings, lists, tuples), use the fact that empty sequences are false.<br>例如, (strings, lists, tuples) , 使用空序列为假的事实.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Yes: <span class="keyword">if</span> <span class="keyword">not</span> seq:</span><br><span class="line">     <span class="keyword">if</span> seq:</span><br><span class="line"></span><br><span class="line">No:  <span class="keyword">if</span> <span class="built_in">len</span>(seq):</span><br><span class="line">     <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">len</span>(seq):</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Don’t write string literals that rely on <strong>significant</strong> trailing whitespace. Such trailing whitespace is visually indistinguishable and some editors (or more recently, reindent.py) will <strong>trim</strong> them.<br>不要依赖 <strong>大量的</strong> 尾随空格来写字符串文本. 这样的尾随空格在视觉上是不可区分的, 而且一些编辑器(或者最近的reindent.py)会对其进行<strong>修剪</strong>.</p>
+</li>
+<li><p>Don’t <strong>compare</strong> boolean values <strong>to</strong> True or False using <code>==</code>.<br>不要使用 &#x3D;&#x3D; 将布尔值与True或False来比较.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Yes:   <span class="keyword">if</span> greeting:</span><br><span class="line">No:    <span class="keyword">if</span> greeting == <span class="literal">True</span>:</span><br><span class="line">Worse: <span class="keyword">if</span> greeting <span class="keyword">is</span> <span class="literal">True</span>:</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="Function-Annotations"><a href="#Function-Annotations" class="headerlink" title="Function Annotations"></a>Function Annotations</h4><p>With the acceptance of PEP 484, the style rules for function <strong>annotations</strong> are changing.<br>随着对PEP 484 的接受, 对于函数<strong>注释</strong>的样式规则正在改变.</p>
+<ul>
+<li><p>In order to be forward compatible, function annotations in Python 3 code should preferably use PEP 484 syntax. (There are some formatting recommendations for annotations in the previous section.)<br>为了向前的兼容性, Python3中的函数注释应该首选使用PEP 484 语法. (在前面部分中, 对于注释有一些格式上的建议).</p>
+</li>
+<li><p>The experimentation with annotation styles that was recommended previously in this PEP is no longer encouraged.<br>在这个PEP中以前被推荐使用的注释样式实验,  已经不再被鼓励了.</p>
+</li>
+<li><p>However, outside the stdlib, experiments within the rules of <a target="_blank" rel="noopener" href="https://www.python.org/dev/peps/pep-0484">PEP 484</a> are now encouraged. For example, marking up a large third party library or application with <a target="_blank" rel="noopener" href="https://www.python.org/dev/peps/pep-0484">PEP 484</a> style type annotations, reviewing how easy it was to add those annotations, and observing whether their presence increases code understandability.<br>然而, 除了标准库之外, 现在正鼓励在PEP 484之内实验. 例如, 用PEP484 样式类型的注释标记大的三方库或者应用程序, 评审增加这些注释的容易程度, 观察他们的存在是否是增加代码的可理解度.</p>
+</li>
+<li><p>The Python standard library should be conservative in adopting such annotations, but their use is allowed for new code and for big <strong>refactorings</strong>.<br>Python标准库应该对于采用这样的注释是保守地, 但是对于新的代码和为了大的<strong>重构</strong>来说是被允许的.</p>
+</li>
+<li><p>For code that wants to make a different use of function annotations it is recommended to put a comment of the form:<br>对于想不同地使用函数注释的代码, 建议放置表单注释:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># type: ignore</span></span><br></pre></td></tr></table></figure>
+
+<p>near the top of the file; this tells type checker to ignore all annotations. (More fine-grained ways of disabling complaints from type checkers can be found in PEP 484)</p>
+<p>在文件顶部的附近; 这告诉种类检查器来忽略所有的注释. (在PEP 484中, 可以找到禁用类型检查程序投诉的更精细的方法。)</p>
+</li>
+<li><p>Like linters, type checkers are optional,  <strong>separate</strong> tools. Python interpreters by default should not issue any messages due to type checking and should not alter their behavior based on annotations.<br>像线头一样, 类型检查器是可选的, <strong>独立</strong>的工具. 默认的Python编译器不应该任何由于类型检查而声明消息, 也不应该基于注释更改它们的行为.</p>
+</li>
+<li><p>Users who don’t want to use type checkers are <strong>free to</strong> ignore them. However, it is expected that users of third party library packages may want to run type checkers over those packages. For this purpose PEP 484 recommends the use of <strong>stub files</strong>: .pyi files that are read by the type checker in preference of the corresponding .py files. Stub files can be distributed with a library, or separately (with the library author’s permission) through the <strong>typeshed repo</strong>.</p>
+<p>不想使用类型检查器的用户可以<strong>随意</strong>忽略它们. 但是, 第三方库包的用户可能想要在这些包中运行类检查器. 为了这个目的, PEP484 建议使用<strong>存根文件</strong>: .pyi文件, 这些文件是由类型检查器读取, 而不是相应的.py文件. 存根文件可以与库一起分发, 或者通过<strong>排版报告</strong>单独分发(经过作者许可).</p>
+</li>
+<li><p>For code that needs to be backwards compatible, type annotations can be added in the form of comments. See the relevant section of PEP 484.<br>对于需要向后兼容的代码, 类型注释可以以评论的形式添加.</p>
+</li>
+</ul>
+<h4 id="Variable-Annotations"><a href="#Variable-Annotations" class="headerlink" title="Variable Annotations"></a>Variable Annotations</h4><p>PEP 526 introduced variable annotations. The style recommendations for them are similar to those on function annotations described above:<br>PEP 526 引入了变量注释. 它们的样式建议与以上对函数注释的描述有相似之处:</p>
+<ul>
+<li><p>Annotations for module level variables, class and instance variables, and <strong>local variables</strong> should have a single space after the colon.<br>对于模块级别变量, 类, 实例变量, 以及<strong>局部变量</strong>的注释, 应该在冒号后面有一个单独的空格. </p>
+</li>
+<li><p>There should be no space before the colon.<br>在冒号之前应该没有空格.</p>
+</li>
+<li><p>If an assignment has a right hand side, then the equality sign should have exactly one space on both sides.<br>如果一个赋值有一个右手边, 那么等号两边应该正好有一个空格.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Yes:</span></span><br><span class="line">code: <span class="built_in">int</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Point</span>:</span><br><span class="line">    coords: <span class="type">Tuple</span>[<span class="built_in">int</span>, <span class="built_in">int</span>]</span><br><span class="line">    label: <span class="built_in">str</span> = <span class="string">&#x27;&lt;unknown&gt;&#x27;</span></span><br><span class="line">      </span><br><span class="line"><span class="comment"># No:</span></span><br><span class="line">code:<span class="built_in">int</span>  <span class="comment"># No space after colon</span></span><br><span class="line">code : <span class="built_in">int</span>  <span class="comment"># Space before colon</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Test</span>:</span><br><span class="line">    result: <span class="built_in">int</span>=<span class="number">0</span>  <span class="comment"># No spaces around equality sign</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Although the <a target="_blank" rel="noopener" href="https://www.python.org/dev/peps/pep-0526">PEP 526</a> is accepted for Python 3.6, the variable annotation syntax is the preferred syntax for stub files on all versions of Python (see <a target="_blank" rel="noopener" href="https://www.python.org/dev/peps/pep-0484">PEP 484</a> for details).<br>尽管在Python3.6中接受了 PEP 526 , 但是对于所有版本的Python来说, 变量注释是Python上根存文件的首选语法.</p>
+</li>
+</ul>
+<p>footnotes:</p>
+<p><em>Hanging indentation</em> is a type-setting style where all the lines in a paragraph are indented except the first line. In the context of Python, the term is used to describe a style where the opening parenthesis of a parenthesized statement is the last non-whitespace character of the line, with subsequent lines being indented until the closing parenthesis.<br>悬挂缩进是一种类型设置样式，除第一行外，段落中的所有行都缩进。在python上下文中，该术语用于描述一种样式，其中带括号语句的左括号是行的最后一个非空白字符，随后的行缩进到右括号。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+              <a href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag"># 翻译</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2019/03/15/45122/" rel="prev" title="python装饰器">
+                  <i class="fa fa-angle-left"></i> python装饰器
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2019/03/19/3466/" rel="next" title="python2与python3的区别">
+                  python2与python3的区别 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">691k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:28</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

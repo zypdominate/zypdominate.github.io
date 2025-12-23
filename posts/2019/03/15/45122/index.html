@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="什么是装饰器，为什么需要它，以及如何使用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python装饰器">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2019/03/15/45122/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="什么是装饰器，为什么需要它，以及如何使用">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-03-14T16:16:54.000Z">
+<meta property="article:modified_time" content="2025-12-23T14:07:49.123Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2019/03/15/45122/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2019/03/15/45122/","path":"posts/2019/03/15/45122/","title":"python装饰器"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>python装饰器 | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E4%BB%80%E4%B9%88%E6%98%AF%E8%A3%85%E9%A5%B0%E5%99%A8"><span class="nav-text">一、什么是装饰器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E8%A3%85%E9%A5%B0%E5%99%A8"><span class="nav-text">二、为什么需要装饰器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%9F%BA%E7%A1%80%E8%A3%85%E9%A5%B0%E5%99%A8%E5%85%A5%E9%97%A8"><span class="nav-text">三、基础装饰器入门</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E7%B1%BB%E8%A3%85%E9%A5%B0%E5%99%A8"><span class="nav-text">四、类装饰器</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2019/03/15/45122/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="python装饰器 | Magnolia's Blog">
+      <meta itemprop="description" content="什么是装饰器，为什么需要它，以及如何使用">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          python装饰器
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-03-15 00:16:54" itemprop="dateCreated datePublished" datetime="2019-03-15T00:16:54+08:00">2019-03-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>6k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>5 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">什么是装饰器，为什么需要它，以及如何使用</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="一、什么是装饰器"><a href="#一、什么是装饰器" class="headerlink" title="一、什么是装饰器"></a>一、什么是装饰器</h1><p>python的装饰器本质上是一个Python函数，它可以让其他函数在不需要做任何代码变动的前提下增加额外功能，装饰器的返回值也是一个函数对象。简单的说装饰器就是一个用来返回函数的函数。</p>
+<p>它经常用于有切面需求的场景，比如：插入日志、性能测试、事务处理、缓存、统计、权限校验、参数、结果检查、重试等场景。装饰器是解决这类问题的绝佳设计，有了装饰器，我们就可以抽离出大量与函数功能本身无关的雷同代码并继续重用。</p>
+<p>概括的讲，装饰器的作用就是为已经存在的对象添加额外的功能。或者说, 在被装饰的函数或者类的基础上进行功能扩展，实现逻辑上的切面编程。</p>
+<h1 id="二、为什么需要装饰器"><a href="#二、为什么需要装饰器" class="headerlink" title="二、为什么需要装饰器"></a>二、为什么需要装饰器</h1><p>1、先来看一个简单例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">foo</span>():</span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&#x27;i am foo&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>2、增加需求</p>
+<p>现在有一个新的需求，希望可以记录下函数的执行日志，于是在代码中添加日志代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">foo</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;i am foo&#x27;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;foo is running&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>3、又有需求</p>
+<p>假设现在有100个函数需要增加这个需求，并且后续可能还要对这一百个函数都增加执行前打印日志的需求，怎么办？还一个个改吗？</p>
+<p>当然不了，这样会造成大量雷同的代码，为了减少重复写代码，我们可以这样做，重新定义一个函数：专门处理日志 ，日志处理完之后再执行真正的业务代码。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">use_logging</span>(<span class="params">func</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;%s is running&quot;</span> % func.__name__)</span><br><span class="line">    func()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">bar</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;i am bar&#x27;</span>)</span><br><span class="line"></span><br><span class="line">use_logging(bar)</span><br><span class="line"><span class="comment"># bar is running</span></span><br><span class="line"><span class="comment"># i am bar</span></span><br></pre></td></tr></table></figure>
+
+<p>通过以上use_logging函数我们增加了日志功能，不管以后有多少函数需要增加日志或者修改日志的格式我们只需要修改use_logging函数，并执行use_logging(被装饰的函数)就达到了我们想要的效果。实现代码复用</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">use_logging</span>(<span class="params">func</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;%s is running&quot;</span> % func.__name__)</span><br><span class="line">    <span class="keyword">return</span> func</span><br><span class="line"></span><br><span class="line"><span class="meta">@use_logging</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">bar</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;i am bar&#x27;</span>)</span><br><span class="line"></span><br><span class="line">bar()</span><br></pre></td></tr></table></figure>
+
+<h1 id="三、基础装饰器入门"><a href="#三、基础装饰器入门" class="headerlink" title="三、基础装饰器入门"></a>三、基础装饰器入门</h1><ol>
+<li>装饰器语法糖</li>
+</ol>
+<p>python提供了@符号作为装饰器的语法糖，使我们更方便的应用装饰函数。但使用语法糖要求装饰函数必须return一个函数对象。因此我们将上面的func函数使用内嵌函数包裹并return。</p>
+<p>装饰器相当于执行了装饰函数use_loggin后又返回被装饰函数bar,因此bar()被调用的时候相当于执行了两个函数。等价于use_logging(bar)()</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">use_logging</span>(<span class="params">func</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_deco</span>():</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;%s is running&quot;</span> % func.__name__)</span><br><span class="line">        func()</span><br><span class="line">        <span class="keyword">return</span> _deco</span><br><span class="line"></span><br><span class="line"><span class="meta">@use_logging</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">bar</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;i am bar&#x27;</span>)</span><br><span class="line"></span><br><span class="line">bar()</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>对带参数的函数进行装饰</li>
+</ol>
+<p>现在我们的参数需要传入两个参数并计算值，因此我们需要对内层函数进行改动传入我们的两个参数a和b，等价于use_logging(bar)(1,2)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">use_logging</span>(<span class="params">func</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_deco</span>(<span class="params">a, b</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;%s is running&quot;</span> % func.__name__)</span><br><span class="line">        func(a, b)</span><br><span class="line">        <span class="keyword">return</span> _deco</span><br><span class="line"></span><br><span class="line"><span class="meta">@use_logging</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">bar</span>(<span class="params">a, b</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;i am bar:%s&#x27;</span> % (a + b))</span><br><span class="line"></span><br><span class="line">bar(<span class="number">1</span>, <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+<p>我们装饰的函数可能参数的个数和类型都不一样，每一次我们都需要对装饰器做修改吗？这样做当然是不科学的，因此我们使用python的变长参数*args和**kwargs来解决我们的参数问题。</p>
+<ol start="3">
+<li>函数参数数量不确定</li>
+</ol>
+<p>不带参数装饰器版本，这个格式适用于不带参数的装饰器。</p>
+<p>针对各种长度和类型的参数。这个版本的装饰器已经可以任意类型的无参数函数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">use_logging</span>(<span class="params">func</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_deco</span>(<span class="params">*args, **kwargs</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;%s is running&quot;</span> % func.__name__)</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        <span class="keyword">return</span> _deco</span><br><span class="line"></span><br><span class="line"><span class="meta">@use_logging</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">bar</span>(<span class="params">a, b</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;i am bar:%s&#x27;</span> % (a + b))</span><br><span class="line"></span><br><span class="line"><span class="meta">@use_logging</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">foo</span>(<span class="params">a, b, c</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;i am bar:%s&#x27;</span> % (a + b + c))</span><br><span class="line"></span><br><span class="line">bar(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line">foo(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>装饰器带参数</li>
+</ol>
+<p>带参数的装饰器，这个格式适用于带参数的装饰器。</p>
+<p>某些情况我们需要让装饰器带上参数，那就需要编写一个返回一个装饰器的高阶函数，写出来会更复杂。比如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> wraps</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">para_decorate</span>(<span class="params">level</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_outter</span>(<span class="params">func</span>):</span><br><span class="line"><span class="meta">        @wraps(<span class="params">func</span>)</span></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">_inner</span>(<span class="params">*args, **kwargs</span>):</span><br><span class="line">            <span class="keyword">if</span> level == <span class="string">&quot;warning&quot;</span>:</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&quot;level 1&quot;</span>)</span><br><span class="line">            func(*args, **kwargs)</span><br><span class="line">            <span class="comment"># return func(*args, **kwargs)</span></span><br><span class="line">        <span class="keyword">return</span> _inner</span><br><span class="line">    <span class="keyword">return</span> _outter</span><br><span class="line"></span><br><span class="line"><span class="meta">@para_decorate(<span class="params">level=<span class="string">&quot;warning&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">myParaDecorate</span>(<span class="params">a, b</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;myParaDecorate run : a+b =&quot;</span>, a + b)</span><br><span class="line">    <span class="built_in">print</span>(myParaDecorate.__name__)</span><br><span class="line"></span><br><span class="line">myParaDecorate(<span class="number">10</span>, <span class="number">10</span>)</span><br><span class="line"><span class="comment"># level 1</span></span><br><span class="line"><span class="comment"># myParaDecorate run : a+b = 20</span></span><br><span class="line"><span class="comment"># myParaDecorate</span></span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>还原被装饰器修改的原函数属性 functools.wraps</li>
+</ol>
+<p>使用装饰器极大地复用了代码，但是他有一个缺点就是原函数的元信息不见了，比如函数的docstring、name、参数列表，先看例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">use_logging</span>(<span class="params">func</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_deco</span>(<span class="params">*args, **kwargs</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;%s is running&quot;</span> % func.__name__)</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        <span class="keyword">return</span> _deco</span><br><span class="line"></span><br><span class="line"><span class="meta">@use_logging</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">bar</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;i am bar&#x27;</span>)</span><br><span class="line">    <span class="built_in">print</span>(bar.__name__)</span><br><span class="line"></span><br><span class="line">bar()</span><br><span class="line"><span class="comment"># bar is running</span></span><br><span class="line"><span class="comment"># i am bar</span></span><br><span class="line"><span class="comment"># _deco</span></span><br><span class="line"><span class="comment"># 函数名变为_deco而不是bar，这个情况在使用反射的特性的时候就会造成问题</span></span><br></pre></td></tr></table></figure>
+
+<p>使用functools.wraps:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> wraps</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">use_logging</span>(<span class="params">func</span>):</span><br><span class="line"><span class="meta">    @wraps(<span class="params">func</span>)</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_deco</span>(<span class="params">*args, **kwargs</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;%s is running&quot;</span> % func.__name__)</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        <span class="keyword">return</span> _deco</span><br><span class="line"></span><br><span class="line"><span class="meta">@use_logging</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">bar</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;i am bar&#x27;</span>)</span><br><span class="line">    <span class="built_in">print</span>(bar.__name__)</span><br><span class="line"></span><br><span class="line">bar()</span><br><span class="line"><span class="comment"># result:</span></span><br><span class="line"><span class="comment"># bar is running</span></span><br><span class="line"><span class="comment"># i am bar</span></span><br><span class="line"><span class="comment"># bar </span></span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>实现带参数和不带参数的装饰器自适应<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> wraps</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">use_logging</span>(<span class="params">arg</span>):</span><br><span class="line">    <span class="built_in">print</span>(arg)</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">callable</span>(arg):   	<span class="comment"># 判断参入的参数是否是函数，不带参数的装饰器调用这个分支</span></span><br><span class="line"><span class="meta">        @wraps(<span class="params">arg</span>)</span></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">_decorate</span>(<span class="params">*args,**kwargs</span>):</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;callable running is &quot;</span>, arg.__name__)</span><br><span class="line">            <span class="keyword">return</span> arg(*args,**kwargs)</span><br><span class="line">        <span class="keyword">return</span> _decorate</span><br><span class="line">    <span class="keyword">else</span>:    <span class="comment"># 带参数的装饰器调用这个分支</span></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">_decorate</span>(<span class="params">func</span>):</span><br><span class="line"><span class="meta">            @wraps(<span class="params">func</span>)</span></span><br><span class="line">            <span class="keyword">def</span> <span class="title function_">__decorate</span>(<span class="params">*args,**kwargs</span>):</span><br><span class="line">                <span class="keyword">if</span> arg == <span class="string">&quot;warning&quot;</span>:</span><br><span class="line">                    <span class="built_in">print</span>(<span class="string">&quot;running is &quot;</span>,func.__name__)</span><br><span class="line">                <span class="keyword">return</span> func(*args, **kwargs)</span><br><span class="line">            <span class="keyword">return</span> __decorate</span><br><span class="line">        <span class="keyword">return</span> _decorate</span><br><span class="line"></span><br><span class="line"><span class="comment"># @use_logging(&quot;warning&quot;)         #  arg 是 warning  ----&gt;  not callable</span></span><br><span class="line"><span class="meta">@use_logging        </span><span class="comment"># arg 是&lt;function myDecorate at 0x00000183419B4F28&gt;   callbale</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">myDecorate</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;this is test&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;continue test &quot;</span>,myDecorate.__name__)</span><br><span class="line">myDecorate()</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>练习1: 写一个 timer 装饰器, 计算被装饰函数调用一次花多长时间, 把时间打印出来</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> wraps</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">timer</span>(<span class="params">func</span>):</span><br><span class="line"><span class="meta">    @wraps(<span class="params">func</span>)</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">wrap</span>(<span class="params">*args, **kwargs</span>):</span><br><span class="line">        time0 = time.time()</span><br><span class="line">        result = func(*args, **kwargs)</span><br><span class="line">        time1 = time.time()</span><br><span class="line">        <span class="built_in">print</span>(time1 - time0)</span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line">    <span class="keyword">return</span> wrap</span><br><span class="line"></span><br><span class="line"><span class="meta">@timer</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test</span>():</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1000000</span>):</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">test()</span><br></pre></td></tr></table></figure>
+
+<p>练习2:  写一个 Retry 装饰器 </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> wraps</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Retry</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, maxRetries=<span class="number">3</span>, wait=<span class="number">0</span>, exceptions=(<span class="params">Exception,</span>)</span>):</span><br><span class="line">        <span class="variable language_">self</span>.maxRetries = maxRetries</span><br><span class="line">        <span class="variable language_">self</span>.wait = wait</span><br><span class="line">        <span class="variable language_">self</span>.exceptions = exceptions</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__call__</span>(<span class="params">self, func</span>):</span><br><span class="line"><span class="meta">        @wraps(<span class="params">func</span>)</span></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">_decorate</span>(<span class="params">*args, **kwargs</span>):</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="variable language_">self</span>.maxRetries):</span><br><span class="line">                <span class="keyword">try</span>:</span><br><span class="line">                    result = func(*args, **kwargs)</span><br><span class="line">                <span class="keyword">except</span> <span class="variable language_">self</span>.exceptions:</span><br><span class="line">                    time.sleep(<span class="variable language_">self</span>.wait)</span><br><span class="line">                    <span class="keyword">continue</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    <span class="keyword">return</span> result  <span class="comment"># 一个函数一个返回值</span></span><br><span class="line">        <span class="keyword">return</span> _decorate  <span class="comment"># 这是__call__函数的返回值(一定要注意缩进)</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@Retry()</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">printFunc</span>(<span class="params">a, b</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;a + b = &quot;</span>, a + b)</span><br><span class="line">    <span class="built_in">print</span>(printFunc.__name__)</span><br><span class="line"></span><br><span class="line">printFunc(<span class="number">1</span>, <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<h1 id="四、类装饰器"><a href="#四、类装饰器" class="headerlink" title="四、类装饰器"></a>四、类装饰器</h1><p>使用类装饰器可以实现带参数装饰器的效果，但实现的更加优雅简洁,而且可以通过继承来灵活的扩展.</p>
+<p>1、类装饰器</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> functools</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Loging</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, level=<span class="string">&quot;warning&quot;</span></span>):</span><br><span class="line">        <span class="variable language_">self</span>.level = level</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__call__</span>(<span class="params">self, func</span>):</span><br><span class="line"><span class="meta">        @functools.wraps(<span class="params">func</span>)</span></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">_decorate</span>(<span class="params">*args, **kwargs</span>):</span><br><span class="line">            <span class="keyword">if</span> <span class="variable language_">self</span>.level == <span class="string">&quot;warning&quot;</span>:</span><br><span class="line">                <span class="variable language_">self</span>.printLogInfo(func)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;do it here&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span> func(*args, **kwargs)</span><br><span class="line">        <span class="keyword">return</span> _decorate</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">printLogInfo</span>(<span class="params">self, func</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;warning: currently running is &quot;</span>, func.__name__)</span><br><span class="line"></span><br><span class="line"><span class="comment"># @Loging(level=&quot;warning&quot;)</span></span><br><span class="line"><span class="comment"># @Loging(level=&quot;normal&quot;)</span></span><br><span class="line"><span class="meta">@Loging()</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">myExecuting</span>(<span class="params">a, b</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;a + b = &quot;</span>, a + b)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;this is &quot;</span>, myExecuting.__name__)</span><br><span class="line"></span><br><span class="line">myExecuting(<span class="number">1</span>, <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<p>2、继承扩展类装饰器</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 一个loging的实现版本，可以在函数调用时发送email给管理员</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">email_loging</span>(<span class="title class_ inherited__">Loging</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, email=<span class="string">&quot;admin@163.com&quot;</span>, *args, **kwargs</span>):</span><br><span class="line">        <span class="variable language_">self</span>.email = email</span><br><span class="line">        <span class="built_in">super</span>(email_loging, <span class="variable language_">self</span>).__init__(*args, **kwargs)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">printLogInfo</span>(<span class="params">self, func</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;email warning: currently running is &quot;</span>, func.__name__)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;send email to &quot;</span>, <span class="variable language_">self</span>.email)</span><br><span class="line"></span><br><span class="line"><span class="meta">@email_loging()</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">sendEmail</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;send success&quot;</span>)</span><br><span class="line"></span><br><span class="line">sendEmail()</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2019/03/05/4769/" rel="prev" title="面试题，如何检验自己写的代码质量高低">
+                  <i class="fa fa-angle-left"></i> 面试题，如何检验自己写的代码质量高低
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2019/03/18/56849/" rel="next" title="翻译PEP8中学习 -- Style Guide for Python Code">
+                  翻译PEP8中学习 -- Style Guide for Python Code <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">691k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:28</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

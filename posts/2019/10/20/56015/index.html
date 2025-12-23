@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="除了掌握Python本身的语法以及使用外，对其内部机制的探索可以更深入理解和掌握语言本身蕴含的思想和理念。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="编写高质量代码：Python中的内部机制（上）">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2019/10/20/56015/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="除了掌握Python本身的语法以及使用外，对其内部机制的探索可以更深入理解和掌握语言本身蕴含的思想和理念。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i-blog.csdnimg.cn/blog_migrate/60011ecaeb936d721b1515ee1f84e167.jpeg">
+<meta property="og:image" content="https://i-blog.csdnimg.cn/blog_migrate/a6599e658bfa0944ab6d3d27cbacb2b0.jpeg">
+<meta property="og:image" content="https://i-blog.csdnimg.cn/blog_migrate/b6b3486b5a2755dfe006c5a42943d2a4.jpeg">
+<meta property="og:image" content="https://i-blog.csdnimg.cn/blog_migrate/0f530bb74f4854db9090c0e4b7046f14.jpeg">
+<meta property="og:image" content="https://i-blog.csdnimg.cn/blog_migrate/93141d0b2282fdac4311dbe570e553e1.jpeg">
+<meta property="article:published_time" content="2019-10-20T14:08:30.000Z">
+<meta property="article:modified_time" content="2025-12-23T14:07:49.134Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i-blog.csdnimg.cn/blog_migrate/60011ecaeb936d721b1515ee1f84e167.jpeg">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2019/10/20/56015/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2019/10/20/56015/","path":"posts/2019/10/20/56015/","title":"编写高质量代码：Python中的内部机制（上）"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>编写高质量代码：Python中的内部机制（上） | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%90%86%E8%A7%A3built-ln-objects"><span class="nav-text">理解built-ln objects</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#metaclass"><span class="nav-text">metaclass</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#init-%E4%B8%8D%E6%98%AF%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95"><span class="nav-text">__init__()不是构造方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8D%E5%AD%97%E6%9F%A5%E6%89%BE%E6%9C%BA%E5%88%B6"><span class="nav-text">名字查找机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%8F%E8%BF%B0%E7%AC%A6%E6%9C%BA%E5%88%B6"><span class="nav-text">描述符机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%9B%B4%E4%B8%BA%E5%AE%89%E5%85%A8%E7%9A%84property"><span class="nav-text">使用更为安全的property</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2019/10/20/56015/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="编写高质量代码：Python中的内部机制（上） | Magnolia's Blog">
+      <meta itemprop="description" content="除了掌握Python本身的语法以及使用外，对其内部机制的探索可以更深入理解和掌握语言本身蕴含的思想和理念。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          编写高质量代码：Python中的内部机制（上）
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-10-20 22:08:30" itemprop="dateCreated datePublished" datetime="2019-10-20T22:08:30+08:00">2019-10-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>11k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>10 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">除了掌握Python本身的语法以及使用外，对其内部机制的探索可以更深入理解和掌握语言本身蕴含的思想和理念。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p><strong>Rome was not built in one day， coding will not advance vigorously with one effort.</strong><br>除了掌握Python本身的语法以及使用外，对其内部机制的探索可以更深入理解和掌握语言本身蕴含的思想和理念。</p>
+<h2 id="理解built-ln-objects"><a href="#理解built-ln-objects" class="headerlink" title="理解built-ln objects"></a>理解built-ln objects</h2><p>Python中一切皆对象：字符是对象、列表是对象、内建类型 (built-ln type）也是对象；用户定义的类型是对象，object是对象，type也是对象。新式类中，object是所有内建类型的基类，所以用户定义的类可以继承自object可以继承自内建类型。</p>
+<p>object 和 type的关系很像鸡和蛋的关系，先有object还是先有type没法说，obejct和type是共生的关系，必须同时出现的。</p>
+<hr>
+<p>在面向对象体系里面，存在两种关系：</p>
+<ul>
+<li>父子关系，即继承关系，表现为子类继承于父类，如『蛇』类继承自『爬行动物』类，我们说『蛇是一种爬行动物』，英文说『snake is a kind of reptile』。<strong>在python里要查看一个类型的父类，可使用它的<code>__bases__</code>属性</strong>。</li>
+<li>类型实例关系，表现为某个类型的实例化，例如『萌萌是一条蛇』，英文说『萌萌 is an instance of snake』。<strong>在python里要查看一个实例的类型，可以使用它的<code>__class__</code>属性，或者使用type()函数</strong>。</li>
+</ul>
+<p>这两种关系使用下面这张图简单示意，继承关系使用实线从子到父连接，类型实例关系使用虚线从实例到类型连接：</p>
+<p><img data-src="https://i-blog.csdnimg.cn/blog_migrate/60011ecaeb936d721b1515ee1f84e167.jpeg" alt="在这里插入图片描述"></p>
+<p>我们将使用一块白板来描述一下Python里面对象的关系，白板划分成三列。</p>
+<hr>
+<p> 先来看看type和object： 它们都是type的一个实例，表示它们都是类型对象。 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; object</span><br><span class="line">&lt;class &#x27;object&#x27;&gt;</span><br><span class="line">&gt;&gt;&gt; type</span><br><span class="line">&lt;class &#x27;type&#x27;&gt;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; type(object)</span><br><span class="line">&lt;class &#x27;type&#x27;&gt;</span><br><span class="line">&gt;&gt;&gt; type(type)</span><br><span class="line">&lt;class &#x27;type&#x27;&gt;</span><br></pre></td></tr></table></figure>
+
+<p> 在Python的世界中，object是父子关系的顶端，所有的数据类型的父类都是它；type是类型实例关系的顶端，所有对象都是它的实例的。它们两个的关系可以这样描述：</p>
+<p>object是一个type，object is and instance of type。即<strong>object是type的一个实例</strong>。isinstance(object, type) &#x3D;&#x3D; True</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; object.__class__</span><br><span class="line">&lt;class &#x27;type&#x27;&gt;</span><br><span class="line">&gt;&gt;&gt; object.__bases__   # object 无父类，它是滴继承关系的顶端</span><br><span class="line">()</span><br></pre></td></tr></table></figure>
+
+<p> type是一种object， type is kind of object。即type是object的子类。 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; type.__class__   # type的类型是自己</span><br><span class="line">&lt;class &#x27;type&#x27;&gt;</span><br><span class="line">&gt;&gt;&gt; type.__bases__ </span><br><span class="line">(&lt;class &#x27;object&#x27;&gt;,)</span><br></pre></td></tr></table></figure>
+
+<p><strong>在python里：</strong></p>
+<p><strong>要查看一个类型的父类，可使用它的<code>__bases__</code>属性；</strong></p>
+<p><strong>要查看一个实例的类型，可使用它的<code>__class__</code>属性，或者使用type()函数</strong></p>
+<p>此时，白板上对象的关系如下图：</p>
+<p><img data-src="https://i-blog.csdnimg.cn/blog_migrate/a6599e658bfa0944ab6d3d27cbacb2b0.jpeg" alt="在这里插入图片描述"></p>
+<p>引入list, dict, tuple 这些内置数据类型来看看：<br>它们的父类都是object，类型都是type。 </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">test</span>(<span class="params">obj</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">type</span>(obj))          <span class="comment"># &lt;class &#x27;type&#x27;&gt;</span></span><br><span class="line">    <span class="built_in">print</span>(obj.__class__)			<span class="comment"># &lt;class &#x27;type&#x27;&gt;</span></span><br><span class="line">    <span class="built_in">print</span>(obj.__bases__)			<span class="comment"># (&lt;class &#x27;object&#x27;&gt;,)</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">isinstance</span>(obj,<span class="built_in">object</span>))	<span class="comment"># True</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">isinstance</span>(obj,<span class="built_in">type</span>))	  <span class="comment"># True</span></span><br><span class="line">test(<span class="built_in">list</span>)</span><br><span class="line">test(<span class="built_in">dict</span>)</span><br><span class="line">test(<span class="built_in">tuple</span>)</span><br></pre></td></tr></table></figure>
+
+<p>实例化一个list后的结果：<br>mylist &#x3D; [1, 2, 3] 它的类型是list，没有父类。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">test</span>(<span class="params">obj</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">type</span>(obj))          <span class="comment"># &lt;class &#x27;list&#x27;&gt;</span></span><br><span class="line">    <span class="built_in">print</span>(obj.__class__)			<span class="comment"># &lt;class &#x27;list&#x27;&gt;</span></span><br><span class="line">    <span class="built_in">print</span>(obj.__bases__)			<span class="comment"># AttributeError: &#x27;list&#x27; object has no attribute &#x27;__bases__&#x27;</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">isinstance</span>(obj,<span class="built_in">object</span>))	<span class="comment"># True</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">isinstance</span>(obj,<span class="built_in">type</span>))	  <span class="comment"># False</span></span><br><span class="line">    </span><br><span class="line">mylist = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">test(mylist)</span><br></pre></td></tr></table></figure>
+
+<p>把它们加到白板上去：</p>
+<p><img data-src="https://i-blog.csdnimg.cn/blog_migrate/b6b3486b5a2755dfe006c5a42943d2a4.jpeg" alt="在这里插入图片描述"></p>
+<p>白板上的虚线表示源是目标的实例，实线表示源是目标的子类。<br>即: 左边的是右边的类型，上面的是下面的父亲。<br>虚线是跨列产生关系，而实线只能在一列内产生关系。除了type和object两者外。 </p>
+<hr>
+<p>自定义一个类及实例化它的时候，和上面的对象们又是什么关系呢？ </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">C</span>():</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line">    </span><br><span class="line">c = C()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test</span>(<span class="params">obj</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">type</span>(obj))          <span class="comment"># &lt;class &#x27;type&#x27;&gt;</span></span><br><span class="line">    <span class="built_in">print</span>(obj.__class__)			<span class="comment"># &lt;class &#x27;type&#x27;&gt;</span></span><br><span class="line">    <span class="built_in">print</span>(obj.__bases__)			<span class="comment"># (&lt;class &#x27;object&#x27;&gt;,)</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">isinstance</span>(obj,<span class="built_in">object</span>))	<span class="comment"># True</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">isinstance</span>(obj,<span class="built_in">type</span>))	  <span class="comment"># True</span></span><br><span class="line">test(C)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test</span>(<span class="params">obj</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">type</span>(obj))          <span class="comment"># &lt;class &#x27;__main__.C&#x27;&gt;</span></span><br><span class="line">    <span class="built_in">print</span>(obj.__class__)			<span class="comment"># &lt;class &#x27;__main__.C&#x27;&gt;</span></span><br><span class="line">    <span class="built_in">print</span>(obj.__bases__)			<span class="comment"># AttributeError: &#x27;C&#x27; object has no attribute &#x27;__bases__&#x27;  实例化的C类对象也是没有父类的属性的。</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">isinstance</span>(obj,<span class="built_in">object</span>))	<span class="comment"># True</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">isinstance</span>(obj,<span class="built_in">type</span>))	  <span class="comment"># False</span></span><br><span class="line">test(c)</span><br></pre></td></tr></table></figure>
+
+<p>再更新一下白板：<br><img data-src="https://i-blog.csdnimg.cn/blog_migrate/0f530bb74f4854db9090c0e4b7046f14.jpeg" alt="在这里插入图片描述"><br>白板上的第一列，目前只有type，我们先把这列的东西叫Type。<br>白板上的第二列，它们既是第三列的类型，又是第一列的实例，我们把这列的对象叫TypeObject。<br>白板上的第三列，它们是第二列类型的实例，而没有父类（<code>__bases__</code>）的，我们把它们叫Instance。</p>
+<hr>
+<p> 想要在第一列增加一个，要怎么做？要属于第一列的，必须是type的子类，那么我们只需要继承type来定义类就可以了： </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">M</span>(<span class="title class_ inherited__">type</span>):</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(M.__bases__)  <span class="comment"># (&lt;class &#x27;type&#x27;&gt;,)</span></span><br><span class="line"><span class="built_in">print</span>(M.__class__)	<span class="comment"># &lt;class &#x27;type&#x27;&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p> M类的类型和父类都是type。这个时候，我们可以把它归到第一列去。那么，要怎么样实例化M类型呢？实例化后它应该出现在那个列? 由于刚刚创建的是一个<strong>元类（MetaClass）</strong>！即类的类。如果你要实例化一个元类，那还是得定义一个类： </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">TM</span>(<span class="built_in">object</span>, metaclass=M): <span class="comment"># 造一个M是TM的metaclass，指定元类</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(TM.__class__)  <span class="comment"># &lt;class &#x27;__main__.M&#x27;&gt;  # 这个类不再是type类型，而是M类型的。</span></span><br><span class="line"><span class="built_in">print</span>(TM.__bases__)	 <span class="comment"># (&lt;class &#x27;object&#x27;&gt;,)</span></span><br></pre></td></tr></table></figure>
+
+<p>总结一下：<br>第一列，元类列，type是所有元类的父亲。我们可以通过继承type来创建元类。<br>第二列，TypeObject列，也称类列，object是所有类的父亲，大部份我们直接使用的数据类型都存在这个列的。<br>第三列，实例列，实例是对象关系链的末端，不能再被子类化和实例化。</p>
+<p>补充一张知乎上的图：</p>
+<p><img data-src="https://i-blog.csdnimg.cn/blog_migrate/93141d0b2282fdac4311dbe570e553e1.jpeg" alt="在这里插入图片描述"></p>
+<p>该部分来自知乎：<br><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/38791962/answer/78172929">Python 的 type 和 object 之间是怎么一种关系？</a></p>
+<hr>
+<h2 id="metaclass"><a href="#metaclass" class="headerlink" title="metaclass"></a>metaclass</h2><p>什么是元类：</p>
+<ul>
+<li>元类是关于类的类，是类的模板</li>
+<li>元类是用来控制如何创建类，正如类是创建对象的模板一样</li>
+<li>元类的实例为类，正如类的实例为对象</li>
+</ul>
+<p>类也是对象，一切皆对象。当使用关键字class时，Python解释器在执行时会创建一个对象（这里的对象是指类，而非类的对象）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">dynamic_class</span>(<span class="params">name</span>):</span><br><span class="line">    <span class="keyword">if</span> name == <span class="string">&#x27;A&#x27;</span>:</span><br><span class="line">        <span class="keyword">class</span> <span class="title class_">A</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">            <span class="keyword">pass</span></span><br><span class="line">        <span class="keyword">return</span> A</span><br><span class="line">    <span class="keyword">elif</span> name == <span class="string">&#x27;B&#x27;</span>:</span><br><span class="line">        <span class="keyword">class</span> <span class="title class_">B</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">            <span class="keyword">pass</span></span><br><span class="line">        <span class="keyword">return</span> B</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">MyClass = dynamic_class(<span class="string">&quot;A&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(MyClass())  <span class="comment"># &lt;__main__.dynamic_class.&lt;locals&gt;.A object at 0x000001EB066CA518&gt;</span></span><br><span class="line"><span class="built_in">print</span>(MyClass)  <span class="comment"># &lt;class &#x27;__main__.dynamic_class.&lt;locals&gt;.A&#x27;&gt;</span></span><br><span class="line"><span class="built_in">print</span>(MyClass.__class__)  <span class="comment"># &lt;class &#x27;type&#x27;&gt;</span></span><br><span class="line"><span class="built_in">print</span>(MyClass().__class__)  <span class="comment"># &lt;class &#x27;__main__.dynamic_class.&lt;locals&gt;.A&#x27;&gt;</span></span><br><span class="line"><span class="built_in">print</span>(MyClass.__bases__)  <span class="comment"># (&lt;class &#x27;object&#x27;&gt;,)</span></span><br></pre></td></tr></table></figure>
+
+<p>MyClass的类型是type，MyClass()的类型是  &lt;class ‘__main__.dynamic_class.<locals>.A’&gt;。</p>
+<p>type还可以这样使用：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">type(类名, 父类的元组（针对继承的情况，可以为空）, 包含属性的字典（名称和值）)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">A = <span class="built_in">type</span>(<span class="string">&#x27;A&#x27;</span>, (<span class="built_in">object</span>,), &#123;<span class="string">&#x27;var_attr&#x27;</span>:<span class="number">1</span>&#125;)</span><br><span class="line"></span><br><span class="line">A.__class__</span><br><span class="line">Out[<span class="number">1</span>]: <span class="built_in">type</span></span><br><span class="line">A.__bases__</span><br><span class="line">Out[<span class="number">2</span>]: (<span class="built_in">object</span>,)</span><br><span class="line">A.var_attr</span><br><span class="line">Out[<span class="number">3</span>]: <span class="number">1</span></span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">B</span>(<span class="title class_ inherited__">A</span>):</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line">B</span><br><span class="line">Out[<span class="number">4</span>]: __main__.B</span><br><span class="line">B.__class__</span><br><span class="line">Out[<span class="number">5</span>]: <span class="built_in">type</span></span><br><span class="line">B.__bases__</span><br><span class="line">Out[<span class="number">6</span>]: (__main__.A,)</span><br><span class="line">B.var_attr</span><br><span class="line">Out[<span class="number">7</span>]: <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>type通过接受类的描述作为参数返回一个对象，这个对象可以被继承， 属性能够被访问，它实际是一个类，其创建由type控制，有type创建的对象的<code>__class__</code>类型为type。type是Python的一个内建元类，用来指导类的生成。除了用内建元类type，用户也可以通过继承type来自定义元类。</p>
+<hr>
+<h2 id="init-不是构造方法"><a href="#init-不是构造方法" class="headerlink" title="__init__()不是构造方法"></a><code>__init__()</code>不是构造方法</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">A</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__new__</span>(<span class="params">cls, *args, **kwargs</span>):</span><br><span class="line">        <span class="built_in">print</span>(cls, args, kwargs)</span><br><span class="line">        instance = <span class="built_in">object</span>.__new__(cls)</span><br><span class="line">        <span class="built_in">print</span>(instance)</span><br><span class="line">        <span class="comment"># return instance</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, *args, **kwargs</span>):</span><br><span class="line">        <span class="variable language_">self</span>.a, <span class="variable language_">self</span>.b = args</span><br><span class="line">        <span class="built_in">print</span>(<span class="variable language_">self</span>.a, <span class="variable language_">self</span>.b)</span><br><span class="line"></span><br><span class="line">a1 = A(<span class="number">1</span>,<span class="number">2</span>,var=<span class="number">3</span>)</span><br><span class="line"><span class="built_in">print</span>(a1.a)</span><br><span class="line"><span class="built_in">print</span>(a1.b)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;class &#x27;__main__.A&#x27;&gt; (1, 2) &#123;&#x27;var&#x27;: 3&#125;</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">&lt;__main__.A object at 0x000002147F2BC320&gt;</span><br><span class="line">  File &quot;D:/keeplearning/myLearning/python/book1/test.py&quot;, line 13, in &lt;module&gt;</span><br><span class="line">    print(a1.a)</span><br><span class="line">AttributeError: &#x27;NoneType&#x27; object has no attribute &#x27;a&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><code>__init__()</code>并不是真正意义上的构造方法，<code>__init__()</code>方法所做的工作是在类的对象创建好后进行变量的初始化。 <strong><code>__new__()</code>方法才会真正的创建实例，是类的构造方法</strong>。</p>
+<p>这两个方法都是object 类中默认的方法， 继承自object的新式类，如果不覆盖这两个方法将会默认调用object中对应的方法。</p>
+<p>上面的程序抛出异常时因为<code>__new__()</code>方法中并没有显式返回对象，因此a1为None。将上面代码中的注释取消就可以返回显式对象了。</p>
+<p>关于<code>__new__()</code>和<code>__init__()</code>方法的定义：</p>
+<ul>
+<li><p><code>object.__new__(cls[,args...])</code> ：cls代表类，args为参数列表</p>
+</li>
+<li><p><code>object.__init__(self[,args...])</code> ： self代表实例对象，args为参数列表</p>
+</li>
+<li><p><code>__new__()</code> 是静态方法，<code>__init__()</code> 是实例方法</p>
+</li>
+<li><p><code>__new__()</code> 方法一般需要返回类的对象，当返回类的对象时将会自动调用<code>__init__()</code>方法进行初始化，如果没有对象返回，则<code>__init__()</code>方法不会被调用；<code>__init__()</code>方法不需要显式返回，默认为None，强行写return会抛出TypeError</p>
+</li>
+<li><p>当需要控制实例创建的时候可使用<code>__new__()</code> 方法，而控制实例初始化的时候使用<code>__init__()</code>方法</p>
+</li>
+<li><p>一般情况下，不需要覆盖<code>__new__()</code>方法，但当子类继承自不可变类型，如str、int、tuple时，往往需要覆盖该方法</p>
+</li>
+<li><p>当需要覆盖<code>__new__()</code>和<code>__init__()</code> 时，必须使得两个方法的参数保持一致，否则导致异常</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">B</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__new__</span>(<span class="params">cls, a, b</span>):</span><br><span class="line">        <span class="comment"># return object.__new__(cls)</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">super</span>(B,cls).__new__(cls)</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, a, b</span>): </span><br><span class="line">        <span class="variable language_">self</span>.a = a</span><br><span class="line">        <span class="variable language_">self</span>.b = b</span><br><span class="line">b = B(<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line"><span class="comment"># 如果new和init方法的入参不一致，pycharm中会有检查提示：</span></span><br><span class="line"><span class="comment"># This inspection checks mutual compatibility of __new__ and __init__ signatures</span></span><br><span class="line"><span class="comment"># 但是如果使用 *args 或者 **kwargs就避免此问题的出现。</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="名字查找机制"><a href="#名字查找机制" class="headerlink" title="名字查找机制"></a>名字查找机制</h2><p>Python中所有变量名都是赋值的时候生成的，而对任何变量名的创建、查找或者改变都会在命名空间（namespace）中进行。变量名所在的命名空间直接决定了其能访问到的范围，即变量的作用域：<strong>局部作用域（local）、全局作用域（Global）、嵌套作用域（enclosing functions locals）以及内置作用域（Build-In）</strong>。</p>
+<ul>
+<li><p>局部作用域： 函数的每次调用都会创建一个新的本地作用域，拥有新的命名空间。因此函数内的变量名可以与函数外的其他变量相同，由于命名空间不同，并不会产生冲突。默认情况下，函数内部任意的赋值操作（包括&#x3D;语句，import语句，def语句，参数传递）所定义的变量名，如果没用global语句，则申明都为局部变量，即仅在该函数内可见。</p>
+</li>
+<li><p>全局作用域：定义在Python模块文件中的变量名拥有全局作用域，需要注意的是这里的全局仅限单个文件，即在一个文件的顶层的变量名仅在这个文件内可见，并非所有文件，其他文件中想使用这些变量必须先导入文件对应的模块。当在函数之外给一个变量名赋值是在其全局作用域的情况下进行的。</p>
+</li>
+<li><p>嵌套作用域：一般在多重函数嵌套的情况下才会考虑到。global语句仅针对全局变量，在嵌套作用域的情况下，如果想在嵌套的函数内修改外层函数定义的变量，即使使用global进行申明也达不到目的，其结果最终是在嵌套的函数所在的命名空间中创建了一个新的变量。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">outer</span>():</span><br><span class="line">    var = <span class="number">1</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">inner</span>():</span><br><span class="line">        <span class="keyword">global</span> var</span><br><span class="line">        var = <span class="number">2</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&#x27;inner var=<span class="subst">&#123;var&#125;</span>&#x27;</span>)</span><br><span class="line">    inner()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&#x27;outer var=<span class="subst">&#123;var&#125;</span>&#x27;</span>)</span><br><span class="line">outer()</span><br><span class="line"><span class="comment"># inner var=2</span></span><br><span class="line"><span class="comment"># outer var=1</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>内置作用域：通过一个标准库中名为<code>__builtin__</code>的模块来实现的</p>
+</li>
+</ul>
+<p>在Python中，当访问一个变量时，查找顺序遵循变量解析机制LEGB法则，即依次搜索4个作用域：局部、嵌套、全局、内置作用域，并且在第一个找到的地方停止寻找，如果没有找到则会抛出异常。当存在多个同名变量的时候，操作生效的往往是搜索顺序在前的。</p>
+<p>Python的名字查找机制：</p>
+<ol>
+<li>在最内层的范围内找，一般就是函数内部，即在locals()里面找</li>
+<li>在模块内找，即在globals()里面找</li>
+<li>在外层找，即在内置模块中找，也就是在<code>__builtin__</code>中找</li>
+</ol>
+<h2 id="描述符机制"><a href="#描述符机制" class="headerlink" title="描述符机制"></a>描述符机制</h2><p>每个类都有一个<code>__dict__</code> 属性，其中包含的是它的所有属性， 又称类属性。通过<code>__dict__</code>访问和使用<code> .</code>是一样的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">A</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    a_attr = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">a_method</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">a = A()</span><br><span class="line"></span><br><span class="line">A.__dict__</span><br><span class="line">Out[<span class="number">1</span>]: </span><br><span class="line">mappingproxy(&#123;<span class="string">&#x27;__module__&#x27;</span>: <span class="string">&#x27;__main__&#x27;</span>,</span><br><span class="line">              <span class="string">&#x27;a_attr&#x27;</span>: <span class="number">1</span>,</span><br><span class="line">              <span class="string">&#x27;a_method&#x27;</span>: &lt;function __main__.A.a_method(<span class="variable language_">self</span>)&gt;,</span><br><span class="line">              <span class="string">&#x27;__dict__&#x27;</span>: &lt;attribute <span class="string">&#x27;__dict__&#x27;</span> of <span class="string">&#x27;A&#x27;</span> objects&gt;,</span><br><span class="line">              <span class="string">&#x27;__weakref__&#x27;</span>: &lt;attribute <span class="string">&#x27;__weakref__&#x27;</span> of <span class="string">&#x27;A&#x27;</span> objects&gt;,</span><br><span class="line">              <span class="string">&#x27;__doc__&#x27;</span>: <span class="literal">None</span>&#125;)</span><br><span class="line"></span><br><span class="line">A.a_attr</span><br><span class="line">Out[<span class="number">2</span>]: <span class="number">1</span></span><br><span class="line">A.__dict__[<span class="string">&#x27;a_attr&#x27;</span>]</span><br><span class="line">Out[<span class="number">3</span>]: <span class="number">1</span></span><br><span class="line">              </span><br><span class="line">A.a_method</span><br><span class="line">Out[<span class="number">4</span>]: &lt;function __main__.A.a_method(<span class="variable language_">self</span>)&gt;</span><br><span class="line">A.__dict__[<span class="string">&#x27;a_method&#x27;</span>]</span><br><span class="line">Out[<span class="number">5</span>]: &lt;function __main__.A.a_method(<span class="variable language_">self</span>)&gt;</span><br></pre></td></tr></table></figure>
+
+<p>每一个实例也有响应的属性 表（<code>__dict__</code>)，成为实例属性。通过实例访问一个属性时，首先尝试在实例属性中找，如果找不到，则会到类属性中查找。</p>
+<p>通过<code>.</code> 操作符访问一个属性时，如果访问的是实例属性，与直接通过<code>__dict__</code>属性获取响应的元素是一样的。</p>
+<h2 id="使用更为安全的property"><a href="#使用更为安全的property" class="headerlink" title="使用更为安全的property"></a>使用更为安全的property</h2><p>property 是用来实现属性可管理性的built-In数据类型，一种实现了<code>__get__()</code>和<code>__set__()</code>方法的类，也可以根据需要定义个性化的property。</p>
+<p>实质是一种特殊的数据描述符（如果一个对象同时定义了<code>__get__()</code>和<code>__set__()</code>方法，则称为数据描述符；如果仅定义了<code>__get__()</code>方法，则称为非数据描述符）。和普通描述符的区别在于：普通描述符提供的是一种较为低级的控制属性访问的机制，而property是它的高级应用，它以标准库的形式提供描述符的实现：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">property(fget=None, fset=None, fdel=None, doc=None) -&gt; property attribute</span><br></pre></td></tr></table></figure>
+
+<p>常见使用形式一：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">A</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>._var = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_var</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>._var</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">set_var</span>(<span class="params">self, value</span>):</span><br><span class="line">        <span class="variable language_">self</span>._var = value</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">del_var</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">del</span> <span class="variable language_">self</span>._var</span><br><span class="line"></span><br><span class="line">    var = <span class="built_in">property</span>(get_var, set_var, del_var, <span class="string">&quot;A property&quot;</span>)</span><br><span class="line"></span><br><span class="line">a = A()</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">a.__dict__</span><br><span class="line">Out[3]: &#123;&#x27;_var&#x27;: 0&#125;</span><br><span class="line">a.var</span><br><span class="line">Out[4]: 0</span><br><span class="line">a.var = 1</span><br><span class="line">a.var</span><br><span class="line">Out[6]: 1</span><br><span class="line">del a.var</span><br><span class="line">a.__dict__</span><br><span class="line">Out[8]: &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>常见使用形式二：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">B</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    _var = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>._var = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">var</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>._var</span><br><span class="line"></span><br><span class="line"><span class="meta">    @var.setter</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">var</span>(<span class="params">self, value</span>):</span><br><span class="line">        <span class="variable language_">self</span>._var = value</span><br><span class="line"></span><br><span class="line"><span class="meta">    @var.deleter</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">var</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">del</span> <span class="variable language_">self</span>._var</span><br></pre></td></tr></table></figure>
+
+<p>property的优势：</p>
+<ul>
+<li><p>代码更加简洁，可读性强。 比 obj.var +&#x3D; 1 比 obj.set_var(obj.get_var() +1)更加简洁易读。</p>
+</li>
+<li><p>更好的管理属性的访问。property将对属性的访问直接转换为对对应的get、set等函数的调用，属性能够更好地被控制和管理。常见的场景有：设置校验（检查某个地址、数据是否合法）、对某个属性进行二次计算后再返回用户、计算某个依赖于其他属性的属性。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Date</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, dateString</span>):</span><br><span class="line">        <span class="variable language_">self</span>._date = dateString</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_data</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>._date</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">set_data</span>(<span class="params">self, dataString</span>):</span><br><span class="line">        year, month, day = dataString.split(<span class="string">&#x27;-&#x27;</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> (<span class="number">0</span> &lt;= <span class="built_in">int</span>(year) &lt;= <span class="number">3000</span> <span class="keyword">and</span> <span class="number">0</span> &lt;= <span class="built_in">int</span>(month) &lt;= <span class="number">12</span> <span class="keyword">and</span> <span class="number">0</span> &lt;= <span class="built_in">int</span>(day) &lt;= <span class="number">31</span>):</span><br><span class="line">            <span class="keyword">assert</span> <span class="number">0</span>, <span class="string">f&#x27;<span class="subst">&#123;dataString&#125;</span> is invalid&#x27;</span></span><br><span class="line">        <span class="variable language_">self</span>._date = dataString</span><br><span class="line"></span><br><span class="line">    date = <span class="built_in">property</span>(get_data, set_data)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">date = Date(<span class="string">&#x27;2019-10-1&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(date.date)</span><br><span class="line">date.date = <span class="string">&#x27;4000-10-1&#x27;</span></span><br><span class="line"><span class="built_in">print</span>(date.date)</span><br></pre></td></tr></table></figure>
+
+<p>创建一个property实际上就是将其属性的访问与特定的函数关联起来，相对于标准属性的访问，其工作原理如图所示，property相当于一个分发器，对某个属性的访问并不直接操作具体的对象，而对标准属性的访问没有中间这一层，直接访问存储属性的对象。</p>
+</li>
+<li><p>代码可维护性更好。property对属性进行再封装， 以类似接口的形式呈现给用户，以统一的语法来访问属性，当具体实现需要改变的时候（如改变某个内部变量，或赋值或取值的计算方式改变），访问的方式依旧可以保留一致。</p>
+</li>
+<li><p>控制属性访问权限，提高数据安全性</p>
+</li>
+</ul>
+<p>由于property是特殊的类，那么就可以被继承，因此用户可以根据需要定义property。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">update_meta</span>(<span class="params">self, other</span>):</span><br><span class="line">    <span class="variable language_">self</span>.__name__ = other.__name__</span><br><span class="line">    <span class="variable language_">self</span>.__doc__ = other.__doc__</span><br><span class="line">    <span class="variable language_">self</span>.__dict__.update(other.__dict__)</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">self</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyProperty</span>(<span class="title class_ inherited__">property</span>):</span><br><span class="line">    <span class="comment"># def __new__(cls, *args, **kwargs):</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__new__</span>(<span class="params">cls, fget=<span class="literal">None</span>, fset=<span class="literal">None</span>, fdel=<span class="literal">None</span>, doc=<span class="literal">None</span></span>):  <span class="comment"># 构造函数__new__重新定义了fget()、fset()、fdel()方法</span></span><br><span class="line">        <span class="keyword">if</span> fget <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">def</span> <span class="title function_">__get__</span>(<span class="params">obj, objtype=<span class="literal">None</span>, name=fget.__name__</span>):</span><br><span class="line">                fget = <span class="built_in">getattr</span>(obj, name)</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">f&#x27;fget:<span class="subst">&#123;fget.__name__&#125;</span>&#x27;</span>)  <span class="comment"># fget:get</span></span><br><span class="line">                <span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;obj&#125;</span>,<span class="subst">&#123;obj.__dict__&#125;</span>&#x27;</span>)  <span class="comment"># &lt;__main__.A object at 0x0000029346BAB400&gt;,&#123;&#x27;_x&#x27;: 1&#125;</span></span><br><span class="line">                <span class="keyword">return</span> fget()</span><br><span class="line">            fget = update_meta(__get__, fget)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> fset <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">def</span> <span class="title function_">__set__</span>(<span class="params">obj, value, name=fset.__name__</span>):</span><br><span class="line">                fset = <span class="built_in">getattr</span>(obj, name)</span><br><span class="line">                <span class="keyword">return</span> fset(value)</span><br><span class="line">            fset = update_meta(__set__, fset)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> fdel <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">def</span> <span class="title function_">__delete__</span>(<span class="params">obj, name=fdel.__name__</span>):</span><br><span class="line">                fdel = <span class="built_in">getattr</span>(obj,name)</span><br><span class="line">                <span class="keyword">return</span> fdel()</span><br><span class="line">            fdel = update_meta(__delete__, fdel)</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">property</span>(fget, fset, fdel, doc)  <span class="comment"># 最后返回对象实际还是property实例</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">A</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>._x</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">set</span>(<span class="params">self, x</span>):</span><br><span class="line">        <span class="variable language_">self</span>._x = x</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">delete</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">del</span> <span class="variable language_">self</span>._x</span><br><span class="line">    x = MyProperty(get,<span class="built_in">set</span>,delete)</span><br><span class="line"></span><br><span class="line">a = A()</span><br><span class="line"><span class="built_in">print</span>(a.__dict__)</span><br><span class="line">a.x = <span class="number">1</span></span><br><span class="line"><span class="built_in">print</span>(a.x)</span><br><span class="line"><span class="keyword">del</span> a.x</span><br><span class="line"><span class="built_in">print</span>(a.__dict__)</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2019/10/06/12508/" rel="prev" title="编写高质量代码：Python中的常见库">
+                  <i class="fa fa-angle-left"></i> 编写高质量代码：Python中的常见库
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2019/10/20/9934/" rel="next" title="编写高质量代码：Python中的内部机制（下）">
+                  编写高质量代码：Python中的内部机制（下） <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">691k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:28</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

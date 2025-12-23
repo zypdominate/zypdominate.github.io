@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="特殊方法，实现了我们常用的功能。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python的特殊方法">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2019/08/22/41419/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="特殊方法，实现了我们常用的功能。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-08-22T15:48:16.000Z">
+<meta property="article:modified_time" content="2025-12-23T14:07:49.106Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2019/08/22/41419/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2019/08/22/41419/","path":"posts/2019/08/22/41419/","title":"Python的特殊方法"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Python的特殊方法 | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#str-%E5%92%8C-repr"><span class="nav-text">__str__ 和 __repr__</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#cmp"><span class="nav-text">__cmp__</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#len"><span class="nav-text">__len__</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%90%E7%AE%97"><span class="nav-text">运算</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2"><span class="nav-text">类型转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#property"><span class="nav-text">@property</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#slot"><span class="nav-text">__slot__</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#call"><span class="nav-text">__call__</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Best-Practices"><span class="nav-text">Best Practices</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Common-Pitfalls"><span class="nav-text">Common Pitfalls</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2019/08/22/41419/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Python的特殊方法 | Magnolia's Blog">
+      <meta itemprop="description" content="特殊方法，实现了我们常用的功能。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Python的特殊方法
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-08-22 23:48:16" itemprop="dateCreated datePublished" datetime="2019-08-22T23:48:16+08:00">2019-08-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>7.2k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>7 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">特殊方法，实现了我们常用的功能。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h4 id="str-和-repr"><a href="#str-和-repr" class="headerlink" title="__str__ 和 __repr__"></a><code>__str__</code> 和 <code>__repr__</code></h4><p>如果要把一个类的实例变成  <code>__str__</code>，就需要实现特殊方法 <code>__str__</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, name, gender</span>):</span><br><span class="line">        <span class="variable language_">self</span>.name = name</span><br><span class="line">        <span class="variable language_">self</span>.gender = gender</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__str__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&#x27;(Person: %s, %s)&#x27;</span> % (<span class="variable language_">self</span>.name, <span class="variable language_">self</span>.gender)</span><br></pre></td></tr></table></figure>
+
+<p>在交互式命令行下用 print ：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>p = Person(<span class="string">&#x27;Bob&#x27;</span>, <span class="string">&#x27;male&#x27;</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span> p</span><br><span class="line">(Person: Bob, male)</span><br></pre></td></tr></table></figure>
+
+<p>但是，如果直接敲变量 p：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>p</span><br><span class="line">&lt;main.Person <span class="built_in">object</span> at <span class="number">0x10c941890</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p>因为 Python 定义了str()和repr()两种方法，<code>__str__</code>用于显示给用户，而<code>__repr__</code>用于显示给开发人员。</p>
+<p>有一个偷懒的定义<code>__repr__</code>的方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, name, gender</span>):</span><br><span class="line">        <span class="variable language_">self</span>.name = name</span><br><span class="line">        <span class="variable language_">self</span>.gender = gender</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__str__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&#x27;(Person: %s, %s)&#x27;</span> % (<span class="variable language_">self</span>.name, <span class="variable language_">self</span>.gender)</span><br><span class="line">    __repr__ = __str__</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>p = Person(<span class="string">&quot;a&quot;</span>,<span class="string">&quot;b&quot;</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>p</span><br><span class="line">(Person: a, b)</span><br></pre></td></tr></table></figure>
+
+<h4 id="cmp"><a href="#cmp" class="headerlink" title="__cmp__"></a><code>__cmp__</code></h4><p>python2下使用，python3无<code>__cmp__</code></p>
+<p>对 <strong>int</strong>、<strong>str</strong> 等内置数据类型排序时，Python的 <strong>sorted()</strong> 按照默认的比较函数 <strong>cmp</strong> 排序，但是，如果对一组 <strong>Student</strong> 类的实例排序时，就必须提供我们自己的特殊方法 <code>__cmp__()</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Student</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, name, score</span>):</span><br><span class="line">        <span class="variable language_">self</span>.name = name</span><br><span class="line">        <span class="variable language_">self</span>.score = score</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__str__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&#x27;(%s: %s)&#x27;</span> % (<span class="variable language_">self</span>.name, <span class="variable language_">self</span>.score)</span><br><span class="line">    __repr__ = __str__</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__cmp__</span>(<span class="params">self, s</span>):</span><br><span class="line">        <span class="keyword">if</span> <span class="variable language_">self</span>.name &lt; s.name:</span><br><span class="line">            <span class="keyword">return</span> -<span class="number">1</span></span><br><span class="line">        <span class="keyword">elif</span> <span class="variable language_">self</span>.name &gt; s.name:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<p>上述 Student 类实现了<code>__cmp__()</code>方法，<code>__cmp__</code>用实例自身<strong>self</strong>和传入的实例 <strong>s</strong> 进行比较，如果 <strong>self</strong> 应该排在前面，就返回 -1，如果 <strong>s</strong> 应该排在前面，就返回1，如果两者相当，返回 0。</p>
+<p>Student类实现了按name进行排序：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>L = [Student(<span class="string">&#x27;Tim&#x27;</span>, <span class="number">99</span>), Student(<span class="string">&#x27;Bob&#x27;</span>, <span class="number">88</span>), Student(<span class="string">&#x27;Alice&#x27;</span>, <span class="number">77</span>)]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(<span class="built_in">sorted</span>(L))</span><br><span class="line">[(Alice: <span class="number">77</span>), (Bob: <span class="number">88</span>), (Tim: <span class="number">99</span>)]</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意</strong>: 如果list不仅仅包含 Student 类，则 <strong>cmp</strong> 可能会报错：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">L = [Student(<span class="string">&#x27;Tim&#x27;</span>, <span class="number">99</span>), Student(<span class="string">&#x27;Bob&#x27;</span>, <span class="number">88</span>), <span class="number">100</span>, <span class="string">&#x27;Hello&#x27;</span>]</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">sorted</span>(L))</span><br></pre></td></tr></table></figure>
+
+<h4 id="len"><a href="#len" class="headerlink" title="__len__"></a><code>__len__</code></h4><p>如果一个类表现得像一个list，要获取有多少个元素，就得用 <strong>len()</strong> 函数。</p>
+<p>要让 <strong>len()</strong> 函数工作正常，类必须提供一个特殊方法<code>__len__()</code>，它返回元素的个数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Students</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, *args</span>):</span><br><span class="line">        <span class="variable language_">self</span>.names = args</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__len__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">len</span>(<span class="variable language_">self</span>.names)</span><br><span class="line"></span><br><span class="line">ss = Students(<span class="string">&#x27;Bob&#x27;</span>, <span class="string">&#x27;Alice&#x27;</span>, <span class="string">&#x27;Tim&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">len</span>(ss))  <span class="comment"># 3</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="运算"><a href="#运算" class="headerlink" title="运算"></a>运算</h4><p>Python 提供的基本数据类型 <strong>int、float</strong> 可以做整数和浮点的四则运算以及乘方等运算。</p>
+<p>但是，四则运算不局限于int和float，还可以是有理数、矩阵等。</p>
+<p>要表示有理数，可以用一个<strong>Rational类</strong>来表示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Rational</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, p, q</span>):</span><br><span class="line">        <span class="variable language_">self</span>.p = p</span><br><span class="line">        <span class="variable language_">self</span>.q = q</span><br></pre></td></tr></table></figure>
+
+<p>p、q 都是整数，表示有理数 p&#x2F;q。</p>
+<p>如果要让Rational进行+运算，需要正确实现<code>__add__</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Rational</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, p, q</span>):</span><br><span class="line">        <span class="variable language_">self</span>.p = p</span><br><span class="line">        <span class="variable language_">self</span>.q = q</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__add__</span>(<span class="params">self, r</span>):</span><br><span class="line">        <span class="keyword">return</span> Rational(<span class="variable language_">self</span>.p * r.q + <span class="variable language_">self</span>.q * r.p, <span class="variable language_">self</span>.q * r.q)</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__str__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&#x27;%s/%s&#x27;</span> % (<span class="variable language_">self</span>.p, <span class="variable language_">self</span>.q)</span><br><span class="line">    __repr__ = __str__</span><br><span class="line"></span><br><span class="line">r1 = Rational(<span class="number">1</span>, <span class="number">3</span>)</span><br><span class="line">r2 = Rational(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line"><span class="built_in">print</span>(r1 + r2)  <span class="comment"># 5/6</span></span><br></pre></td></tr></table></figure>
+
+<p>四则运算：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 寻找a和b的最小公约数</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">gcd</span>(<span class="params">a, b</span>):  </span><br><span class="line">    <span class="keyword">if</span> b == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> a</span><br><span class="line">    <span class="keyword">return</span> gcd(b, a % b)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Rational</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, p, q</span>):</span><br><span class="line">        <span class="variable language_">self</span>.p = p</span><br><span class="line">        <span class="variable language_">self</span>.q = q</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__add__</span>(<span class="params">self, r</span>):</span><br><span class="line">        <span class="keyword">return</span> Rational(<span class="variable language_">self</span>.p * r.q + <span class="variable language_">self</span>.q * r.p, <span class="variable language_">self</span>.q * r.q)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__sub__</span>(<span class="params">self, r</span>):</span><br><span class="line">        <span class="keyword">return</span> Rational(<span class="variable language_">self</span>.p * r.q - <span class="variable language_">self</span>.q * r.p, <span class="variable language_">self</span>.q * r.q)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__mul__</span>(<span class="params">self, r</span>):</span><br><span class="line">        <span class="keyword">return</span> Rational(<span class="variable language_">self</span>.p * r.p, <span class="variable language_">self</span>.q * r.q)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__truediv__</span>(<span class="params">self, r</span>):</span><br><span class="line">        <span class="keyword">return</span> Rational(<span class="variable language_">self</span>.p * r.q, <span class="variable language_">self</span>.q * r.p)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__str__</span>(<span class="params">self</span>):</span><br><span class="line">        g = gcd(<span class="variable language_">self</span>.p, <span class="variable language_">self</span>.q)</span><br><span class="line">      	<span class="keyword">return</span> <span class="string">f&#x27;<span class="subst">&#123;self.p / g&#125;</span>/<span class="subst">&#123;self.q / g&#125;</span>&#x27;</span>   <span class="comment"># 约分</span></span><br><span class="line"></span><br><span class="line">    __repr__ = __str__</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">r1 = Rational(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line">r2 = Rational(<span class="number">1</span>, <span class="number">4</span>)</span><br><span class="line"><span class="built_in">print</span>(r1 + r2)   <span class="comment"># 3.0/4.0</span></span><br><span class="line"><span class="built_in">print</span>(r1 - r2)   <span class="comment"># 1.0/4.0</span></span><br><span class="line"><span class="built_in">print</span>(r1 * r2)   <span class="comment"># 1.0/8.0</span></span><br><span class="line"><span class="built_in">print</span>(r1 / r2)   <span class="comment"># 2.0/1.0</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="类型转换"><a href="#类型转换" class="headerlink" title="类型转换"></a>类型转换</h4><p><strong>Rational</strong>类实现了有理数运算，但是，如果要把结果转为 <strong>int</strong> 或 <strong>float</strong> 怎么办？</p>
+<p>考察整数和浮点数的转换：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">int</span>(<span class="number">12.34</span>)</span><br><span class="line"><span class="number">12</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">float</span>(<span class="number">12</span>)</span><br><span class="line"><span class="number">12.0</span></span><br></pre></td></tr></table></figure>
+
+<p>如果要把 <strong>Rational</strong> 转为 <strong>int</strong>，应该使用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">r = Rational(<span class="number">12</span>, <span class="number">5</span>)</span><br><span class="line">n = <span class="built_in">int</span>(r)</span><br><span class="line"><span class="comment"># TypeError: int() argument must be a string, a bytes-like object or a number, not &#x27;Rational&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>要让 <strong>int()</strong> 函数正常工作，只需要实现特殊方法<code>__int__()</code>,  同理要让 <strong>float()</strong> 函数正常工作，只需要实现特殊方法<code>__float__()</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">gcd</span>(<span class="params">a, b</span>):</span><br><span class="line">    <span class="keyword">if</span> b == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> a</span><br><span class="line">    <span class="keyword">return</span> gcd(b, a % b)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Rational</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, p, q</span>):</span><br><span class="line">        <span class="variable language_">self</span>.p = p</span><br><span class="line">        <span class="variable language_">self</span>.q = q</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__str__</span>(<span class="params">self</span>):</span><br><span class="line">        g = gcd(<span class="variable language_">self</span>.p, <span class="variable language_">self</span>.q)</span><br><span class="line">        <span class="keyword">return</span> <span class="string">f&#x27;<span class="subst">&#123;self.p / g&#125;</span>/<span class="subst">&#123;self.q / g&#125;</span>&#x27;</span></span><br><span class="line"></span><br><span class="line">   	<span class="keyword">def</span> <span class="title function_">__float__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">float</span>(<span class="variable language_">self</span>.p) / <span class="variable language_">self</span>.q</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__int__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.p // <span class="variable language_">self</span>.q</span><br><span class="line"></span><br><span class="line">    __repr__ = __str__</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(Rational(<span class="number">6</span>,<span class="number">8</span>))      <span class="comment"># 3.0/4.0</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">int</span>(Rational(<span class="number">6</span>,<span class="number">8</span>)))  <span class="comment"># 0</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">float</span>(Rational(<span class="number">6</span>,<span class="number">8</span>)))  <span class="comment"># 0.75</span></span><br><span class="line"><span class="built_in">print</span>(Rational(<span class="number">8</span>,<span class="number">6</span>))      <span class="comment"># 4.0/3.0</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">int</span>(Rational(<span class="number">8</span>,<span class="number">6</span>)))  <span class="comment"># 1</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">float</span>(Rational(<span class="number">8</span>,<span class="number">6</span>)))  <span class="comment"># 1.3333333333333333</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="property"><a href="#property" class="headerlink" title="@property"></a>@property</h4><p>举例 Student 类：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Student</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, name, score</span>):</span><br><span class="line">        <span class="variable language_">self</span>.name = name</span><br><span class="line">        <span class="variable language_">self</span>.score = score</span><br></pre></td></tr></table></figure>
+
+<p>当我们想要修改一个 Student 的 score 属性时，可以这么写：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">s = Student(<span class="string">&#x27;Bob&#x27;</span>, <span class="number">59</span>)</span><br><span class="line">s.score = <span class="number">60</span></span><br><span class="line"><span class="comment"># 但是也可以这么写：</span></span><br><span class="line">s.score = <span class="number">1000</span></span><br></pre></td></tr></table></figure>
+
+<p>但是也可以这么写：</p>
+<p>显然，直接给属性赋值无法检查分数的有效性。</p>
+<p>如果利用两个方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Student</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, name, score</span>):</span><br><span class="line">        <span class="variable language_">self</span>.name = name</span><br><span class="line">        <span class="variable language_">self</span>.__score = score</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_score</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.__score</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">set_score</span>(<span class="params">self, score</span>):</span><br><span class="line">        <span class="keyword">if</span> score &lt; <span class="number">0</span> <span class="keyword">or</span> score &gt; <span class="number">100</span>:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">&#x27;invalid score&#x27;</span>)</span><br><span class="line">        <span class="variable language_">self</span>.__score = score</span><br></pre></td></tr></table></figure>
+
+<p>这样 s.set_score(1000) 就会报错, 达到检查数据的目的。</p>
+<p>这种使用 <strong>get&#x2F;set</strong> 方法来封装对一个属性的访问在许多面向对象编程的语言中都很常见。</p>
+<p>但是写 <strong>s.get_score()</strong> 和 <strong>s.set_score()</strong> 没有直接写 <strong>s.score</strong> 来得直接。</p>
+<p>有一个两全其美的方法：</p>
+<p>因为Python支持高阶函数，在函数式编程中有装饰器函数，可以用装饰器函数把 get&#x2F;set 方法“装饰”成属性调用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Student</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, name, score</span>):</span><br><span class="line">        <span class="variable language_">self</span>.name = name</span><br><span class="line">        <span class="variable language_">self</span>.__score = score</span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">score</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.__score</span><br><span class="line"><span class="meta">    @score.setter</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">score</span>(<span class="params">self, score</span>):</span><br><span class="line">        <span class="keyword">if</span> score &lt; <span class="number">0</span> <span class="keyword">or</span> score &gt; <span class="number">100</span>:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">&#x27;invalid score&#x27;</span>)</span><br><span class="line">        <span class="variable language_">self</span>.__score = score</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意:</strong> 第一个score(self)是get方法，用@property装饰，第二个score(self, score)是set方法，用@score.setter装饰，@score.setter是前一个@property装饰后的副产品。</p>
+<p>现在，就可以像使用属性一样设置score了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>s = Student(<span class="string">&#x27;Bob&#x27;</span>, <span class="number">59</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s.score = <span class="number">60</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(s.score)</span><br><span class="line"><span class="number">60</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s.score = <span class="number">1000</span></span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  ...</span><br><span class="line">ValueError: invalid score</span><br><span class="line"><span class="comment"># 说明对 score 赋值实际调用的是 set方法。</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="slot"><a href="#slot" class="headerlink" title="__slot__"></a><code>__slot__</code></h4><p>由于Python是动态语言，任何实例在运行期都可以动态地添加属性。</p>
+<p>如果要限制添加的属性，例如，Student类只允许添加 name、gender和score 这3个属性，就可以利用Python的一个特殊的<code>__slots__</code>来实现。</p>
+<p><code>__slots__</code>是指一个类允许的属性列表：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Student</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    __slots__ = (<span class="string">&#x27;name&#x27;</span>, <span class="string">&#x27;gender&#x27;</span>, <span class="string">&#x27;score&#x27;</span>)</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, name, gender, score</span>):</span><br><span class="line">        <span class="variable language_">self</span>.name = name</span><br><span class="line">        <span class="variable language_">self</span>.gender = gender</span><br><span class="line">        <span class="variable language_">self</span>.score = score</span><br></pre></td></tr></table></figure>
+
+<p>对实例进行操作：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>s = Student(<span class="string">&#x27;Bob&#x27;</span>, <span class="string">&#x27;male&#x27;</span>, <span class="number">59</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s.name = <span class="string">&#x27;Tim&#x27;</span>   <span class="comment"># OK</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s.score = <span class="number">99</span>     <span class="comment"># OK</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s.grade = <span class="string">&#x27;A&#x27;</span></span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  ...</span><br><span class="line">AttributeError: <span class="string">&#x27;Student&#x27;</span> <span class="built_in">object</span> has no attribute <span class="string">&#x27;grade&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>__slots__</code>的目的是限制当前类所能拥有的属性，如果不需要添加任意动态的属性，使用<code>__slots__</code>也能节省内存。</p>
+<p>举例：假设Person类通过slots定义了name和gender，在派生类Student中通过slots继续添加score的定义，使Student类可以实现name、gender和score 3个属性</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line"></span><br><span class="line">    __slots__ = (<span class="string">&#x27;name&#x27;</span>, <span class="string">&#x27;gender&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, name, gender</span>):</span><br><span class="line">        <span class="variable language_">self</span>.name = name</span><br><span class="line">        <span class="variable language_">self</span>.gender = gender</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Student</span>(<span class="title class_ inherited__">Person</span>):</span><br><span class="line"></span><br><span class="line">    __slots__ = (<span class="string">&#x27;score&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, name, gender, score</span>):</span><br><span class="line">        <span class="built_in">super</span>(Student, <span class="variable language_">self</span>).__init__(name, gender)</span><br><span class="line">        <span class="variable language_">self</span>.score = score</span><br><span class="line"></span><br><span class="line">s = Student(<span class="string">&#x27;Bob&#x27;</span>, <span class="string">&#x27;male&#x27;</span>, <span class="number">59</span>)</span><br><span class="line">s.name = <span class="string">&#x27;Tim&#x27;</span></span><br><span class="line">s.score = <span class="number">99</span></span><br><span class="line"><span class="built_in">print</span>(s.score)</span><br></pre></td></tr></table></figure>
+
+<h4 id="call"><a href="#call" class="headerlink" title="__call__"></a><code>__call__</code></h4><p>函数也是对象，也可以被调用，所有的函数都是可调用对象。</p>
+<p>一个类实例也可以变成一个可调用对象，只需要实现一个特殊方法<code>__call__()</code>。</p>
+<p>我们把 Person 类变成一个可调用对象：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, name, gender</span>):</span><br><span class="line">        <span class="variable language_">self</span>.name = name</span><br><span class="line">        <span class="variable language_">self</span>.gender = gender</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__call__</span>(<span class="params">self, friend</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&#x27;name is <span class="subst">&#123;self.name&#125;</span>&#x27;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&#x27;friend is <span class="subst">&#123;friend&#125;</span>&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 现在可以对 Person 实例直接调用：</span></span><br><span class="line">p1 = Person(<span class="string">&quot;zzz&quot;</span>,<span class="string">&#x27;male&#x27;</span>)</span><br><span class="line">p1(<span class="string">&#x27;friend_uuu&#x27;</span>)</span><br><span class="line"><span class="comment"># name is zzz</span></span><br><span class="line"><span class="comment"># friend is friend_uuu</span></span><br></pre></td></tr></table></figure>
+
+<p>单看p1(‘friend_uuu’)无法确定 p1 是一个函数还是一个类实例，所以，在Python中，函数也是对象，对象和函数的区别并不显著。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Fib</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__call__</span>(<span class="params">self, num</span>):</span><br><span class="line">        a, b, retlist = <span class="number">0</span>, <span class="number">1</span>, []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(num):</span><br><span class="line">            retlist.append(a)</span><br><span class="line">            a, b = b, a+b</span><br><span class="line">        <span class="keyword">return</span> retlist</span><br><span class="line"></span><br><span class="line">f = Fib()</span><br><span class="line"><span class="built_in">print</span>(f(<span class="number">10</span>))  <span class="comment"># [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="Best-Practices"><a href="#Best-Practices" class="headerlink" title="Best Practices"></a>Best Practices</h4><ol>
+<li>始终实现 <code>__repr__</code> 以进行调试</li>
+<li>使特殊方法与内置类型一致</li>
+<li>尽可能使用 <code>@property</code> 而不是 get&#x2F;set 方法</li>
+<li>适当时使用 <code>@total_ordering</code> 实现比较方法</li>
+<li>需要时使用 <code>__slots__</code> 进行内存优化</li>
+<li>保持特殊方法简单且有针对性</li>
+<li>彻底记录特殊方法</li>
+</ol>
+<h4 id="Common-Pitfalls"><a href="#Common-Pitfalls" class="headerlink" title="Common Pitfalls"></a>Common Pitfalls</h4><ol>
+<li>忘记在算术运算中返回新对象</li>
+<li>未处理比较方法中的极端情况</li>
+<li>实现 <code>__str__</code> 而不使用 <code>__repr__</code></li>
+<li>在 <code>__init__</code> 中使用可变默认参数</li>
+<li>未考虑特殊方法中的类型检查</li>
+</ol>
+<p>请记住，特殊方法是功能强大的工具，应谨慎使用。它们允许您使对象的行为像内置类型一样并与 Python 的语法无缝集成，但只有当它们使您的代码更具可读性和可维护性时才应实现它们。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2019/08/18/33393/" rel="prev" title="Python偏函数结合类装饰器">
+                  <i class="fa fa-angle-left"></i> Python偏函数结合类装饰器
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2019/09/14/37423/" rel="next" title="自动化测试脚本编写小结">
+                  自动化测试脚本编写小结 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">691k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:28</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

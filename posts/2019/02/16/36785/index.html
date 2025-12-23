@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="什么是进程，如何管理、实现多进程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python多进程原理及其实现">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2019/02/16/36785/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="什么是进程，如何管理、实现多进程">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-02-16T13:29:14.000Z">
+<meta property="article:modified_time" content="2025-12-23T14:07:49.121Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="code">
+<meta property="article:tag" content="多进程">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2019/02/16/36785/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2019/02/16/36785/","path":"posts/2019/02/16/36785/","title":"python多进程原理及其实现"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>python多进程原理及其实现 | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E8%BF%9B%E7%A8%8B%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-text">1  进程的基本概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E7%88%B6%E8%BF%9B%E7%A8%8B%E5%92%8C%E5%AD%90%E8%BF%9B%E7%A8%8B"><span class="nav-text">2  父进程和子进程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-%E7%88%B6%E5%AD%90%E8%BF%9B%E7%A8%8B%E5%A6%82%E4%BD%95%E5%8C%BA%E5%88%86"><span class="nav-text">2.1 父子进程如何区分?</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-%E5%AD%90%E8%BF%9B%E7%A8%8B%E5%A6%82%E4%BD%95%E5%9B%9E%E6%94%B6%EF%BC%9F"><span class="nav-text">2.2 子进程如何回收？</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-Python%E8%BF%9B%E7%A8%8B%E6%A8%A1%E5%9D%97"><span class="nav-text">3. Python进程模块</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1-fork"><span class="nav-text">3.1  fork()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-2-Process%E8%BF%9B%E7%A8%8B"><span class="nav-text">3.2 Process进程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-3-%E8%BF%9B%E7%A8%8B%E6%B1%A0POOL-%E5%A4%9A%E4%B8%AA%E8%BF%9B%E7%A8%8B"><span class="nav-text">3.3  进程池POOL (多个进程)</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%E6%96%B9%E5%BC%8F"><span class="nav-text">4  进程间通信方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E5%A4%9A%E8%BF%9B%E7%A8%8B%E5%AE%9E%E7%8E%B0%E7%94%9F%E4%BA%A7%E8%80%85%E6%B6%88%E8%B4%B9%E8%80%85"><span class="nav-text">5   多进程实现生产者消费者</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-%E6%80%BB%E7%BB%93"><span class="nav-text">6  总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2019/02/16/36785/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="python多进程原理及其实现 | Magnolia's Blog">
+      <meta itemprop="description" content="什么是进程，如何管理、实现多进程">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          python多进程原理及其实现
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-02-16 21:29:14" itemprop="dateCreated datePublished" datetime="2019-02-16T21:29:14+08:00">2019-02-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>9.7k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>9 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">什么是进程，如何管理、实现多进程</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h4 id="1-进程的基本概念"><a href="#1-进程的基本概念" class="headerlink" title="1  进程的基本概念"></a>1  进程的基本概念</h4><p>什么是进程？</p>
+<p><strong>进程就是一个程序在一个数据集上的一次动态执行过程</strong>。进程一般由程序、数据集、进程控制块三部分组成。我们编写的程序用来描述进程要完成哪些功能以及如何完成；数据集则是程序在执行过程中所需要使用的资源；进程控制块用来记录进程的外部特征，描述进程的执行变化过程，系统可以利用它来控制和管理进程，它是系统感知进程存在的唯一标志。</p>
+<p>进程的过程: 创建，就绪，运行，阻塞, 消亡。</p>
+<h4 id="2-父进程和子进程"><a href="#2-父进程和子进程" class="headerlink" title="2  父进程和子进程"></a>2  父进程和子进程</h4><p>Linux 操作系统提供了一个 fork() 函数用来创建子进程，这个函数很特殊，调用一次，返回两次，因为操作系统是将当前的进程（父进程）复制了一份（子进程），然后分别在父进程和子进程内返回。子进程永远返回0，而父进程返回子进程的 PID。我们可以通过判断返回值是不是 0 来判断当前是在父进程还是子进程中执行。</p>
+<p>在 Python 中同样提供了 fork() 函数，此函数位于 os 模块下。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-  </span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;在创建子进程前: pid=<span class="subst">&#123;os.getpid()&#125;</span>, ppid=<span class="subst">&#123;os.getppid()&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">pid = os.fork()</span><br><span class="line"><span class="keyword">if</span> pid == <span class="number">0</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;子进程创建完后: pid=<span class="subst">&#123;os.getpid()&#125;</span>, ppid=<span class="subst">&#123;os.getppid()&#125;</span>&quot;</span>)</span><br><span class="line">    time.sleep(<span class="number">5</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;父进程创建完后: pid=<span class="subst">&#123;os.getpid()&#125;</span>, ppid=<span class="subst">&#123;os.getppid()&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="comment"># pid表示回收的子进程的pid, result表示子进程的退出状态</span></span><br><span class="line">    <span class="comment"># pid, result = os.wait()</span></span><br><span class="line">    time.sleep(<span class="number">5</span>)</span><br><span class="line">    <span class="comment"># print(f&quot;父进程：回收的子进程pid=&#123;pid&#125;, 子进程退出时result=&#123;result&#125;&quot;)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 下面的内容会被打印两次，一次是在父进程中，一次是在子进程中。</span></span><br><span class="line"><span class="comment"># 父进程中拿到的返回值是创建的子进程的pid，大于0</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;fork创建完后: pid=%s, ppid=%s&quot;</span> % (os.getpid(), os.getppid()))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在创建子进程前: pid=8122, ppid=8075</span></span><br><span class="line"><span class="comment"># 父进程信息:    pid=8122, ppid=8075</span></span><br><span class="line"><span class="comment"># 子进程信息：   pid=8123, ppid=8122</span></span><br><span class="line"><span class="comment"># fork创建完后:  pid=8122, ppid=8075</span></span><br><span class="line"><span class="comment"># fork创建完后:  pid=8123, ppid=8122</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 取消13,14,15,16行注释后:</span></span><br><span class="line"><span class="comment"># 在创建子进程前: pid=8133, ppid=8075</span></span><br><span class="line"><span class="comment"># 父进程信息  : pid=8133, ppid=8075</span></span><br><span class="line"><span class="comment"># 子进程信息  ： pid=8134, ppid=8133</span></span><br><span class="line"><span class="comment"># fork创建完后 : pid=8134, ppid=8133</span></span><br><span class="line"><span class="comment"># 父进程：回收的子进程pid=8134</span></span><br><span class="line"><span class="comment"># 父进程：子进程退出时 result=0</span></span><br><span class="line"><span class="comment"># fork创建完后 : pid=8133, ppid=8075</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># getpid()得到本身进程id，getppid()得到父进程进程id，如果已经是父进程，得到系统进程id</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="2-1-父子进程如何区分"><a href="#2-1-父子进程如何区分" class="headerlink" title="2.1 父子进程如何区分?"></a>2.1 父子进程如何区分?</h5><p>子进程是父进程通过fork()产生出来的，pid &#x3D; os.fork()</p>
+<p>通过返回值pid是否为0，判断是否为子进程，如果是0，则表示是子进程</p>
+<p>由于 fork() 是 Linux 上的概念，所以如果要跨平台，最好还是使用 <strong>subprocess</strong> 模块来创建子进程。</p>
+<h5 id="2-2-子进程如何回收？"><a href="#2-2-子进程如何回收？" class="headerlink" title="2.2 子进程如何回收？"></a>2.2 子进程如何回收？</h5><p>python中采用os.wait()方法用来回收子进程占用的资源</p>
+<p>pid, result &#x3D; os.wait()    # 回收子进程资源　阻塞，等待子进程执行完成回收</p>
+<p>如果有子进程没有被回收的，但是父进程已经死掉了，这个子进程就是僵尸进程。</p>
+<h4 id="3-Python进程模块"><a href="#3-Python进程模块" class="headerlink" title="3. Python进程模块"></a>3. Python进程模块</h4><p>python的进程multiprocessing模块有多种创建进程的方式，每种创建方式和进程资源的回收都不太相同，下面分别针对Process、Pool及系统自带的fork三种进程分析。</p>
+<h5 id="3-1-fork"><a href="#3-1-fork" class="headerlink" title="3.1  fork()"></a>3.1  fork()</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line">pid = os.fork() <span class="comment"># 创建一个子进程</span></span><br><span class="line">os.wait() <span class="comment"># 等待子进程结束释放资源</span></span><br><span class="line"><span class="comment"># pid为0的代表子进程。</span></span><br></pre></td></tr></table></figure>
+
+<p>缺点：<br>    1.兼容性差，只能在类linux系统下使用，windows系统不可使用；<br>    2.扩展性差，当需要多条进程的时候，进程管理变得很复杂；<br>    3.会产生“孤儿”进程和“僵尸”进程，需要手动回收资源。<br>优点：<br>    是系统自带的接近低层的创建方式，运行效率高。</p>
+<h5 id="3-2-Process进程"><a href="#3-2-Process进程" class="headerlink" title="3.2 Process进程"></a>3.2 Process进程</h5><p>multiprocessing模块提供Process类实现新建进程</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> multiprocessing  <span class="keyword">import</span> Process</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">fun</span>(<span class="params">name</span>):</span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&quot;2 子进程信息： pid=%s, ppid=%s&quot;</span> % (os.getpid(), os.getppid()))</span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&quot;hello &quot;</span> + name)</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test</span>():</span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&#x27;ssss&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&quot;1 主进程信息： pid=%s, ppid=%s&quot;</span> % (os.getpid(), os.getppid()))  </span><br><span class="line">	ps = Process(target=fun, args=(<span class="string">&#x27;jingsanpang&#x27;</span>, ))</span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&quot;111 ##### ps pid: &quot;</span> + <span class="built_in">str</span>(ps.pid) + <span class="string">&quot;, ident:&quot;</span> + <span class="built_in">str</span>(ps.ident))</span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&quot;3 进程信息： pid=%s, ppid=%s&quot;</span> % (os.getpid(), os.getppid()))</span><br><span class="line">	<span class="built_in">print</span>(ps.is_alive())</span><br><span class="line">	ps.start()</span><br><span class="line">	<span class="built_in">print</span>(ps.is_alive())</span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&quot;222 #### ps pid: &quot;</span> + <span class="built_in">str</span>(ps.pid) + <span class="string">&quot;, ident:&quot;</span> + <span class="built_in">str</span>(ps.ident))</span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&quot;4 进程信息： pid=%s, ppid=%s&quot;</span> % (os.getpid(), os.getppid()))</span><br><span class="line">	ps.join()</span><br><span class="line">	<span class="built_in">print</span>(ps.is_alive())</span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&quot;5 进程信息： pid=%s, ppid=%s&quot;</span> % (os.getpid(), os.getppid()))</span><br><span class="line">	ps.terminate()</span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&quot;6 进程信息： pid=%s, ppid=%s&quot;</span> % (os.getpid(), os.getppid()))</span><br><span class="line">    </span><br><span class="line"><span class="comment"># 1 主进程信息： pid=8143, ppid=8075</span></span><br><span class="line"><span class="comment"># 111 ##### ps pid: None, ident:None</span></span><br><span class="line"><span class="comment"># 3 进程信息： pid=8143, ppid=8075</span></span><br><span class="line"><span class="comment"># False</span></span><br><span class="line"><span class="comment"># True</span></span><br><span class="line"><span class="comment"># 222 #### ps pid: 8144, ident:8144</span></span><br><span class="line"><span class="comment"># 4 进程信息： pid=8143, ppid=8075</span></span><br><span class="line"><span class="comment"># 2 子进程信息： pid=8144, ppid=8143</span></span><br><span class="line"><span class="comment"># hello jingsanpang</span></span><br><span class="line"><span class="comment"># False</span></span><br><span class="line"><span class="comment"># 5 进程信息： pid=8143, ppid=8075</span></span><br><span class="line"><span class="comment"># 6 进程信息： pid=8143, ppid=8075</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>特点：</strong><br>   1.注意：Process对象可以创建进程，但Process对象不是进程，其删除与否与系统资源是否被回收没有直接的关系。<br>   2.主进程执行完毕后会默认等待子进程结束后回收资源，不需要手动回收资源；join()函数用来控制子进程<br>    结束的顺序,其内部也有一个清除僵尸进程的函数，可以回收资源；<br>   3.Process进程创建时，子进程会将主进程的Process对象完全复制一份，这样在主进程和子进程各有一个 Process对象，但是p.start()启动的是子进程，主进程中的Process对象作为一个静态对象存在，不执行。</p>
+<p>   4.当子进程执行完毕后，会产生一个僵尸进程，其会被join函数回收，或者再有一条进程开启，start函数也会回收僵尸进程，所以不一定需要写join函数。<br>   5.windows系统在子进程结束后会立即自动清除子进程的Process对象，而linux系统子进程的Process对象如果没有join函数和start函数的话会在主进程结束后统一清除。</p>
+<p>另外还可以通过继承Process对象来重写run方法创建进程</p>
+<h5 id="3-3-进程池POOL-多个进程"><a href="#3-3-进程池POOL-多个进程" class="headerlink" title="3.3  进程池POOL (多个进程)"></a>3.3  进程池POOL (多个进程)</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> multiprocessing</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">work</span>(<span class="params">msg</span>):</span><br><span class="line">	mult_proces_name = multiprocessing.current_process().name</span><br><span class="line">    time.sleep(<span class="number">2</span>)</span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&#x27;process: &#x27;</span> + mult_proces_name + <span class="string">&#x27;-&#x27;</span> + msg)</span><br><span class="line">	</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">	pool = multiprocessing.Pool(processes=<span class="number">5</span>) <span class="comment"># 创建5个进程</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>):</span><br><span class="line">		msg = <span class="string">&quot;process %d&quot;</span> %(i)</span><br><span class="line">		pool.apply_async(work, (msg, ))</span><br><span class="line">	pool.close() <span class="comment"># 关闭进程池，表示不能在往进程池中添加进程</span></span><br><span class="line">	pool.join() <span class="comment"># 等待进程池中的所有进程执行完毕，必须在close()之后调用</span></span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&quot;Sub-process all done.&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># process: ForkPoolWorker-3-process 3</span></span><br><span class="line"><span class="comment"># process: ForkPoolWorker-2-process 0</span></span><br><span class="line"><span class="comment"># process: ForkPoolWorker-4-process 2</span></span><br><span class="line"><span class="comment"># process: ForkPoolWorker-1-process 1</span></span><br><span class="line"><span class="comment"># process: ForkPoolWorker-5-process 4  每5个进程一起</span></span><br><span class="line"><span class="comment"># process: ForkPoolWorker-3-process 5</span></span><br><span class="line"><span class="comment"># process: ForkPoolWorker-2-process 6</span></span><br><span class="line"><span class="comment"># process: ForkPoolWorker-4-process 7</span></span><br><span class="line"><span class="comment"># process: ForkPoolWorker-1-process 8</span></span><br><span class="line"><span class="comment"># process: ForkPoolWorker-5-process 9</span></span><br><span class="line"><span class="comment"># Sub-process all done.</span></span><br></pre></td></tr></table></figure>
+
+<p>上述代码中的<code>pool.apply_async()</code>是<code>apply()</code>函数的变体，<code>apply_async()</code>是<code>apply()</code>的并行版本，<code>apply()</code>是<code>apply_async()</code>的阻塞版本，使用<code>apply()</code>主进程会被阻塞直到函数执行结束，所以说是阻塞版本。<code>apply()</code>既是<code>Pool</code>的方法，也是Python内置的函数，两者等价。可以看到输出结果并不是按照代码for循环中的顺序输出的。 async 异步</p>
+<p>多个子进程并返回值</p>
+<p><code>apply_async()</code>本身就可以返回被进程调用的函数的返回值。上一个创建多个子进程的代码中，如果在函数<code>func</code>中返回一个值，那么<code>pool.apply_async(func, (msg, ))</code>的结果就是返回pool中所有进程的<strong>值的对象（注意是对象，不是值本身）</strong>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> multiprocessing</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">func</span>(<span class="params">msg</span>):</span><br><span class="line">    time.sleep(<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> multiprocessing.current_process().name + <span class="string">&#x27;-&#x27;</span> + msg</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    pool = multiprocessing.Pool(processes=<span class="number">4</span>) <span class="comment"># 创建4个进程</span></span><br><span class="line">    results = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>):</span><br><span class="line">        msg = <span class="string">&quot;process %d&quot;</span> %(i)</span><br><span class="line">        results.append(pool.apply_async(func, (msg, )))</span><br><span class="line">    pool.close() <span class="comment"># 关闭进程池，表示不能再往进程池中添加进程，需要在join之前调用</span></span><br><span class="line">    pool.join() <span class="comment"># 等待进程池中的所有进程执行完毕</span></span><br><span class="line">    <span class="built_in">print</span> (<span class="string">&quot;Sub-process(es) done.&quot;</span>)</span><br><span class="line">    <span class="keyword">for</span> res <span class="keyword">in</span> results:</span><br><span class="line">        <span class="built_in">print</span> (res.get())</span><br><span class="line">        </span><br><span class="line"><span class="comment"># Sub-process(es) done.</span></span><br><span class="line"><span class="comment"># ForkPoolWorker-2-process 0</span></span><br><span class="line"><span class="comment"># ForkPoolWorker-4-process 1</span></span><br><span class="line"><span class="comment"># ForkPoolWorker-3-process 2</span></span><br><span class="line"><span class="comment"># ForkPoolWorker-1-process 3</span></span><br><span class="line"><span class="comment"># ForkPoolWorker-3-process 4</span></span><br><span class="line"><span class="comment"># ForkPoolWorker-2-process 5</span></span><br><span class="line"><span class="comment"># ForkPoolWorker-1-process 6</span></span><br><span class="line"><span class="comment"># ForkPoolWorker-4-process 7</span></span><br><span class="line"><span class="comment"># ForkPoolWorker-2-process 8</span></span><br><span class="line"><span class="comment"># ForkPoolWorker-3-process 9</span></span><br><span class="line"><span class="comment"># ForkPoolWorker-1-process 10</span></span><br><span class="line"><span class="comment"># ForkPoolWorker-4-process 11</span></span><br></pre></td></tr></table></figure>
+
+<p>与之前的输出不同，这次的输出是有序的。如果电脑是八核，建立8个进程，在Ubuntu下输入top命令再按下大键盘的1，可以看到每个CPU的使用率是比较平均的</p>
+<h4 id="4-进程间通信方式"><a href="#4-进程间通信方式" class="headerlink" title="4  进程间通信方式"></a>4  进程间通信方式</h4><ol>
+<li><strong>管道pipe</strong>：管道是一种<strong>半双工</strong>的通信方式，数据只能单向流动，而且只能在具有亲缘关系的进程间使用。进程的亲缘关系通常是指父子进程关系。 </li>
+<li><strong>命名管道FIFO</strong>：有名管道也是半双工的通信方式，但是它允许无亲缘关系进程间的通信。</li>
+<li><strong>消息队列</strong>MessageQueue：消息队列是由消息的链表，存放在内核中并由消息队列标识符标识。消息队列克服了信号传递信息少、管道只能承载无格式字节流以及缓冲区大小受限等缺点。</li>
+<li><strong>共享存储</strong>SharedMemory：共享内存就是映射一段能被其他进程所访问的内存，这段共享内存由一个进程创建，但多个进程都可以访问。共享内存是最快的 IPC 方式，它是针对其他进程间通信方式运行效率低而专门设计的。它往往与其他通信机制，如信号两，配合使用，来实现进程间的同步和通信。</li>
+</ol>
+<p>以上几种进程间通信方式中，消息队列是使用的比较频繁的方式。</p>
+<p>（1）管道pipe</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> multiprocessing</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">foo</span>(<span class="params">sk</span>):</span><br><span class="line">   sk.send(<span class="string">&#x27;hello father&#x27;</span>)</span><br><span class="line">   <span class="built_in">print</span>(sk.recv())</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">   conn1,conn2=multiprocessing.Pipe()    <span class="comment">#开辟两个口，都是能进能出，括号中如果False即单向通信</span></span><br><span class="line">   p=multiprocessing.Process(target=foo,args=(conn1,))  <span class="comment">#子进程使用sock口，调用foo函数</span></span><br><span class="line">   p.start()</span><br><span class="line">   <span class="built_in">print</span>(conn2.recv())  <span class="comment">#主进程使用conn口接收</span></span><br><span class="line">   conn2.send(<span class="string">&#x27;hi son&#x27;</span>) <span class="comment">#主进程使用conn口发送</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>（2）消息队列Queue</p>
+<p>Queue是多进程的安全队列，可以使用Queue实现多进程之间的数据传递。</p>
+<p>Queue的一些常用方法：</p>
+<ul>
+<li>Queue.qsize()：返回当前队列包含的消息数量；</li>
+<li>Queue.empty()：如果队列为空，返回True，反之False ；</li>
+<li>Queue.full()：如果队列满了，返回True,反之False；</li>
+<li>Queue.get():获取队列中的一条消息，然后将其从列队中移除，可传参超时时长。</li>
+<li>Queue.get_nowait()：相当Queue.get(False),取不到值时触发异常：Empty；</li>
+<li>Queue.put():将一个值添加进数列，可传参超时时长。</li>
+<li>Queue.put_nowait():相当于Queue.get(False),当队列满了时报错：Full。</li>
+</ul>
+<p>案例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> multiprocessing <span class="keyword">import</span> Process, Queue</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">write</span>(<span class="params">q</span>):</span><br><span class="line">   <span class="keyword">for</span> i <span class="keyword">in</span> [<span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;D&#x27;</span>, <span class="string">&#x27;E&#x27;</span>]:</span><br><span class="line">      <span class="built_in">print</span>(<span class="string">&#x27;Put %s to queue&#x27;</span> % i)</span><br><span class="line">      q.put(i)</span><br><span class="line">      time.sleep(<span class="number">0.5</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">read</span>(<span class="params">q</span>):</span><br><span class="line">   <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">      v = q.get(<span class="literal">True</span>)</span><br><span class="line">      <span class="built_in">print</span>(<span class="string">&#x27;get %s from queue&#x27;</span> % v)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">   q = Queue()</span><br><span class="line">   pw = Process(target=write, args=(q,))</span><br><span class="line">   pr = Process(target=read, args=(q,))</span><br><span class="line">   <span class="built_in">print</span>(<span class="string">&#x27;write process = &#x27;</span>, pw)</span><br><span class="line">   <span class="built_in">print</span>(<span class="string">&#x27;read  process = &#x27;</span>, pr)</span><br><span class="line">   pw.start()</span><br><span class="line">   pr.start()</span><br><span class="line">   pw.join()</span><br><span class="line">   pr.join()</span><br><span class="line">   pr.terminate()</span><br><span class="line">   pw.terminate()</span><br></pre></td></tr></table></figure>
+
+
+
+<p>Queue和pipe只是实现了数据交互，并没实现数据共享，即一个进程去更改另一个进程的数据<strong>。</strong></p>
+<p>注：<strong>进程间通信应该尽量避免使用共享数据的方式</strong></p>
+<h4 id="5-多进程实现生产者消费者"><a href="#5-多进程实现生产者消费者" class="headerlink" title="5   多进程实现生产者消费者"></a>5   多进程实现生产者消费者</h4><p>以下通过多进程实现生产者，消费者模式</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> multiprocessing</span><br><span class="line"><span class="keyword">from</span> multiprocessing <span class="keyword">import</span> Process</span><br><span class="line"><span class="keyword">from</span> time <span class="keyword">import</span> sleep</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MultiProcessProducer</span>(multiprocessing.Process):</span><br><span class="line">   <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, num, queue</span>):</span><br><span class="line">      <span class="string">&quot;&quot;&quot;Constructor&quot;&quot;&quot;</span></span><br><span class="line">      multiprocessing.Process.__init__(<span class="variable language_">self</span>)</span><br><span class="line">      <span class="variable language_">self</span>.num = num</span><br><span class="line">      <span class="variable language_">self</span>.queue = queue</span><br><span class="line"></span><br><span class="line">   <span class="keyword">def</span> <span class="title function_">run</span>(<span class="params">self</span>):</span><br><span class="line">      t1 = time.time()</span><br><span class="line">      <span class="built_in">print</span>(<span class="string">&#x27;producer start &#x27;</span> + <span class="built_in">str</span>(<span class="variable language_">self</span>.num))</span><br><span class="line">      <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1000</span>):</span><br><span class="line">         <span class="variable language_">self</span>.queue.put((i, <span class="variable language_">self</span>.num))</span><br><span class="line">      <span class="comment"># print &#x27;producer put&#x27;, i, self.num</span></span><br><span class="line">      t2 = time.time()</span><br><span class="line"></span><br><span class="line">      <span class="built_in">print</span>(<span class="string">&#x27;producer exit &#x27;</span> + <span class="built_in">str</span>(<span class="variable language_">self</span>.num))</span><br><span class="line">      use_time = <span class="built_in">str</span>(t2 - t1)</span><br><span class="line">      <span class="built_in">print</span>(<span class="string">&#x27;producer &#x27;</span> + <span class="built_in">str</span>(<span class="variable language_">self</span>.num) + <span class="string">&#x27;, </span></span><br><span class="line"><span class="string">      use_time: &#x27;</span>+ use_time)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MultiProcessConsumer</span>(multiprocessing.Process):</span><br><span class="line">   <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, num, queue</span>):</span><br><span class="line">      <span class="string">&quot;&quot;&quot;Constructor&quot;&quot;&quot;</span></span><br><span class="line">      multiprocessing.Process.__init__(<span class="variable language_">self</span>)</span><br><span class="line">      <span class="variable language_">self</span>.num = num</span><br><span class="line">      <span class="variable language_">self</span>.queue = queue</span><br><span class="line"></span><br><span class="line">   <span class="keyword">def</span> <span class="title function_">run</span>(<span class="params">self</span>):</span><br><span class="line">      t1 = time.time()</span><br><span class="line">      <span class="built_in">print</span>(<span class="string">&#x27;consumer start &#x27;</span> + <span class="built_in">str</span>(<span class="variable language_">self</span>.num))</span><br><span class="line">      <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">         d = <span class="variable language_">self</span>.queue.get()</span><br><span class="line">         <span class="keyword">if</span> d != <span class="literal">None</span>:</span><br><span class="line">            <span class="comment"># print &#x27;consumer get&#x27;, d, self.num</span></span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">         <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">      t2 = time.time()</span><br><span class="line">      <span class="built_in">print</span>(<span class="string">&#x27;consumer exit &#x27;</span> + <span class="built_in">str</span>(<span class="variable language_">self</span>.num))</span><br><span class="line">      <span class="built_in">print</span>(<span class="string">&#x27;consumer &#x27;</span> + <span class="built_in">str</span>(<span class="variable language_">self</span>.num) + <span class="string">&#x27;, use time:&#x27;</span> + <span class="built_in">str</span>(t2 - t1))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">   <span class="comment"># create queue</span></span><br><span class="line">   queue = multiprocessing.Queue()</span><br><span class="line"></span><br><span class="line">   <span class="comment"># create processes</span></span><br><span class="line">   producer = []</span><br><span class="line">   <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>):</span><br><span class="line">      producer.append(MultiProcessProducer(i, queue))</span><br><span class="line"></span><br><span class="line">   consumer = []</span><br><span class="line">   <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>):</span><br><span class="line">      consumer.append(MultiProcessConsumer(i, queue))</span><br><span class="line"></span><br><span class="line">   <span class="comment"># start processes</span></span><br><span class="line">   <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(producer)):</span><br><span class="line">      producer[i].start()</span><br><span class="line"></span><br><span class="line">   <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(consumer)):</span><br><span class="line">      consumer[i].start()</span><br><span class="line"></span><br><span class="line">   <span class="comment"># wait for processs to exit</span></span><br><span class="line">   <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(producer)):</span><br><span class="line">      producer[i].join()</span><br><span class="line"></span><br><span class="line">   <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(consumer)):</span><br><span class="line">      queue.put(<span class="literal">None</span>)</span><br><span class="line"></span><br><span class="line">   <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(consumer)):</span><br><span class="line">      consumer[i].join()</span><br><span class="line"></span><br><span class="line">   <span class="built_in">print</span>(<span class="string">&#x27;all done finish&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">   main()</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="6-总结"><a href="#6-总结" class="headerlink" title="6  总结"></a>6  总结</h4><p>python中的多进程创建有以下两种方式：</p>
+<p>   （1）<strong>fork子进程</strong> ( linux )</p>
+<p>   （2）采用 <strong>multiprocessing</strong> 这个库创建子进程</p>
+<p>需要注意的是队列中Queue.Queue是线程安全的，但并不是进程安全，所以多进程一般使用线程、进程安全的multiprocessing.Queue()</p>
+<p>另外, 进程池使用 multiprocessing.Pool实现，pool &#x3D; multiprocessing.Pool(processes &#x3D; 3)，产生一个进程池，pool.apply_async实现非租塞模式，pool.apply实现阻塞模式。</p>
+<p> <em><strong>apply_async和 apply函数，前者是非阻塞的，后者是阻塞。可以看出运行时间相差的倍数正是进程池数量。</strong></em></p>
+<p>同时可以通过result.append(pool.apply_async(func, (msg, )))获取非租塞式调用结果信息的。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+              <a href="/tags/code/" rel="tag"># code</a>
+              <a href="/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B/" rel="tag"># 多进程</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2019/01/19/27577/" rel="prev" title="截取bin文件内容，指定位置和长度">
+                  <i class="fa fa-angle-left"></i> 截取bin文件内容，指定位置和长度
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2019/02/17/51544/" rel="next" title="python多线程原理及其实现">
+                  python多线程原理及其实现 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">691k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:28</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

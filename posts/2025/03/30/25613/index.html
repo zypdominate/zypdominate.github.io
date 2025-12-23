@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="将测试工具库转换为真正的 pytest 插件，安装了这个 pytest 插件后，可以在任何测试项目中直接使用这些 fixture，无需额外导入或配置。对于“pytest11”这个固定写法，简直逆天。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="将第三方库转换为真正的 pytest 插件">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2025/03/30/25613/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="将测试工具库转换为真正的 pytest 插件，安装了这个 pytest 插件后，可以在任何测试项目中直接使用这些 fixture，无需额外导入或配置。对于“pytest11”这个固定写法，简直逆天。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-03-30T08:30:18.000Z">
+<meta property="article:modified_time" content="2025-12-23T14:07:49.184Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="pytest">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2025/03/30/25613/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2025/03/30/25613/","path":"posts/2025/03/30/25613/","title":"将第三方库转换为真正的 pytest 插件"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>将第三方库转换为真正的 pytest 插件 | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E8%83%8C%E6%99%AF"><span class="nav-text">问题背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E4%BD%B3%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%EF%BC%9A%E5%B0%86%E5%BA%93%E8%BD%AC%E6%8D%A2%E4%B8%BA%E7%9C%9F%E6%AD%A3%E7%9A%84-pytest-%E6%8F%92%E4%BB%B6"><span class="nav-text">最佳解决方案：将库转换为真正的 pytest 插件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%A5%E9%AA%A4-1%EF%BC%9A%E9%87%8D%E6%9E%84%E5%BA%93%E7%BB%93%E6%9E%84"><span class="nav-text">步骤 1：重构库结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%A5%E9%AA%A4-2%EF%BC%9A%E5%88%9B%E5%BB%BA%E6%8F%92%E4%BB%B6%E5%85%A5%E5%8F%A3%E7%82%B9%E6%96%87%E4%BB%B6"><span class="nav-text">步骤 2：创建插件入口点文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%A5%E9%AA%A4-3%EF%BC%9A%E4%BF%AE%E6%94%B9%E5%BA%93%E7%9A%84-setup-py"><span class="nav-text">步骤 3：修改库的 setup.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%A5%E9%AA%A4-4%EF%BC%9A%E9%87%8D%E6%96%B0%E5%AE%89%E8%A3%85%E5%BA%93"><span class="nav-text">步骤 4：重新安装库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%A5%E9%AA%A4-5%EF%BC%9A%E4%BF%AE%E6%94%B9%E6%B5%8B%E8%AF%95%E9%A1%B9%E7%9B%AE"><span class="nav-text">步骤 5：修改测试项目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%A5%E9%AA%A4-6%EF%BC%9A%E9%AA%8C%E8%AF%81%E6%8F%92%E4%BB%B6%E6%98%AF%E5%90%A6%E6%AD%A3%E7%A1%AE%E5%AE%89%E8%A3%85"><span class="nav-text">步骤 6：验证插件是否正确安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B"><span class="nav-text">代码示例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#fixture-py-%E7%A4%BA%E4%BE%8B"><span class="nav-text">fixture.py 示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#plugin-py-%E5%AE%8C%E6%95%B4%E7%A4%BA%E4%BE%8B"><span class="nav-text">plugin.py 完整示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E7%A4%BA%E4%BE%8B"><span class="nav-text">测试示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="nav-text">使用方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%98%E5%8A%BF"><span class="nav-text">优势</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2025/03/30/25613/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="将第三方库转换为真正的 pytest 插件 | Magnolia's Blog">
+      <meta itemprop="description" content="将测试工具库转换为真正的 pytest 插件，安装了这个 pytest 插件后，可以在任何测试项目中直接使用这些 fixture，无需额外导入或配置。对于“pytest11”这个固定写法，简直逆天。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          将第三方库转换为真正的 pytest 插件
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2025-03-30 16:30:18" itemprop="dateCreated datePublished" datetime="2025-03-30T16:30:18+08:00">2025-03-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/pytest/" itemprop="url" rel="index"><span itemprop="name">pytest</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>5.2k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>5 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">将测试工具库转换为真正的 pytest 插件，安装了这个 pytest 插件后，可以在任何测试项目中直接使用这些 fixture，无需额外导入或配置。对于“pytest11”这个固定写法，简直逆天。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a>问题背景</h2><p>在使用 pytest 进行测试时，我遇到了这样的错误：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Defining &#x27;pytest_plugins&#x27; in a non-top-level conftest is no longer supported: It affects the entire test suite instead of just below the conftest as expected.</span><br></pre></td></tr></table></figure>
+
+<p>这个错误通常出现在测试工程的结构中有多层 conftest.py 文件，并且在非顶层的 conftest 中定义了 <code>pytest_plugins</code>。从 pytest 7.0.0 版本开始，这种用法被废弃，因为它会影响整个测试套件而不仅仅是该 conftest.py 以下的测试。</p>
+<p>案例中，测试工程根目录下有一个 conftest.py，其中包含：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pytest_plugins = [<span class="string">&quot;my_python_lib.base.testbase.conftest&quot;</span>]</span><br></pre></td></tr></table></figure>
+
+<p>这里 <code>my_python_lib</code> 是一个自定义的 Python 第三方库，测试工程中的用例需要调用 <code>my_python_lib.base.testbase.conftest</code> 中的 fixture。</p>
+<h2 id="最佳解决方案：将库转换为真正的-pytest-插件"><a href="#最佳解决方案：将库转换为真正的-pytest-插件" class="headerlink" title="最佳解决方案：将库转换为真正的 pytest 插件"></a>最佳解决方案：将库转换为真正的 pytest 插件</h2><p>将我们的库转换为一个真正的 pytest 插件是最优雅和最可维护的解决方案。这样不仅解决了当前问题，还提高了代码的可复用性和可扩展性。</p>
+<h3 id="步骤-1：重构库结构"><a href="#步骤-1：重构库结构" class="headerlink" title="步骤 1：重构库结构"></a>步骤 1：重构库结构</h3><p>首先，调整库结构，确保 fixture 代码位于合适的模块中：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">my_python_lib/</span><br><span class="line">├── __init__.py</span><br><span class="line">├── base/</span><br><span class="line">│   ├── __init__.py</span><br><span class="line">│   ├── testbase/</span><br><span class="line">│   │   ├── __init__.py</span><br><span class="line">│   │   ├── fixture.py  # 将 conftest.py 中的 fixture 移到这里</span><br><span class="line">│   │   └── plugin.py   # 新建的插件入口点文件</span><br></pre></td></tr></table></figure>
+
+<h3 id="步骤-2：创建插件入口点文件"><a href="#步骤-2：创建插件入口点文件" class="headerlink" title="步骤 2：创建插件入口点文件"></a>步骤 2：创建插件入口点文件</h3><p>创建 <code>plugin.py</code> 文件，导入所有 fixture 并定义任何需要的 pytest 钩子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># my_python_lib/base/testbase/plugin.py</span></span><br><span class="line"><span class="keyword">from</span> .fixture <span class="keyword">import</span> *  <span class="comment"># 导入所有的 fixture</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在这里可以定义 pytest 钩子函数</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">pytest_configure</span>(<span class="params">config</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    pytest 配置阶段被调用的钩子</span></span><br><span class="line"><span class="string">    可以在这里进行全局配置</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="步骤-3：修改库的-setup-py"><a href="#步骤-3：修改库的-setup-py" class="headerlink" title="步骤 3：修改库的 setup.py"></a>步骤 3：修改库的 setup.py</h3><p>在库的 setup.py 中添加 pytest 插件的入口点：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> setuptools <span class="keyword">import</span> setup, find_packages</span><br><span class="line"></span><br><span class="line">setup(</span><br><span class="line">    name=<span class="string">&quot;my_python_lib&quot;</span>,</span><br><span class="line">    version=<span class="string">&quot;1.0.0&quot;</span>,</span><br><span class="line">    packages=find_packages(),</span><br><span class="line">    description=<span class="string">&quot;我的测试工具库&quot;</span>,</span><br><span class="line">    author=<span class="string">&quot;Your Name&quot;</span>,</span><br><span class="line">    author_email=<span class="string">&quot;your.email@example.com&quot;</span>,</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 添加 pytest 插件入口点，这里的 pytest11 是一个固定写法，了解到这个情况的我，感觉这简直“逆天”</span></span><br><span class="line">    entry_points=&#123;</span><br><span class="line">        <span class="string">&#x27;pytest11&#x27;</span>: [</span><br><span class="line">            <span class="string">&#x27;my_lib = my_python_lib.base.testbase.plugin&#x27;</span>,</span><br><span class="line">        ],</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment"># 添加依赖</span></span><br><span class="line">    install_requires=[</span><br><span class="line">        <span class="string">&#x27;pytest&gt;=6.0.0&#x27;</span>,</span><br><span class="line">        <span class="comment"># 其他依赖...</span></span><br><span class="line">    ],</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="步骤-4：重新安装库"><a href="#步骤-4：重新安装库" class="headerlink" title="步骤 4：重新安装库"></a>步骤 4：重新安装库</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pip uninstall -y my_python_lib  <span class="comment"># 先卸载当前版本</span></span><br><span class="line"><span class="built_in">cd</span> /path/to/my_python_lib</span><br><span class="line">pip install -e .  <span class="comment"># 以开发模式安装</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="步骤-5：修改测试项目"><a href="#步骤-5：修改测试项目" class="headerlink" title="步骤 5：修改测试项目"></a>步骤 5：修改测试项目</h3><p>删除测试项目中 conftest.py 中的 <code>pytest_plugins</code> 定义，因为现在插件会自动加载：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 测试项目的 conftest.py</span></span><br><span class="line"><span class="comment"># 删除这一行：</span></span><br><span class="line"><span class="comment"># pytest_plugins = [&quot;my_python_lib.base.testbase.conftest&quot;]</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 可以添加其他测试项目特定的 fixture</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">pytest_configure</span>(<span class="params">config</span>):</span><br><span class="line">    <span class="comment"># 测试项目特定的配置</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="步骤-6：验证插件是否正确安装"><a href="#步骤-6：验证插件是否正确安装" class="headerlink" title="步骤 6：验证插件是否正确安装"></a>步骤 6：验证插件是否正确安装</h3><p>运行以下命令验证插件是否被正确识别：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python -m pytest --trace-config</span><br></pre></td></tr></table></figure>
+
+<p>应该能看到类似这样的输出：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pytest11 plugin registration SETUP: my_python_lib.base.testbase.plugin</span><br></pre></td></tr></table></figure>
+
+<h2 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h2><h3 id="fixture-py-示例"><a href="#fixture-py-示例" class="headerlink" title="fixture.py 示例"></a><code>fixture.py</code> 示例</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># my_python_lib/base/testbase/fixture.py</span></span><br><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> tempfile</span><br><span class="line"></span><br><span class="line"><span class="meta">@pytest.fixture</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">temp_dir</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;提供一个临时目录&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">with</span> tempfile.TemporaryDirectory() <span class="keyword">as</span> temp_dir:</span><br><span class="line">        <span class="keyword">yield</span> temp_dir</span><br><span class="line"></span><br><span class="line"><span class="meta">@pytest.fixture</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">temp_file</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;提供一个临时文件&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">with</span> tempfile.NamedTemporaryFile(delete=<span class="literal">False</span>) <span class="keyword">as</span> temp_file:</span><br><span class="line">        file_path = temp_file.name</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">yield</span> file_path</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 测试后清理</span></span><br><span class="line">    <span class="keyword">if</span> os.path.exists(file_path):</span><br><span class="line">        os.remove(file_path)</span><br><span class="line"></span><br><span class="line"><span class="meta">@pytest.fixture</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">sample_data</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;提供示例数据&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        <span class="string">&quot;name&quot;</span>: <span class="string">&quot;test&quot;</span>,</span><br><span class="line">        <span class="string">&quot;values&quot;</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>],</span><br><span class="line">        <span class="string">&quot;metadata&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;version&quot;</span>: <span class="string">&quot;1.0&quot;</span>,</span><br><span class="line">            <span class="string">&quot;type&quot;</span>: <span class="string">&quot;test-data&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="plugin-py-完整示例"><a href="#plugin-py-完整示例" class="headerlink" title="plugin.py 完整示例"></a><code>plugin.py</code> 完整示例</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># my_python_lib/base/testbase/plugin.py</span></span><br><span class="line"><span class="keyword">from</span> .fixture <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">pytest_configure</span>(<span class="params">config</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;配置 pytest 环境&quot;&quot;&quot;</span></span><br><span class="line">    config.addinivalue_line(</span><br><span class="line">        <span class="string">&quot;markers&quot;</span>, <span class="string">&quot;slow: 标记执行较慢的测试&quot;</span></span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">pytest_addoption</span>(<span class="params">parser</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;添加命令行选项&quot;&quot;&quot;</span></span><br><span class="line">    parser.addoption(</span><br><span class="line">        <span class="string">&quot;--skip-slow&quot;</span>,</span><br><span class="line">        action=<span class="string">&quot;store_true&quot;</span>,</span><br><span class="line">        default=<span class="literal">False</span>,</span><br><span class="line">        <span class="built_in">help</span>=<span class="string">&quot;跳过标记为 slow 的测试&quot;</span></span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">pytest_collection_modifyitems</span>(<span class="params">config, items</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;修改收集的测试项&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">if</span> config.getoption(<span class="string">&quot;--skip-slow&quot;</span>):</span><br><span class="line">        skip_slow = pytest.mark.skip(reason=<span class="string">&quot;跳过慢测试 (--skip-slow 选项)&quot;</span>)</span><br><span class="line">        <span class="keyword">for</span> item <span class="keyword">in</span> items:</span><br><span class="line">            <span class="keyword">if</span> <span class="string">&quot;slow&quot;</span> <span class="keyword">in</span> item.keywords:</span><br><span class="line">                item.add_marker(skip_slow)</span><br></pre></td></tr></table></figure>
+
+<h3 id="测试示例"><a href="#测试示例" class="headerlink" title="测试示例"></a>测试示例</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 测试文件示例 test_utils.py</span></span><br><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_temp_dir_fixture</span>(<span class="params">temp_dir</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;测试临时目录 fixture&quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># 在临时目录创建文件</span></span><br><span class="line">    file_path = os.path.join(temp_dir, <span class="string">&quot;test.txt&quot;</span>)</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(file_path, <span class="string">&quot;w&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        f.write(<span class="string">&quot;Hello, World!&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 验证文件创建成功</span></span><br><span class="line">    <span class="keyword">assert</span> os.path.exists(file_path)</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(file_path, <span class="string">&quot;r&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        content = f.read()</span><br><span class="line">    <span class="keyword">assert</span> content == <span class="string">&quot;Hello, World!&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@pytest.mark.slow</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_sample_data_manipulation</span>(<span class="params">sample_data, temp_file</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;测试数据操作（标记为慢测试）&quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># 将示例数据写入临时文件</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(temp_file, <span class="string">&quot;w&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        json.dump(sample_data, f)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 读取并验证数据</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(temp_file, <span class="string">&quot;r&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        loaded_data = json.load(f)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">assert</span> loaded_data == sample_data</span><br><span class="line">    <span class="keyword">assert</span> loaded_data[<span class="string">&quot;metadata&quot;</span>][<span class="string">&quot;version&quot;</span>] == <span class="string">&quot;1.0&quot;</span></span><br><span class="line">    <span class="keyword">assert</span> <span class="built_in">sum</span>(loaded_data[<span class="string">&quot;values&quot;</span>]) == <span class="number">15</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><p>安装了这个 pytest 插件后，你可以在任何测试项目中直接使用这些 fixture，无需额外导入或配置：</p>
+<ol>
+<li><p>安装你的库：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install my_python_lib</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在测试文件中直接使用 fixture：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">test_file_operations</span>(<span class="params">temp_dir, temp_file</span>):</span><br><span class="line">    <span class="comment"># 自动获取临时目录和临时文件</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(temp_file, <span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        f.write(<span class="string">&#x27;测试内容&#x27;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">assert</span> os.path.exists(temp_file)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用示例数据 fixture：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">test_data_processing</span>(<span class="params">sample_data</span>):</span><br><span class="line">    <span class="comment"># sample_data 自动可用</span></span><br><span class="line">    <span class="keyword">assert</span> sample_data[<span class="string">&quot;name&quot;</span>] == <span class="string">&quot;test&quot;</span></span><br><span class="line">    <span class="keyword">assert</span> <span class="built_in">len</span>(sample_data[<span class="string">&quot;values&quot;</span>]) == <span class="number">5</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>跳过慢测试：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python -m pytest --skip-slow</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运行测试并查看所有可用的标记：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python -m pytest --markers</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>这些 fixture 可以组合使用，也可以在自己的 conftest.py 中扩展它们，为它们提供自定义行为。</p>
+<h2 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h2><ol>
+<li><strong>符合 pytest 最佳实践</strong> - 使用官方推荐的插件机制</li>
+<li><strong>避免警告和错误</strong> - 不再使用不推荐的 <code>pytest_plugins</code> 方式</li>
+<li><strong>更好的可发现性</strong> - 自动注册 fixture，无需显式导入</li>
+<li><strong>可配置性</strong> - 可以添加命令行选项和配置项</li>
+<li><strong>模块化</strong> - 更容易维护和扩展</li>
+<li><strong>可重用性</strong> - 可以在多个项目中使用同一套测试工具</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通过将测试工具库转换为真正的 pytest 插件，我们不仅解决了特定的错误问题，还提高了代码质量和可维护性。这种方法虽然前期工作量稍大，但从长远来看更加健壮，尤其是当测试库需要在多个项目中使用时。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/pytest/" rel="tag"># pytest</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2025/03/15/6513/" rel="prev" title="windows 文件被占用">
+                  <i class="fa fa-angle-left"></i> windows 文件被占用
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2025/04/12/45353/" rel="next" title="Android基础教程">
+                  Android基础教程 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">691k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:28</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

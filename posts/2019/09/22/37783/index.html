@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="编程语言都有其惯用法，了解掌握这些用法有助于帮助写出更加专业和精简的程序。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="编写高质量代码：Python中的惯用法">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2019/09/22/37783/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="编程语言都有其惯用法，了解掌握这些用法有助于帮助写出更加专业和精简的程序。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-09-22T06:54:24.000Z">
+<meta property="article:modified_time" content="2025-12-23T14:07:49.139Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2019/09/22/37783/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2019/09/22/37783/","path":"posts/2019/09/22/37783/","title":"编写高质量代码：Python中的惯用法"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>编写高质量代码：Python中的惯用法 | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A9%E7%94%A8Assert%E5%8F%91%E7%8E%B0%E9%97%AE%E9%A2%98"><span class="nav-text">利用Assert发现问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%80%BC%E4%BA%A4%E6%8D%A2%E4%B8%8D%E6%8E%A8%E8%8D%90%E4%BD%BF%E7%94%A8%E4%B8%AD%E9%97%B4%E5%8F%98%E9%87%8F"><span class="nav-text">数据值交换不推荐使用中间变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%85%E5%88%86%E5%88%A9%E7%94%A8Lazy-evaluation%E7%89%B9%E6%80%A7"><span class="nav-text">充分利用Lazy evaluation特性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E6%8E%A8%E8%8D%90%E4%BD%BF%E7%94%A8type%E6%9D%A5%E6%A3%80%E6%9F%A5%E7%B1%BB%E5%9E%8B"><span class="nav-text">不推荐使用type来检查类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8enumerate-%E8%8E%B7%E5%8F%96%E5%BA%8F%E5%88%97%E7%9A%84%E7%B4%A2%E5%BC%95%E5%92%8C%E5%80%BC"><span class="nav-text">使用enumerate()获取序列的索引和值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#is-%E5%92%8C-%E7%9A%84%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-text">is 和 &#x3D;&#x3D; 的适用场景</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2019/09/22/37783/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="编写高质量代码：Python中的惯用法 | Magnolia's Blog">
+      <meta itemprop="description" content="编程语言都有其惯用法，了解掌握这些用法有助于帮助写出更加专业和精简的程序。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          编写高质量代码：Python中的惯用法
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-09-22 14:54:24" itemprop="dateCreated datePublished" datetime="2019-09-22T14:54:24+08:00">2019-09-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>4.1k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>4 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">编程语言都有其惯用法，了解掌握这些用法有助于帮助写出更加专业和精简的程序。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p><em><strong>Rome was not built in one day， coding will not advance vigorously with one effort.</strong></em></p>
+<h2 id="利用Assert发现问题"><a href="#利用Assert发现问题" class="headerlink" title="利用Assert发现问题"></a>利用Assert发现问题</h2><p>assert 主要是为调试使用，方便检查程序的异常和不恰当的值。</p>
+<p><code>__debug__</code>的值为True。</p>
+<ul>
+<li>断言不要滥用，应该使用在正常逻辑不可到达之处、正常情况下总是为真的场合</li>
+<li>能使用python的异常处理，就可以不使用断言</li>
+<li>函数调用后，需要确认返回值是否合理时可以使用断言</li>
+<li>当条件是业务逻辑继续下去的先决条件时可以使用断言</li>
+</ul>
+<h2 id="数据值交换不推荐使用中间变量"><a href="#数据值交换不推荐使用中间变量" class="headerlink" title="数据值交换不推荐使用中间变量"></a>数据值交换不推荐使用中间变量</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> dis</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">swap1</span>():</span><br><span class="line">    a = <span class="number">1</span></span><br><span class="line">    b = <span class="number">2</span></span><br><span class="line">    a, b = b, a</span><br><span class="line">    </span><br><span class="line">&gt;&gt;&gt;dis.dis(swap1)</span><br><span class="line">  <span class="number">2</span>           <span class="number">0</span> LOAD_CONST               <span class="number">1</span> (<span class="number">1</span>)</span><br><span class="line">              <span class="number">2</span> STORE_FAST               <span class="number">0</span> (a)</span><br><span class="line">  <span class="number">3</span>           <span class="number">4</span> LOAD_CONST               <span class="number">2</span> (<span class="number">2</span>)</span><br><span class="line">              <span class="number">6</span> STORE_FAST               <span class="number">1</span> (b)</span><br><span class="line">  <span class="number">4</span>           <span class="number">8</span> LOAD_FAST                <span class="number">1</span> (b)</span><br><span class="line">             <span class="number">10</span> LOAD_FAST                <span class="number">0</span> (a)</span><br><span class="line">             <span class="number">12</span> ROT_TWO</span><br><span class="line">             <span class="number">14</span> STORE_FAST               <span class="number">0</span> (a)</span><br><span class="line">             <span class="number">16</span> STORE_FAST               <span class="number">1</span> (b)</span><br><span class="line">             <span class="number">18</span> LOAD_CONST               <span class="number">0</span> (<span class="literal">None</span>)</span><br><span class="line">             <span class="number">20</span> RETURN_VALUE</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">swap2</span>():</span><br><span class="line">    a = <span class="number">11</span></span><br><span class="line">    b = <span class="number">22</span></span><br><span class="line">    temp = a</span><br><span class="line">    a = b</span><br><span class="line">    b = temp</span><br><span class="line">    </span><br><span class="line">&gt;&gt;&gt;dis.dis(swap2)</span><br><span class="line">  <span class="number">2</span>           <span class="number">0</span> LOAD_CONST               <span class="number">1</span> (<span class="number">11</span>)</span><br><span class="line">              <span class="number">2</span> STORE_FAST               <span class="number">0</span> (a)</span><br><span class="line">  <span class="number">3</span>           <span class="number">4</span> LOAD_CONST               <span class="number">2</span> (<span class="number">22</span>)</span><br><span class="line">              <span class="number">6</span> STORE_FAST               <span class="number">1</span> (b)</span><br><span class="line">  <span class="number">4</span>           <span class="number">8</span> LOAD_FAST                <span class="number">0</span> (a)</span><br><span class="line">             <span class="number">10</span> STORE_FAST               <span class="number">2</span> (temp)</span><br><span class="line">  <span class="number">5</span>          <span class="number">12</span> LOAD_FAST                <span class="number">1</span> (b)</span><br><span class="line">             <span class="number">14</span> STORE_FAST               <span class="number">0</span> (a)</span><br><span class="line">  <span class="number">6</span>          <span class="number">16</span> LOAD_FAST                <span class="number">2</span> (temp)</span><br><span class="line">             <span class="number">18</span> STORE_FAST               <span class="number">1</span> (b)</span><br><span class="line">             <span class="number">20</span> LOAD_CONST               <span class="number">0</span> (<span class="literal">None</span>)</span><br><span class="line">             <span class="number">22</span> RETURN_VALUE</span><br></pre></td></tr></table></figure>
+
+<p>Python中的字节码是一种类似汇编指令的中间语言，但是一个字节码指令并不是对应一个机器指令。</p>
+<p>swap1中的<code>a, b = b, a</code>对应着代码块的12-16行（2个LOAD_FAST, 2个STORE_FAST, 1个ROT_TWO），而swap2中第4-6行对应着13-18行（3个LOAD_FAST，3个STORE_FAST），ROT_TWO的主要作用是交换两个栈的最顶层元素，它比执行一个LOAD_FAST+STORE_FAST快。</p>
+<h2 id="充分利用Lazy-evaluation特性"><a href="#充分利用Lazy-evaluation特性" class="headerlink" title="充分利用Lazy evaluation特性"></a>充分利用Lazy evaluation特性</h2><ul>
+<li><p>避免不必要的计算，带来性能上的提升</p>
+<ul>
+<li>条件表达式，如if x and y， 在x为False情况，或者if x or y，在x为True的情况下，y都是不计算的</li>
+<li>对于and条件表达式，应该将值为False可能性高的变量写前面；对于or条件表达式，将值为True可能性高的写前面</li>
+</ul>
+</li>
+<li><p>节省空间，使得无限循环的数据结构变成可能</p>
+<ul>
+<li>生成器表达式：每次需要计算时才通过yield产生所需要的元素</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">fib</span>():</span><br><span class="line">    a, b = <span class="number">0</span>, <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="keyword">yield</span> a</span><br><span class="line">        a, b = b, a + b</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="不推荐使用type来检查类型"><a href="#不推荐使用type来检查类型" class="headerlink" title="不推荐使用type来检查类型"></a>不推荐使用type来检查类型</h2><p>作为动态语言的强类型脚本语言，Python中的变量在定义时并不会指明具体的类型，Python解释器在运行时自动进行类型检查并根据需要进行隐式类型转换， 在出错时通过抛出异常来处理。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">UserInt</span>(<span class="title class_ inherited__">int</span>):  <span class="comment"># 继承int</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, var=<span class="number">0</span></span>):</span><br><span class="line">        <span class="comment"># self._var = int(var)</span></span><br><span class="line">        <span class="built_in">super</span>(UserInt, <span class="variable language_">self</span>).__init__()</span><br><span class="line">        <span class="variable language_">self</span>._var = <span class="built_in">int</span>(var)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__add__</span>(<span class="params">self, other</span>):</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">isinstance</span>(other, UserInt):</span><br><span class="line">            <span class="keyword">return</span> UserInt(<span class="variable language_">self</span>._var + other._var)</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>._var + other</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__iadd__</span>(<span class="params">self, other</span>):</span><br><span class="line">        <span class="keyword">raise</span> NotImplementedError(<span class="string">&quot;not support operation&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__str__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">str</span>(<span class="variable language_">self</span>._var)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__repr__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="string">f&quot;Interger <span class="subst">&#123;self._var&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">user1 = UserInt()</span><br><span class="line">user2 = UserInt(<span class="number">2</span>)</span><br><span class="line">user3 = UserInt(<span class="string">&#x27;3&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(user1, user2, user3)  <span class="comment"># 0 2 3</span></span><br><span class="line"><span class="built_in">print</span>(user1 + user2)  <span class="comment"># 2</span></span><br><span class="line"><span class="built_in">print</span>(user3 + <span class="number">12</span>)  <span class="comment"># 15</span></span><br><span class="line"></span><br><span class="line">type_user1 = <span class="built_in">type</span>(user1)  <span class="comment"># &lt;class &#x27;__main__.UserInt&#x27;&gt;</span></span><br><span class="line">type_int = <span class="built_in">type</span>(<span class="built_in">int</span>)  <span class="comment"># &lt;class &#x27;type&#x27;&gt;</span></span><br><span class="line"><span class="keyword">if</span> type_user1 <span class="keyword">is</span> type_int: <span class="comment"># False</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="literal">True</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="literal">False</span>)</span><br><span class="line">    </span><br><span class="line"><span class="built_in">print</span>(UserInt, <span class="built_in">type</span>(UserInt))  <span class="comment"># &lt;class &#x27;__main__.UserInt&#x27;&gt; &lt;class &#x27;type&#x27;&gt;</span></span><br><span class="line"><span class="built_in">print</span>(UserInt(), <span class="built_in">type</span>(UserInt()))  <span class="comment"># 0 &lt;class &#x27;__main__.UserInt&#x27;&gt;</span></span><br><span class="line"><span class="built_in">print</span>(user1, <span class="built_in">type</span>(user1))  <span class="comment"># 0 &lt;class &#x27;__main__.UserInt&#x27;&gt;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">int</span>, <span class="built_in">type</span>(<span class="built_in">int</span>))  <span class="comment"># &lt;class &#x27;int&#x27;&gt; &lt;class &#x27;type&#x27;&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>虽然UserInt继承于int，但是type()并不认为user1是int类型，显然是不合理的。<strong>基于内建类型扩展的用户定义类型，type函数并不能准确的返回结果。</strong></p>
+<p>推荐使用 isinstance()函数:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="built_in">isinstance</span>(user1, <span class="built_in">type</span>(UserInt())):  <span class="comment"># True</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="literal">True</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">isinstance</span>(user1, <span class="built_in">int</span>):  <span class="comment"># True</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="literal">True</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="使用enumerate-获取序列的索引和值"><a href="#使用enumerate-获取序列的索引和值" class="headerlink" title="使用enumerate()获取序列的索引和值"></a>使用enumerate()获取序列的索引和值</h2><p>小需求：对某一序列进行迭代并获取序列中的元素进行处理</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i, ele <span class="keyword">in</span> <span class="built_in">enumerate</span>(list_):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;i:<span class="subst">&#123;i&#125;</span>, element:<span class="subst">&#123;ele&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 推荐 enumerate(sequence,start=0)</span></span><br><span class="line"><span class="comment"># sequence可以是任何可迭代对象，函数返回本质上是一个迭代器，可用next()获取下一个迭代元素</span></span><br><span class="line">enu = <span class="built_in">enumerate</span>(list_)</span><br><span class="line"><span class="built_in">next</span>(enu)  <span class="comment"># (0, 1)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># enumerate内部实现原理</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">mock_enumerate</span>(<span class="params">sequence, start=<span class="number">0</span></span>):</span><br><span class="line">    n = start</span><br><span class="line">    <span class="keyword">for</span> ele <span class="keyword">in</span> sequence:</span><br><span class="line">        <span class="keyword">yield</span> n, ele</span><br><span class="line">        n += <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 实现自己的enumerate()函数:反序列</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">reverse_enumerate</span>(<span class="params">sequence, start=<span class="number">0</span></span>):</span><br><span class="line">    n = -<span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> ele <span class="keyword">in</span> <span class="built_in">reversed</span>(sequence):</span><br><span class="line">        <span class="keyword">yield</span> <span class="built_in">len</span>(sequence)+n, ele</span><br><span class="line">        n -= <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 对于字典的迭代，enumerate()并不适合，而是应该使用方法items()</span></span><br><span class="line">mydict = &#123;<span class="number">1</span>:<span class="string">&#x27;aa&#x27;</span>,<span class="number">2</span>:<span class="string">&#x27;bb&#x27;</span>&#125;</span><br><span class="line"><span class="keyword">for</span> key,value <span class="keyword">in</span> mydict.items():</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="is-和-的适用场景"><a href="#is-和-的适用场景" class="headerlink" title="is 和 &#x3D;&#x3D; 的适用场景"></a>is 和 &#x3D;&#x3D; 的适用场景</h2><p>两个对象相等应该用 &#x3D;&#x3D; </p>
+<table>
+<thead>
+<tr>
+<th>操作符</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>is</td>
+<td>object identity</td>
+</tr>
+<tr>
+<td>&#x3D;&#x3D;</td>
+<td>equal</td>
+</tr>
+</tbody></table>
+<p>is的作用是用来检验对象的标识符是否一致，也就是比较两个对象在内存中是否拥有同一块内存空间，它并不适合用来判断两个字符串是否相等。x is y 仅当x和y是同一个对象的时候才返回True，基本相当于id(x) &#x3D; id(y)。而&#x3D;&#x3D;是用来检验两个对象的值是否相等的，调用的是内部的<code>__eq__</code>方法， <code>a == b</code>相当于 <code>a.__eq__(b)</code> ，<code>==</code>是可以被重载的，而is不能被重载。</p>
+<p>另外Python中的string interning（<strong>字符串驻留</strong>）机制得处理较小的字符串和较长字符串有所不同。对于较小的字符串，为了提高系统性能会保留其值的一个副本，当创建新的字符串时直接指向该副本即可。所以有时有的对象有着相同的内容，但是标识符却不相同，用&#x3D;&#x3D;判断为True，用is判断为False。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">short_a = <span class="string">&#x27;aa&#x27;</span></span><br><span class="line">short_b = <span class="string">&#x27;aa&#x27;</span></span><br><span class="line"><span class="built_in">id</span>(short_a), <span class="built_in">id</span>(short_b)</span><br><span class="line">Out[<span class="number">1</span>: (<span class="number">2899755577672</span>, <span class="number">2899755577672</span>)</span><br><span class="line"></span><br><span class="line">short_a == short_b</span><br><span class="line">Out[<span class="number">3</span>]: <span class="literal">True</span></span><br><span class="line">short_a <span class="keyword">is</span> short_b</span><br><span class="line">Out[<span class="number">5</span>]: <span class="literal">True</span></span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">long_b = <span class="string">&quot;just test long string&quot;</span></span><br><span class="line">long_a = <span class="string">&quot;just test long string&quot;</span></span><br><span class="line"><span class="built_in">id</span>(long_a), <span class="built_in">id</span>(long_b)</span><br><span class="line">Out[<span class="number">2</span>]: (<span class="number">2899904998112</span>, <span class="number">2899906473896</span>)</span><br><span class="line">  </span><br><span class="line">long_a == long_b</span><br><span class="line">Out[<span class="number">4</span>]: <span class="literal">True</span></span><br><span class="line">  </span><br><span class="line">long_a <span class="keyword">is</span> long_b</span><br><span class="line">Out[<span class="number">6</span>]: <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<p>来源：《编写高质量代码：改善Python程序的91个建议》</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2019/09/21/20490/" rel="prev" title="编写高质量代码：Pythonic">
+                  <i class="fa fa-angle-left"></i> 编写高质量代码：Pythonic
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2019/09/29/25728/" rel="next" title="编写高质量代码：Python中的常见语法">
+                  编写高质量代码：Python中的常见语法 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">691k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:28</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

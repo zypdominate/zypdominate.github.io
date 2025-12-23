@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="Pythonic 的代码是什么样的？多一些规范，适当必要的注释，优化优雅的代码布局">
+<meta property="og:type" content="article">
+<meta property="og:title" content="编写高质量代码：Pythonic">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2019/09/21/20490/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="Pythonic 的代码是什么样的？多一些规范，适当必要的注释，优化优雅的代码布局">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-09-21T09:12:44.000Z">
+<meta property="article:modified_time" content="2025-12-23T14:07:49.136Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2019/09/21/20490/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2019/09/21/20490/","path":"posts/2019/09/21/20490/","title":"编写高质量代码：Pythonic"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>编写高质量代码：Pythonic | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Pythonic%E7%9A%84%E4%BB%A3%E7%A0%81"><span class="nav-text">Pythonic的代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E9%81%BF%E5%85%8D%E5%8A%A3%E5%8C%96%E4%BB%A3%E7%A0%81"><span class="nav-text">1. 避免劣化代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%B7%B1%E5%85%A5%E8%AE%A4%E8%AF%86python"><span class="nav-text">2. 深入认识python</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%90%86%E8%A7%A3Python%E4%B8%8EC%E8%AF%AD%E8%A8%80%E7%9A%84%E4%B8%8D%E5%90%8C"><span class="nav-text">理解Python与C语言的不同</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%82%E5%BD%93%E3%80%81%E5%BF%85%E8%A6%81%E7%9A%84%E6%B3%A8%E9%87%8A"><span class="nav-text">适当、必要的注释</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%82%E5%BD%93%E7%A9%BA%E8%A1%8C%E4%BC%98%E9%9B%85%E4%BB%A3%E7%A0%81%E5%B8%83%E5%B1%80"><span class="nav-text">适当空行优雅代码布局</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E7%BC%96%E5%86%99%E7%9A%84%E5%8E%9F%E5%88%99"><span class="nav-text">函数编写的原则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E9%87%8F%E9%9B%86%E4%B8%AD%E5%88%B0%E4%B8%80%E4%B8%AA%E6%96%87%E4%BB%B6%E4%B8%AD"><span class="nav-text">常量集中到一个文件中</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2019/09/21/20490/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="编写高质量代码：Pythonic | Magnolia's Blog">
+      <meta itemprop="description" content="Pythonic 的代码是什么样的？多一些规范，适当必要的注释，优化优雅的代码布局">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          编写高质量代码：Pythonic
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-09-21 17:12:44" itemprop="dateCreated datePublished" datetime="2019-09-21T17:12:44+08:00">2019-09-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>3.6k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>3 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">Pythonic 的代码是什么样的？多一些规范，适当必要的注释，优化优雅的代码布局</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p><em><strong>Rome was not built in one day， coding will not advance vigorously with one effort.</strong></em></p>
+<p><strong>从量变到智变的飞跃，需要从多方面一点一滴的积累，比如语言层面的使用技巧、常见注意事项、编程风格等。</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 快排</span></span><br><span class="line"><span class="comment"># 使用极简代码完成，且易读易理解</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">quickSort</span>(<span class="params">array</span>):</span><br><span class="line">    less, more = [], []</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(array) &lt;= <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> array</span><br><span class="line">    middle = array.pop()</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> array:</span><br><span class="line">        <span class="keyword">if</span> i &lt; middle:</span><br><span class="line">            less.append(i)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            more.append(i)</span><br><span class="line">    <span class="keyword">return</span> quickSort(less) + [middle] + quickSort(more)</span><br><span class="line"></span><br><span class="line">testArray = [<span class="number">2</span>,<span class="number">1</span>,<span class="number">6</span>,<span class="number">3</span>,<span class="number">9</span>,<span class="number">8</span>]</span><br><span class="line"><span class="built_in">print</span>(quickSort(testArray))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 交换两数</span></span><br><span class="line"><span class="comment"># 不像C语言需要找中间变量来传递</span></span><br><span class="line">a, b = b, a</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 迭代器</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> onelist:</span><br><span class="line">	do_something(i)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安全地关闭文件：with</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(onepath, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">	do_something(f)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># slice</span></span><br><span class="line">alist = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>]</span><br><span class="line">newlist = alist[::-<span class="number">1</span>] <span class="comment"># 倒序</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 字符串格式化</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;newlist %s&quot;</span> % newlist)</span><br><span class="line"><span class="comment"># newlist [4, 3, 2, 1]</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;newlist &#123;0&#125;, &#123;1&#125;&quot;</span>.<span class="built_in">format</span>(alist, newlist))</span><br><span class="line"><span class="comment"># newlist [1, 2, 3, 4], [4, 3, 2, 1]</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;newlist:<span class="subst">&#123;newlist&#125;</span>&quot;</span>)  <span class="comment"># 建议使用f</span></span><br><span class="line"><span class="comment"># &#x27;newlist:[4, 3, 2, 1]&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">包和模块的命名采用小写、单数形式，且短小</span><br><span class="line">包通常仅作为命名空间，如只包含空 __init__.py 文件</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Pythonic的代码"><a href="#Pythonic的代码" class="headerlink" title="Pythonic的代码"></a>Pythonic的代码</h2><h3 id="1-避免劣化代码"><a href="#1-避免劣化代码" class="headerlink" title="1. 避免劣化代码"></a>1. 避免劣化代码</h3><ul>
+<li>避免只用大小写区分不同的对象</li>
+<li>避免使用容易引起混淆的名称<ul>
+<li>重复使用存在于上下文中的变量名来表示不同的类型</li>
+<li>使用内建名称来表示其他含义变量</li>
+<li>使用类似于element、list、dict、tuple等来作为变量名</li>
+<li>使用o（容易与0混淆），l（容易与数字1混淆）作为变量名</li>
+</ul>
+</li>
+<li>不要怕变量名过长<ul>
+<li>考虑代码的易读和理解，变量名需要长一些</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-深入认识python"><a href="#2-深入认识python" class="headerlink" title="2. 深入认识python"></a>2. 深入认识python</h3><ul>
+<li>全面掌握python提供的特性：语言特性和库特性，参考官方手册Language Reference 和Library Reference。</li>
+<li>紧跟<em>Python</em>的迭代，学习新知识、新用法等。<ul>
+<li>深入学习公认的比较pythonic的代码，比如Flask、gevent、requests等</li>
+</ul>
+</li>
+<li>PEP8：代码布局、注释、命名规范。<ul>
+<li>Pylint、Google Python Style Guide、Pychecker、Pyflakes</li>
+</ul>
+</li>
+</ul>
+<h2 id="理解Python与C语言的不同"><a href="#理解Python与C语言的不同" class="headerlink" title="理解Python与C语言的不同"></a>理解Python与C语言的不同</h2><p>1.缩进 vs {}</p>
+<p>C、C++、Java等用花括号{}来分隔代码。Python使用严格的代码缩进，空格和Tab不能混用。</p>
+<p>2.’’ vs “”</p>
+<p>C中单引号和双引号有着严格的区别，单引号表示一个字符，对应编译器所采用的字符集中的一个整数值，例如’a’与97对应。双引号表示字符串，默认以’\0’结尾。</p>
+<p>在Python中单引号和双引号没有明显的区别，仅在输入字符串内容不同时，存在微小差异。</p>
+<p>3.三元操作符</p>
+<p>三元操作符是if…else…的简写方法，语法形式C？X:Y，表示满足满足条件C时取值X否则取值。</p>
+<p>4.switch…case</p>
+<p>Python中没有switch…case分支语句</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span>(n)&#123;</span><br><span class="line">  <span class="keyword">case</span> <span class="number">0</span>:</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;zero \n&quot;</span>);</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;one \n&quot;</span>);</span><br><span class="line">  <span class="keyword">default</span>:</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;other value \n&quot;</span>);</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> n == <span class="number">0</span>:</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">&quot;zero&quot;</span>)</span><br><span class="line"><span class="keyword">elif</span> n == <span class="number">1</span>:</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">&quot;one&quot;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">&quot;other value&quot;</span>)</span><br><span class="line">  </span><br><span class="line"><span class="comment"># 或者使用跳转表实现</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">func</span>(<span class="params">n</span>):</span><br><span class="line">  <span class="keyword">return</span> &#123;<span class="number">0</span>:<span class="string">&quot;zero&quot;</span>, <span class="number">1</span>:<span class="string">&quot;one&quot;</span>&#125;.get(n, <span class="string">&quot;other value&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="适当、必要的注释"><a href="#适当、必要的注释" class="headerlink" title="适当、必要的注释"></a>适当、必要的注释</h2><p>Python的注释：块注释、行注释、文档注释（docstring）</p>
+<ul>
+<li>使用块或行注释，仅仅注释那些复杂的操作、算法、别人难以理解的技巧、不熟悉的业务</li>
+<li>注释和代码隔开一定的距离，可以使用PEP8规范格式化代码</li>
+<li>给外部可访问的函数和方法添加文档注释。<ul>
+<li>注释描述方法的功能，对入参、返回值以及可能的异常说明</li>
+</ul>
+</li>
+<li>文件头部推荐使用copyright声明、模块描述，添加作者信息及时间</li>
+<li>注释和代码不能重复，注释是用来解释代码的功能、原因、思路的</li>
+<li>用于调试的代码等不需要的代码不应该注释，而是应该删除</li>
+</ul>
+<h2 id="适当空行优雅代码布局"><a href="#适当空行优雅代码布局" class="headerlink" title="适当空行优雅代码布局"></a>适当空行优雅代码布局</h2><p>布局清晰、整洁、优雅的代码能够让阅读者比较愉悦。</p>
+<ul>
+<li>在一组代码表达完一个完整的思路后，应该用空白进行间隔<ul>
+<li>函数与函数之间、导入声明与变量赋值之间等，无关的代码块之间最好用空行隔开</li>
+</ul>
+</li>
+<li>避免过长的代码行，Pycharm：Ctrl+Alt++L格式化</li>
+<li>逗号前不要用空格</li>
+</ul>
+<h2 id="函数编写的原则"><a href="#函数编写的原则" class="headerlink" title="函数编写的原则"></a>函数编写的原则</h2><p>函数的作用：最大化的代码重用、最小化的代码冗余；<br>编写函数追求：提高程序的健壮性、增强可读性、减少维护成本。</p>
+<ul>
+<li>函数设计要尽量短小，嵌套层次浅<ul>
+<li>避免过长的函数体，在一个屏幕下就能看完整</li>
+<li>if、elif、for、while嵌套不超过3层</li>
+</ul>
+</li>
+<li>函数声明应该合理、简单、易于使用<ul>
+<li>函数名的见名知意</li>
+<li>参数设计简洁明了，入参个数不宜过多</li>
+</ul>
+</li>
+<li>函数参数设计应该考虑向下兼容<ul>
+<li>添加默认参数，适应函数调用接口的变化</li>
+</ul>
+</li>
+<li>一个函数只做一件事，尽量避免函数语句粒度的一致性<ul>
+<li>一个功能可以分解成多个小任务、函数</li>
+</ul>
+</li>
+</ul>
+<h2 id="常量集中到一个文件中"><a href="#常量集中到一个文件中" class="headerlink" title="常量集中到一个文件中"></a>常量集中到一个文件中</h2><p>Python实际内建命名空间支持一小部分常量：True、False、None等，没有提供定义常量的直接方式。在Python中一般这样使用常量：</p>
+<ul>
+<li>通过命风格表示该变量为常量：大写，一种约定俗成的风格</li>
+<li>自定义的类实现常量功能：<ul>
+<li>命名全部为大写</li>
+<li>值一旦绑定就不能修改，否则抛出异常</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># constant.py</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Constant</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">ConstError</span>(<span class="title class_ inherited__">TypeError</span>):<span class="keyword">pass</span></span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">ConstCaseError</span>(<span class="title class_ inherited__">ConstError</span>):<span class="keyword">pass</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__setattr__</span>(<span class="params">self, key, value</span>):</span><br><span class="line">        <span class="keyword">if</span> key <span class="keyword">in</span> <span class="variable language_">self</span>.__dict__:</span><br><span class="line">            <span class="keyword">raise</span> <span class="variable language_">self</span>.ConstError(<span class="string">f&quot;Cant&#x27;t change constant <span class="subst">&#123;key&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> key.isupper():</span><br><span class="line">            <span class="keyword">raise</span> <span class="variable language_">self</span>.ConstCaseError(<span class="string">f&quot;constant <span class="subst">&#123;key&#125;</span> is not all uppercase&quot;</span>)</span><br><span class="line">        <span class="variable language_">self</span>.__dict__[key] = value</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">sys.modules[__name__] = Constant</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义好类后，在其他脚本中使用只要导入上面这个模块就行</span></span><br><span class="line"><span class="comment"># other.py</span></span><br><span class="line"><span class="keyword">import</span> constant  <span class="comment"># 导入定义常量类的模块</span></span><br><span class="line">constant.MYNAME = <span class="string">&quot;justme&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>使用 <code>sys.modules[__name__]</code> 可以获取一个模块对象<code>&lt;module &#39;__main__&#39;&gt;</code>，<br>并可以通过该对象获取模块的属性，这里使用了sys.modules向系统字典中注入了一个Constant对象，<br>从而实现了在执行import constant时实际获取了一个Constant实例的功能。	</p>
+<p><code>sys.modules[__name__] = Constant</code> 将系统已加载的模块列表中的 constant 替换为了 Constant，即一个Constant实例。</p>
+<p>备注：<br><code>sys.modules</code> 是存放已经缓存的模块，值为dict类型<br><code>sys.path</code>  搜索路径，值为list类型<br><code>if __name__= __main__</code> 是python的程序入口，如果直接执行该 <code>.py</code> 文件，<br>那么执行后面的代码，如果作为模块导入，则不执行后面的代码</p>
+<p>来源：《编写高质量代码：改善Python程序的91个建议》</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2019/09/14/37423/" rel="prev" title="自动化测试脚本编写小结">
+                  <i class="fa fa-angle-left"></i> 自动化测试脚本编写小结
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2019/09/22/37783/" rel="next" title="编写高质量代码：Python中的惯用法">
+                  编写高质量代码：Python中的惯用法 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">691k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:28</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

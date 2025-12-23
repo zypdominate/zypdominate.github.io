@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="本文探讨 Pytest 中 fixture 作用域与类继承的交互问题，介绍其执行顺序规则，以 TestBase 类和 TestDerived 子类为例，指出当 init 函数的 fixture 作用域设为 class 时会出现子类无法使用 self.base 的情况，原因是 fixture 和测试方法在不同实例对象上执行。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pytest中fixture与类继承交互导致的问题">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2025/05/31/34484/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="本文探讨 Pytest 中 fixture 作用域与类继承的交互问题，介绍其执行顺序规则，以 TestBase 类和 TestDerived 子类为例，指出当 init 函数的 fixture 作用域设为 class 时会出现子类无法使用 self.base 的情况，原因是 fixture 和测试方法在不同实例对象上执行。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-05-31T09:50:18.000Z">
+<meta property="article:modified_time" content="2025-12-23T14:07:49.177Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="pytest">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2025/05/31/34484/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2025/05/31/34484/","path":"posts/2025/05/31/34484/","title":"pytest中fixture与类继承交互导致的问题"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>pytest中fixture与类继承交互导致的问题 | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AE%E9%A2%98"><span class="nav-text">问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E6%9E%90"><span class="nav-text">分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B0%86%E5%B1%9E%E6%80%A7%E7%BB%91%E5%AE%9A%E5%88%B0-%E7%B1%BB-%E4%B8%8A"><span class="nav-text">将属性绑定到 类 上</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-scope-function"><span class="nav-text">使用 scope&#x3D;&#39;function&#39;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95"><span class="nav-text">解决方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%9C%89%E4%B8%A4%E4%B8%AA%E4%B8%8D%E5%90%8C%E7%9A%84%E5%AF%B9%E8%B1%A1"><span class="nav-text">为什么有两个不同的对象</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E5%8E%9F%E5%9B%A0%EF%BC%9Afixture-%E7%9A%84%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87"><span class="nav-text">核心原因：fixture 的执行上下文</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#scope-function-%E7%9A%84%E6%83%85%E5%86%B5"><span class="nav-text">scope&#x3D;&#39;function&#39; 的情况</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#scope-class-%E7%9A%84%E6%83%85%E5%86%B5"><span class="nav-text">scope&#x3D;&#39;class&#39; 的情况</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88-pytest-%E8%A6%81%E8%BF%99%E6%A0%B7%E5%81%9A%EF%BC%9F"><span class="nav-text">为什么 pytest 要这样做？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%99%E6%98%AF-pytest-%E7%9A%84%E8%AE%BE%E8%AE%A1%E5%B1%80%E9%99%90"><span class="nav-text">这是 pytest 的设计局限</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2025/05/31/34484/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="pytest中fixture与类继承交互导致的问题 | Magnolia's Blog">
+      <meta itemprop="description" content="本文探讨 Pytest 中 fixture 作用域与类继承的交互问题，介绍其执行顺序规则，以 TestBase 类和 TestDerived 子类为例，指出当 init 函数的 fixture 作用域设为 class 时会出现子类无法使用 self.base 的情况，原因是 fixture 和测试方法在不同实例对象上执行。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          pytest中fixture与类继承交互导致的问题
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2025-05-31 17:50:18" itemprop="dateCreated datePublished" datetime="2025-05-31T17:50:18+08:00">2025-05-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/pytest/" itemprop="url" rel="index"><span itemprop="name">pytest</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>5.3k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>5 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">本文探讨 Pytest 中 fixture 作用域与类继承的交互问题，介绍其执行顺序规则，以 TestBase 类和 TestDerived 子类为例，指出当 init 函数的 fixture 作用域设为 class 时会出现子类无法使用 self.base 的情况，原因是 fixture 和测试方法在不同实例对象上执行。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>在 pytest 中，通常情况下，fixture 的执行顺序主要由 scope 决定，但并非简单地”高级别先执行”。实际上，pytest 按照一种”由外到内”的方式执行不同 scope 的 fixture。</p>
+<p>具体来说，fixture 执行顺序遵循以下规则：</p>
+<ol>
+<li>首先按照 scope 从大到小的顺序执行：session &gt; package &gt; module &gt; class &gt; function</li>
+<li>同一 scope 级别的 fixture 按照依赖关系执行：如果一个 fixture 依赖于另一个 fixture（通过参数引用），则先执行被依赖的 fixture</li>
+<li>同一 scope 级别且无依赖关系的 fixture 按照它们在代码中的声明顺序执行</li>
+</ol>
+<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>下面是 pytest 中 fixture 作用域(scope)与 Python 类继承之间的交互方式导致的一个问题。</p>
+<p>这个代码 TestBase 中，如果将 init 函数使用级别为 function 的scope 运行没问题，但是改成 class 级别后，子类中的方法就没使用 self.base 了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TestBase</span>:</span><br><span class="line">    <span class="comment"># @pytest.fixture(scope=&#x27;class&#x27;, autouse=True)  # 在 test_derived 中无法使用 self.base</span></span><br><span class="line"><span class="meta">    @pytest.fixture(<span class="params">scope=<span class="string">&#x27;function&#x27;</span>, autouse=<span class="literal">True</span></span>)  </span><span class="comment"># 可行</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">init</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.base = <span class="string">&quot;base&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TestDerived</span>(<span class="title class_ inherited__">TestBase</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_derived</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">assert</span> <span class="variable language_">self</span>.base == <span class="string">&quot;base&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_derived2</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">assert</span> <span class="variable language_">self</span>.base == <span class="string">&quot;base&quot;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><p><strong>fixture 的触发机制问题</strong>：</p>
+<ul>
+<li>对于 <code>autouse=True</code> 的 fixture，pytest 需要确定何时以及在哪个对象上执行它</li>
+<li>当 fixture 定义在类内部且使用 <code>scope=&#39;class&#39;</code> 时，pytest 可能在处理 fixture 的执行上下文时出现了问题</li>
+</ul>
+<h4 id="将属性绑定到-类-上"><a href="#将属性绑定到-类-上" class="headerlink" title="将属性绑定到 类 上"></a>将属性绑定到 <strong>类</strong> 上</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TestBase</span>:</span><br><span class="line"><span class="meta">    @pytest.fixture(<span class="params">scope=<span class="string">&#x27;class&#x27;</span>, autouse=<span class="literal">True</span></span>)</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">init</span>(<span class="params">self, request</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;Init fixture executing, self is: <span class="subst">&#123;self&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;Request.cls is: <span class="subst">&#123;request.cls&#125;</span>&quot;</span>)</span><br><span class="line">        request.cls.base = <span class="string">&quot;base&quot;</span>  <span class="comment"># 确保设置在类上而不是实例上</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TestDerived</span>(<span class="title class_ inherited__">TestBase</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_derived</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;In test_derived, self is: <span class="subst">&#123;self&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;self.__class__.base is: <span class="subst">&#123;<span class="built_in">getattr</span>(self.__class__, <span class="string">&#x27;base&#x27;</span>, <span class="string">&#x27;NOT_FOUND&#x27;</span>)&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">assert</span> <span class="built_in">hasattr</span>(<span class="variable language_">self</span>.__class__, <span class="string">&#x27;base&#x27;</span>)</span><br><span class="line">        <span class="keyword">assert</span> <span class="variable language_">self</span>.__class__.base == <span class="string">&quot;base&quot;</span></span><br><span class="line">        <span class="keyword">assert</span> <span class="variable language_">self</span>.base == <span class="string">&quot;base&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>执行结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">============================== 1 passed in 0.10s ==============================</span><br><span class="line">Init fixture executing, self is: &lt;src.practice_demo.te.TestDerived object at 0x0000026EA6DE32E0&gt;</span><br><span class="line">Request.cls is: &lt;class &#x27;src.practice_demo.te.TestDerived&#x27;&gt;</span><br><span class="line">PASSED                                  [100%]</span><br><span class="line">In test_derived, self is: &lt;src.practice_demo.te.TestDerived object at 0x0000026EA6E50760&gt;</span><br><span class="line">self.__class__.base is: base</span><br></pre></td></tr></table></figure>
+
+<p>可以发现：</p>
+<ol>
+<li><strong>fixture 确实执行了</strong>：<code>Init fixture executing</code> 说明 <code>scope=&#39;class&#39;</code> 的 fixture 被正确触发</li>
+<li><strong>执行顺序没问题</strong>：fixture 先执行，然后才是测试方法</li>
+<li>对象实例不同：注意两个关键的内存地址<ul>
+<li>fixture 中的 <code>self</code>: <code>0x0000026EA6DE32E0</code></li>
+<li>测试方法中的 <code>self</code>: <code>0x0000026EA6E50760</code></li>
+</ul>
+</li>
+</ol>
+<p>这就解释了为什么原始代码会失败，当使用类内部定义的 <code>scope=&#39;class&#39;</code> fixture 时：</p>
+<ul>
+<li>fixture 在一个 <code>TestDerived</code> 实例上执行（地址 <code>2E0</code>），设置了 <code>self.base = &quot;base&quot;</code></li>
+<li>但测试方法 <code>test_derived</code> 在另一个不同的 <code>TestDerived</code> 实例上执行（地址 <code>760</code>）</li>
+<li>这两个是完全不同的对象实例</li>
+</ul>
+<p>解决：使用 <code>request.cls.base = &quot;base&quot;</code> 将属性设置在<strong>类</strong>上而不是<strong>实例</strong>上，所以无论哪个实例都能访问到这个类属性。</p>
+<h4 id="使用-scope-function"><a href="#使用-scope-function" class="headerlink" title="使用 scope=&#39;function&#39;"></a>使用 <code>scope=&#39;function&#39;</code></h4><p>因为 function 级别的 fixture 会在每个测试方法的同一个实例上执行，所以 <code>self.base</code> 设置和访问都在同一个对象上。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">TestBase</span>:</span><br><span class="line"><span class="meta">    @pytest.fixture(<span class="params">scope=<span class="string">&#x27;function&#x27;</span>, autouse=<span class="literal">True</span></span>)</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">init</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;Init fixture executing, self is: <span class="subst">&#123;self&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="variable language_">self</span>.base = <span class="string">&#x27;base&#x27;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TestDerived</span>(<span class="title class_ inherited__">TestBase</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_derived</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;In test_derived, self is: <span class="subst">&#123;self&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">assert</span> <span class="variable language_">self</span>.base == <span class="string">&quot;base&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>运行结果，地址相同：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">============================== 1 passed in 0.10s ==============================</span><br><span class="line">Init fixture executing, self is: &lt;src.practice_demo.t.TestDerived object at 0x00000238DC562A90&gt;</span><br><span class="line">PASSED                                   [100%]</span><br><span class="line">In test_derived, self is: &lt;src.practice_demo.t.TestDerived object at 0x00000238DC562A90&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p>使用类属性代替实例属性</p>
+<p>如果 <code>base</code> 是类级别的共享状态，可以将其设置为类属性，而不是实例属性：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">TestBase</span>:</span><br><span class="line"><span class="meta">    @pytest.fixture(<span class="params">scope=<span class="string">&#x27;class&#x27;</span>, autouse=<span class="literal">True</span></span>)</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">init</span>(<span class="params">self, request</span>):</span><br><span class="line">        request.cls.base = <span class="string">&quot;base&quot;</span>  <span class="comment"># 设置类属性</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TestDerived</span>(<span class="title class_ inherited__">TestBase</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_derived</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">assert</span> <span class="variable language_">self</span>.base == <span class="string">&quot;base&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_derived2</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">assert</span> <span class="variable language_">self</span>.base == <span class="string">&quot;base&quot;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在这里，<code>request.cls</code> 指向当前测试类（<code>TestDerived</code>），通过 <code>request.cls.base</code> 设置类属性。</li>
+<li>这样，<code>base</code> 成为 <code>TestDerived</code> 的类属性，所有的实例都可以通过 <code>self.base</code> 访问。</li>
+</ul>
+<p>或者，保持使用 <code>function</code> 级别，这确实更符合 Python 类实例的工作方式，因为每个测试方法实际上都是在一个新的类实例上运行的。</p>
+<h3 id="为什么有两个不同的对象"><a href="#为什么有两个不同的对象" class="headerlink" title="为什么有两个不同的对象"></a>为什么有两个不同的对象</h3><blockquote>
+<p>使用 <code>scope=&#39;function&#39;</code>情况下，因为 function 级别的 fixture 会在每个测试方法的同一个实例上执行，所以 <code>self.base</code> 设置和访问都在同一个对象上。</p>
+</blockquote>
+<p>但是，为啥 scope 为 class 时，会出现两个对象呢？</p>
+<p>这与 <strong>pytest 的 fixture 执行机制</strong> 和 <strong>Python 类方法调用机制</strong> 有关。</p>
+<h4 id="核心原因：fixture-的执行上下文"><a href="#核心原因：fixture-的执行上下文" class="headerlink" title="核心原因：fixture 的执行上下文"></a>核心原因：fixture 的执行上下文</h4><p>当在类内部定义 fixture 时，pytest 需要在某个对象实例上调用这个 fixture 方法。但是：</p>
+<h5 id="scope-function-的情况"><a href="#scope-function-的情况" class="headerlink" title="scope=&#39;function&#39; 的情况"></a><code>scope=&#39;function&#39;</code> 的情况</h5><ol>
+<li>pytest 为每个测试方法创建一个新的 <code>TestDerived</code> 实例</li>
+<li>在这个实例上调用 <code>init</code> fixture</li>
+<li>然后在<strong>同一个实例</strong>上调用测试方法</li>
+<li>流程：创建实例 → 调用 fixture → 调用测试方法（都在同一个对象上）</li>
+</ol>
+<h5 id="scope-class-的情况"><a href="#scope-class-的情况" class="headerlink" title="scope=&#39;class&#39; 的情况"></a><code>scope=&#39;class&#39;</code> 的情况</h5><ol>
+<li>pytest 需要在类级别执行 fixture，但 fixture 仍然是一个<strong>实例方法</strong></li>
+<li>pytest 创建一个 <code>TestDerived</code> 实例来调用 <code>init</code> fixture</li>
+<li>但当执行具体的测试方法时，pytest <strong>又创建了另一个新的实例</strong></li>
+<li>流程：创建实例A → 调用 fixture → 创建实例B → 调用测试方法</li>
+</ol>
+<h4 id="为什么-pytest-要这样做？"><a href="#为什么-pytest-要这样做？" class="headerlink" title="为什么 pytest 要这样做？"></a>为什么 pytest 要这样做？</h4><p>这实际上是 pytest 设计的一个特点（或者说是限制），打印对象 id ：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TestBase</span>:</span><br><span class="line"><span class="meta">    @pytest.fixture(<span class="params">scope=<span class="string">&#x27;class&#x27;</span>, autouse=<span class="literal">True</span></span>)</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">init</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;\nFixture executing on instance: <span class="subst">&#123;<span class="built_in">id</span>(self)&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="variable language_">self</span>.base = <span class="string">&quot;base&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TestDerived</span>(<span class="title class_ inherited__">TestBase</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_derived</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;\nTest executing on instance: <span class="subst">&#123;<span class="built_in">id</span>(self)&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;hasattr(self, &#x27;base&#x27;): <span class="subst">&#123;<span class="built_in">hasattr</span>(self, <span class="string">&#x27;base&#x27;</span>)&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">hasattr</span>(<span class="variable language_">self</span>, <span class="string">&#x27;base&#x27;</span>):</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;self.base: <span class="subst">&#123;self.base&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;self.base does not exist&quot;</span>)</span><br><span class="line">        <span class="comment"># assert hasattr(self, &#x27;base&#x27;)  # 这行会失败，先注释掉</span></span><br></pre></td></tr></table></figure>
+
+<p>运行这个代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Fixture executing on instance: 1523376596880</span><br><span class="line">PASSED                                  [100%]</span><br><span class="line">Test executing on instance: 1523376597312</span><br><span class="line">hasattr(self, &#x27;base&#x27;): False</span><br><span class="line">self.base does not exist</span><br></pre></td></tr></table></figure>
+
+<h4 id="这是-pytest-的设计局限"><a href="#这是-pytest-的设计局限" class="headerlink" title="这是 pytest 的设计局限"></a>这是 pytest 的设计局限</h4><p>pytest 在处理类内部定义的 <code>scope=&#39;class&#39;</code> fixture 时，无法很好地协调实例的生命周期。这就是为什么通常建议：</p>
+<ol>
+<li><strong>避免在类内部定义 class 级别的 fixture</strong></li>
+<li><strong>将 class 级别的 fixture 定义在 conftest.py 中</strong></li>
+<li><strong>或者使用 <code>request.cls</code> 来操作类属性而不是实例属性</strong></li>
+</ol>
+<p>所以看到的”两个对象”现象是 pytest 内部机制导致的，而不是 Python 或测试逻辑的问题。这也解释了为什么这种用法容易出现意想不到的行为。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li><code>scope=&#39;function&#39;</code> 有效是因为 <code>init</code> 方法在每个测试函数运行时都会为当前实例设置 <code>self.base</code>。</li>
+<li><code>scope=&#39;class&#39;</code> 失败是因为 <code>init</code> 方法的 <code>self</code> 没有正确绑定到 <code>TestDerived</code> 的实例上，导致 <code>self.base</code> 未被设置。</li>
+<li>通过调整为类属性，可以解决这个问题。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+              <a href="/tags/pytest/" rel="tag"># pytest</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2025/05/25/30924/" rel="prev" title="有趣有用的小发现">
+                  <i class="fa fa-angle-left"></i> 有趣有用的小发现
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2025/06/22/22150/" rel="next" title="AI辅助生成mermaid流程图">
+                  AI辅助生成mermaid流程图 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">691k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:28</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

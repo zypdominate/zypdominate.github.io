@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="除了掌握Python本身的语法以及使用外，使用常见库可以提高效率、不必重复造轮子">
+<meta property="og:type" content="article">
+<meta property="og:title" content="编写高质量代码：Python中的常见库">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2019/10/06/12508/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="除了掌握Python本身的语法以及使用外，使用常见库可以提高效率、不必重复造轮子">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-10-06T05:12:10.000Z">
+<meta property="article:modified_time" content="2025-12-23T14:07:49.137Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2019/10/06/12508/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2019/10/06/12508/","path":"posts/2019/10/06/12508/","title":"编写高质量代码：Python中的常见库"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>编写高质量代码：Python中的常见库 | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95"><span class="nav-text">字符串的基本用法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sort-%E5%92%8Csorted"><span class="nav-text">sort() 和sorted()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Counter"><span class="nav-text">Counter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ConfigParser"><span class="nav-text">ConfigParser</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pickle"><span class="nav-text">pickle</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#json"><span class="nav-text">json</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#traceback-%E8%8E%B7%E5%8F%96%E6%A0%88%E4%BF%A1%E6%81%AF"><span class="nav-text">traceback 获取栈信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#threading"><span class="nav-text">threading</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2019/10/06/12508/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="编写高质量代码：Python中的常见库 | Magnolia's Blog">
+      <meta itemprop="description" content="除了掌握Python本身的语法以及使用外，使用常见库可以提高效率、不必重复造轮子">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          编写高质量代码：Python中的常见库
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-10-06 13:12:10" itemprop="dateCreated datePublished" datetime="2019-10-06T13:12:10+08:00">2019-10-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>11k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>10 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">除了掌握Python本身的语法以及使用外，使用常见库可以提高效率、不必重复造轮子</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p><strong>Rome was not built in one day， coding will not advance vigorously with one effort.</strong></p>
+<h2 id="字符串的基本用法"><a href="#字符串的基本用法" class="headerlink" title="字符串的基本用法"></a>字符串的基本用法</h2><p>Python遇到未闭合的小括号时会自动将多行代码拼接为一行，把相邻的两个字符串变量拼接在一起。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">s = (<span class="string">&#x27;I &#x27;</span></span><br><span class="line">     <span class="string">&#x27;am &#x27;</span></span><br><span class="line">     <span class="string">&#x27;coding &#x27;</span></span><br><span class="line">     <span class="string">&#x27;step by step&#x27;</span>)</span><br><span class="line">s</span><br><span class="line">Out[<span class="number">7</span>]: <span class="string">&#x27;I am coding step by step&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 字符串的方法（偏僻的方法用到时再去搜索学一下）</span><br><span class="line">&#x27;capitalize&#x27;, &#x27;casefold&#x27;, &#x27;center&#x27;, &#x27;count&#x27;, &#x27;encode&#x27;, &#x27;endswith&#x27;, &#x27;expandtabs&#x27;, &#x27;find&#x27;, &#x27;format&#x27;, &#x27;format_map&#x27;, &#x27;index&#x27;, &#x27;isalnum&#x27;, &#x27;isalpha&#x27;, &#x27;isdecimal&#x27;, &#x27;isdigit&#x27;, &#x27;isidentifier&#x27;, &#x27;islower&#x27;, &#x27;isnumeric&#x27;, &#x27;isprintable&#x27;, &#x27;isspace&#x27;, &#x27;istitle&#x27;, &#x27;isupper&#x27;, &#x27;join&#x27;, &#x27;ljust&#x27;, &#x27;lower&#x27;, &#x27;lstrip&#x27;, &#x27;maketrans&#x27;, &#x27;partition&#x27;, &#x27;replace&#x27;, &#x27;rfind&#x27;, &#x27;rindex&#x27;, &#x27;rjust&#x27;, &#x27;rpartition&#x27;, &#x27;rsplit&#x27;, &#x27;rstrip&#x27;, &#x27;split&#x27;, &#x27;splitlines&#x27;, &#x27;startswith&#x27;, &#x27;strip&#x27;, &#x27;swapcase&#x27;, &#x27;title&#x27;, &#x27;translate&#x27;, &#x27;upper&#x27;, &#x27;zfill&#x27;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="sort-和sorted"><a href="#sort-和sorted" class="headerlink" title="sort() 和sorted()"></a>sort() 和sorted()</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sorted(iterable[, cmp[, key[, reverse]]])</span><br><span class="line">s.sort([cmp[, key[, reverse]]])</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>cmp为用户定义的任何比较函数，函数的参数为两个可比较的元素（来自iterable），函数根据第一个参数与第二个参数的关系依次返回 -1、0或者+1（第一个参数小于第二个参数则返回负数）。cmp默认为None。</li>
+<li>key是带一个参数的函数，用来为每个元素提取比较值，默认为None（即直接比较每个元素）</li>
+<li>reverse表示排序结果是否反转</li>
+</ul>
+<p>sorted()作用于任意可迭代的对象，而sort()一般作用于列表。</p>
+<p>sorted()函数返回一个排序后的列表，原有列表保持不变；而sort()函数会直接修改原有列表，函数返回为None。</p>
+<p><strong>sorted</strong> 的使用：</p>
+<ul>
+<li>对字典排序</li>
+</ul>
+<figure class="highlight python"><figcaption><span>Console</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> operator <span class="keyword">import</span> itemgetter</span><br><span class="line"><span class="comment"># 对字典排序</span></span><br><span class="line">bookowner = &#123;<span class="string">&#x27;Bob&#x27;</span>:<span class="string">&#x27;2&#x27;</span>,<span class="string">&#x27;Caly&#x27;</span>:<span class="string">&#x27;1&#x27;</span>,<span class="string">&#x27;Amy&#x27;</span>:<span class="string">&#x27;3&#x27;</span>&#125;</span><br><span class="line"></span><br><span class="line">ret_sorted = <span class="built_in">sorted</span>(bookowner.items(),key=itemgetter(<span class="number">1</span>))</span><br><span class="line">ret_sorted</span><br><span class="line">Out[<span class="number">1</span>]: [(<span class="string">&#x27;Caly&#x27;</span>, <span class="string">&#x27;1&#x27;</span>), (<span class="string">&#x27;Bob&#x27;</span>, <span class="string">&#x27;2&#x27;</span>), (<span class="string">&#x27;Amy&#x27;</span>, <span class="string">&#x27;3&#x27;</span>)]</span><br><span class="line">  </span><br><span class="line">ret_sorted = <span class="built_in">sorted</span>(bookowner.items(),key=itemgetter(<span class="number">0</span>))</span><br><span class="line">ret_sorted</span><br><span class="line">Out[<span class="number">2</span>]: [(<span class="string">&#x27;Amy&#x27;</span>, <span class="string">&#x27;3&#x27;</span>), (<span class="string">&#x27;Bob&#x27;</span>, <span class="string">&#x27;2&#x27;</span>), (<span class="string">&#x27;Caly&#x27;</span>, <span class="string">&#x27;1&#x27;</span>)]</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>多维list排序</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">info = [[<span class="string">&#x27;Bob&#x27;</span>, <span class="number">95</span>, <span class="string">&#x27;A&#x27;</span>], [<span class="string">&#x27;Caly&#x27;</span>, <span class="number">86</span>, <span class="string">&#x27;C&#x27;</span>], [<span class="string">&#x27;justin&#x27;</span>, <span class="number">82</span>, <span class="string">&#x27;A&#x27;</span>], [<span class="string">&#x27;Amy&#x27;</span>, <span class="number">86</span>, <span class="string">&#x27;D&#x27;</span>]]</span><br><span class="line"><span class="built_in">sorted</span>(info, key=itemgetter(<span class="number">2</span>, <span class="number">1</span>))</span><br><span class="line"><span class="comment"># Out[3]: [[&#x27;justin&#x27;, 82, &#x27;A&#x27;], [&#x27;Bob&#x27;, 95, &#x27;A&#x27;], [&#x27;Caly&#x27;, 86, &#x27;C&#x27;], [&#x27;Amy&#x27;, 86, &#x27;D&#x27;]]</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>字典中混合list排序</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mydict = &#123;</span><br><span class="line">    <span class="string">&#x27;Bob&#x27;</span>: [<span class="string">&#x27;M&#x27;</span>, <span class="number">7</span>],</span><br><span class="line">    <span class="string">&#x27;Caly&#x27;</span>: [<span class="string">&#x27;E&#x27;</span>, <span class="number">2</span>],</span><br><span class="line">    <span class="string">&#x27;Justin&#x27;</span>: [<span class="string">&#x27;P&#x27;</span>, <span class="number">3</span>],</span><br><span class="line">    <span class="string">&#x27;Amy&#x27;</span>: [<span class="string">&#x27;C&#x27;</span>, <span class="number">6</span>]</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">sorted</span>(mydict.items(), key=<span class="keyword">lambda</span> elem: itemgetter(<span class="number">1</span>)(elem[<span class="number">1</span>]))</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>list中混合字典排序</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">ratelist = [</span><br><span class="line">    &#123;<span class="string">&#x27;name&#x27;</span>:<span class="string">&#x27;Bob&#x27;</span>,<span class="string">&#x27;win&#x27;</span>:<span class="number">10</span>,<span class="string">&#x27;loss&#x27;</span>:<span class="number">3</span>,<span class="string">&#x27;rate&#x27;</span>:<span class="number">75</span>&#125;,</span><br><span class="line">    &#123;<span class="string">&#x27;name&#x27;</span>:<span class="string">&#x27;David&#x27;</span>,<span class="string">&#x27;win&#x27;</span>:<span class="number">3</span>,<span class="string">&#x27;loss&#x27;</span>:<span class="number">5</span>,<span class="string">&#x27;rate&#x27;</span>:<span class="number">57</span>&#125;,</span><br><span class="line">    &#123;<span class="string">&#x27;name&#x27;</span>:<span class="string">&#x27;Carol&#x27;</span>,<span class="string">&#x27;win&#x27;</span>:<span class="number">4</span>,<span class="string">&#x27;loss&#x27;</span>:<span class="number">5</span>,<span class="string">&#x27;rate&#x27;</span>:<span class="number">57</span>&#125;,</span><br><span class="line">    &#123;<span class="string">&#x27;name&#x27;</span>:<span class="string">&#x27;Patty&#x27;</span>,<span class="string">&#x27;win&#x27;</span>:<span class="number">9</span>,<span class="string">&#x27;loss&#x27;</span>:<span class="number">3</span>,<span class="string">&#x27;rate&#x27;</span>:<span class="number">71</span>&#125;,</span><br><span class="line">]</span><br><span class="line"><span class="built_in">sorted</span>(ratelist,key=itemgetter(<span class="string">&#x27;rate&#x27;</span>,<span class="string">&#x27;name&#x27;</span>))</span><br><span class="line"><span class="comment"># Out[62]: </span></span><br><span class="line"><span class="comment"># [&#123;&#x27;name&#x27;: &#x27;Carol&#x27;, &#x27;win&#x27;: 4, &#x27;loss&#x27;: 5, &#x27;rate&#x27;: 57&#125;,</span></span><br><span class="line"><span class="comment">#  &#123;&#x27;name&#x27;: &#x27;David&#x27;, &#x27;win&#x27;: 3, &#x27;loss&#x27;: 5, &#x27;rate&#x27;: 57&#125;,</span></span><br><span class="line"><span class="comment">#  &#123;&#x27;name&#x27;: &#x27;Patty&#x27;, &#x27;win&#x27;: 9, &#x27;loss&#x27;: 3, &#x27;rate&#x27;: 71&#125;,</span></span><br><span class="line"><span class="comment">#  &#123;&#x27;name&#x27;: &#x27;Bob&#x27;, &#x27;win&#x27;: 10, &#x27;loss&#x27;: 3, &#x27;rate&#x27;: 75&#125;]</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Counter"><a href="#Counter" class="headerlink" title="Counter"></a>Counter</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 统计次数</span></span><br><span class="line"><span class="comment"># 1、使用dict</span></span><br><span class="line">data = [<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;2&#x27;</span>, <span class="string">&#x27;c&#x27;</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;c&#x27;</span>, <span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="number">0</span>, <span class="number">1</span>]</span><br><span class="line">count_dict = <span class="built_in">dict</span>()</span><br><span class="line"><span class="keyword">for</span> ele <span class="keyword">in</span> data:</span><br><span class="line">    <span class="keyword">if</span> ele <span class="keyword">in</span> count_dict:</span><br><span class="line">        count_dict[ele] +=<span class="number">1</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        count_dict[ele] = <span class="number">1</span></span><br><span class="line"><span class="comment"># count_dict</span></span><br><span class="line"><span class="comment"># Out[1]: &#123;&#x27;a&#x27;: 3, &#x27;2&#x27;: 1, &#x27;c&#x27;: 2, 1: 2, 2: 1, &#x27;b&#x27;: 1, 0: 1&#125;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2、使用defaultdict</span></span><br><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict</span><br><span class="line">count_default = defaultdict(<span class="built_in">int</span>)</span><br><span class="line"><span class="keyword">for</span> ele <span class="keyword">in</span> data:</span><br><span class="line">    count_default[ele] +=<span class="number">1</span></span><br><span class="line"><span class="comment"># count_default</span></span><br><span class="line"><span class="comment"># Out[2]: defaultdict(int, &#123;&#x27;a&#x27;: 3, &#x27;2&#x27;: 1, &#x27;c&#x27;: 2, 1: 2, 2: 1, &#x27;b&#x27;: 1, 0: 1&#125;)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 3、使用set和list</span></span><br><span class="line">count_set = <span class="built_in">set</span>(data)</span><br><span class="line">count_list = []</span><br><span class="line"><span class="keyword">for</span> ele <span class="keyword">in</span> count_set:</span><br><span class="line">    count_list.append((ele, data.count(ele)))</span><br><span class="line"><span class="comment"># count_list</span></span><br><span class="line"><span class="comment"># Out[3]: [(0, 1), (1, 2), (&#x27;2&#x27;, 1), (2, 1), (&#x27;c&#x27;, 2), (&#x27;b&#x27;, 1), (&#x27;a&#x27;, 3)]</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 4、更加优雅、简介的方式：使用collection.Counter</span></span><br><span class="line"><span class="comment"># Counter类属于字典类的子类，是一个容器对象，主要用来统计散列对象</span></span><br><span class="line"><span class="comment"># 支持集合操作+-&amp;|，其中&amp;|分别返回两个Counter对象元素的最小值和最大值</span></span><br><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> Counter</span><br><span class="line"><span class="comment"># 三种方式初始化：可迭代对象、关键字参数、字典</span></span><br><span class="line">Counter(<span class="string">&#x27;success&#x27;</span>)      <span class="comment"># Counter(&#123;&#x27;s&#x27;: 3, &#x27;u&#x27;: 1, &#x27;c&#x27;: 2, &#x27;e&#x27;: 1&#125;)</span></span><br><span class="line">Counter(a=<span class="number">1</span>, b=<span class="number">2</span>, c=<span class="number">3</span>)      <span class="comment"># Counter(&#123;&#x27;a&#x27;: 1, &#x27;b&#x27;: 2, &#x27;c&#x27;: 3&#125;)</span></span><br><span class="line">Counter(&#123;<span class="string">&#x27;a&#x27;</span>: <span class="string">&#x27;2&#x27;</span>, <span class="string">&#x27;c&#x27;</span>: <span class="number">1</span>, <span class="number">2</span>: <span class="string">&#x27;a&#x27;</span>&#125;)  <span class="comment"># Out[8]: Counter(&#123;&#x27;a&#x27;: &#x27;2&#x27;, &#x27;c&#x27;: 1, 2: &#x27;a&#x27;&#125;)</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用element()方法来获取Counter中的key值</span></span><br><span class="line">data = [<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;2&#x27;</span>, <span class="string">&#x27;c&#x27;</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;c&#x27;</span>, <span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="number">0</span>, <span class="number">1</span>]</span><br><span class="line"><span class="built_in">list</span>(Counter(data).elements())</span><br><span class="line"><span class="comment"># Out[10]: [&#x27;a&#x27;, &#x27;a&#x27;, &#x27;a&#x27;, &#x27;2&#x27;, &#x27;c&#x27;, &#x27;c&#x27;, 1, 1, 2, &#x27;b&#x27;, 0]</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用most_common()方法找出前n个出现频率最高的元素、对应次数</span></span><br><span class="line">Counter(data).most_common(<span class="number">2</span>)</span><br><span class="line"><span class="comment"># Out[12]: [(&#x27;a&#x27;, 3), (&#x27;c&#x27;, 2)]</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 当访问的元素不存在时，默认返回0，而不是抛出异常</span></span><br><span class="line">(Counter(data)[<span class="string">&#x27;y&#x27;</span>])</span><br><span class="line"><span class="comment"># Out[13]: 0</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># updata()方法用于被统计对象元素的更新，原有Counter计数器对象和新增元素的统计数值相加而不是直接替换它们</span></span><br><span class="line">c = Counter(<span class="string">&#x27;success&#x27;</span>)</span><br><span class="line"><span class="comment"># c</span></span><br><span class="line"><span class="comment"># Out[15]: Counter(&#123;&#x27;s&#x27;: 3, &#x27;u&#x27;: 1, &#x27;c&#x27;: 2, &#x27;e&#x27;: 1&#125;)</span></span><br><span class="line">c.update(<span class="string">&#x27;successfully&#x27;</span>)</span><br><span class="line"><span class="comment"># c</span></span><br><span class="line"><span class="comment"># Out[17]: Counter(&#123;&#x27;s&#x27;: 6, &#x27;u&#x27;: 3, &#x27;c&#x27;: 4, &#x27;e&#x27;: 2, &#x27;f&#x27;: 1, &#x27;l&#x27;: 2, &#x27;y&#x27;: 1&#125;)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># subtract()用于实现计数器对象中元素统计值相减，输入和输出的统计值允许为0或者为负数</span></span><br><span class="line">c.subtract(<span class="string">&#x27;successfully&#x27;</span>)</span><br><span class="line"><span class="comment"># c</span></span><br><span class="line"><span class="comment"># Out[19]: Counter(&#123;&#x27;s&#x27;: 3, &#x27;u&#x27;: 1, &#x27;c&#x27;: 2, &#x27;e&#x27;: 1, &#x27;f&#x27;: 0, &#x27;l&#x27;: 0, &#x27;y&#x27;: 0&#125;)</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="ConfigParser"><a href="#ConfigParser" class="headerlink" title="ConfigParser"></a>ConfigParser</h2><p>配置文件的意义在于用户不需要修改代码，就可以改变应用的行为。</p>
+<p>getboolean()函数，根据一定的规则将配置项的值转换为布尔值。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[section1]</span><br><span class="line">option1=<span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<p>当调用getboolean(‘section1’,’option1’)) 时，返回False，除了0之外，no、false、off都会被转义为False，对应的1、yes、true、on都会被转义为True，其他值都会导致抛出ValueError异常。</p>
+<p>配置项的查找规则，在ConfigParser支持的配置文件格式里，有一个[DEFAULT]节点，当读取的配置项不在指定的节点里时，ConfigParser将会到[DEFAULT]节点中区找。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[section1]</span><br><span class="line">option1=false</span><br><span class="line"></span><br><span class="line">[section2]</span><br><span class="line"></span><br><span class="line">[DEFAULT]</span><br><span class="line">in_default = <span class="string">&#x27;an option value in default&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> configparser</span><br><span class="line">conf = configparser.ConfigParser()</span><br><span class="line">conf.read(<span class="string">&#x27;example.conf&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(conf.getboolean(<span class="string">&#x27;section1&#x27;</span>,<span class="string">&#x27;option1&#x27;</span>))  <span class="comment"># False</span></span><br><span class="line"><span class="built_in">print</span>(conf.get(<span class="string">&#x27;section2&#x27;</span>,<span class="string">&#x27;in_default&#x27;</span>))    <span class="comment"># &#x27;an option value in default&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>配置项值的查找规则：</p>
+<ol>
+<li>若找不到节点名，就抛出NoSectionError；</li>
+<li>若给定的配置项出现在get()方法的vars参数中，则返回vars参数中的值；</li>
+<li>若在指定的节点中含有给定的配置项，则返回其值；</li>
+<li>若在[DEFAULT]中有指定的配置项，则返回其值；</li>
+<li>若在构造函数的default参数中有指定的配置项，则返回其值；</li>
+<li>抛出NoOptionError；</li>
+</ol>
+<p>ConfigParser支持字符串格式化的语法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">example_str = <span class="string">&#x27;%(protocol)s://%(server)s:%(port)s/&#x27;</span> % &#123;<span class="string">&#x27;protocol&#x27;</span>:<span class="string">&#x27;http&#x27;</span>,<span class="string">&#x27;server&#x27;</span>:<span class="string">&#x27;example.com&#x27;</span>,<span class="string">&#x27;port&#x27;</span>:<span class="number">1080</span>,&#125;</span><br><span class="line"><span class="comment"># http://example.com:1080/</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[DEFAULT]</span><br><span class="line">conn_str = %(dbn)s://%(user)s:%(pw)s@%(host)s:%(port)s/%(db)s</span><br><span class="line">dbn = mysql</span><br><span class="line">user = root</span><br><span class="line">host = localhost</span><br><span class="line">port = <span class="number">3306</span></span><br><span class="line"></span><br><span class="line">[db1]</span><br><span class="line">user = zyp</span><br><span class="line">pw = ppp</span><br><span class="line">db = example</span><br><span class="line"></span><br><span class="line">[db2]</span><br><span class="line">host = <span class="number">192.168</span><span class="number">.0</span><span class="number">.110</span></span><br><span class="line">pw = www</span><br><span class="line">db =example</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> configparser</span><br><span class="line">conf = configparser.ConfigParser()</span><br><span class="line">conf.read(<span class="string">&#x27;example.conf&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(conf.get(<span class="string">&#x27;db1&#x27;</span>,<span class="string">&#x27;conn_str&#x27;</span>))</span><br><span class="line"><span class="built_in">print</span>(conf.get(<span class="string">&#x27;db2&#x27;</span>,<span class="string">&#x27;conn_str&#x27;</span>))</span><br><span class="line"><span class="comment"># mysql://zyp:ppp@localhost:3306/example</span></span><br><span class="line"><span class="comment"># mysql://root:www@192.168.0.110:3306/example</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="pickle"><a href="#pickle" class="headerlink" title="pickle"></a>pickle</h2><p>序列化是把内存中的数据结构在不丢失其身份和类型信息的情况下转成对象的文本或二进制的过程。对象序列化后的形式经过饭序列化能恢复为原有对象。Python中有很多支持序列化的模块，如pickle、json、marshal、shelve。</p>
+<p>pickle是最通用的序列化模块，还有用C语言实现的cPickle，拥有这更好的性能。</p>
+<p>pickle最主要的两个函数：dump()、load()，用于对象的序列化和反序列化。</p>
+<ul>
+<li>pickle.dump(obj, file[,protocol])：序列化数据到一个文件描述符（一个打开的文件、套接字等）。参数obj表示需要序列化的对象，包括布尔、数字、字符串、字节数组、None、列表、元组、字典、集合等基本数据类型，还可以处理循环，递归引用对象、类、函数以及类的实例等。参数file支持write()方法的文件句柄，可以为真实的文件，也可以是StringIO对象。protocol为序列化使用的协议版本，0表示ASCII协议（默认为0），所序列化的对象使用可打印的ASCII码表示；1表示老式的二进制协议；2表示2.3版本引入的新二进制协议，比以前的高效。</li>
+<li>load(file)：表示把文件中的对象恢复为原来的对象（反序列化）</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line">data = &#123;<span class="string">&#x27;Bob&#x27;</span>: <span class="string">&#x27;2&#x27;</span>, <span class="string">&#x27;Caly&#x27;</span>: <span class="string">&#x27;1&#x27;</span>, <span class="string">&#x27;Amy&#x27;</span>: <span class="string">&#x27;3&#x27;</span>&#125;</span><br><span class="line"></span><br><span class="line">file_name = <span class="string">&#x27;test_pickle.txt&#x27;</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(file_name,<span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> fp:</span><br><span class="line">    pickle.dump(data, fp)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(file_name,<span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> fp:</span><br><span class="line">    res = pickle.load(fp)</span><br><span class="line">    <span class="built_in">print</span>(res)</span><br></pre></td></tr></table></figure>
+
+<p>pickle的特点：</p>
+<ul>
+<li><p>接口简单，容易使用，通过dump和load可以轻松实现序列化和反序列化</p>
+</li>
+<li><p>pickle的存储格式具有通用性，能被不同平台的Python解析器共享：Linux下序列化的格式文件可在Windows的Python解析器中反序列化，兼容性好</p>
+</li>
+<li><p>支持的数据类型广泛: 数字、布尔值、字符串，只包含可序列化对象的元组、字典、列表等，非嵌套的函数、类以及通过类的<code>__dict__</code>或者<code>__getstate__</code>可以返回序列化对象的实例等</p>
+</li>
+<li><p>pickle模块是可扩展的。pickle模块是可以扩展的。对于实例对象，pickle在还原对象的时候一般是不调用<code>__init__()</code>函数的，如果要调用<code>__init__()</code>进行初始化，对于古典类可以在类定义中提供<code>__getinitargs__()</code>函数，并返回一个元组，当进行unpickle的时候，Python就会自动调用<code>__init__()</code>，并把<code>__getinitargs__()</code>中返回的元组作为参数传递给<code>__init__()</code>，而对于新式类，可以提供<code>__getnewargs__()</code>来提供对象生成时候的参数，在unpickle的时候以<code>Class.__new__(Class, *arg)</code>的方</p>
+<p>式创建对象。对于不可序列化的对象，如sockets、文件句柄、数据库连接等，也可以通过实现pickle协议来解决这些局限，主要是通过特殊方法<code>__getstate__()</code>和<code>__setstate__()</code>来返回实例在被pickle时的状态，见如下示例：</p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TextReader</span>():</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, filename</span>):</span><br><span class="line">        <span class="variable language_">self</span>.filename = filename</span><br><span class="line">        <span class="variable language_">self</span>.file = <span class="built_in">open</span>(<span class="variable language_">self</span>.filename)  <span class="comment"># 打开文件的句柄</span></span><br><span class="line">        <span class="variable language_">self</span>.position = <span class="variable language_">self</span>.file.tell()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">readline</span>(<span class="params">self</span>):</span><br><span class="line">        line = <span class="variable language_">self</span>.file.readline()</span><br><span class="line">        <span class="variable language_">self</span>.position = <span class="variable language_">self</span>.file.tell()</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> line:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">        <span class="keyword">if</span> line.endswith(<span class="string">&#x27;\n&#x27;</span>):</span><br><span class="line">            line = line[:-<span class="number">1</span>]</span><br><span class="line">        <span class="keyword">return</span> <span class="string">f&quot;<span class="subst">&#123;self.position&#125;</span>&quot;</span>, line</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__getstate__</span>(<span class="params">self</span>):  <span class="comment"># 记录文件被pickle时的状态</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;in __getstate__&quot;</span>)</span><br><span class="line">        state = <span class="variable language_">self</span>.__dict__.copy()  <span class="comment"># 获取被pickle时的字典信息</span></span><br><span class="line">        <span class="keyword">del</span> state[<span class="string">&#x27;file&#x27;</span>]</span><br><span class="line">        <span class="keyword">return</span> state</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__setstate__</span>(<span class="params">self, state</span>):  <span class="comment"># 设置反序列化后的状态</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;in __setstate__&quot;</span>)</span><br><span class="line">        <span class="variable language_">self</span>.__dict__.update(state)</span><br><span class="line">        file = <span class="built_in">open</span>(<span class="variable language_">self</span>.filename)</span><br><span class="line">        <span class="variable language_">self</span>.file = file</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">reader = TextReader(<span class="string">&quot;test.py&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(reader.readline())</span><br><span class="line"><span class="built_in">print</span>(reader.readline())</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;---&quot;</span>)</span><br><span class="line"></span><br><span class="line">s = pickle.dumps(reader)  <span class="comment"># 在dumps时会默认调用__getstate__</span></span><br><span class="line">new_reader = pickle.loads(s)  <span class="comment"># 在loads时会默认调用__setstate__</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;***&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(new_reader.readline())</span><br><span class="line"><span class="built_in">print</span>(new_reader.readline())</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>能够自动维护对象间的引用，如果一个对象上存在多个引用，pickle后不会改变对象间的引用，并且能够自动处理循环和递归。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"></span><br><span class="line">a = [<span class="number">1</span>,<span class="number">2</span>]</span><br><span class="line">b = a</span><br><span class="line">b.append(<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">p = pickle.dumps((a,b))</span><br><span class="line">a1, b1 = pickle.loads(p)</span><br><span class="line">a1</span><br><span class="line">Out[<span class="number">1</span>]: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">b1</span><br><span class="line">Out[<span class="number">2</span>]: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">a1.append(<span class="number">4</span>)</span><br><span class="line">b1</span><br><span class="line">Out[<span class="number">3</span>]: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]  <span class="comment"># 反序列化对a1对象的修改仍然会影响到b1</span></span><br></pre></td></tr></table></figure>
+
+<p>pickle的使用也存在以下限制：</p>
+<ul>
+<li>不能保证操作的原子性</li>
+<li>存在安全性问题</li>
+<li>pickle协议是Python特定的，不同语言之间的兼容性难以保障</li>
+</ul>
+<h2 id="json"><a href="#json" class="headerlink" title="json"></a>json</h2><p>json是一种轻量级数据交换格式，基于JavaScript的一个子集，可读性和互操作性较强，易于解析和使用。json和pickle类似，使用dump&#x2F;dumps来序列化，load&#x2F;loads来反序列化。</p>
+<p>json的两大数据结构：名称&#x2F;值对的集合、值的有序列表。</p>
+<h2 id="traceback-获取栈信息"><a href="#traceback-获取栈信息" class="headerlink" title="traceback 获取栈信息"></a>traceback 获取栈信息</h2><p>tracebac模块可以在发生异常时展示出现场信息，输出完整的栈信息，包括调用顺序、异常发生的语句、错误类型。</p>
+<p>traceback.print_exc()方法打印出的信息包括3部分：错误类型(IndexError)、错误对应的值(list index out of range)、具体的trace信息，包括文件名、具体的行号、函数名以及对应的源代码。常用的几个方法：</p>
+<ul>
+<li>traceback.print_exception(type, value, traceback[, limit[, file]])，根据limit的设置打印栈信息，file为None时定位到sys.stderr，否则写入文件；type、value、traceback这3个参数对应的值可以从sys.exc_info()中获取</li>
+<li>traceback.print_exc([limit[, file]])，为print_exception()函数的缩写，不需要传入type、value、traceback</li>
+<li>traceback.format_exc([limit])，与print_exc类似，区别在于返回形式为字符串</li>
+<li>traceback.extract_stack([file, [, [limit]]])，从当前栈帧中提取trace信息</li>
+</ul>
+<h2 id="threading"><a href="#threading" class="headerlink" title="threading"></a>threading</h2><p>Python为多线程编提供了模块：thread、threading。</p>
+<ul>
+<li>thread模块提供了多线程底层支持模块，以敌机原始的方式来处理和控制线程，使用较为复杂</li>
+<li>threading模块基于thread进行包装，将线程的操作对象化，在语言层面提供了丰富的特性</li>
+</ul>
+<p>一般Python多线程支持两种方式来创建线程：一种是通过继承Thread类，重写它的run()方法；另一种是创建一个threading.Thread对象，在它的初始化函数(<code>__init__</code>)中将可调用对象作为参数传入。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2019/09/29/25728/" rel="prev" title="编写高质量代码：Python中的常见语法">
+                  <i class="fa fa-angle-left"></i> 编写高质量代码：Python中的常见语法
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2019/10/20/56015/" rel="next" title="编写高质量代码：Python中的内部机制（上）">
+                  编写高质量代码：Python中的内部机制（上） <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">691k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:28</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

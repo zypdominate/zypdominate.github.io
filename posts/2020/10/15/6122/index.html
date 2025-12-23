@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="记录在 CentOS 系统上通过 Docker 安装 Elasticsearch、Kibana 和 Filebeat 的全过程，涵盖安装 Docker Engine、Docker - Compose 以及各组件的具体步骤，给出实例配置文件及相关命令，还列举了安装过程中遇到的诸多问题及解决办法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker 中安装 Elasticsearch + Kibana + Filebeat">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2020/10/15/6122/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="记录在 CentOS 系统上通过 Docker 安装 Elasticsearch、Kibana 和 Filebeat 的全过程，涵盖安装 Docker Engine、Docker - Compose 以及各组件的具体步骤，给出实例配置文件及相关命令，还列举了安装过程中遇到的诸多问题及解决办法。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://zypdominate.github.io/images/2020/es/Elasticsearch_server_is_ok.png">
+<meta property="og:image" content="https://zypdominate.github.io/images/2020/es/Kibana_server_is_ok.png">
+<meta property="og:image" content="https://zypdominate.github.io/images/2020/es/Kibana%E9%85%8D%E7%BD%AE%E7%B4%A2%E5%BC%951.png">
+<meta property="og:image" content="https://zypdominate.github.io/images/2020/es/Kibana%E9%85%8D%E7%BD%AE%E7%B4%A2%E5%BC%952.png">
+<meta property="og:image" content="https://zypdominate.github.io/images/2020/es/Kibana%E9%85%8D%E7%BD%AE%E7%B4%A2%E5%BC%953.png">
+<meta property="og:image" content="https://zypdominate.github.io/images/2020/es/Kibana_server_is_not_ready_yet1.png">
+<meta property="og:image" content="https://zypdominate.github.io/images/2020/es/Kibana_server_is_not_ready_yet2.png">
+<meta property="og:image" content="https://zypdominate.github.io/images/2020/es/Kibana%E8%BF%9E%E6%8E%A5es%E6%8A%A5%E9%94%991.png">
+<meta property="og:image" content="https://zypdominate.github.io/images/2020/es/Kibana%E8%BF%9E%E6%8E%A5es%E6%8A%A5%E9%94%992.png">
+<meta property="article:published_time" content="2020-10-15T12:43:51.000Z">
+<meta property="article:modified_time" content="2025-12-23T14:07:49.066Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="elasticsearch">
+<meta property="article:tag" content="docker">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zypdominate.github.io/images/2020/es/Elasticsearch_server_is_ok.png">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2020/10/15/6122/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2020/10/15/6122/","path":"posts/2020/10/15/6122/","title":"Docker 中安装 Elasticsearch + Kibana + Filebeat"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Docker 中安装 Elasticsearch + Kibana + Filebeat | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8-Docker-%E4%B8%AD%E5%AE%89%E8%A3%85-Elasticsearch-Kibana-Filebeat"><span class="nav-text">在 Docker 中安装 Elasticsearch + Kibana + Filebeat</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%A8-CentOS%E4%B8%8A%E5%AE%89%E8%A3%85-Docker-Engine"><span class="nav-text">在 CentOS上安装 Docker Engine</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-Docker-Compose"><span class="nav-text">安装 Docker-Compose</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-Elasticsearch"><span class="nav-text">安装 Elasticsearch</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Docker-Elasticsearch-Kibana-Filebeat-%E5%AE%9E%E4%BE%8B"><span class="nav-text">Docker + Elasticsearch + Kibana + Filebeat 实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3"><span class="nav-text">遇到的问题及解决</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95"><span class="nav-text">学习记录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-text">参考资料</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2020/10/15/6122/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Docker 中安装 Elasticsearch + Kibana + Filebeat | Magnolia's Blog">
+      <meta itemprop="description" content="记录在 CentOS 系统上通过 Docker 安装 Elasticsearch、Kibana 和 Filebeat 的全过程，涵盖安装 Docker Engine、Docker - Compose 以及各组件的具体步骤，给出实例配置文件及相关命令，还列举了安装过程中遇到的诸多问题及解决办法。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Docker 中安装 Elasticsearch + Kibana + Filebeat
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-10-15 20:43:51" itemprop="dateCreated datePublished" datetime="2020-10-15T20:43:51+08:00">2020-10-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/Elasticsearch/" itemprop="url" rel="index"><span itemprop="name">Elasticsearch</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>6.7k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>6 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">记录在 CentOS 系统上通过 Docker 安装 Elasticsearch、Kibana 和 Filebeat 的全过程，涵盖安装 Docker Engine、Docker - Compose 以及各组件的具体步骤，给出实例配置文件及相关命令，还列举了安装过程中遇到的诸多问题及解决办法。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="在-Docker-中安装-Elasticsearch-Kibana-Filebeat"><a href="#在-Docker-中安装-Elasticsearch-Kibana-Filebeat" class="headerlink" title="在 Docker 中安装 Elasticsearch + Kibana + Filebeat"></a>在 Docker 中安装 <code>Elasticsearch + Kibana + Filebeat</code></h3><h4 id="在-CentOS上安装-Docker-Engine"><a href="#在-CentOS上安装-Docker-Engine" class="headerlink" title="在 CentOS上安装 Docker Engine"></a><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/install/centos/">在 CentOS上安装 Docker Engine</a></h4><p>先更新一下 yum 软件源的缓存，安装依赖包</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo yum update</span><br><span class="line">sudo yum install -y yum-utils device-mapper-persistent-data lvm2</span><br></pre></td></tr></table></figure>
+
+<p>添加国内下载源</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum-config-manager --add-repo https://mirrors.ustc.edu.cn/docker-ce/linux/centos/docker-ce.repo</span><br></pre></td></tr></table></figure>
+
+<p>安装比较稳定的版本 Docker CE </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo yum makecache fast</span><br><span class="line">sudo yum install docker-ce</span><br></pre></td></tr></table></figure>
+
+<p>配置开机启动，并启动 Docker CE ：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl enable docker</span><br><span class="line">sudo systemctl start docker</span><br></pre></td></tr></table></figure>
+
+<p>测试是否正确安装了 Docker Engine:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run hello-world</span><br></pre></td></tr></table></figure>
+
+<p>建立 docker 组，将当前用户加入 docker 组：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo groupadd docker</span><br><span class="line">sudo usermod -aG docker $USER</span><br></pre></td></tr></table></figure>
+
+<p>再次执行 <code>docker run hello-world</code> 测试是否可以执行。</p>
+<h4 id="安装-Docker-Compose"><a href="#安装-Docker-Compose" class="headerlink" title="安装 Docker-Compose"></a><a target="_blank" rel="noopener" href="https://docs.docker.com/compose/install/">安装 Docker-Compose</a></h4><p>在线安装，下载一个 Docker-Compose</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo curl -L &quot;https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)&quot; -o /usr/local/bin/docker-compose</span><br></pre></td></tr></table></figure>
+
+<p>给文件执行权限</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo chmod +x /usr/local/bin/docker-compose</span><br></pre></td></tr></table></figure>
+
+<p>创建指向 <code>/usr/bin</code> 的链接</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose</span><br></pre></td></tr></table></figure>
+
+<p>查看版本</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose --version</span><br></pre></td></tr></table></figure>
+
+<h4 id="安装-Elasticsearch"><a href="#安装-Elasticsearch" class="headerlink" title="安装 Elasticsearch"></a><a target="_blank" rel="noopener" href="https://www.xttblog.com/?p=4408">安装 Elasticsearch</a></h4><p>在 Docker-hub 中搜索 Elasticsearch 版本</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker search Elasticsearch</span><br></pre></td></tr></table></figure>
+
+<p>安装 Elasticsearch 7.2 的版本</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull docker.elastic.co/elasticsearch/elasticsearch:7.2.0</span><br></pre></td></tr></table></figure>
+
+<p>安装完成后，执行 <code>docker images</code> 或者 <code>docker image ls</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon /]# docker images</span><br><span class="line">REPOSITORY                      TAG         IMAGE ID        CREATED         SIZE</span><br><span class="line">hello-world                     latest      bf756fb1ae65    9 months ago    13.3kB</span><br><span class="line">docker.elastic.co/elasticsearch/elasticsearch   7.2.0       0efa6a3de177    15 months ago    861MB</span><br></pre></td></tr></table></figure>
+
+<h4 id="Docker-Elasticsearch-Kibana-Filebeat-实例"><a href="#Docker-Elasticsearch-Kibana-Filebeat-实例" class="headerlink" title="Docker + Elasticsearch + Kibana + Filebeat 实例"></a>Docker + Elasticsearch + Kibana + Filebeat 实例</h4><p>我的 test_docker 文件夹，目录层级</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon test_docker]# tree</span><br><span class="line">.</span><br><span class="line">├── docker-compose.yaml</span><br><span class="line">└── filebeat</span><br><span class="line">    ├── conf</span><br><span class="line">    │   └── filebeat.yml</span><br><span class="line">    ├── data</span><br><span class="line">    │   ├── meta.json</span><br><span class="line">    │   └── registry</span><br><span class="line">    │       └── filebeat</span><br><span class="line">    │           ├── data.json</span><br><span class="line">    │           └── meta.json</span><br><span class="line">    └── logs</span><br><span class="line"></span><br><span class="line">6 directories, 5 files</span><br></pre></td></tr></table></figure>
+
+<p>新建一个 <code>docker-compose.yml</code> 文件</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&#x27;2.2&#x27;</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">cerebro:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">lmenezes/cerebro:0.8.3</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">cerebro</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;9000:9000&quot;</span></span><br><span class="line">    <span class="attr">command:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">-Dhosts.0.host=http://elasticsearch:9200</span></span><br><span class="line">  <span class="attr">kibana:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">docker.elastic.co/kibana/kibana:7.1.0</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">kibana7</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">I18N_LOCALE=zh-CN</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">XPACK_GRAPH_ENABLED=true</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">TIMELION_ENABLED=true</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">XPACK_MONITORING_COLLECTION_ENABLED=&quot;true&quot;</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;5601:5601&quot;</span></span><br><span class="line">  <span class="attr">elasticsearch:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">docker.elastic.co/elasticsearch/elasticsearch:7.1.0</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">es7_01</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">cluster.name=zhuyuping</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">node.name=es7_01</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">bootstrap.memory_lock=true</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;ES_JAVA_OPTS=-Xms512m -Xmx512m&quot;</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">discovery.seed_hosts=es7_01</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">cluster.initial_master_nodes=es7_01</span> <span class="comment">#,es7_02</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">path.data:/data/elasticsearch</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">path.logs:/data/log/elasticsearch</span></span><br><span class="line">    <span class="attr">ulimits:</span></span><br><span class="line">      <span class="attr">memlock:</span></span><br><span class="line">        <span class="attr">soft:</span> <span class="number">-1</span></span><br><span class="line">        <span class="attr">hard:</span> <span class="number">-1</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">es7data1:/usr/share/elasticsearch/data</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">9200</span><span class="string">:9200</span></span><br><span class="line">  <span class="attr">filebeat:</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">filebeat</span></span><br><span class="line">    <span class="attr">hostname:</span> <span class="string">filebeat</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">docker.elastic.co/beats/filebeat:7.1.1</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">    <span class="attr">user:</span> <span class="string">root</span></span><br><span class="line">    <span class="attr">links:</span>  <span class="comment"># 需要链接es，不然存在报错</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">es7_01</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./filebeat/conf/filebeat.yml:/usr/share/filebeat/filebeat.yml</span></span><br><span class="line">      <span class="comment"># 映射到容器中[作为数据源]</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./filebeat/logs:/usr/share/filebeat/logs</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./filebeat/data:/usr/share/filebeat/data</span></span><br><span class="line"></span><br><span class="line"><span class="attr">volumes:</span></span><br><span class="line">  <span class="attr">es7data1:</span></span><br><span class="line">    <span class="attr">driver:</span> <span class="string">local</span></span><br><span class="line">  <span class="attr">es7data2:</span></span><br><span class="line">    <span class="attr">driver:</span> <span class="string">local</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#elasticsearch2:</span></span><br><span class="line"><span class="comment">#image: docker.elastic.co/elasticsearch/elasticsearch:7.1.0</span></span><br><span class="line"><span class="comment">#container_name: es7_02</span></span><br><span class="line"><span class="comment">#environment:</span></span><br><span class="line">  <span class="comment">#- cluster.name=zhuyuping</span></span><br><span class="line">  <span class="comment">#- node.name=es7_02</span></span><br><span class="line">  <span class="comment">#- bootstrap.memory_lock=true</span></span><br><span class="line">  <span class="comment">#- &quot;ES_JAVA_OPTS=-Xms512m -Xmx512m&quot;</span></span><br><span class="line">  <span class="comment">#- discovery.seed_hosts=es7_01</span></span><br><span class="line">  <span class="comment">#- cluster.initial_master_nodes=es7_01,es7_02</span></span><br><span class="line"><span class="comment">#ulimits:</span></span><br><span class="line">  <span class="comment">#memlock:</span></span><br><span class="line">    <span class="comment">#soft: -1</span></span><br><span class="line">    <span class="comment">#hard: -1</span></span><br><span class="line"><span class="comment">#volumes:</span></span><br><span class="line">  <span class="comment">#- es7data2:/usr/share/elasticsearch/data</span></span><br></pre></td></tr></table></figure>
+
+<p>关于 <code>filebeat.yml</code> 的配置</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 日志输入配置</span></span><br><span class="line"><span class="attr">filebeat.inputs:</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">type:</span> <span class="string">log</span></span><br><span class="line">  <span class="attr">enabled:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">paths:</span></span><br><span class="line">  <span class="comment"># 需要收集的日志所在的位置，可使用通配符进行配置</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">/var/log/*.log</span></span><br><span class="line">  <span class="comment">#- /data/fxqalog/*.txt</span></span><br><span class="line"></span><br><span class="line"><span class="attr">output.elasticsearch:</span></span><br><span class="line">  <span class="comment">#hosts: [&#x27;10.103.131.242:9200&#x27;]</span></span><br><span class="line">  <span class="attr">hosts:</span> [<span class="string">&quot;es7_01:9200&quot;</span>]    <span class="comment">#定义的es的url，之前名字取为es7_01，需要保持一致，不能使用localhost</span></span><br><span class="line">  </span><br><span class="line"><span class="comment">#日志输出配置(采用 logstash 收集日志，5044为logstash端口)</span></span><br><span class="line"><span class="comment">#output.logstash:</span></span><br><span class="line">  <span class="comment">#hosts: [&quot;10.103.131.242:5044&quot;]</span></span><br><span class="line">  <span class="comment">#hosts: [&quot;es7_01:5044&quot;]</span></span><br></pre></td></tr></table></figure>
+
+<p>启动容器</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon test_docker]# docker-compose up</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"># 一些docker 命令</span><br><span class="line"># 启动、停止容器</span><br><span class="line">docker-compose up</span><br><span class="line">docker-compose down</span><br><span class="line"></span><br><span class="line"># 停止容器并且移除数据</span><br><span class="line">docker-compose down -v</span><br><span class="line"></span><br><span class="line">docker ps -a  # 正在运行的容器</span><br><span class="line">docker container ls  # 存在的容器</span><br><span class="line"></span><br><span class="line"># 停止、启动、杀死、重启一个容器</span><br><span class="line">$docker stop Name/ID  </span><br><span class="line">$docker start Name/ID  </span><br><span class="line">$docker kill Name/ID  </span><br><span class="line">$docker restart name/ID</span><br><span class="line"></span><br><span class="line"># 删除 image (例如删除REPOSITORY为prima/filebeat的image)</span><br><span class="line">$docker images</span><br><span class="line">$docker rmi prima/filebeat</span><br><span class="line"></span><br><span class="line"># 删除单个容器</span><br><span class="line">$docker rm Name/ID</span><br><span class="line"># 删除所有容器</span><br><span class="line">$docker rm `docker ps -a -q` </span><br></pre></td></tr></table></figure>
+
+<p>接着通过浏览器查看 Elasticsearch、Kibana 服务<br><img data-src="/../../images/2020/es/Elasticsearch_server_is_ok.png" alt="image-20201015170144312"></p>
+<p><img data-src="/../../images/2020/es/Kibana_server_is_ok.png" alt="img"></p>
+<p>配置 Kibana 索引</p>
+<p>浏览器中打开 <code>http://10.103.131.242:5601/</code><img data-src="/../../images/2020/es/Kibana%E9%85%8D%E7%BD%AE%E7%B4%A2%E5%BC%951.png" alt="image-20201015135515263"></p>
+<p>在 <code>索引模式</code> 中输入 filebeat 后，下面会有匹配到索引，然后点击下一步，选择 <code>时间筛选字段名称</code>，最后点击<code>创建索引模式</code>。<br>查看现有的索引：<code>http://10.103.131.242:9200/_cat/indices?v</code></p>
+<p><img data-src="/../../images/2020/es/Kibana%E9%85%8D%E7%BD%AE%E7%B4%A2%E5%BC%952.png" alt="image-20201015135817530"></p>
+<p>当前 health 状态是 green，如果一开始是 yellow，则需要查看索引的配置信息，修改分片数：目前我只是一台机器，所以设置成0，然后再刷新后就变绿了。</p>
+<p><img data-src="/../../images/2020/es/Kibana%E9%85%8D%E7%BD%AE%E7%B4%A2%E5%BC%953.png" alt="image-20201015141015327"></p>
+<hr>
+<h3 id="遇到的问题及解决"><a href="#遇到的问题及解决" class="headerlink" title="遇到的问题及解决"></a>遇到的问题及解决</h3><ul>
+<li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/testcs_dn/article/details/48711805">Another app is currently holding the yum lock; waiting for it to exit…</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_41688455/article/details/86690143">执行yum报错error: rpmdb: BDB0113 Thread&#x2F;process 23226 failed: BDB1507 Thread died in Berkeley D</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_37886429/article/details/75009382">yum的卸载与重新安装</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_38791223/article/details/107036834">windows Elasticsearch启动报此处不应有Files\elascsearch-7.8.0\jdk解决办法一</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_43437874/article/details/106546749">Kibana报错Failed to create Beat meta file: open &#x2F;usr&#x2F;share&#x2F;filebeat&#x2F;data&#x2F;meta.json.new: permission denied</a></p>
+</li>
+<li><p>浏览器界面提示 <code>Kibana server is not ready yet</code></p>
+<p>执行 <code>docker-compose up</code> 后，在浏览器上查看 Kibana 服务，发现提示 <code>Kibana server is not ready yet</code>。</p>
+<p>通过 <code>docker ps</code> 查看，只启动了 cerebro 和 kibana，elasticsearch 没启动成功</p>
+<p><img data-src="/../../images/2020/es/Kibana_server_is_not_ready_yet1.png" alt="img"></p>
+<p>在 <code>/etc/sysctl.conf</code> 中增加配置 <code>vm.max_map_count=262144</code>，保存后执行 <code>sysctl -p</code> ，重新再启动服务就ok了</p>
+<p><img data-src="/../../images/2020/es/Kibana_server_is_not_ready_yet2.png" alt="img"></p>
+</li>
+<li><p>windows 下启动 logstash 报错 <code>Unrecognized VM option &#39;UseConcMarkSweepGC&#39;</code></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/elastic/logstash/issues/9316">根据类似的错误</a>，将 logstash 的 config 目录下的 <code>jvm.options</code> 文件中的以下3行注释掉：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">## -XX:+UseConcMarkSweepGC</span><br><span class="line">## -XX:CMSInitiatingOccupancyFraction=75</span><br><span class="line">## -XX:+UseCMSInitiatingOccupancyOnly</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>ERROR：filebeat 连接不了 elasticsearch</p>
+<p>报错：<code>Failed to connect to backoff(elasticsearch(http://localhost:9200)):Get http://localhost:9200:dail tcp 127.0.0.1:9200:connect:connection refused</code>，后面一行又尝试 reconnect 了7次都失败了</p>
+<p><img data-src="/../../images/2020/es/Kibana%E8%BF%9E%E6%8E%A5es%E6%8A%A5%E9%94%991.png" alt="image-20201015142530194"></p>
+<p>原因：在 <code>filebeat.yml</code> 中配置的问题，将 <code>hosts: [&quot;localhost:9200&quot;]</code> 改为 <code>hosts: [&quot;es7_01:9200&quot;]</code>，其中 <code>es7_01</code> 是我在 <code>docker-compose.yml</code> 中 <code>elasticsearch</code> 的配置 <code>container_name: es7_01</code>，地址需要保持一致。</p>
+<p>这个问题找了很久，在网上一直没有找到 docker 下部署的出现这个问题的资料，最后在相关群里问人才解决。连接成功的结果：</p>
+<p><img data-src="/../../images/2020/es/Kibana%E8%BF%9E%E6%8E%A5es%E6%8A%A5%E9%94%992.png"></p>
+</li>
+</ul>
+<hr>
+<h3 id="学习记录"><a href="#学习记录" class="headerlink" title="学习记录"></a>学习记录</h3><ul>
+<li><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/xhyan/p/6593075.html">Docker容器进入的4种方式</a></p>
+<p>其中最便捷的一种：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon test_docker]# docker ps</span><br><span class="line">CONTAINER ID        IMAGE                                                 COMMAND                  CREATED             STATUS              PORTS                              NAMES</span><br><span class="line">a313438333f4        docker.elastic.co/elasticsearch/elasticsearch:7.1.0   &quot;/usr/local/bin/dock…&quot;   4 hours ago         Up 41 minutes       0.0.0.0:9200-&gt;9200/tcp, 9300/tcp   es7_01</span><br><span class="line">ece44e259317        lmenezes/cerebro:0.8.3                                &quot;/opt/cerebro/bin/ce…&quot;   4 hours ago         Up 41 minutes       0.0.0.0:9000-&gt;9000/tcp             cerebro</span><br><span class="line">d85ff4c04999        docker.elastic.co/beats/filebeat:7.1.1                &quot;/usr/local/bin/dock…&quot;   4 hours ago         Up 41 minutes                                          filebeat</span><br><span class="line">6b9f47643a7a        docker.elastic.co/kibana/kibana:7.1.0                 &quot;/usr/local/bin/kiba…&quot;   4 hours ago         Up 41 minutes       0.0.0.0:5601-&gt;5601/tcp             kibana7</span><br><span class="line"></span><br><span class="line">[root@bogon test_docker]# docker exec -it a313438333f4 /bin/bash</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>elasticsearch.yml</code> 配置项详解</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">bin ：脚本文件，包括 ES 启动 &amp; 安装插件等等</span><br><span class="line">config ： elasticsearch.yml（ES 配置文件）、jvm.options（JVM 配置文件）、日志配置文件等等</span><br><span class="line">JDK ： 内置的 JDK，JAVA_VERSION=“12.0.1“</span><br><span class="line">lib ： 类库</span><br><span class="line">logs ： 日志文件</span><br><span class="line">modules ： ES 所有模块，包括 X-pack 等</span><br><span class="line">plugins ： ES 已经安装的插件。默认没有插件</span><br><span class="line">data ： ES 启动的时候，会有该目录，用来存储文档数据。该目录可以设置</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/install/centos/">Install Docker Engine on CentOS</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.docker.com/compose/install/">Install Docker Compose</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/elastic/elasticsearch/edit/7.9/docs/reference/setup/install/docker.asciidoc">Install Elasticsearch with Docker</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/kibana/current/docker.html#docker">Install Kibana with Docker</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/geektime-geekbang/geektime-ELK/tree/master/part-1/2.3-%E5%9C%A8Docker%E5%AE%B9%E5%99%A8%E4%B8%AD%E8%BF%90%E8%A1%8CElasticsearch%2CKibana%E5%92%8CCerebro">在Docker容器中运行Elasticsearch, Kibana和Cerebro</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/7.8/index.html">Elasticsearch Reference</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/elasticsearch/" rel="tag"># elasticsearch</a>
+              <a href="/tags/docker/" rel="tag"># docker</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2020/10/15/26094/" rel="prev" title="Windows 安装 Elasticsearch、Kibana、Logstash">
+                  <i class="fa fa-angle-left"></i> Windows 安装 Elasticsearch、Kibana、Logstash
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2023/12/03/39705/" rel="next" title="Python 查看某个库的版本">
+                  Python 查看某个库的版本 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">691k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:28</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

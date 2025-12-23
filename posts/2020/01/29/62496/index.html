@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="Python 中与序列相关的概念和技术，包括抽象基类 Sequence 和 MutableSequence、猴子补丁、鸭子类型以及标准库中的抽象基类等内容。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="流畅的Python 从协议到抽象基类">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2020/01/29/62496/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="Python 中与序列相关的概念和技术，包括抽象基类 Sequence 和 MutableSequence、猴子补丁、鸭子类型以及标准库中的抽象基类等内容。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://zypdominate.github.io/images%5C2020%5C%E6%B5%81%E7%95%85%E7%9A%84python%EF%BC%9A%E4%BB%8E%E5%8D%8F%E8%AE%AE%E5%88%B0%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB1.png">
+<meta property="og:image" content="https://zypdominate.github.io/images%5C2020%5C%E6%B5%81%E7%95%85%E7%9A%84python%EF%BC%9A%E4%BB%8E%E5%8D%8F%E8%AE%AE%E5%88%B0%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB2.png">
+<meta property="og:image" content="https://zypdominate.github.io/images%5C2020%5C%E6%B5%81%E7%95%85%E7%9A%84python%EF%BC%9A%E4%BB%8E%E5%8D%8F%E8%AE%AE%E5%88%B0%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB3.png">
+<meta property="og:image" content="https://zypdominate.github.io/images%5C2020%5C%E6%B5%81%E7%95%85%E7%9A%84python%EF%BC%9A%E4%BB%8E%E5%8D%8F%E8%AE%AE%E5%88%B0%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB4.png">
+<meta property="article:published_time" content="2020-01-29T15:26:35.000Z">
+<meta property="article:modified_time" content="2025-12-23T14:07:49.089Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zypdominate.github.io/images%5C2020%5C%E6%B5%81%E7%95%85%E7%9A%84python%EF%BC%9A%E4%BB%8E%E5%8D%8F%E8%AE%AE%E5%88%B0%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB1.png">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2020/01/29/62496/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2020/01/29/62496/","path":"posts/2020/01/29/62496/","title":"流畅的Python 从协议到抽象基类"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>流畅的Python 从协议到抽象基类 | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BA%8F%E5%88%97"><span class="nav-text">序列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%8C%B4%E5%AD%90%E8%A1%A5%E4%B8%81"><span class="nav-text">猴子补丁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB%E7%9A%84%E5%AD%90%E7%B1%BB"><span class="nav-text">定义抽象基类的子类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%87%E5%87%86%E5%BA%93%E4%B8%AD%E7%9A%84%E5%9F%BA%E7%B1%BB"><span class="nav-text">标准库中的基类</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#collections-abc-%E6%A8%A1%E5%9D%97%E4%B8%AD%E7%9A%84%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB"><span class="nav-text">collections.abc 模块中的抽象基类</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB%E7%9A%84%E6%95%B0%E5%AD%97%E5%A1%94"><span class="nav-text">抽象基类的数字塔</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2020/01/29/62496/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="流畅的Python 从协议到抽象基类 | Magnolia's Blog">
+      <meta itemprop="description" content="Python 中与序列相关的概念和技术，包括抽象基类 Sequence 和 MutableSequence、猴子补丁、鸭子类型以及标准库中的抽象基类等内容。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          流畅的Python 从协议到抽象基类
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-01-29 23:26:35" itemprop="dateCreated datePublished" datetime="2020-01-29T23:26:35+08:00">2020-01-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>5.7k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>5 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">Python 中与序列相关的概念和技术，包括抽象基类 Sequence 和 MutableSequence、猴子补丁、鸭子类型以及标准库中的抽象基类等内容。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h4 id="序列"><a href="#序列" class="headerlink" title="序列"></a>序列</h4><p>定义为抽象基类的 Sequence 正式接口：</p>
+<p><img data-src="/../../images%5C2020%5C%E6%B5%81%E7%95%85%E7%9A%84python%EF%BC%9A%E4%BB%8E%E5%8D%8F%E8%AE%AE%E5%88%B0%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB1.png"></p>
+<p>Sequence 抽象基类和 collections.abc 中相关抽象类的 UML 类图，箭头由子类指向超类，以斜体显示的是抽象方法。</p>
+<p>demo：</p>
+<p>类Foo，它没有继承 abc.Sequence，而且只实现了序列协议的一个方法：<code>__getitem__</code>（没有实现 <code>__len__</code> 方法），这样足够访问元素、迭代和使用 in 运算符了。</p>
+<p>如果没有 <code>__iter__</code> 和 <code>__contains__</code> 方法，Python 会调用<code>__getitem__</code> 方法，设法让迭代和 in 运算符可用。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">class</span> <span class="title class_">Foo</span>:</span><br><span class="line">	<span class="keyword">def</span> <span class="title function_">__getitem__</span>(<span class="params">self, pos</span>):</span><br><span class="line">		<span class="keyword">return</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="number">30</span>, <span class="number">10</span>)[pos]</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f = Foo()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f[<span class="number">1</span>]</span><br><span class="line"><span class="number">10</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> i <span class="keyword">in</span> f:</span><br><span class="line">	<span class="built_in">print</span>(i)</span><br><span class="line"><span class="number">0</span></span><br><span class="line"><span class="number">10</span></span><br><span class="line"><span class="number">20</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">20</span> <span class="keyword">in</span> f</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">15</span> <span class="keyword">in</span> f</span><br><span class="line"><span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<p>第 1 章定义的 FrenchDeck 类也没有继承 abc.Sequence，但是实现了序列协议的两个方法<code>__getitem__</code> 和 <code>__len__</code>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> collections</span><br><span class="line">Card = collections.namedtuple(<span class="string">&#x27;Card&#x27;</span>, [<span class="string">&#x27;rank&#x27;</span>, <span class="string">&#x27;suit&#x27;</span>])</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FrenchDeck</span>:</span><br><span class="line">    ranks = [<span class="built_in">str</span>(n) <span class="keyword">for</span> n <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>, <span class="number">11</span>)] + <span class="built_in">list</span>(<span class="string">&#x27;JQKA&#x27;</span>)</span><br><span class="line">    suits = <span class="string">&#x27;spades diamonds clubs hearts&#x27;</span>.split()  <span class="comment"># 黑桃 方块 梅花 红心</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>._cards = [Card(rank, suit) <span class="keyword">for</span> suit <span class="keyword">in</span> <span class="variable language_">self</span>.suits</span><br><span class="line">                       <span class="keyword">for</span> rank <span class="keyword">in</span> <span class="variable language_">self</span>.ranks]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__len__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">len</span>(<span class="variable language_">self</span>._cards)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__getitem__</span>(<span class="params">self, position</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>._cards[position]</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="猴子补丁"><a href="#猴子补丁" class="headerlink" title="猴子补丁"></a>猴子补丁</h4><p>使用猴子补丁在运行时实现协议。</p>
+<p>FrenchDeck 类有个大缺陷：无法洗牌，如果尝试使用shuffle打乱 FrenchDeck 实例，会出现异常。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> random <span class="keyword">import</span> shuffle</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>l = <span class="built_in">list</span>(<span class="built_in">range</span>(<span class="number">10</span>))</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>l</span><br><span class="line">[<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>shuffle(l)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>l</span><br><span class="line">[<span class="number">8</span>, <span class="number">6</span>, <span class="number">0</span>, <span class="number">5</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">9</span>, <span class="number">7</span>, <span class="number">3</span>, <span class="number">4</span>]</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>deck = FrenchDeck()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>shuffle(deck)</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">&quot;&lt;pyshell#54&gt;&quot;</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    shuffle(deck)</span><br><span class="line">  File <span class="string">&quot;D:\Python3.6.0\lib\random.py&quot;</span>, line <span class="number">274</span>, <span class="keyword">in</span> shuffle</span><br><span class="line">    x[i], x[j] = x[j], x[i]</span><br><span class="line">TypeError: <span class="string">&#x27;FrenchDeck&#x27;</span> <span class="built_in">object</span> does <span class="keyword">not</span> support item assignment</span><br></pre></td></tr></table></figure>
+
+<p>报错原因是，shuffle 函数要调换集合中元素的位置，而FrenchDeck 只实现了不可变的序列协议。可变的序列还必须提供 <code>__setitem__</code> 方法。Python 是动态语言，因此我们可以在运行时修正这个问题，甚至还可以在交互式控制台中。</p>
+<p>为 FrenchDeck 打猴子补丁，把它变成可变的，让 random.shuffle 函数能处理：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">def</span> <span class="title function_">set_card</span>(<span class="params">self, position, card</span>):</span><br><span class="line">	<span class="variable language_">self</span>._cards[position] = card</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>FrenchDeck.__setitem__ = set_card</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>shuffle(deck)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>deck[:<span class="number">5</span>]</span><br><span class="line">[Card(rank=<span class="string">&#x27;A&#x27;</span>, suit=<span class="string">&#x27;hearts&#x27;</span>), Card(rank=<span class="string">&#x27;5&#x27;</span>, suit=<span class="string">&#x27;diamonds&#x27;</span>), Card(rank=<span class="string">&#x27;6&#x27;</span>, suit=<span class="string">&#x27;spades&#x27;</span>), Card(rank=<span class="string">&#x27;6&#x27;</span>, suit=<span class="string">&#x27;clubs&#x27;</span>), Card(rank=<span class="string">&#x27;3&#x27;</span>, suit=<span class="string">&#x27;diamonds&#x27;</span>)]</span><br></pre></td></tr></table></figure>
+
+<p>特殊方法 <code>__setitem__ </code> 中默认用的参数是 self、key 和 value，而这里使用的是 self、position 和 card。这么做是为了表达：每个 Python 方法说到底都是普通函数，把第一个参数命名为 self 只是一种约定。在控制台会话中使用那几个参数没问题，不过在 Python 源码文件中最好按照文档那样使用 self、key 和 value。</p>
+<p>这里的关键是，set_card 函数要知道 deck 对象有一个名为 <code>_cards</code> 的属性，而且 <code>_cards</code> 的值必须是可变序列。然后，把 set_card 函数赋值给特殊方法 <code>__setitem__</code>，从而把它依附到 FrenchDeck 类上。这种技术叫 <strong>猴子补丁：在运行时修改类或模块，而不改动源码。</strong> 猴子补丁很强大，但是打补丁的代码与要打补丁的程序耦合十分紧密，而且往往要处理隐藏和没有文档的部分。</p>
+<p>示例还说明了协议是动态的：random.shuffle 函数不关心参数的类型，只要那个对象实现了部分可变序列协议即可。即便对象一开始没有所需的方法也没关系，后来再提供也行。</p>
+<p>本章讨论的主题是 <strong>“鸭子类型”：对象的类型无关紧要，只要实现了特定的协议即可</strong>。</p>
+<hr>
+<h4 id="定义抽象基类的子类"><a href="#定义抽象基类的子类" class="headerlink" title="定义抽象基类的子类"></a>定义抽象基类的子类</h4><p>这里先利用现有的抽象基类（collections.MutableSequence），然后再自己定义。在示例中，明确把 FrenchDeck2 声明为 collections.MutableSequence 的子类。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> collections</span><br><span class="line">Card = collections.namedtuple(<span class="string">&#x27;Card&#x27;</span>, [<span class="string">&#x27;rank&#x27;</span>, <span class="string">&#x27;suit&#x27;</span>])</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FrenchDeck2</span>(collections.MutableSequence):</span><br><span class="line">    ranks = [<span class="built_in">str</span>(n) <span class="keyword">for</span> n <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>, <span class="number">11</span>)] + <span class="built_in">list</span>(<span class="string">&#x27;JQKA&#x27;</span>)</span><br><span class="line">    suits = <span class="string">&#x27;spades diamonds clubs hearts&#x27;</span>.split()  <span class="comment"># 黑桃 方块 梅花 红心</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>._cards = [Card(rank, suit) <span class="keyword">for</span> suit <span class="keyword">in</span> <span class="variable language_">self</span>.suits</span><br><span class="line">                       <span class="keyword">for</span> rank <span class="keyword">in</span> <span class="variable language_">self</span>.ranks]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__len__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">len</span>(<span class="variable language_">self</span>._cards)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__getitem__</span>(<span class="params">self, position</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>._cards[position]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 为了支持洗牌，只需要实现__setitem__方法</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__setitem__</span>(<span class="params">self, position, value</span>):</span><br><span class="line">        <span class="variable language_">self</span>._cards[position] = value</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 继承MutableSequence类，必须实现它的一个抽象方法__delitem__</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__delitem__</span>(<span class="params">self, position</span>):</span><br><span class="line">        <span class="keyword">del</span> <span class="variable language_">self</span>._cards[position]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 还要实现 insert 方法，这是 MutableSequence 类的第三个抽象方法。</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">insert</span>(<span class="params">self, position, value</span>):</span><br><span class="line">        <span class="variable language_">self</span>._cards.insert(position, value)</span><br><span class="line"></span><br><span class="line">french = FrenchDeck2()</span><br></pre></td></tr></table></figure>
+
+<p>导入时（加载并编译 上述代码所在的 模块时），Python 不会检查抽象方法的实现，在运行时实例化 FrenchDeck2 类时才会真正检查。如果没有正确实现某个抽象方法，Python 会抛出 TypeError 异常：<code>TypeError: Can&#39;t instantiate abstract class FrenchDeck2 with abstract methods __delitem__, __setitem__, insert</code>。正是这个原因，即便 FrenchDeck2 类不需要 <code>__delitem__</code> 和 <code>insert</code> 提供的行为，也要实现，因为 MutableSequence 抽象基类需要它们。</p>
+<p>Sequence 和 MutableSequence 抽象基类的方法不全是抽象的：<br>下面是MutableSequence 抽象基类和 collections.abc 中它的超类的 UML 类图（箭头由子类指向祖先；以斜体显示的名称是抽象类和抽象方法）。<br><img data-src="/../../images%5C2020%5C%E6%B5%81%E7%95%85%E7%9A%84python%EF%BC%9A%E4%BB%8E%E5%8D%8F%E8%AE%AE%E5%88%B0%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB2.png"><br>FrenchDeck2 从 Sequence 继 承 了 几 个 拿 来 即 用 的 具 体 方 法：<code>__contains__</code> 、<code>__iter__</code>、 <code>__reversed__</code>、<code>index</code> 和 <code>count</code> 。FrenchDeck2 从 MutableSequence 继 承 了 <code>append</code>、<code>extend</code>、<code>pop</code>、<code>remove</code> 和 <code>__iadd__</code>。</p>
+<hr>
+<h4 id="标准库中的基类"><a href="#标准库中的基类" class="headerlink" title="标准库中的基类"></a>标准库中的基类</h4><p>从 Python 2.6 开始，标准库提供了抽象基类。大多数抽象基类在 collections.abc 模块中定义，不过其他地方也有。例如，numbers 和 io 包中有一些抽象基类。但是，collections.abc 中的抽象基类最常用。</p>
+<p>标准库中有两个名为 abc 的模块，这里说的是 collections.abc。为了减少加载时间，Python 3.4 在 collections 包之外实现这个模块（在 <code>Lib/_collections_abc.py </code>中 <a target="_blank" rel="noopener" href="https://hg.python.org/cpython/file/3.4/Lib/_collections_abc.py">https://hg.python.org/cpython/file/3.4/Lib/_collections_abc.py</a> ），因此要与 collections 分开导入。另一个 abc 模块就是 abc（即 <code>Lib/abc.py</code>，<a target="_blank" rel="noopener" href="https://hg.python.org/cpython/file/3.4/Lib/abc.py%EF%BC%89%EF%BC%8C%E8%BF%99%E9%87%8C%E5%AE%9A%E4%B9%89%E7%9A%84%E6%98%AF">https://hg.python.org/cpython/file/3.4/Lib/abc.py），这里定义的是</a> abc.ABC 类。每个抽象基类都依赖这个类，但是不用导入它，除非定义新抽象基类。</p>
+<h5 id="collections-abc-模块中的抽象基类"><a href="#collections-abc-模块中的抽象基类" class="headerlink" title="collections.abc 模块中的抽象基类"></a>collections.abc 模块中的抽象基类</h5><p>Python 3.5 在 collections.abc 模块中定义了 22 个抽象基类，简要的 UML 类图（没有属<br>性名称）。collections.abc 的官方文档中有个不错的表格（<a target="_blank" rel="noopener" href="https://docs.python.org/3.7/library/collections.abc.html#collections-abstract-base-classes%EF%BC%89%EF%BC%8C%E5%AF%B9%E5%90%84%E4%B8%AA%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB%E5%81%9A%E4%BA%86%E6%80%BB%E7%BB%93%EF%BC%8C%E8%AF%B4%E6%98%8E%E4%BA%86%E7%9B%B8%E4%BA%92%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB%EF%BC%8C%E4%BB%A5%E5%8F%8A%E5%90%84%E4%B8%AA%E5%9F%BA%E7%B1%BB%E6%8F%90%E4%BE%9B%E7%9A%84%E6%8A%BD%E8%B1%A1%E6%96%B9%E6%B3%95%E5%92%8C%E5%85%B7%E4%BD%93%E6%96%B9%E6%B3%95%EF%BC%88%E7%A7%B0%E4%B8%BA%E2%80%9C%E6%B7%B7%E5%85%A5%E6%96%B9%E6%B3%95%E2%80%9D%EF%BC%89%E3%80%82%E5%9B%BE%E4%B8%AD%E6%9C%89%E5%BE%88%E5%A4%9A%E5%A4%9A%E9%87%8D%E7%BB%A7%E6%89%BF%E3%80%82">https://docs.python.org/3.7/library/collections.abc.html#collections-abstract-base-classes），对各个抽象基类做了总结，说明了相互之间的关系，以及各个基类提供的抽象方法和具体方法（称为“混入方法”）。图中有很多多重继承。</a><br><img data-src="/../../images%5C2020%5C%E6%B5%81%E7%95%85%E7%9A%84python%EF%BC%9A%E4%BB%8E%E5%8D%8F%E8%AE%AE%E5%88%B0%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB3.png"></p>
+<ol>
+<li><p><strong>Iterable、Container 和 Sized</strong><br>各个集合应该继承这三个抽象基类，或者至少实现兼容的协议。Iterable 通过 <code>__iter__</code> 方法支持迭代，Container 通过 <code>__contains__</code> 方法支持 in 运算符，Sized 通过 <code>__len__</code> 方法支持 len() 函数。</p>
+</li>
+<li><p><strong>Sequence、Mapping 和 Set</strong></p>
+<p>这三个是主要的不可变集合类型，而且各自都有可变的子类。</p>
+</li>
+<li><p><strong>MappingView</strong></p>
+<p>在 Python 3 中，映射方法 .items()、.keys() 和 .values() 返回的对象分别是 ItemsView、KeysView 和 ValuesView 的实例，前两个类还从 Set 类继承了丰富的接口。</p>
+</li>
+<li><p><strong>Callable 和 Hashable</strong></p>
+<p>这两个抽象基类与集合没有太大的关系，只不过因为 collections.abc 是标准库中定义抽象基类的第一个模块，而它们又太重要了，因此才把它们放到 collections.abc 模块中。基本未见过 Callable 或 Hashable 的子类。这两个抽象基类的主要作用是为内置函数 isinstance 提供支持，以一种安全的方式判断对象能不能调用或散列（若想检查是否能调用，可以使用内置的 callable() 函数；但是没有类似的 hashable() 函数，因此测试对象是否可散列，最好使用 isinstance(my_obj, Hashable)。）</p>
+</li>
+<li><p><strong>Iterator</strong></p>
+<p>它是 Iterable 的子类。在第 14 章详细讨论。</p>
+</li>
+</ol>
+<p>collections.abc 的官方文档中的表格：<br><img data-src="/../../images%5C2020%5C%E6%B5%81%E7%95%85%E7%9A%84python%EF%BC%9A%E4%BB%8E%E5%8D%8F%E8%AE%AE%E5%88%B0%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB4.png" alt="在这里插入图片描述"></p>
+<h5 id="抽象基类的数字塔"><a href="#抽象基类的数字塔" class="headerlink" title="抽象基类的数字塔"></a>抽象基类的数字塔</h5><p>继 collections.abc 之后，标准库中最有用的抽象基类包是 numbers。</p>
+<p>numbers 包（<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/numbers.html%EF%BC%89%E5%AE%9A%E4%B9%89%E7%9A%84%E6%98%AF%E2%80%9C%E6%95%B0%E5%AD%97%E5%A1%94%E2%80%9D%EF%BC%88%E5%8D%B3%E5%90%84%E4%B8%AA%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB%E7%9A%84%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84%E6%98%AF%E7%BA%BF%E6%80%A7%E7%9A%84%EF%BC%89%EF%BC%8C%E5%85%B6%E4%B8%AD">https://docs.python.org/3/library/numbers.html）定义的是“数字塔”（即各个抽象基类的层次结构是线性的），其中</a> Number 是位于最顶端的超类，随后是 Complex 子类，依次往下，最底端是 Integral 类：</p>
+<ul>
+<li>Number</li>
+<li>Complex</li>
+<li>Real</li>
+<li>Rational</li>
+<li>Intergral</li>
+</ul>
+<p>如果想检查一个数是不是整数，可以使用 isinstance(x,  numbers.Integral)，如果一个值可能是浮点数类型，可以使用 isinstance(x,  numbers.Real) 检查。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2020/01/18/61287/" rel="prev" title="流畅的Python：序列的修改、散列和切片">
+                  <i class="fa fa-angle-left"></i> 流畅的Python：序列的修改、散列和切片
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2020/02/08/59889/" rel="next" title="流畅的Python 继承的优缺点">
+                  流畅的Python 继承的优缺点 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">691k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:28</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

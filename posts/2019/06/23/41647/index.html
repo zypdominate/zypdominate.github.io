@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="Pytest 固件：显式、模块化、可扩展 purpose of test fixtures 是提供一个固定的基线，在此基础上测试可以可靠地重复执行。Pytest 固件比传统的XUnit 的setup&#x2F;teardown功能提供了显著的改进：  固件有明确的名称，通过声明它们在测试函数、模块、类或整个项目中的使用来激活。 固件以模块化的方式实现，因为每个固件名称触发一个 固件功能 ， 可以使">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pytest04 fixtures explicit, modular, scalable">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2019/06/23/41647/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="Pytest 固件：显式、模块化、可扩展 purpose of test fixtures 是提供一个固定的基线，在此基础上测试可以可靠地重复执行。Pytest 固件比传统的XUnit 的setup&#x2F;teardown功能提供了显著的改进：  固件有明确的名称，通过声明它们在测试函数、模块、类或整个项目中的使用来激活。 固件以模块化的方式实现，因为每个固件名称触发一个 固件功能 ， 可以使">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-06-23T12:29:35.000Z">
+<meta property="article:modified_time" content="2025-12-23T14:07:49.114Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="pytest">
+<meta property="article:tag" content="翻译">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2019/06/23/41647/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2019/06/23/41647/","path":"posts/2019/06/23/41647/","title":"pytest04 fixtures explicit, modular, scalable"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>pytest04 fixtures explicit, modular, scalable | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Fixtures-%E4%BD%9C%E4%B8%BA%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0"><span class="nav-text">Fixtures 作为函数参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%BA%E4%BB%B6%EF%BC%9A%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5%E7%9A%84%E4%B8%BB%E8%A6%81%E7%A4%BA%E4%BE%8B"><span class="nav-text">固件：依赖注入的主要示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#conftest-py-%E5%85%B1%E4%BA%AB%E5%9B%BA%E4%BB%B6%E5%8A%9F%E8%83%BD"><span class="nav-text">conftest.py 共享固件功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B1%E4%BA%AB%E6%B5%8B%E8%AF%95%E6%95%B0%E6%8D%AE"><span class="nav-text">共享测试数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#scope%EF%BC%9A%E5%9C%A8%E7%B1%BB%E3%80%81%E6%A8%A1%E5%9D%97%E6%88%96%E4%BC%9A%E8%AF%9D%E4%B8%AD%E8%B7%A8%E6%B5%8B%E8%AF%95%E5%85%B1%E4%BA%AB%E4%B8%80%E4%B8%AAfixture%E5%AE%9E%E4%BE%8B"><span class="nav-text">scope：在类、模块或会话中跨测试共享一个fixture实例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A6%96%E5%85%88%E5%AE%9E%E4%BE%8B%E5%8C%96%E6%9B%B4%E5%A4%A7%E8%8C%83%E5%9B%B4%E7%9A%84%E5%9B%BA%E4%BB%B6"><span class="nav-text">首先实例化更大范围的固件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%BA%E4%BB%B6%E5%AE%9A%E5%9E%8B-%E6%89%A7%E8%A1%8C%E6%8B%86%E5%8D%B8%E4%BB%A3%E7%A0%81"><span class="nav-text">固件定型&#x2F;执行拆卸代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Fixtures-%E5%8F%AF%E4%BB%A5%E6%A3%80%E6%9F%A5%E8%AF%B7%E6%B1%82%E7%9A%84%E6%B5%8B%E8%AF%95%E4%B8%8A%E4%B8%8B%E6%96%87"><span class="nav-text">Fixtures 可以检查请求的测试上下文</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E5%8E%82%E5%87%BD%E6%95%B0%E4%BD%9C%E4%B8%BA%E5%9B%BA%E4%BB%B6"><span class="nav-text">工厂函数作为固件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E5%8C%96%E5%9B%BA%E4%BB%B6"><span class="nav-text">参数化固件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E5%AD%97-ids"><span class="nav-text">关键字 ids</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E5%8F%82%E6%95%B0%E5%8C%96%E5%9B%BA%E4%BB%B6%E4%BD%BF%E7%94%A8%E6%A0%87%E8%AE%B0"><span class="nav-text">对参数化固件使用标记</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9D%97%E5%8C%96%EF%BC%9A%E4%BD%BF%E7%94%A8fixture%E5%87%BD%E6%95%B0%E4%B8%AD%E7%9A%84fixtures"><span class="nav-text">模块化：使用fixture函数中的fixtures</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%89-fixture-%E5%AE%9E%E4%BE%8B%E8%87%AA%E5%8A%A8%E5%88%86%E7%BB%84%E6%B5%8B%E8%AF%95"><span class="nav-text">按 fixture 实例自动分组测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%B1%BB%E3%80%81%E6%A8%A1%E5%9D%97%E6%88%96%E9%A1%B9%E7%9B%AE%E4%B8%AD%E7%9A%84-fixture"><span class="nav-text">使用类、模块或项目中的 fixture</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E5%9B%BA%E5%AE%9A%E8%A3%85%E7%BD%AE-autouse"><span class="nav-text">自动固定装置 autouse</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A6%86%E7%9B%96%E4%B8%8D%E5%90%8C%E7%BA%A7%E5%88%AB%E7%9A%84%E8%AE%BE%E5%A4%87"><span class="nav-text">覆盖不同级别的设备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A6%86%E7%9B%96%E6%96%87%E4%BB%B6%E5%A4%B9%EF%BC%88conftest%EF%BC%89%E7%BA%A7%E5%88%AB%E7%9A%84fixture"><span class="nav-text">覆盖文件夹（conftest）级别的fixture</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8%E6%B5%8B%E8%AF%95%E6%A8%A1%E5%9D%97%E7%BA%A7%E5%88%AB%E4%B8%8A%E8%A6%86%E7%9B%96fixture"><span class="nav-text">在测试模块级别上覆盖fixture</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%9A%E8%BF%87%E7%9B%B4%E6%8E%A5%E6%B5%8B%E8%AF%95%E5%8F%82%E6%95%B0%E5%8C%96%E8%A6%86%E7%9B%96%E5%A4%B9%E5%85%B7"><span class="nav-text">通过直接测试参数化覆盖夹具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E9%9D%9E%E5%8F%82%E6%95%B0%E5%8C%96%E5%9B%BA%E4%BB%B6%E6%9B%BF%E4%BB%A3%E5%8F%82%E6%95%B0%E5%8C%96%E5%9B%BA%E4%BB%B6"><span class="nav-text">用非参数化固件替代参数化固件</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2019/06/23/41647/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="pytest04 fixtures explicit, modular, scalable | Magnolia's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          pytest04 fixtures explicit, modular, scalable
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-06-23 20:29:35" itemprop="dateCreated datePublished" datetime="2019-06-23T20:29:35+08:00">2019-06-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/pytest/" itemprop="url" rel="index"><span itemprop="name">pytest</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>28k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>25 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>Pytest 固件：显式、模块化、可扩展</p>
+<p>purpose of test fixtures 是提供一个固定的基线，在此基础上测试可以可靠地重复执行。Pytest 固件比传统的XUnit 的setup&#x2F;teardown功能提供了显著的改进：</p>
+<ul>
+<li>固件有明确的名称，通过声明它们在测试函数、模块、类或整个项目中的使用来激活。</li>
+<li>固件以模块化的方式实现，因为每个固件名称触发一个 <em>固件功能</em> ， 可以使用其他固件。</li>
+<li>固件管理规模从简单的单元扩展到复杂的功能测试，允许根据配置和组件选项参数化固件和测试，或者跨功能、类、模块或整个测试会话范围重复使用固件。</li>
+</ul>
+<p>此外，pytest继续支持经典的Xunit-style setup. 你可以混合这两种样式，根据喜好，逐步从经典样式转移到新样式。你也可以从现有的 unittest.TestCase style 或 nose based 项目开始。</p>
+<hr>
+<h2 id="Fixtures-作为函数参数"><a href="#Fixtures-作为函数参数" class="headerlink" title="Fixtures 作为函数参数"></a>Fixtures 作为函数参数</h2><p>Fixtures as function arguments</p>
+<p>测试函数可以通过将fixture对象命名为输入参数来接收它们。对于每个参数名，具有该名称的fixture函数提供fixture对象。通过用<code>@pytest.fixture</code>标记fixture函数来注册fixture函数 . 让我们来看一个简单的独立测试模块，它包含一个fixture和一个使用fixture的测试函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># content of ./test_smtpsimple.py</span></span><br><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"></span><br><span class="line"><span class="meta">@pytest.fixture</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">smtp_connection</span>():</span><br><span class="line">    <span class="keyword">import</span> smtplib</span><br><span class="line">    <span class="keyword">return</span> smtplib.SMTP(<span class="string">&quot;smtp.gmail.com&quot;</span>, <span class="number">587</span>, timeout=<span class="number">5</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_ehlo</span>(<span class="params">smtp_connection</span>):</span><br><span class="line">    response, msg = smtp_connection.ehlo()</span><br><span class="line">    <span class="keyword">assert</span> response == <span class="number">250</span></span><br><span class="line">    <span class="keyword">assert</span> <span class="number">0</span> <span class="comment"># for demo purposes</span></span><br></pre></td></tr></table></figure>
+
+<p>这里， <code>test_ehlo</code> 需要 <code>smtp_connection</code> 固件值。Pytest将发现并调用 <code>@pytest.fixture</code> 标记 <code>smtp_connection</code> 固件函数。运行测试的方式如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">$ pytest test_smtpsimple.py</span><br><span class="line">=========================== test session starts ============================</span><br><span class="line">platform linux -- Python <span class="number">3.</span>x.y, pytest-<span class="number">4.</span>x.y, py-<span class="number">1.</span>x.y, pluggy-<span class="number">0.</span>x.y</span><br><span class="line">cachedir: $PYTHON_PREFIX/.pytest_cache</span><br><span class="line">rootdir: $REGENDOC_TMPDIR</span><br><span class="line">collected <span class="number">1</span> item</span><br><span class="line"></span><br><span class="line">test_smtpsimple.py F                                                 [<span class="number">100</span>%]</span><br><span class="line"></span><br><span class="line">================================= FAILURES =================================</span><br><span class="line">________________________________ test_ehlo _________________________________</span><br><span class="line"></span><br><span class="line">smtp_connection = &lt;smtplib.SMTP <span class="built_in">object</span> at <span class="number">0xdeadbeef</span>&gt;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_ehlo</span>(<span class="params">smtp_connection</span>):</span><br><span class="line">        response, msg = smtp_connection.ehlo()</span><br><span class="line">        <span class="keyword">assert</span> response == <span class="number">250</span></span><br><span class="line">&gt;       <span class="keyword">assert</span> <span class="number">0</span> <span class="comment"># for demo purposes</span></span><br><span class="line">E       <span class="keyword">assert</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line">test_smtpsimple.py:<span class="number">11</span>: AssertionError</span><br><span class="line">========================= <span class="number">1</span> failed <span class="keyword">in</span> <span class="number">0.12</span> seconds =========================</span><br></pre></td></tr></table></figure>
+
+<p>在失败的回溯中，我们看到测试函数是用 <code>smtp_connection</code> 参数、 fixture函数创建的实例<code>smtplib.SMTP()</code>来调用的。测试功能失败是故意使用了 <code>assert 0</code> .  <code>pytest</code> 以这种方式来调用测试函数：</p>
+<ol>
+<li>pytest找到这个 <code>test_ehlo</code> 因为 <code>test_</code> 前缀。这个测试函数需要一个名为 <code>smtp_connection</code> . 通过查找名为 <code>smtp_connection</code> 标记的固件函数，找到一个匹配的固件函数.</li>
+<li><code>smtp_connection()</code> 通过创建实例来调用。</li>
+<li><code>test_ehlo(&lt;smtp_connection instance&gt;)</code> 在测试函数的最后一行调用并失败。</li>
+</ol>
+<p>请注意，如果你拼错了一个函数参数，或者希望使用一个不可用的参数，你将看到一个错误，其中包含一个可用函数参数列表。</p>
+<p>注解</p>
+<p>你可以随时发布：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pytest --fixtures test_simplefactory.py</span><br></pre></td></tr></table></figure>
+
+<p>查看可用的固件（带引线的固件 <code>_</code> 仅当添加 <code>-v</code> 选择权。</p>
+<hr>
+<h2 id="固件：依赖注入的主要示例"><a href="#固件：依赖注入的主要示例" class="headerlink" title="固件：依赖注入的主要示例"></a>固件：依赖注入的主要示例</h2><p>fixtures：a prime example of dependency injection</p>
+<p><code>fixture</code> 是 <code>pytest</code> 中的一个强大功能，它通过提供预初始化的对象来实现依赖注入。<strong>依赖注入</strong>是一种设计模式，用于减少代码之间的耦合，使代码更加模块化和可测试。</p>
+<p>fixture 可以定义一些<strong>预初始化的对象</strong>或<strong>环境设置</strong>，这些对象或设置可以在多个测试函数中复用。<u>测试函数可以通过参数自动接收这些 <code>fixture</code>，而不需要关心这些对象是如何导入、初始化和清理的</u>。</p>
+<p>在依赖注入中，依赖关系（即所需的对象或资源）是由外部提供的，而不是由对象自己创建的。<code>fixture</code> 函数在这里扮演了 <strong>注入器</strong>（injector）的角色，负责创建和提供这些依赖对象。</p>
+<p>测试函数是 <strong>消费者</strong>（consumers），它们通过参数接收这些依赖对象，并使用它们进行测试。</p>
+<p>小结：</p>
+<ul>
+<li><code>fixture</code> 是 <code>pytest</code> 中实现依赖注入的一种方式。<code>fixture</code> 函数负责创建和管理依赖对象，测试函数通过参数接收这些对象。</li>
+<li>使用 <code>fixture</code> 可以减少测试代码中的重复，提高代码的可维护性和可测试性。</li>
+<li>通过 <code>yield</code> 关键字，<code>fixture</code> 可以在测试前后执行设置和清理操作，确保每个测试都在干净的环境中运行。</li>
+</ul>
+<hr>
+<h2 id="conftest-py-共享固件功能"><a href="#conftest-py-共享固件功能" class="headerlink" title="conftest.py 共享固件功能"></a>conftest.py 共享固件功能</h2><p>conftest.py: sharing fixture functions</p>
+<p>如果在实现测试的过程中，你意识到要使用来自多个测试文件的fixture函数，可以将其移动到 <code>conftest.py</code> 文件。你不需要导入要在测试中使用的固件，Pytest会发现并自动获取它。fixture函数的发现从测试类开始，然后是测试模块，然后 <code>conftest.py</code> 文件，最后是内置插件和第三方插件。</p>
+<p>你也可以使用 <code>conftest.py</code> 文件去实现 <strong>本地目录级插件</strong> local per-directory plugins。</p>
+<ul>
+<li><strong>Local</strong>：这些插件仅影响定义它们的目录及其子目录。</li>
+<li><strong>Per-Directory</strong>：每个目录可以有自己的 <code>conftest.py</code> 文件，从而实现不同目录间的独立配置。</li>
+<li><strong>Plugins</strong>：这些插件可以包含 fixture、hook 实现、自定义命令行选项等，用于扩展 <code>pytest</code> 的功能。</li>
+</ul>
+<hr>
+<h2 id="共享测试数据"><a href="#共享测试数据" class="headerlink" title="共享测试数据"></a>共享测试数据</h2><p>Sharing test data</p>
+<p>如果你想让来自文件的测试数据对你的测试可用，一个很好的方法是将这些数据加载到一个固件中，供测试使用。这利用了pytest的自动缓存机制。</p>
+<p>另一个好方法是将数据文件添加到 <code>tests</code> 文件夹中. 这里也有可用的插件社区可以用来帮助管理这方面的testing e.g. pytest-datadir 和 pytest-datafiles （感觉不怎么会用到，不仅需要安装包，这种路径、文件名的配置，不适合做大型项目吧）。</p>
+<hr>
+<h2 id="scope：在类、模块或会话中跨测试共享一个fixture实例"><a href="#scope：在类、模块或会话中跨测试共享一个fixture实例" class="headerlink" title="scope：在类、模块或会话中跨测试共享一个fixture实例"></a>scope：在类、模块或会话中跨测试共享一个fixture实例</h2><p>Scope: sharing a fixture instance across tests in a class, module or session</p>
+<p>依赖于连接性的需要访问网络的fixtures，通常<strong>创建成本很高</strong>。扩展前面的示例，我们可以给 <code>@pytest.fixture</code> 调用添加一个 <code>scope=&quot;module&quot;</code> 参数，引起被装饰的 <code>smtp_connection</code> 固件函数在每个测试模块中只调用一次（默认情况下，每个测试调用一次 function）因此，一个测试模块中的多个测试功能将接收相同的 <code>smtp_connection</code> 固件实例（不必每次都实例化，也就是不用每次都去创建连接访问网络），节省时间提高效率。 对于<code>scope</code>可能值是： <code>function</code> ， <code>class</code> ， <code>module</code> ， <code>package</code> 或 <code>session</code> .</p>
+<p>下一个示例将fixture函数放入单独的 <code>conftest.py</code> 文件，以便目录中多个测试模块的测试可以访问fixture函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># content of conftest.py</span></span><br><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"><span class="keyword">import</span> smtplib</span><br><span class="line"></span><br><span class="line"><span class="meta">@pytest.fixture(<span class="params">scope=<span class="string">&quot;module&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">smtp_connection</span>():</span><br><span class="line">    <span class="keyword">return</span> smtplib.SMTP(<span class="string">&quot;smtp.gmail.com&quot;</span>, <span class="number">587</span>, timeout=<span class="number">5</span>)</span><br></pre></td></tr></table></figure>
+
+<p>固件的名称同样是 <code>smtp_connection</code> ，你可以通过列出名字<code>smtp_connection</code>作为一个在任何测试或fixture函数的输入参数（在 <code>conftest.py</code> 所在的目录中，或者所在的目录下）来访问它的结果 ：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># content of test_module.py</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_ehlo</span>(<span class="params">smtp_connection</span>):</span><br><span class="line">    response, msg = smtp_connection.ehlo()</span><br><span class="line">    <span class="keyword">assert</span> response == <span class="number">250</span></span><br><span class="line">    <span class="keyword">assert</span> <span class="string">b&quot;smtp.gmail.com&quot;</span> <span class="keyword">in</span> msg</span><br><span class="line">    <span class="keyword">assert</span> <span class="number">0</span>  <span class="comment"># for demo purposes</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_noop</span>(<span class="params">smtp_connection</span>):</span><br><span class="line">    response, msg = smtp_connection.noop()</span><br><span class="line">    <span class="keyword">assert</span> response == <span class="number">250</span></span><br><span class="line">    <span class="keyword">assert</span> <span class="number">0</span>  <span class="comment"># for demo purposes</span></span><br></pre></td></tr></table></figure>
+
+<p>我们故意插入失败 <code>assert 0</code> 语句以检查正在进行的操作，现在可以运行测试：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">$ pytest test_module.py</span><br><span class="line">=========================== test session starts ============================</span><br><span class="line">platform linux -- Python <span class="number">3.</span>x.y, pytest-<span class="number">4.</span>x.y, py-<span class="number">1.</span>x.y, pluggy-<span class="number">0.</span>x.y</span><br><span class="line">cachedir: $PYTHON_PREFIX/.pytest_cache</span><br><span class="line">rootdir: $REGENDOC_TMPDIR</span><br><span class="line">collected <span class="number">2</span> items</span><br><span class="line"></span><br><span class="line">test_module.py FF                                                    [<span class="number">100</span>%]</span><br><span class="line"></span><br><span class="line">================================= FAILURES =================================</span><br><span class="line">________________________________ test_ehlo _________________________________</span><br><span class="line"></span><br><span class="line">smtp_connection = &lt;smtplib.SMTP <span class="built_in">object</span> at <span class="number">0xdeadbeef</span>&gt;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_ehlo</span>(<span class="params">smtp_connection</span>):</span><br><span class="line">        response, msg = smtp_connection.ehlo()</span><br><span class="line">        <span class="keyword">assert</span> response == <span class="number">250</span></span><br><span class="line">        <span class="keyword">assert</span> <span class="string">b&quot;smtp.gmail.com&quot;</span> <span class="keyword">in</span> msg</span><br><span class="line">&gt;       <span class="keyword">assert</span> <span class="number">0</span>  <span class="comment"># for demo purposes</span></span><br><span class="line">E       <span class="keyword">assert</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line">test_module.py:<span class="number">6</span>: AssertionError</span><br><span class="line">________________________________ test_noop _________________________________</span><br><span class="line"></span><br><span class="line">smtp_connection = &lt;smtplib.SMTP <span class="built_in">object</span> at <span class="number">0xdeadbeef</span>&gt;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_noop</span>(<span class="params">smtp_connection</span>):</span><br><span class="line">        response, msg = smtp_connection.noop()</span><br><span class="line">        <span class="keyword">assert</span> response == <span class="number">250</span></span><br><span class="line">&gt;       <span class="keyword">assert</span> <span class="number">0</span>  <span class="comment"># for demo purposes</span></span><br><span class="line">E       <span class="keyword">assert</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line">test_module.py:<span class="number">11</span>: AssertionError</span><br><span class="line">========================= <span class="number">2</span> failed <span class="keyword">in</span> <span class="number">0.12</span> seconds =========================</span><br></pre></td></tr></table></figure>
+
+<p>你看这两个 <code>assert 0</code> 失败，更重要的是，你也可以看到相同的（module-scoped模块范围） <code>smtp_connection</code>对象被传递到两个测试函数中，因为pytest在回溯中显示了传入的参数值。因此，两个测试函数使用 <code>smtp_connection</code> 像单个实例一样快速运行，因为它们重用同一个实例。</p>
+<p>如果你决定希望有一个会话范围装饰的 <code>smtp_connection</code>实例， 例如，你可以简单地声明它：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@pytest.fixture(<span class="params">scope=<span class="string">&quot;session&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">smtp_connection</span>():</span><br><span class="line">    <span class="comment"># the returned fixture value will be shared for</span></span><br><span class="line">    <span class="comment"># all tests needing it</span></span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+
+<p>最后， <code>class</code> 作用域将在每个测试class中调用fixture一次 .</p>
+<p>注解</p>
+<p>pytest一次只缓存一个fixture实例。这意味着当使用参数化固件时，pytest可以在给定的范围内多次调用固件。</p>
+<hr>
+<h2 id="首先实例化更大范围的固件"><a href="#首先实例化更大范围的固件" class="headerlink" title="首先实例化更大范围的固件"></a>首先实例化更大范围的固件</h2><p>Higher-scoped fixtures are instantiated first</p>
+<p>在特性的功能请求中，更高范围的固件（例如 <code>session</code> ）先实例化，然后再实例化范围较低的固件（例如 <code>function</code> 或 <code>class</code> ）。相同范围内固件的相对顺序遵循测试函数中声明的顺序，并尊重固件之间的依赖关系。</p>
+<p>考虑下面的代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@pytest.fixture(<span class="params">scope=<span class="string">&quot;session&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">s1</span>():</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@pytest.fixture(<span class="params">scope=<span class="string">&quot;module&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">m1</span>():</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@pytest.fixture</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">f1</span>(<span class="params">tmpdir</span>):</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@pytest.fixture</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">f2</span>():</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_foo</span>(<span class="params">f1, m1, f2, s1</span>):</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+
+<p>由 <code>test_foo</code> 所请求的固件将按以下顺序实例化：</p>
+<ol>
+<li><code>s1</code> ：是范围最高的固件 (<code>session</code> ）</li>
+<li><code>m1</code> ：是第二高范围固件 (<code>module</code> ）</li>
+<li><code>tmpdir</code> 是一个 <code>function</code> 范围固件， <code>f1</code>需要 ：因为它是<code>f1</code>的一个依赖项，此时它需要实例化 .</li>
+<li><code>f1</code> 是第一个在 <code>test_foo</code> 参数列表内的 <code>function</code> -范围固件。</li>
+<li><code>f2</code> 是最后一个在 <code>test_foo</code> 参数列表内的 <code>function</code> -范围固件。</li>
+</ol>
+<hr>
+<h2 id="固件定型-执行拆卸代码"><a href="#固件定型-执行拆卸代码" class="headerlink" title="固件定型&#x2F;执行拆卸代码"></a>固件定型&#x2F;执行拆卸代码</h2><p>Fixture finalization &#x2F; executing teardown code</p>
+<p>当fixture超出范围时，pytest支持fixture特定的定稿代码的执行。通过使用 <code>yield</code> 语句而不是 <code>return</code> ， <em>yield</em>语句之后的所有代码当做是teardown代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># content of conftest.py</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> smtplib</span><br><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"></span><br><span class="line"><span class="meta">@pytest.fixture(<span class="params">scope=<span class="string">&quot;module&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">smtp_connection</span>():</span><br><span class="line">    smtp_connection = smtplib.SMTP(<span class="string">&quot;smtp.gmail.com&quot;</span>, <span class="number">587</span>, timeout=<span class="number">5</span>)</span><br><span class="line">    <span class="keyword">yield</span> smtp_connection  <span class="comment"># provide the fixture value</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;teardown smtp&quot;</span>)</span><br><span class="line">    smtp_connection.close()</span><br></pre></td></tr></table></figure>
+
+<p>这个 <code>print</code> 和 <code>smtp.close()</code> 语句将在模块中的最后一个测试完成执行后执行，而不管测试的异常状态如何。</p>
+<p>让我们执行它：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ pytest -s -q --tb=no</span><br><span class="line">FFteardown smtp</span><br><span class="line"></span><br><span class="line"><span class="number">2</span> failed <span class="keyword">in</span> <span class="number">0.12</span> seconds</span><br></pre></td></tr></table></figure>
+
+<p>我们看到了 <code>smtp_connection</code> 实例在两个测试完成执行后完成。请注意，如果我们用 <code>scope=&#39;function&#39;</code>来声明固件函数， 然后在每个测试周围进行fixture setup和clearup。无论哪种情况，测试模块本身都不需要更改或了解这些固件setup的细节。</p>
+<p>请注意，我们还可以无缝地使用 <code>yield</code> 语法与 <code>with</code> 声明：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># content of test_yield2.py</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> smtplib</span><br><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"></span><br><span class="line"><span class="meta">@pytest.fixture(<span class="params">scope=<span class="string">&quot;module&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">smtp_connection</span>():</span><br><span class="line">    <span class="keyword">with</span> smtplib.SMTP(<span class="string">&quot;smtp.gmail.com&quot;</span>, <span class="number">587</span>, timeout=<span class="number">5</span>) <span class="keyword">as</span> smtp_connection:</span><br><span class="line">        <span class="keyword">yield</span> smtp_connection  <span class="comment"># provide the fixture value</span></span><br></pre></td></tr></table></figure>
+
+<p>这个 <code>smtp_connection</code> 连接将在测试完成执行后关闭，因为当 <code>with</code> 语句结束时 <code>smtp_connection</code> 对象会自动关闭。</p>
+<p>请注意，如果一个异常在 <code>setup </code> 代码（在 <code>yield</code> 关键字前）中发生，那么 <em>teardown</em> 代码（在 <code>yield</code> 后）不会被调用。</p>
+<p>执行 <code>teardown </code> 代码的替代选项是利用 <code>addfinalizer</code> 方法（用request-context对象注册终结函数）。</p>
+<p>这里是 <code>smtp_connection</code> 固件变化地使用<code>addfinalizer</code> 清理：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># content of conftest.py</span></span><br><span class="line"><span class="keyword">import</span> smtplib</span><br><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"></span><br><span class="line"><span class="meta">@pytest.fixture(<span class="params">scope=<span class="string">&quot;module&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">smtp_connection</span>(<span class="params">request</span>):</span><br><span class="line">    smtp_connection = smtplib.SMTP(<span class="string">&quot;smtp.gmail.com&quot;</span>, <span class="number">587</span>, timeout=<span class="number">5</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">fin</span>():</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;teardown smtp_connection&quot;</span>)</span><br><span class="line">        smtp_connection.close()</span><br><span class="line"></span><br><span class="line">    request.addfinalizer(fin)</span><br><span class="line">    <span class="keyword">return</span> smtp_connection  <span class="comment"># provide the fixture value</span></span><br></pre></td></tr></table></figure>
+
+<p>相似地， <code>yield</code> 和 <code>addfinalizer</code> 方法都是通过在测试结束后调用它们的代码来工作，但是 <code>addfinalizer</code> 有两个关键差异点区别于 <code>yield</code> ：</p>
+<ol>
+<li><p>可以注册多个终结器函数。</p>
+</li>
+<li><p>无论 fixture 的 setup 代码是否引发异常，finalizers 终结器都会被调用（面试题常问）。这对于正确关闭由固件创建的所有资源非常方便，即使其中一个资源未能创建&#x2F;获取：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@pytest.fixture</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">equipments</span>(<span class="params">request</span>):</span><br><span class="line">    r = []</span><br><span class="line">    <span class="keyword">for</span> port <span class="keyword">in</span> (<span class="string">&#x27;C1&#x27;</span>, <span class="string">&#x27;C3&#x27;</span>, <span class="string">&#x27;C28&#x27;</span>):</span><br><span class="line">        equip = connect(port)</span><br><span class="line">        request.addfinalizer(equip.disconnect)</span><br><span class="line">        r.append(equip)</span><br><span class="line">    <span class="keyword">return</span> r</span><br></pre></td></tr></table></figure>
+
+<p>在上面的示例中，如果 <code>&quot;C28&quot;</code> 异常失败， <code>&quot;C1&quot;</code> 和 <code>&quot;C3&quot;</code> 仍将正确关闭。</p>
+<p>当然，<strong>如果在 addfinalizer  函数之前发生异常，则不会执行它</strong>。</p>
+</li>
+</ol>
+<hr>
+<h2 id="Fixtures-可以检查请求的测试上下文"><a href="#Fixtures-可以检查请求的测试上下文" class="headerlink" title="Fixtures 可以检查请求的测试上下文"></a>Fixtures 可以检查请求的测试上下文</h2><p>Fixtures can introspect the requesting test context</p>
+<p>固件函数可以接受 <code>request</code> 对象内省“requesting”测试函数、类或模块上下文。进一步扩展前一个 <code>smtp_connection</code> fixture示例，让我们从使用fixture的测试模块中读取一个可选的服务器URL：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># content of conftest.py</span></span><br><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"><span class="keyword">import</span> smtplib</span><br><span class="line"></span><br><span class="line"><span class="meta">@pytest.fixture(<span class="params">scope=<span class="string">&quot;module&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">smtp_connection</span>(<span class="params">request</span>):</span><br><span class="line">    server = <span class="built_in">getattr</span>(request.module, <span class="string">&quot;smtpserver&quot;</span>, <span class="string">&quot;smtp.gmail.com&quot;</span>)</span><br><span class="line">    smtp_connection = smtplib.SMTP(server, <span class="number">587</span>, timeout=<span class="number">5</span>)</span><br><span class="line">    <span class="keyword">yield</span> smtp_connection</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;finalizing %s (%s)&quot;</span> % (smtp_connection, server))</span><br><span class="line">    smtp_connection.close()</span><br></pre></td></tr></table></figure>
+
+<p>我们使用 <code>request.module</code> 属性来选择获取一个来自测试模块的<code>smtpserver</code> 属性。如果我们再执行一次，没有什么改变：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ pytest -s -q --tb=no</span><br><span class="line">FFfinalizing &lt;smtplib.SMTP <span class="built_in">object</span> at <span class="number">0xdeadbeef</span>&gt; (smtp.gmail.com)</span><br><span class="line"></span><br><span class="line"><span class="number">2</span> failed <span class="keyword">in</span> <span class="number">0.12</span> seconds</span><br></pre></td></tr></table></figure>
+
+<p>让我们快速创建另一个测试模块，该模块在其模块命名空间中实际设置服务器URL：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># content of test_anothersmtp.py</span></span><br><span class="line"></span><br><span class="line">smtpserver = <span class="string">&quot;mail.python.org&quot;</span>  <span class="comment"># will be read by smtp fixture</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_showhelo</span>(<span class="params">smtp_connection</span>):</span><br><span class="line">    <span class="keyword">assert</span> <span class="number">0</span>, smtp_connection.helo()</span><br></pre></td></tr></table></figure>
+
+<p>运行它：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ pytest -qq --tb=short test_anothersmtp.py</span><br><span class="line">F                                                                    [<span class="number">100</span>%]</span><br><span class="line">================================= FAILURES =================================</span><br><span class="line">______________________________ test_showhelo _______________________________</span><br><span class="line">test_anothersmtp.py:<span class="number">5</span>: <span class="keyword">in</span> test_showhelo</span><br><span class="line">    <span class="keyword">assert</span> <span class="number">0</span>, smtp_connection.helo()</span><br><span class="line">E   AssertionError: (<span class="number">250</span>, <span class="string">b&#x27;mail.python.org&#x27;</span>)</span><br><span class="line">E   <span class="keyword">assert</span> <span class="number">0</span></span><br><span class="line">------------------------- Captured stdout teardown -------------------------</span><br><span class="line">finalizing &lt;smtplib.SMTP <span class="built_in">object</span> at <span class="number">0xdeadbeef</span>&gt; (mail.python.org)</span><br></pre></td></tr></table></figure>
+
+<p>这个 <code>smtp_connection</code> fixture函数从模块名称空间中获取邮件服务器名称。</p>
+<hr>
+<h2 id="工厂函数作为固件"><a href="#工厂函数作为固件" class="headerlink" title="工厂函数作为固件"></a>工厂函数作为固件</h2><p>Factories as fixtures</p>
+<p>“工厂作为固件”模式有助于在单个测试中多次需要固件结果的情况下，固件不直接返回数据，而是返回一个生成数据的函数，然后可以在测试中多次调用此函数。（<strong>工厂函数</strong>：返回一个生成数据对象的函数，而不是直接返回数据对象。）</p>
+<p>工厂可以根据需要设置参数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@pytest.fixture</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">make_customer_record</span>():</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_make_customer_record</span>(<span class="params">name</span>):</span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">            <span class="string">&quot;name&quot;</span>: name,</span><br><span class="line">            <span class="string">&quot;orders&quot;</span>: []</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> _make_customer_record</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_customer_records</span>(<span class="params">make_customer_record</span>):</span><br><span class="line">    customer_1 = make_customer_record(<span class="string">&quot;Lisa&quot;</span>)</span><br><span class="line">    customer_2 = make_customer_record(<span class="string">&quot;Mike&quot;</span>)</span><br><span class="line">    customer_3 = make_customer_record(<span class="string">&quot;Meredith&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>如果工厂创建的数据需要管理，则固件可以处理：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@pytest.fixture</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">make_customer_record</span>():</span><br><span class="line"></span><br><span class="line">    created_records = []</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_make_customer_record</span>(<span class="params">name</span>):</span><br><span class="line">        record = models.Customer(name=name, orders=[])</span><br><span class="line">        created_records.append(record)</span><br><span class="line">        <span class="keyword">return</span> record</span><br><span class="line"></span><br><span class="line">    <span class="keyword">yield</span> _make_customer_record</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> record <span class="keyword">in</span> created_records:</span><br><span class="line">        record.destroy()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_customer_records</span>(<span class="params">make_customer_record</span>):</span><br><span class="line">    customer_1 = make_customer_record(<span class="string">&quot;Lisa&quot;</span>)</span><br><span class="line">    customer_2 = make_customer_record(<span class="string">&quot;Mike&quot;</span>)</span><br><span class="line">    customer_3 = make_customer_record(<span class="string">&quot;Meredith&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>为什么要使用工厂作为固件？</p>
+<ul>
+<li><strong>灵活性</strong>：可以在测试中多次调用工厂函数，每次生成新的数据对象。</li>
+<li><strong>参数化</strong>：工厂函数可以根据传入的参数生成不同的数据对象。</li>
+<li><strong>资源管理</strong>：如果生成的数据对象需要管理（例如，需要在测试结束后销毁），固件可以处理这些管理任务。</li>
+</ul>
+<hr>
+<h2 id="参数化固件"><a href="#参数化固件" class="headerlink" title="参数化固件"></a>参数化固件</h2><p>Parametrizing fixtures</p>
+<p>fixture函数可以参数化，在这种情况下，它们将被多次调用，每次执行一组相关的测试，即测试依赖于该fixture。测试函数通常不需要知道它们的重新运行。固件参数化有助于为组件编写详尽的功能测试，这些组件本身可以通过多种方式进行配置。</p>
+<p>扩展前面的示例，我们可以标记fixture以创建两个 <code>smtp_connection</code> fixture实例，它将导致使用fixture的所有测试运行两次。fixture函数通过特殊的 <code>request</code> 对象来获取每个参数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># content of conftest.py</span></span><br><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"><span class="keyword">import</span> smtplib</span><br><span class="line"></span><br><span class="line"><span class="meta">@pytest.fixture(<span class="params">scope=<span class="string">&quot;module&quot;</span>,</span></span></span><br><span class="line"><span class="params"><span class="meta">                params=[<span class="string">&quot;smtp.gmail.com&quot;</span>, <span class="string">&quot;mail.python.org&quot;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">smtp_connection</span>(<span class="params">request</span>):</span><br><span class="line">    smtp_connection = smtplib.SMTP(request.param, <span class="number">587</span>, timeout=<span class="number">5</span>)</span><br><span class="line">    <span class="keyword">yield</span> smtp_connection</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;finalizing %s&quot;</span> % smtp_connection)</span><br><span class="line">    smtp_connection.close()</span><br></pre></td></tr></table></figure>
+
+<p>主要变化是 <code>params</code> 具有 <code>@pytest.fixture</code> ，fixture函数将执行的每个值的列表，可以通过 <code>request.param</code>访问每一个值 . 无需更改测试函数代码。让我们再运行一次：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">$ pytest -q test_module.py</span><br><span class="line">FFFF                                                                 [<span class="number">100</span>%]</span><br><span class="line">================================= FAILURES =================================</span><br><span class="line">________________________ test_ehlo[smtp.gmail.com] _________________________</span><br><span class="line"></span><br><span class="line">smtp_connection = &lt;smtplib.SMTP <span class="built_in">object</span> at <span class="number">0xdeadbeef</span>&gt;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_ehlo</span>(<span class="params">smtp_connection</span>):</span><br><span class="line">        response, msg = smtp_connection.ehlo()</span><br><span class="line">        <span class="keyword">assert</span> response == <span class="number">250</span></span><br><span class="line">        <span class="keyword">assert</span> <span class="string">b&quot;smtp.gmail.com&quot;</span> <span class="keyword">in</span> msg</span><br><span class="line">&gt;       <span class="keyword">assert</span> <span class="number">0</span>  <span class="comment"># for demo purposes</span></span><br><span class="line">E       <span class="keyword">assert</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line">test_module.py:<span class="number">6</span>: AssertionError</span><br><span class="line">________________________ test_noop[smtp.gmail.com] _________________________</span><br><span class="line"></span><br><span class="line">smtp_connection = &lt;smtplib.SMTP <span class="built_in">object</span> at <span class="number">0xdeadbeef</span>&gt;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_noop</span>(<span class="params">smtp_connection</span>):</span><br><span class="line">        response, msg = smtp_connection.noop()</span><br><span class="line">        <span class="keyword">assert</span> response == <span class="number">250</span></span><br><span class="line">&gt;       <span class="keyword">assert</span> <span class="number">0</span>  <span class="comment"># for demo purposes</span></span><br><span class="line">E       <span class="keyword">assert</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line">test_module.py:<span class="number">11</span>: AssertionError</span><br><span class="line">________________________ test_ehlo[mail.python.org] ________________________</span><br><span class="line"></span><br><span class="line">smtp_connection = &lt;smtplib.SMTP <span class="built_in">object</span> at <span class="number">0xdeadbeef</span>&gt;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_ehlo</span>(<span class="params">smtp_connection</span>):</span><br><span class="line">        response, msg = smtp_connection.ehlo()</span><br><span class="line">        <span class="keyword">assert</span> response == <span class="number">250</span></span><br><span class="line">&gt;       <span class="keyword">assert</span> <span class="string">b&quot;smtp.gmail.com&quot;</span> <span class="keyword">in</span> msg</span><br><span class="line">E       AssertionError: <span class="keyword">assert</span> <span class="string">b&#x27;smtp.gmail.com&#x27;</span> <span class="keyword">in</span> <span class="string">b&#x27;mail.python.org\nPIPELINING\nSIZE 51200000\nETRN\nSTARTTLS\nAUTH DIGEST-MD5 NTLM CRAM-MD5\nENHANCEDSTATUSCODES\n8BITMIME\nDSN\nSMTPUTF8\nCHUNKING&#x27;</span></span><br><span class="line"></span><br><span class="line">test_module.py:<span class="number">5</span>: AssertionError</span><br><span class="line">-------------------------- Captured stdout setup ---------------------------</span><br><span class="line">finalizing &lt;smtplib.SMTP <span class="built_in">object</span> at <span class="number">0xdeadbeef</span>&gt;</span><br><span class="line">________________________ test_noop[mail.python.org] ________________________</span><br><span class="line"></span><br><span class="line">smtp_connection = &lt;smtplib.SMTP <span class="built_in">object</span> at <span class="number">0xdeadbeef</span>&gt;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_noop</span>(<span class="params">smtp_connection</span>):</span><br><span class="line">        response, msg = smtp_connection.noop()</span><br><span class="line">        <span class="keyword">assert</span> response == <span class="number">250</span></span><br><span class="line">&gt;       <span class="keyword">assert</span> <span class="number">0</span>  <span class="comment"># for demo purposes</span></span><br><span class="line">E       <span class="keyword">assert</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line">test_module.py:<span class="number">11</span>: AssertionError</span><br><span class="line">------------------------- Captured stdout teardown -------------------------</span><br><span class="line">finalizing &lt;smtplib.SMTP <span class="built_in">object</span> at <span class="number">0xdeadbeef</span>&gt;</span><br><span class="line"><span class="number">4</span> failed <span class="keyword">in</span> <span class="number">0.12</span> seconds</span><br></pre></td></tr></table></figure>
+
+<p>我们看到我们的两个测试函数分别运行两次，针对的是不同的 <code>smtp_connection</code> 实例。还要注意的是， 在<code>test_ehlo</code>中<code>mail.python.org</code>连接第二次测试失败，因为预期的服务器字符串与实际获取的字符串不同。</p>
+<p>pytest将构建一个字符串，该字符串是参数化fixture中每个fixture值的测试ID，例如在在上面的例子中的<code>test_ehlo[smtp.gmail.com]</code> 和 <code>test_ehlo[mail.python.org]</code> 。这些ID可用于 <code>-k</code> 选择要运行的特定案例，当某个案例失败时，它们还将识别该特定案例。使用pytest <code>--collect-only</code> 运行将显示生成的ID。</p>
+<h3 id="关键字-ids"><a href="#关键字-ids" class="headerlink" title="关键字 ids"></a>关键字 ids</h3><p>数字、字符串、布尔值和None将在测试ID中使用它们通常的字符串表示形式。对于其他对象，pytest将根据参数名生成字符串。在一个测试ID中，可以通过使用 <code>ids</code> <u>关键字</u>参数来为一个确定的fixture值定制字符串：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># content of test_ids.py</span></span><br><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"></span><br><span class="line"><span class="meta">@pytest.fixture(<span class="params">params=[<span class="number">0</span>, <span class="number">1</span>], ids=[<span class="string">&quot;spam&quot;</span>, <span class="string">&quot;ham&quot;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">a</span>(<span class="params">request</span>):</span><br><span class="line">    <span class="keyword">return</span> request.param</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_a</span>(<span class="params">a</span>):</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">idfn</span>(<span class="params">fixture_value</span>):</span><br><span class="line">    <span class="keyword">if</span> fixture_value == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;eggs&quot;</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@pytest.fixture(<span class="params">params=[<span class="number">0</span>, <span class="number">1</span>], ids=idfn</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">b</span>(<span class="params">request</span>):</span><br><span class="line">    <span class="keyword">return</span> request.param</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_b</span>(<span class="params">b</span>):</span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+<p>上面显示了如何 <code>ids</code> 可以是要使用的字符串列表，也可以是将使用fixture值调用的函数，然后必须返回要使用的字符串。在后一种情况下，如果函数返回 <code>None</code> 然后将使用pytest的自动生成的ID。</p>
+<p>运行上述测试将导致使用以下测试ID：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">python -m pytest .\test_ids.py  --collect-only</span><br><span class="line">============================================================================== test session starts ===============================================================================</span><br><span class="line">platform win32 -- Python <span class="number">3.12</span><span class="number">.0</span>, pytest-<span class="number">7.0</span><span class="number">.1</span>, pluggy-<span class="number">1.0</span><span class="number">.0</span></span><br><span class="line">rootdir: D:\Developer\pytest_learning\src\<span class="number">4.</span>pytest fixtures explicit, modular, scalable</span><br><span class="line">plugins: allure-pytest-<span class="number">2.9</span><span class="number">.43</span>, Faker-<span class="number">13.3</span><span class="number">.0</span>, assume-<span class="number">2.4</span><span class="number">.3</span></span><br><span class="line">collected <span class="number">4</span> items                                                                                                                                                                  </span><br><span class="line"></span><br><span class="line">&lt;Package <span class="number">4.</span>pytest fixtures explicit, modular, scalable&gt;</span><br><span class="line">  &lt;Module test_ids.py&gt;</span><br><span class="line">    &lt;Function test_a[spam]&gt;</span><br><span class="line">    &lt;Function test_a[ham]&gt;</span><br><span class="line">    &lt;Function test_b[eggs]&gt;</span><br><span class="line">    &lt;Function test_b[<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+
+<p>如果没有配置 <code>ids</code>，那么执行显示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;Package 4.pytest fixtures explicit, modular, scalable&gt;</span><br><span class="line">  &lt;Module test_ids.py&gt;</span><br><span class="line">    &lt;Function test_a[0]&gt;</span><br><span class="line">    &lt;Function test_a[1]&gt;</span><br><span class="line">    &lt;Function test_b[0]&gt;</span><br><span class="line">    &lt;Function test_b[1]&gt;</span><br></pre></td></tr></table></figure>
+
+<p>使用 <code>-k</code> 执行：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">python -m pytest .\test_ids.py  --collect-only  -k &quot;test_a[spam]&quot;</span><br><span class="line">============================================================================== test session starts =============================================================================== </span><br><span class="line">platform win32 -- Python 3.12.0, pytest-7.0.1, pluggy-1.0.0</span><br><span class="line">rootdir: D:\Developer\pytest_learning\src\4.pytest fixtures explicit, modular, scalable</span><br><span class="line">plugins: allure-pytest-2.9.43, Faker-13.3.0, assume-2.4.3</span><br><span class="line">collected 4 items / 3 deselected / 1 selected                                                                                                                                      </span><br><span class="line"></span><br><span class="line">&lt;Package 4.pytest fixtures explicit, modular, scalable&gt;</span><br><span class="line">  &lt;Module test_ids.py&gt;</span><br><span class="line">    &lt;Function test_a[spam]&gt;</span><br><span class="line"></span><br><span class="line">================================================================== 1/4 tests collected (3 deselected) in 0.01s =================================================================== </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&gt; python -m pytest .\test_ids.py  --collect-only  -k &quot;test_a[spam] or test_b[eggs]&quot;                                                                                                                            </span><br><span class="line"></span><br><span class="line">&lt;Package 4.pytest fixtures explicit, modular, scalable&gt;</span><br><span class="line">  &lt;Module test_ids.py&gt;</span><br><span class="line">    &lt;Function test_a[spam]&gt;</span><br><span class="line">    &lt;Function test_b[eggs]&gt;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="对参数化固件使用标记"><a href="#对参数化固件使用标记" class="headerlink" title="对参数化固件使用标记"></a>对参数化固件使用标记</h2><p>Using marks with parametrized fixtures</p>
+<p><code>pytest.param()</code>可在参数化固件的值集里应用于标记，与它们可用于<code>@pytest.mark.parametrize</code> 的方法相同 .</p>
+<p>例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># content of test_fixture_marks.py</span></span><br><span class="line"><span class="meta">@pytest.fixture(<span class="params">params=[<span class="number">0</span>, <span class="number">1</span>,</span></span></span><br><span class="line"><span class="params"><span class="meta">                        pytest.param(<span class="params"><span class="number">2</span>, marks=pytest.mark.skip</span>),</span></span></span><br><span class="line"><span class="params"><span class="meta">                        pytest.param(<span class="params"><span class="number">3</span>, marks=pytest.mark.xfail(<span class="params">reason=<span class="string">&quot;This is expected to fail&quot;</span></span>)</span>)]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">data_set</span>(<span class="params">request</span>):</span><br><span class="line">    <span class="keyword">return</span> request.param</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_data</span>(<span class="params">data_set</span>):</span><br><span class="line">    <span class="keyword">assert</span> data_set &lt; <span class="number">3</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>@pytest.fixture(params=[0, 1, pytest.param(2, marks=pytest.mark.skip)])</code>：定义了一个参数化固件 <code>data_set</code>，参数值为 <code>[0, 1, pytest.param(2, marks=pytest.mark.skip)]</code>。</li>
+<li><code>pytest.param(2, marks=pytest.mark.skip)</code>：使用 <code>pytest.param</code> 包装参数 <code>2</code>，并标记为 <code>skip</code>。</li>
+<li>使用 <code>pytest.param</code> 包装参数 <code>3</code> ，标记为 <code>xfail</code>，测试预期失败。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"> python -m pytest .\test_fixture_marks.py -v</span><br><span class="line">============================ test session starts==============================</span><br><span class="line">platform win32 -- Python <span class="number">3.12</span><span class="number">.0</span>, pytest-<span class="number">7.0</span><span class="number">.1</span>, pluggy-<span class="number">1.0</span><span class="number">.0</span> -- D:\software\Python\Python312\python.exe</span><br><span class="line">cachedir: .pytest_cache</span><br><span class="line">rootdir: D:\Developer\pytest_learning\src\<span class="number">4.</span>pytest fixtures explicit, modular, scalable</span><br><span class="line">plugins: allure-pytest-<span class="number">2.9</span><span class="number">.43</span>, Faker-<span class="number">13.3</span><span class="number">.0</span>, assume-<span class="number">2.4</span><span class="number">.3</span></span><br><span class="line">collected <span class="number">4</span> items                                                                                                                                                                  </span><br><span class="line">test_fixture_marks.py::test_data[<span class="number">0</span>] PASSED [ <span class="number">25</span>%] </span><br><span class="line">test_fixture_marks.py::test_data[<span class="number">1</span>] PASSED [ <span class="number">50</span>%] </span><br><span class="line">test_fixture_marks.py::test_data[<span class="number">2</span>] SKIPPED (unconditional skip) [ <span class="number">75</span>%] </span><br><span class="line">test_fixture_marks.py::test_data[<span class="number">3</span>] XFAIL (This <span class="keyword">is</span> expected to fail) </span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="模块化：使用fixture函数中的fixtures"><a href="#模块化：使用fixture函数中的fixtures" class="headerlink" title="模块化：使用fixture函数中的fixtures"></a>模块化：使用fixture函数中的fixtures</h2><p>Modularity: using fixtures from a fixture function</p>
+<p>不仅可以在测试函数中使用fixture，fixture函数还可以使用其他fixture本身。这有助于固件fixtures的模块化设计，并允许在许多项目中重用特定框架的固件。作为一个简单的示例，我们可以扩展前面的示例并实例化一个对象 <code>app</code> ，我们把已经定义好的 <code>smtp_connection</code> 资源加入进去了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># content of test_appsetup.py</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">App</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, smtp_connection</span>):</span><br><span class="line">        <span class="variable language_">self</span>.smtp_connection = smtp_connection</span><br><span class="line"></span><br><span class="line"><span class="meta">@pytest.fixture(<span class="params">scope=<span class="string">&quot;module&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">app</span>(<span class="params">smtp_connection</span>):</span><br><span class="line">    <span class="keyword">return</span> App(smtp_connection)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_smtp_connection_exists</span>(<span class="params">app</span>):</span><br><span class="line">    <span class="keyword">assert</span> app.smtp_connection</span><br></pre></td></tr></table></figure>
+
+<p>我们在此声明 <code>app</code> 接收先前定义的 <code>smtp_connection</code> fixture并实例化 <code>App</code> 对象。让我们运行它：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ pytest -v test_appsetup.py</span><br><span class="line">=========================== test session starts ============================</span><br><span class="line">platform linux -- Python <span class="number">3.</span>x.y, pytest-<span class="number">4.</span>x.y, py-<span class="number">1.</span>x.y, pluggy-<span class="number">0.</span>x.y -- $PYTHON_PREFIX/<span class="built_in">bin</span>/python</span><br><span class="line">cachedir: $PYTHON_PREFIX/.pytest_cache</span><br><span class="line">rootdir: $REGENDOC_TMPDIR</span><br><span class="line">collecting ... collected <span class="number">2</span> items</span><br><span class="line"></span><br><span class="line">test_appsetup.py::test_smtp_connection_exists[smtp.gmail.com] PASSED [ <span class="number">50</span>%]</span><br><span class="line">test_appsetup.py::test_smtp_connection_exists[mail.python.org] PASSED [<span class="number">100</span>%]</span><br><span class="line"></span><br><span class="line">========================= <span class="number">2</span> passed <span class="keyword">in</span> <span class="number">0.12</span> seconds =========================</span><br></pre></td></tr></table></figure>
+
+<p>由于参数化 <code>smtp_connection</code> ，测试将运行两次 <code>App</code> 实例和相应的SMTP服务器。 <code>app</code> 固件没有必要注意 <code>smtp_connection</code> 参数化，因为 Pytest 将充分分析固件依赖关系图。</p>
+<p>请注意 <code>app</code> 固件的 <code>module</code> 范围，并使用 <code>smtp_connection</code> 模块范围固件。如果 <code>smtp_connection</code>被缓存在 <code>session</code> 范围也是可行的：fixture可以使用“更广”范围的fixture，但不能使用另一种方式：会话session范围的fixture不能以有意义的方式使用模块module范围的fixture。</p>
+<hr>
+<h2 id="按-fixture-实例自动分组测试"><a href="#按-fixture-实例自动分组测试" class="headerlink" title="按 fixture 实例自动分组测试"></a>按 fixture 实例自动分组测试</h2><p>Automatic grouping of tests by fixture instances</p>
+<p>在测试运行期间，pytest最小化了活跃fixtures的数量。如果你有一个参数化的fixture，那么使用它的所有测试将首先用一个实例执行，然后在创建下一个fixture实例之前调用终结器。此外，这简化了对创建和使用全局状态的应用程序的测试。</p>
+<p>下面的示例使用两个参数化的fixture，其中一个在每个模块的基础上确定范围，所有功能都执行 <code>print</code> 调用以显示setup&#x2F;teardown流：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"></span><br><span class="line"><span class="meta">@pytest.fixture(<span class="params">scope=<span class="string">&quot;module&quot;</span>, params=[<span class="string">&quot;mod1&quot;</span>, <span class="string">&quot;mod2&quot;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">modarg</span>(<span class="params">request</span>):</span><br><span class="line">    param = request.param</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;  SETUP modarg %s&quot;</span> % param)</span><br><span class="line">    <span class="keyword">yield</span> param</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;  TEARDOWN modarg %s&quot;</span> % param)</span><br><span class="line"></span><br><span class="line"><span class="meta">@pytest.fixture(<span class="params">scope=<span class="string">&quot;function&quot;</span>, params=[<span class="number">1</span>,<span class="number">2</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">otherarg</span>(<span class="params">request</span>):</span><br><span class="line">    param = request.param</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;  SETUP otherarg %s&quot;</span> % param)</span><br><span class="line">    <span class="keyword">yield</span> param</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;  TEARDOWN otherarg %s&quot;</span> % param)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_0</span>(<span class="params">otherarg</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;  RUN test0 with otherarg %s&quot;</span> % otherarg)</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_1</span>(<span class="params">modarg</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;  RUN test1 with modarg %s&quot;</span> % modarg)</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_2</span>(<span class="params">otherarg, modarg</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;  RUN test2 with otherarg %s and modarg %s&quot;</span> % (otherarg, modarg))</span><br></pre></td></tr></table></figure>
+
+<p>这个示例展示了 <code>pytest</code> 如何管理和优化参数化固件的生命周期。</p>
+<p>让我们在详细模式下运行测试，并查看打印输出：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">$ pytest -v -s test_module.py</span><br><span class="line">=========================== test session starts ============================</span><br><span class="line">platform linux -- Python <span class="number">3.</span>x.y, pytest-<span class="number">4.</span>x.y, py-<span class="number">1.</span>x.y, pluggy-<span class="number">0.</span>x.y -- $PYTHON_PREFIX/<span class="built_in">bin</span>/python</span><br><span class="line">cachedir: $PYTHON_PREFIX/.pytest_cache</span><br><span class="line">rootdir: $REGENDOC_TMPDIR</span><br><span class="line">collecting ... collected <span class="number">8</span> items</span><br><span class="line"></span><br><span class="line">test_module.py::test_0[<span class="number">1</span>]   SETUP otherarg <span class="number">1</span></span><br><span class="line">  RUN test0 <span class="keyword">with</span> otherarg <span class="number">1</span></span><br><span class="line">PASSED  TEARDOWN otherarg <span class="number">1</span></span><br><span class="line"></span><br><span class="line">test_module.py::test_0[<span class="number">2</span>]   SETUP otherarg <span class="number">2</span></span><br><span class="line">  RUN test0 <span class="keyword">with</span> otherarg <span class="number">2</span></span><br><span class="line">PASSED  TEARDOWN otherarg <span class="number">2</span></span><br><span class="line"></span><br><span class="line">test_module.py::test_1[mod1]   SETUP modarg mod1</span><br><span class="line">  RUN test1 <span class="keyword">with</span> modarg mod1</span><br><span class="line">PASSED</span><br><span class="line">test_module.py::test_2[mod1-<span class="number">1</span>]   SETUP otherarg <span class="number">1</span></span><br><span class="line">  RUN test2 <span class="keyword">with</span> otherarg <span class="number">1</span> <span class="keyword">and</span> modarg mod1</span><br><span class="line">PASSED  TEARDOWN otherarg <span class="number">1</span></span><br><span class="line"></span><br><span class="line">test_module.py::test_2[mod1-<span class="number">2</span>]   SETUP otherarg <span class="number">2</span></span><br><span class="line">  RUN test2 <span class="keyword">with</span> otherarg <span class="number">2</span> <span class="keyword">and</span> modarg mod1</span><br><span class="line">PASSED  TEARDOWN otherarg <span class="number">2</span></span><br><span class="line"></span><br><span class="line">test_module.py::test_1[mod2]   TEARDOWN modarg mod1</span><br><span class="line">  SETUP modarg mod2</span><br><span class="line">  RUN test1 <span class="keyword">with</span> modarg mod2</span><br><span class="line">PASSED</span><br><span class="line">test_module.py::test_2[mod2-<span class="number">1</span>]   SETUP otherarg <span class="number">1</span></span><br><span class="line">  RUN test2 <span class="keyword">with</span> otherarg <span class="number">1</span> <span class="keyword">and</span> modarg mod2</span><br><span class="line">PASSED  TEARDOWN otherarg <span class="number">1</span></span><br><span class="line"></span><br><span class="line">test_module.py::test_2[mod2-<span class="number">2</span>]   SETUP otherarg <span class="number">2</span></span><br><span class="line">  RUN test2 <span class="keyword">with</span> otherarg <span class="number">2</span> <span class="keyword">and</span> modarg mod2</span><br><span class="line">PASSED  TEARDOWN otherarg <span class="number">2</span></span><br><span class="line">  TEARDOWN modarg mod2</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">========================= <span class="number">8</span> passed <span class="keyword">in</span> <span class="number">0.12</span> seconds =========================</span><br></pre></td></tr></table></figure>
+
+<p>可以看到参数化模块作用域 <code>modarg</code> 资源导致测试执行的顺序，从而导致可能的“活动”资源最少。为 <code>mod1</code> 参数化的资源的终结器在 <code>mod2</code> 资源setup前被执行。</p>
+<p>特别要注意，test_0是完全独立的，最先完成。然后是使用 <code>mod1</code> 的test_1执行，接着是使用 <code>mod1</code>的test_2 ，然后是用 <code>mod2</code>的test_1， 最后是用 <code>mod2</code> 的test_2.</p>
+<p>这个 <code>otherarg</code> 参数化资源（具有函数范围）在使用它的每个测试之前setup，然后在使用它的每个测试之后teardown。</p>
+<hr>
+<h2 id="使用类、模块或项目中的-fixture"><a href="#使用类、模块或项目中的-fixture" class="headerlink" title="使用类、模块或项目中的 fixture"></a>使用类、模块或项目中的 fixture</h2><p>Using fixtures from classes, modules or projects</p>
+<p>有时测试函数不需要直接访问fixture对象。例如，测试可能需要使用空目录作为当前工作目录进行操作，否则不关心具体目录。以下是如何使用标准 tempfile 和pytest fixtures 来实现它。我们将创建的fixture分入conftest.py文件：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># content of conftest.py</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"><span class="keyword">import</span> tempfile</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="meta">@pytest.fixture()</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">cleandir</span>():</span><br><span class="line">    newpath = tempfile.mkdtemp()</span><br><span class="line">    os.chdir(newpath)</span><br></pre></td></tr></table></figure>
+
+<p>并通过一个 <code>usefixtures</code> 标记，在测试module中声明它的使用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># content of test_setenv.py</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"></span><br><span class="line"><span class="meta">@pytest.mark.usefixtures(<span class="params"><span class="string">&quot;cleandir&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TestDirectoryInit</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_cwd_starts_empty</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">assert</span> os.listdir(os.getcwd()) == []</span><br><span class="line">        <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;myfile&quot;</span>, <span class="string">&quot;w&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">            f.write(<span class="string">&quot;hello&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_cwd_again_starts_empty</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">assert</span> os.listdir(os.getcwd()) == []</span><br></pre></td></tr></table></figure>
+
+<p>由于 <code>usefixtures</code> 标记，每个测试方法的执行都需要 <code>cleandir</code> fixture，就像你为每个方法指定了“cleandir”函数参数一样。让我们运行它来验证fixture是否激活，测试是否通过：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ pytest -q</span><br><span class="line">..                                                                   [<span class="number">100</span>%]</span><br><span class="line"><span class="number">2</span> passed <span class="keyword">in</span> <span class="number">0.12</span> seconds</span><br></pre></td></tr></table></figure>
+
+<p>可以这样指定多个fixtures：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@pytest.mark.usefixtures(<span class="params"><span class="string">&quot;cleandir&quot;</span>, <span class="string">&quot;anotherfixture&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test</span>():</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+
+<p>可以使用标记机制的通用特性，在测试模块级别指定fixture使用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pytestmark = pytest.mark.usefixtures(<span class="string">&quot;cleandir&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>注意分配的变量 <em>必须</em> 被称为 <code>pytestmark</code> ，例如 <code>foomark</code> 不会激活fixtures。</p>
+<p>也可以将项目中所有测试所需的fixtures放入一个ini文件中：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># content of pytest.ini</span></span><br><span class="line">[pytest]</span><br><span class="line">usefixtures = cleandir</span><br></pre></td></tr></table></figure>
+
+<p>警告</p>
+<p>注意这个标记在 <strong>fixture functions</strong>里没有作用 . 例如，这个 <strong>无法按预期工作</strong> ：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@pytest.mark.usefixtures(<span class="params"><span class="string">&quot;my_other_fixture&quot;</span></span>)</span></span><br><span class="line"><span class="meta">@pytest.fixture</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">my_fixture_that_sadly_wont_use_my_other_fixture</span>():</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+
+<p>目前，这不会产生任何错误或警告.</p>
+<hr>
+<h2 id="自动固定装置-autouse"><a href="#自动固定装置-autouse" class="headerlink" title="自动固定装置 autouse"></a>自动固定装置 autouse</h2><p>Autouse fixtures (xUnit setup on steroids)</p>
+<p>有时，你可能希望在不显式声明函数参数或 usefixtures 装饰器的情况下自动调用fixtures。作为一个实际的例子，假设我们有一个数据库设备，它有一个 begin&#x2F;rollback&#x2F;commit 体系结构，并且我们希望通过一个 transaction 和一个 rollback 自动包围每个测试方法。下面是这个想法的一个虚拟的独立实现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># content of test_db_transact.py</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">DB</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.intransaction = []</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">begin</span>(<span class="params">self, name</span>):</span><br><span class="line">        <span class="variable language_">self</span>.intransaction.append(name)</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">rollback</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.intransaction.pop()</span><br><span class="line"></span><br><span class="line"><span class="meta">@pytest.fixture(<span class="params">scope=<span class="string">&quot;module&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">db</span>():</span><br><span class="line">    <span class="keyword">return</span> DB()</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TestClass</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line"><span class="meta">    @pytest.fixture(<span class="params">autouse=<span class="literal">True</span></span>)</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">transact</span>(<span class="params">self, request, db</span>):</span><br><span class="line">        db.begin(request.function.__name__)</span><br><span class="line">        <span class="keyword">yield</span></span><br><span class="line">        db.rollback()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_method1</span>(<span class="params">self, db</span>):</span><br><span class="line">        <span class="keyword">assert</span> db.intransaction == [<span class="string">&quot;test_method1&quot;</span>]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_method2</span>(<span class="params">self, db</span>):</span><br><span class="line">        <span class="keyword">assert</span> db.intransaction == [<span class="string">&quot;test_method2&quot;</span>]</span><br></pre></td></tr></table></figure>
+
+<p>类级别 <code>transact</code> 固件标有 <em>autouse&#x3D;true</em> 这意味着类中的所有测试方法都将使用这个fixture，而不需要在测试函数签名或类级别的<code>usefixture</code>装饰器中声明它。</p>
+<p>如果我们运行它，我们会得到两个通过的测试：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ pytest -q</span><br><span class="line">..                                                                   [<span class="number">100</span>%]</span><br><span class="line"><span class="number">2</span> passed <span class="keyword">in</span> <span class="number">0.12</span> seconds</span><br></pre></td></tr></table></figure>
+
+<p>以下是Autouse 固件在其他范围中的工作方式：</p>
+<ul>
+<li>autouse fixtures遵守 <code>scope=</code> 关键字参数：如果一个autouse fixture具有 <code>scope=&#39;session&#39;</code> ，无论它在何处被定义，它将只运行一次。而 <code>scope=&#39;class&#39;</code> 意味着它将每个类运行一次，等等。</li>
+<li>如果在一个测试模块中定义了一个autouse fixture，那么它的所有测试函数都会自动使用它。</li>
+<li>如果在conftest.py文件中定义了一个autouse fixture，那么其目录下的所有测试模块中的所有测试都将调用该fixture。</li>
+<li>最后， <strong>请小心使用</strong> ：如果你在一个插件中定义了一个autouse fixture，它将对安装该插件的所有项目中的所有测试进行调用。如果一个fixture只在某些设置（例如在ini文件中）下工作，这是有用的。这样一个全局fixture应该总是快速确定它是否应该做任何工作，并避免其他耗费的导入或计算。</li>
+</ul>
+<p>注意上面 <code>transact</code> fixture很可能是你希望在项目中可用的一个fixture，而通常不需要它处于活动状态。实现这一点的规范方法是将transact的定义放入没有使用 <code>autouse</code> 的conftest.py 中：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># content of conftest.py</span></span><br><span class="line"><span class="meta">@pytest.fixture</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">transact</span>(<span class="params">request, db</span>):</span><br><span class="line">    db.begin()</span><br><span class="line">    <span class="keyword">yield</span></span><br><span class="line">    db.rollback()</span><br></pre></td></tr></table></figure>
+
+<p>然后，例如，通过声明需求，让一个testclass使用它：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@pytest.mark.usefixtures(<span class="params"><span class="string">&quot;transact&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TestClass</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_method1</span>(<span class="params">self</span>):</span><br><span class="line">        ...</span><br></pre></td></tr></table></figure>
+
+<p>此TestClass中的所有测试方法都将使用transact fixture，而模块中的其他测试类或函数将不使用它，除非它们还添加了 <code>transact</code> 参考。</p>
+<hr>
+<h2 id="覆盖不同级别的设备"><a href="#覆盖不同级别的设备" class="headerlink" title="覆盖不同级别的设备"></a>覆盖不同级别的设备</h2><p>Overriding fixtures on various levels</p>
+<p>在相对较大的测试套中，你很可能需要 <code>override</code> 一个 <code>global</code> 或 <code>root</code> fixture与 <code>locally</code> 定义一个，用来保持测试代码的可读性和可维护性。</p>
+<h3 id="覆盖文件夹（conftest）级别的fixture"><a href="#覆盖文件夹（conftest）级别的fixture" class="headerlink" title="覆盖文件夹（conftest）级别的fixture"></a>覆盖文件夹（conftest）级别的fixture</h3><p>Override a fixture on a folder (conftest) level</p>
+<p>假设测试文件结构为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">tests/</span><br><span class="line">    __init__.py</span><br><span class="line"></span><br><span class="line">    conftest.py</span><br><span class="line">        <span class="comment"># content of tests/conftest.py</span></span><br><span class="line">        <span class="keyword">import</span> pytest</span><br><span class="line"></span><br><span class="line"><span class="meta">        @pytest.fixture</span></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">username</span>():</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&#x27;username&#x27;</span></span><br><span class="line"></span><br><span class="line">    test_something.py</span><br><span class="line">        <span class="comment"># content of tests/test_something.py</span></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">test_username</span>(<span class="params">username</span>):</span><br><span class="line">            <span class="keyword">assert</span> username == <span class="string">&#x27;username&#x27;</span></span><br><span class="line"></span><br><span class="line">    subfolder/</span><br><span class="line">        __init__.py</span><br><span class="line"></span><br><span class="line">        conftest.py</span><br><span class="line">            <span class="comment"># content of tests/subfolder/conftest.py</span></span><br><span class="line">            <span class="keyword">import</span> pytest</span><br><span class="line"></span><br><span class="line"><span class="meta">            @pytest.fixture</span></span><br><span class="line">            <span class="keyword">def</span> <span class="title function_">username</span>(<span class="params">username</span>):</span><br><span class="line">                <span class="keyword">return</span> <span class="string">&#x27;overridden-&#x27;</span> + username</span><br><span class="line"></span><br><span class="line">        test_something.py</span><br><span class="line">            <span class="comment"># content of tests/subfolder/test_something.py</span></span><br><span class="line">            <span class="keyword">def</span> <span class="title function_">test_username</span>(<span class="params">username</span>):</span><br><span class="line">                <span class="keyword">assert</span> username == <span class="string">&#x27;overridden-username&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>以上示例，具有相同名称的fixture可以被某些测试文件夹级别的覆盖。请注意 <code>base</code> 或 <code>super</code> fixture可从 在上面的例子中很容易使用的<code>overriding</code> fixture中获取。</p>
+<h3 id="在测试模块级别上覆盖fixture"><a href="#在测试模块级别上覆盖fixture" class="headerlink" title="在测试模块级别上覆盖fixture"></a>在测试模块级别上覆盖fixture</h3><p>Override a fixture on a test module level</p>
+<p>假设测试文件结构为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">tests/</span><br><span class="line">    __init__.py</span><br><span class="line"></span><br><span class="line">    conftest.py</span><br><span class="line">        <span class="comment"># content of tests/conftest.py</span></span><br><span class="line"><span class="meta">        @pytest.fixture</span></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">username</span>():</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&#x27;username&#x27;</span></span><br><span class="line"></span><br><span class="line">    test_something.py</span><br><span class="line">        <span class="comment"># content of tests/test_something.py</span></span><br><span class="line">        <span class="keyword">import</span> pytest</span><br><span class="line"></span><br><span class="line"><span class="meta">        @pytest.fixture</span></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">username</span>(<span class="params">username</span>):</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&#x27;overridden-&#x27;</span> + username</span><br><span class="line"></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">test_username</span>(<span class="params">username</span>):</span><br><span class="line">            <span class="keyword">assert</span> username == <span class="string">&#x27;overridden-username&#x27;</span></span><br><span class="line"></span><br><span class="line">    test_something_else.py</span><br><span class="line">        <span class="comment"># content of tests/test_something_else.py</span></span><br><span class="line">        <span class="keyword">import</span> pytest</span><br><span class="line"></span><br><span class="line"><span class="meta">        @pytest.fixture</span></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">username</span>(<span class="params">username</span>):</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&#x27;overridden-else-&#x27;</span> + username</span><br><span class="line"></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">test_username</span>(<span class="params">username</span>):</span><br><span class="line">            <span class="keyword">assert</span> username == <span class="string">&#x27;overridden-else-username&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>在上面的示例中，一个具有相同名称fixture可以为某些测试模块重写覆盖。</p>
+<h3 id="通过直接测试参数化覆盖夹具"><a href="#通过直接测试参数化覆盖夹具" class="headerlink" title="通过直接测试参数化覆盖夹具"></a>通过直接测试参数化覆盖夹具</h3><p>Override a fixture with direct test parametrization</p>
+<p>假设测试文件结构为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">tests/</span><br><span class="line">    __init__.py</span><br><span class="line"></span><br><span class="line">    conftest.py</span><br><span class="line">        <span class="comment"># content of tests/conftest.py</span></span><br><span class="line">        <span class="keyword">import</span> pytest</span><br><span class="line"></span><br><span class="line"><span class="meta">        @pytest.fixture</span></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">username</span>():</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&#x27;username&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">        @pytest.fixture</span></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">other_username</span>(<span class="params">username</span>):</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&#x27;other-&#x27;</span> + username</span><br><span class="line"></span><br><span class="line">    test_something.py</span><br><span class="line">        <span class="comment"># content of tests/test_something.py</span></span><br><span class="line">        <span class="keyword">import</span> pytest</span><br><span class="line"></span><br><span class="line"><span class="meta">        @pytest.mark.parametrize(<span class="params"><span class="string">&#x27;username&#x27;</span>, [<span class="string">&#x27;directly-overridden-username&#x27;</span>]</span>)</span></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">test_username</span>(<span class="params">username</span>):</span><br><span class="line">            <span class="keyword">assert</span> username == <span class="string">&#x27;directly-overridden-username&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">        @pytest.mark.parametrize(<span class="params"><span class="string">&#x27;username&#x27;</span>, [<span class="string">&#x27;directly-overridden-username-other&#x27;</span>]</span>)</span></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">test_username_other</span>(<span class="params">other_username</span>):</span><br><span class="line">            <span class="keyword">assert</span> other_username == <span class="string">&#x27;other-directly-overridden-username-other&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>在上面的示例中，fixture值被测试参数值覆盖。注意，即使测试没有直接使用fixture的值（在函数原型中没有提到），也可以用这种方式覆盖fixture的值。</p>
+<h3 id="用非参数化固件替代参数化固件"><a href="#用非参数化固件替代参数化固件" class="headerlink" title="用非参数化固件替代参数化固件"></a>用非参数化固件替代参数化固件</h3><p>Override a parametrized fixture with non-parametrized one and vice versa</p>
+<p>假设测试文件结构为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">tests/</span><br><span class="line">    __init__.py</span><br><span class="line"></span><br><span class="line">    conftest.py</span><br><span class="line">        <span class="comment"># content of tests/conftest.py</span></span><br><span class="line">        <span class="keyword">import</span> pytest</span><br><span class="line"></span><br><span class="line"><span class="meta">        @pytest.fixture(<span class="params">params=[<span class="string">&#x27;one&#x27;</span>, <span class="string">&#x27;two&#x27;</span>, <span class="string">&#x27;three&#x27;</span>]</span>)</span></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">parametrized_username</span>(<span class="params">request</span>):</span><br><span class="line">            <span class="keyword">return</span> request.param</span><br><span class="line"></span><br><span class="line"><span class="meta">        @pytest.fixture</span></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">non_parametrized_username</span>(<span class="params">request</span>):</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&#x27;username&#x27;</span></span><br><span class="line"></span><br><span class="line">    test_something.py</span><br><span class="line">        <span class="comment"># content of tests/test_something.py</span></span><br><span class="line">        <span class="keyword">import</span> pytest</span><br><span class="line"></span><br><span class="line"><span class="meta">        @pytest.fixture</span></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">parametrized_username</span>():</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&#x27;overridden-username&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">        @pytest.fixture(<span class="params">params=[<span class="string">&#x27;one&#x27;</span>, <span class="string">&#x27;two&#x27;</span>, <span class="string">&#x27;three&#x27;</span>]</span>)</span></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">non_parametrized_username</span>(<span class="params">request</span>):</span><br><span class="line">            <span class="keyword">return</span> request.param</span><br><span class="line"></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">test_username</span>(<span class="params">parametrized_username</span>):</span><br><span class="line">            <span class="keyword">assert</span> parametrized_username == <span class="string">&#x27;overridden-username&#x27;</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">test_parametrized_username</span>(<span class="params">non_parametrized_username</span>):</span><br><span class="line">            <span class="keyword">assert</span> non_parametrized_username <span class="keyword">in</span> [<span class="string">&#x27;one&#x27;</span>, <span class="string">&#x27;two&#x27;</span>, <span class="string">&#x27;three&#x27;</span>]</span><br><span class="line"></span><br><span class="line">    test_something_else.py</span><br><span class="line">        <span class="comment"># content of tests/test_something_else.py</span></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">test_username</span>(<span class="params">parametrized_username</span>):</span><br><span class="line">            <span class="keyword">assert</span> parametrized_username <span class="keyword">in</span> [<span class="string">&#x27;one&#x27;</span>, <span class="string">&#x27;two&#x27;</span>, <span class="string">&#x27;three&#x27;</span>]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">test_username</span>(<span class="params">non_parametrized_username</span>):</span><br><span class="line">            <span class="keyword">assert</span> non_parametrized_username == <span class="string">&#x27;username&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>在上面的示例中，参数化固件被非参数化版本覆盖，而非参数化固件被某些测试模块的参数化版本覆盖。显然，这同样适用于测试文件夹级别。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/pytest/" rel="tag"># pytest</a>
+              <a href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag"># 翻译</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2019/06/16/52979/" rel="prev" title="pytest03 The writing and reporting of assertions in tests">
+                  <i class="fa fa-angle-left"></i> pytest03 The writing and reporting of assertions in tests
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2019/07/28/24294/" rel="next" title="pytest05 Marking test functions with attributes">
+                  pytest05 Marking test functions with attributes <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">691k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:28</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

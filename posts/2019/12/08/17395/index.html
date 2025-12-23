@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="本文主要介绍了 Python 中的装饰器，包括自定义装饰器、标准库中的装饰器、叠放装饰器、参数化装饰器和参数化 clock 装饰器等内容。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="流畅的Python：函数装饰器和闭包二">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2019/12/08/17395/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="本文主要介绍了 Python 中的装饰器，包括自定义装饰器、标准库中的装饰器、叠放装饰器、参数化装饰器和参数化 clock 装饰器等内容。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-12-08T15:07:04.000Z">
+<meta property="article:modified_time" content="2025-12-23T14:07:49.127Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2019/12/08/17395/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2019/12/08/17395/","path":"posts/2019/12/08/17395/","title":"流畅的Python：函数装饰器和闭包二"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>流畅的Python：函数装饰器和闭包二 | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E8%A3%85%E9%A5%B0%E5%99%A8"><span class="nav-text">1. 一个简单的装饰器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E6%A0%87%E5%87%86%E5%BA%93%E4%B8%AD%E7%9A%84%E8%A3%85%E9%A5%B0%E5%99%A8"><span class="nav-text">2. 标准库中的装饰器</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#2-1-%E4%BD%BF%E7%94%A8functools-lru-cache%E5%81%9A%E5%A4%87%E5%BF%98"><span class="nav-text">2.1 使用functools.lru_cache做备忘</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-2-%E5%8D%95%E5%88%86%E6%B4%BE%E6%B3%9B%E5%87%BD%E6%95%B0"><span class="nav-text">2.2 单分派泛函数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E5%8F%A0%E6%94%BE%E8%A3%85%E9%A5%B0%E5%99%A8"><span class="nav-text">3. 叠放装饰器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E5%8F%82%E6%95%B0%E5%8C%96%E8%A3%85%E9%A5%B0%E5%99%A8"><span class="nav-text">4. 参数化装饰器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E5%8F%82%E6%95%B0%E5%8C%96clock%E8%A3%85%E9%A5%B0%E5%99%A8"><span class="nav-text">5. 参数化clock装饰器</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2019/12/08/17395/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="流畅的Python：函数装饰器和闭包二 | Magnolia's Blog">
+      <meta itemprop="description" content="本文主要介绍了 Python 中的装饰器，包括自定义装饰器、标准库中的装饰器、叠放装饰器、参数化装饰器和参数化 clock 装饰器等内容。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          流畅的Python：函数装饰器和闭包二
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-12-08 23:07:04" itemprop="dateCreated datePublished" datetime="2019-12-08T23:07:04+08:00">2019-12-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>11k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>10 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">本文主要介绍了 Python 中的装饰器，包括自定义装饰器、标准库中的装饰器、叠放装饰器、参数化装饰器和参数化 clock 装饰器等内容。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h4 id="1-一个简单的装饰器"><a href="#1-一个简单的装饰器" class="headerlink" title="1. 一个简单的装饰器"></a>1. 一个简单的装饰器</h4><p>定义了一个装饰器，它会在每次调用被装饰的函数时计时，然后把经过的时间、传入的参数和调用的结果打印出来。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># a3_4_decorate.py</span></span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">clock</span>(<span class="params">func</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">clocked</span>(<span class="params">*args</span>):  <span class="comment"># 定义内部函数 clocked</span></span><br><span class="line">        t0 = time.perf_counter()</span><br><span class="line">        res = func(*args)   <span class="comment"># 这行代码可用，是因为 clocked 的闭包中包含自由变量 func</span></span><br><span class="line">        elapsed = time.perf_counter() - t0</span><br><span class="line">        name = func.__name__</span><br><span class="line">        args_str = <span class="string">&#x27;, &#x27;</span>.join(<span class="built_in">repr</span>(arg) <span class="keyword">for</span> arg <span class="keyword">in</span> args)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&#x27;[<span class="subst">&#123;elapsed:&gt;<span class="number">2.8</span>&#125;</span>s], <span class="subst">&#123;name&#125;</span>(<span class="subst">&#123;args_str&#125;</span>)--&gt; <span class="subst">&#123;res&#125;</span>&#x27;</span>)</span><br><span class="line">        <span class="keyword">return</span> res</span><br><span class="line">    <span class="keyword">return</span> clocked  <span class="comment"># 返回内部函数，取代被装饰的函数。</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># a3_4_decorate_func.py</span></span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> a3_4_decorate <span class="keyword">import</span> clock</span><br><span class="line"></span><br><span class="line"><span class="meta">@clock</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_sleep</span>(<span class="params">seconds</span>):</span><br><span class="line">    time.sleep(seconds)</span><br><span class="line"></span><br><span class="line"><span class="meta">@clock</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_factorial</span>(<span class="params">n</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span> <span class="keyword">if</span> n &lt; <span class="number">2</span> <span class="keyword">else</span> n * test_factorial(n-<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    test_sleep(<span class="number">1.2</span>)</span><br><span class="line">    test_factorial(<span class="number">6</span>)</span><br><span class="line">    <span class="built_in">print</span>(test_factorial.__name__)  <span class="comment"># clocked</span></span><br><span class="line">    <span class="built_in">print</span>(test_sleep.__name__)  <span class="comment"># clocked</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># [1.2008935s], test_sleep(1.2)--&gt; None</span></span><br><span class="line"><span class="comment"># [2e-06s], test_factorial(1)--&gt; 1</span></span><br><span class="line"><span class="comment"># [0.0001048s], test_factorial(2)--&gt; 2</span></span><br><span class="line"><span class="comment"># [0.0001478s], test_factorial(3)--&gt; 6</span></span><br><span class="line"><span class="comment"># [0.0001863s], test_factorial(4)--&gt; 24</span></span><br><span class="line"><span class="comment"># [0.0002236s], test_factorial(5)--&gt; 120</span></span><br><span class="line"><span class="comment"># [0.0002705s], test_factorial(6)--&gt; 720</span></span><br><span class="line"><span class="comment"># clocked</span></span><br><span class="line"><span class="comment"># clocked</span></span><br></pre></td></tr></table></figure>
+
+<p>在示例中，test_factorial 会作为 func 参数传给 clock。然后，clock 函数会返回 clocked 函数，Python 解释器在背后会把 clocked 赋值给 test_factorial 。其实，导入 clockdeco_demo 模块后查看 test_factorial 的 <code>__name__</code> 属性:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># a3_4_decorate_func_import.py</span></span><br><span class="line"><span class="keyword">import</span> a3_4_decorate_func</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(a3_4_decorate_func.test_factorial.__name__)</span><br><span class="line"><span class="built_in">print</span>(a3_4_decorate_func.test_sleep.__name__)</span><br><span class="line"><span class="comment"># clocked</span></span><br><span class="line"><span class="comment"># clocked</span></span><br></pre></td></tr></table></figure>
+
+<p>所以，现在 test_factorial 保存的是 clocked 函数的引用。自此之后，每次调用 test_factorial(n)，执行的都是 clocked(n)。</p>
+<p>这是<strong>装饰器的典型行为</strong>：<strong>把被装饰的函数替换成新函数，二者接受相同的参数，而且（通常）返回被装饰的函数本该返回的值，同时还会做些额外操作。</strong></p>
+<p>本例中实现的 clock 装饰器有几个缺点：不支持关键字参数，而且遮盖了被装饰函数的<code>__name__</code>和<code>__doc__</code>属性。下面将使用 functools.wraps 装饰器把相关的属性从 func复制到 clocked 中。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># a3_4_decorate_wraps.py</span></span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> wraps</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">clock</span>(<span class="params">func</span>):</span><br><span class="line"><span class="meta">    @wraps(<span class="params">func</span>)</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">clocked</span>(<span class="params">*args, **kwargs</span>):</span><br><span class="line">        t0 = time.perf_counter()</span><br><span class="line">        res = func(*args, **kwargs)</span><br><span class="line">        elapsed = time.perf_counter() - t0</span><br><span class="line">        name = func.__name__</span><br><span class="line">        args_list = []</span><br><span class="line">        <span class="keyword">if</span> args:</span><br><span class="line">            args_list.append(<span class="string">&#x27;, &#x27;</span>.join(<span class="built_in">repr</span>(arg) <span class="keyword">for</span> arg <span class="keyword">in</span> args))</span><br><span class="line">        <span class="keyword">if</span> kwargs:</span><br><span class="line">            pairs = [<span class="string">f&#x27;<span class="subst">&#123;k&#125;</span>=<span class="subst">&#123;v&#125;</span>&#x27;</span> <span class="keyword">for</span> k, v <span class="keyword">in</span> <span class="built_in">sorted</span>(kwargs.items())]</span><br><span class="line">            args_list.append(<span class="string">&#x27;, &#x27;</span>.join(pairs))</span><br><span class="line">        args_str = <span class="string">&#x27;, &#x27;</span>.join(args_list)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&#x27;[<span class="subst">&#123;elapsed:&gt;<span class="number">2.8</span>&#125;</span>s], <span class="subst">&#123;name&#125;</span>(<span class="subst">&#123;args_str&#125;</span>)--&gt; <span class="subst">&#123;res&#125;</span>&#x27;</span>)</span><br><span class="line">        <span class="keyword">return</span> res</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> clocked</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># a3_4_decorate_wraps_run.py</span></span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> a3_4_decorate_wraps <span class="keyword">import</span> clock</span><br><span class="line"></span><br><span class="line"><span class="meta">@clock</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_sleep</span>(<span class="params">seconds, name=<span class="literal">None</span></span>):</span><br><span class="line">    time.sleep(seconds)</span><br><span class="line"></span><br><span class="line"><span class="meta">@clock</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_factorial</span>(<span class="params">n, name=<span class="string">&quot;fi&quot;</span></span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span> <span class="keyword">if</span> n &lt; <span class="number">2</span> <span class="keyword">else</span> n * test_factorial(n - <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    test_sleep(<span class="number">1.2</span>, name=<span class="string">&#x27;xiaoming&#x27;</span>)</span><br><span class="line">    test_factorial(<span class="number">6</span>, name=<span class="string">&#x27;fi&#x27;</span>)</span><br><span class="line">    <span class="built_in">print</span>(test_sleep.__name__)  <span class="comment"># test_sleep</span></span><br><span class="line">    <span class="built_in">print</span>(test_factorial.__name__)  <span class="comment"># test_factorial</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># [1.200119s], test_sleep(1.2, name=xiaoming)--&gt; None</span></span><br><span class="line"><span class="comment"># [1.7e-06s], test_factorial(1)--&gt; 1</span></span><br><span class="line"><span class="comment"># [6.01e-05s], test_factorial(2)--&gt; 2</span></span><br><span class="line"><span class="comment"># [8.98e-05s], test_factorial(3)--&gt; 6</span></span><br><span class="line"><span class="comment"># [0.0001158s], test_factorial(4)--&gt; 24</span></span><br><span class="line"><span class="comment"># [0.0001468s], test_factorial(5, name=fi)--&gt; 120</span></span><br><span class="line"><span class="comment"># test_sleep</span></span><br><span class="line"><span class="comment"># test_factorial</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="2-标准库中的装饰器"><a href="#2-标准库中的装饰器" class="headerlink" title="2. 标准库中的装饰器"></a>2. 标准库中的装饰器</h4><p>Python 内置了三个用于装饰方法的函数：property、classmethod 和 staticmethod。</p>
+<p>另一个常见的装饰器是 <strong>functools.wraps</strong>，它的作用是协助构建行为良好的装饰器。</p>
+<p>标 准 库 中 最 值 得 关 注 的 两 个 装 饰 器 是 lru_cache 和全新的singledispatch（Python 3.4 新增）。这两个装饰器都在 functools 模块中定义。</p>
+<h6 id="2-1-使用functools-lru-cache做备忘"><a href="#2-1-使用functools-lru-cache做备忘" class="headerlink" title="2.1 使用functools.lru_cache做备忘"></a>2.1 使用functools.lru_cache做备忘</h6><p><strong>functools.lru_cache</strong> 是非常实用的装饰器，它实现了备忘（memoization）功能。这是一项优化技术，它把耗时的函数的结果保存起来，避免传入相同的参数时重复计算。LRU 三个字母是“Least Recently Used”的缩写，表明缓存不会无限制增长，一段时间不用的缓存条目会被扔掉。</p>
+<p>生成第 <em>n</em> 个斐波纳契数这种慢速递归函数适合使用 lru_cache：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> a3_4_decorate <span class="keyword">import</span> clock</span><br><span class="line"></span><br><span class="line"><span class="meta">@clock</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">fibonacci</span>(<span class="params">n</span>):</span><br><span class="line">    <span class="keyword">if</span> n &lt; <span class="number">2</span>:</span><br><span class="line">        <span class="keyword">return</span> n</span><br><span class="line">    <span class="keyword">return</span> fibonacci(n-<span class="number">2</span>) + fibonacci(n-<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="built_in">print</span>(fibonacci(<span class="number">6</span>))</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">[9e-07s], fibonacci(0)--&gt; 0</span></span><br><span class="line"><span class="string">[1.2e-06s], fibonacci(1)--&gt; 1</span></span><br><span class="line"><span class="string">[9.52e-05s], fibonacci(2)--&gt; 1</span></span><br><span class="line"><span class="string">[8e-07s], fibonacci(1)--&gt; 1</span></span><br><span class="line"><span class="string">[1e-06s], fibonacci(0)--&gt; 0</span></span><br><span class="line"><span class="string">[9e-07s], fibonacci(1)--&gt; 1</span></span><br><span class="line"><span class="string">[4.64e-05s], fibonacci(2)--&gt; 1</span></span><br><span class="line"><span class="string">[9.12e-05s], fibonacci(3)--&gt; 2</span></span><br><span class="line"><span class="string">[0.0002324s], fibonacci(4)--&gt; 3</span></span><br><span class="line"><span class="string">3</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>这里生成第 <em>n</em> 个斐波纳契数，递归方式非常耗时，fibonacci(0) 调用了 2 次，fibonacci(1) 调用了 3 次……但是，</p>
+<p>如果增加两行代码，使用 lru_cache，使用缓存实现，速度更快，性能会显著改善。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> lru_cache</span><br><span class="line"><span class="keyword">from</span> a3_4_decorate <span class="keyword">import</span> clock</span><br><span class="line"></span><br><span class="line"><span class="meta">@lru_cache()</span></span><br><span class="line"><span class="meta">@clock</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">fibonacci</span>(<span class="params">n</span>):</span><br><span class="line">    <span class="keyword">if</span> n &lt; <span class="number">2</span>:</span><br><span class="line">        <span class="keyword">return</span> n</span><br><span class="line">    <span class="keyword">return</span> fibonacci(n-<span class="number">2</span>) + fibonacci(n-<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="built_in">print</span>(fibonacci(<span class="number">4</span>))</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">[1.6e-06s], fibonacci(0)--&gt; 0</span></span><br><span class="line"><span class="string">[2e-06s], fibonacci(1)--&gt; 1</span></span><br><span class="line"><span class="string">[0.0001693s], fibonacci(2)--&gt; 1</span></span><br><span class="line"><span class="string">[3.3e-06s], fibonacci(3)--&gt; 2</span></span><br><span class="line"><span class="string">[0.0002637s], fibonacci(4)--&gt; 3</span></span><br><span class="line"><span class="string">3</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>需要注意的是：必须像常规函数那样调用 lru_cache。这一行中有一对括号：@functools.lru_cache()。这么做的原因是，lru_cache 可以接受配置参数。另外，这里叠放了装饰器：@lru_cache() 应用到 @clock 返回的函数上。</p>
+<p>特别要注意，lru_cache 可以使用两个可选的参数来配置。它的签名是：functools.lru_cache(maxsize&#x3D;128, typed&#x3D;False)：maxsize 参数指定存储多少个调用的结果。缓存满了之后，旧的结果会被扔掉，腾出空间。为了得到最佳性能，maxsize 应该设为 2 的幂。typed 参数如果设为 True，把不同参数类型得到的结果分开保存，即把通常认为相等的浮点数和整数参数（如 1 和 1.0）区分开。顺便说一下，因为 lru_cache 使用字典存储结果，而且键根据调用时传入的定位参数和关键字参数创建，所以被 lru_cache 装饰的函数，它的所有参数都必须是可散列的。</p>
+<hr>
+<h6 id="2-2-单分派泛函数"><a href="#2-2-单分派泛函数" class="headerlink" title="2.2 单分派泛函数"></a>2.2 单分派泛函数</h6><p>假设我们在开发一个调试 Web 应用的工具，我们想生成 HTML，显示不同类型的 Python对象。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> html</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">htmlize</span>(<span class="params">obj</span>):</span><br><span class="line">    content = html.escape(<span class="built_in">repr</span>(obj))</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;&lt;pre&gt;&#123;&#125;&lt;/pre&gt;&#x27;</span>.<span class="built_in">format</span>(content)</span><br></pre></td></tr></table></figure>
+
+<p>这个函数适用于任何 Python 类型，但是现在我们想做个扩展，让它使用特别的方式显示某些类型。</p>
+<ul>
+<li><p>str：把内部的换行符替换为<code> &#39;&lt;br&gt;\n&#39;</code>；不使用<code> &lt;pre&gt;</code>，而是使用<code> &lt;p&gt;</code>。</p>
+</li>
+<li><p>int：以十进制和十六进制显示数字。</p>
+</li>
+<li><p>list：输出一个 HTML 列表，根据各个元素的类型进行格式化。</p>
+</li>
+</ul>
+<p>因为 Python 不支持重载方法或函数，所以我们不能使用不同的签名定义 htmlize 的变体，也无法使用不同的方式处理不同的数据类型。在 Python 中，一种常见的做法是把 htmlize变成一个分派函数，使用一串 if&#x2F;elif&#x2F;elif，调用专门的函数，如 htmlize_str、htmlize_int，等等。这样不便于模块的用户扩展，还显得笨拙：时间一长，分派函数 htmlize 会变得很大，而且它与各个专门函数之间的耦合也很紧密。</p>
+<p>Python 3.4 新增的 functools.singledispatch 装饰器可以把整体方案拆分成多个模块，甚至可以为你无法修改的类提供专门的函数。使用 @singledispatch 装饰的普通函数会变成泛函数（generic function）：根据第一个参数的类型，以不同方式执行相同操作的一组函数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># singledispatch 创建一个自定义的 htmlize.register 装饰器，</span></span><br><span class="line"><span class="comment"># 把多个函数绑在一起组成一个泛函数</span></span><br><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> singledispatch</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> numbers</span><br><span class="line"><span class="keyword">import</span> html</span><br><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> abc</span><br><span class="line"></span><br><span class="line"><span class="meta">@singledispatch  </span><span class="comment"># @singledispatch 标记处理 object 类型的基函数</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">htmlize</span>(<span class="params">obj</span>):</span><br><span class="line">    content = html.escape(<span class="built_in">repr</span>(obj))</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;&lt;pre&gt;&#123;&#125;&lt;/pre&gt;&#x27;</span>.<span class="built_in">format</span>(content)</span><br><span class="line"></span><br><span class="line"><span class="meta">@htmlize.register(<span class="params"><span class="built_in">str</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">_</span>(<span class="params">text</span>):   <span class="comment"># 专门函数的名称无关紧要；_ 是个不错的选择，简单明了。</span></span><br><span class="line">    content = html.escape(text).replace(<span class="string">&#x27;\n&#x27;</span>, <span class="string">&#x27;&lt;br&gt;\n&#x27;</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;&lt;p&gt;&#123;0&#125;&lt;/p&gt;&#x27;</span>.<span class="built_in">format</span>(content)</span><br><span class="line"></span><br><span class="line"><span class="meta">@htmlize.register(<span class="params">numbers.Integral</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">_</span>(<span class="params">n</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;&lt;pre&gt;&#123;0&#125; (0x&#123;0:x&#125;)&lt;/pre&gt;&#x27;</span>.<span class="built_in">format</span>(n)</span><br><span class="line"></span><br><span class="line"><span class="meta">@htmlize.register(<span class="params"><span class="built_in">tuple</span></span>)   </span><span class="comment"># 可以叠放多个register装饰器，让同一个函数支持不同类型</span></span><br><span class="line"><span class="meta">@htmlize.register(<span class="params">abc.MutableSequence</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">_</span>(<span class="params">seq</span>):</span><br><span class="line">    inner = <span class="string">&#x27;&lt;/li&gt;\n&lt;li&gt;&#x27;</span>.join(htmlize(item) <span class="keyword">for</span> item <span class="keyword">in</span> seq)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;&lt;ul&gt;\n&lt;li&gt;&#x27;</span> + inner + <span class="string">&#x27;&lt;/li&gt;\n&lt;/ul&gt;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(htmlize(&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;))  <span class="comment"># &lt;pre&gt;&#123;1, 2, 3&#125;&lt;/pre&gt;</span></span><br><span class="line"><span class="built_in">print</span>(htmlize(<span class="built_in">abs</span>))  <span class="comment"># &lt;pre&gt;&amp;lt;built-in function abs&amp;gt;&lt;/pre&gt;</span></span><br><span class="line"><span class="built_in">print</span>(htmlize(<span class="string">&#x27;Heimlich &amp; Co.\n- a game&#x27;</span>))</span><br><span class="line"><span class="comment"># &lt;p&gt;Heimlich &amp;amp; Co.&lt;br&gt;</span></span><br><span class="line"><span class="comment"># - a game&lt;/p&gt;</span></span><br><span class="line"><span class="built_in">print</span>(htmlize(<span class="number">42</span>))  <span class="comment"># &lt;pre&gt;42 (0x2a)&lt;/pre&gt;</span></span><br><span class="line"><span class="built_in">print</span>(htmlize([<span class="string">&#x27;alpha&#x27;</span>, <span class="number">66</span>, &#123;<span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>&#125;]))</span><br><span class="line"><span class="comment"># &lt;ul&gt;</span></span><br><span class="line"><span class="comment"># &lt;li&gt;&lt;p&gt;alpha&lt;/p&gt;&lt;/li&gt;</span></span><br><span class="line"><span class="comment"># &lt;li&gt;&lt;pre&gt;66 (0x42)&lt;/pre&gt;&lt;/li&gt;</span></span><br><span class="line"><span class="comment"># &lt;li&gt;&lt;pre&gt;&#123;1, 2, 3&#125;&lt;/pre&gt;&lt;/li&gt;</span></span><br><span class="line"><span class="comment"># &lt;/ul&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>只要可能，注册的专门函数应该处理抽象基类（如 <strong>numbers.Integral</strong> 和 <strong>abc.MutableSequence</strong>），不要处理具体实现（如 int 和 list）。这样，代码支持的兼容类型更广泛。例如，Python扩展可以子类化numbers.Integral，使用固定的位数实现 int 类型。</p>
+<p><strong>singledispatch 机制的一个显著特征是，你可以在系统的任何地方和任何模块中注册专门函数</strong>。如果后来在新的模块中定义了新的类型，可以轻松地添加一个新的专门函数来处理那个类型。此外，你还可以为不是自己编写的或者不能修改的类添加自定义函数。</p>
+<hr>
+<h4 id="3-叠放装饰器"><a href="#3-叠放装饰器" class="headerlink" title="3. 叠放装饰器"></a>3. 叠放装饰器</h4><p>把 @d1 和 @d2 两个装饰器按顺序应用到 f 函数上，作用相当于 f &#x3D; d1(d2(f))。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">d1</span>(<span class="params">func</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">decorate</span>():</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    <span class="keyword">return</span> decorate</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">d2</span>(<span class="params">func</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">decorate</span>():</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    <span class="keyword">return</span> decorate</span><br><span class="line"></span><br><span class="line"><span class="meta">@d1 </span></span><br><span class="line"><span class="meta">@d2 </span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">f</span>(): </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;f&#x27;</span>)</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 等同于：</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">f</span>(): </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;f&#x27;</span>) </span><br><span class="line">f = d1(d2(f))</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="4-参数化装饰器"><a href="#4-参数化装饰器" class="headerlink" title="4. 参数化装饰器"></a>4. 参数化装饰器</h4><p>解析源码中的装饰器时，Python 把被装饰的函数作为第一个参数传给装饰器函数。那怎么让装饰器接受其他参数呢？答案是：<strong>创建一个装饰器工厂函数，把参数传给它，返回一个装饰器，然后再把它应用到要装饰的函数上</strong>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">registry = <span class="built_in">set</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">register</span>(<span class="params">active=<span class="literal">True</span></span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">decorate</span>(<span class="params">func</span>):  <span class="comment"># decorate 这个内部函数是真正的装饰器；它的参数是一个函数。</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&#x27;running register(active=<span class="subst">&#123;active&#125;</span>)-&gt;decorate(<span class="subst">&#123;func&#125;</span>)&#x27;</span>)</span><br><span class="line">        <span class="keyword">if</span> active:</span><br><span class="line">            registry.add(func)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            registry.discard(func)</span><br><span class="line">        <span class="keyword">return</span> func  <span class="comment"># decorate 是装饰器，必须返回一个函数。</span></span><br><span class="line">    <span class="keyword">return</span> decorate  <span class="comment"># register 是装饰器工厂函数，因此返回 decorate。</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@register(<span class="params">active=<span class="literal">False</span></span>)  </span><span class="comment"># 为了接受参数，新的register装饰器必须作为函数调用。</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">f1</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;running f1()&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@register()</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">f2</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;running f2()&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">f3</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;running f3()&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&#x27;registry:<span class="subst">&#123;registry&#125;</span>&#x27;</span>)</span><br><span class="line">    f1()</span><br><span class="line">    f2()</span><br><span class="line">    f3()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&#x27;registry:<span class="subst">&#123;registry&#125;</span>&#x27;</span>)</span><br><span class="line">    </span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">running register(active=False)-&gt;decorate(&lt;function f1 at 0x000001EDB675B378&gt;)</span></span><br><span class="line"><span class="string">running register(active=True)-&gt;decorate(&lt;function f2 at 0x000001EDB675B400&gt;)</span></span><br><span class="line"><span class="string">registry:&#123;&lt;function f2 at 0x000001EDB675B400&gt;&#125;</span></span><br><span class="line"><span class="string">running f1()</span></span><br><span class="line"><span class="string">running f2()</span></span><br><span class="line"><span class="string">running f3()</span></span><br><span class="line"><span class="string">registry:&#123;&lt;function f2 at 0x000001EDB675B400&gt;&#125;</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>@register 工厂函数必须作为函数调用，并且传入所需的参数。即使不传入参数，register 也必须作为函数调用（@register()），即要返回真正的装饰器 decorate。</p>
+<p>关键是，register() 要返回 decorate，然后把它应用到被装饰的函数上。</p>
+<p>如果不使用 @ 句法，那就要像常规函数那样使用 register；若想把 f 添加到 registry中，则装饰 f 函数的句法是 register()(f)；不想添加（或把它删除）的话，句法是register(active&#x3D;False)(f)。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> a3_5_decorate_parameter <span class="keyword">import</span> register, registry, f1, f2, f3</span><br><span class="line"></span><br><span class="line"><span class="comment"># running register(active=False)-&gt;decorate(&lt;function f1 at 0x000002183A36B400&gt;)</span></span><br><span class="line"><span class="comment"># running register(active=True)-&gt;decorate(&lt;function f2 at 0x000002183A36B488&gt;)</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(registry)</span><br><span class="line"><span class="comment"># &#123;&lt;function f2 at 0x000002183A36B488&gt;&#125;</span></span><br><span class="line"></span><br><span class="line">register()(f3)</span><br><span class="line"><span class="comment"># running register(active=True)-&gt;decorate(&lt;function f3 at 0x000002183A36B378&gt;)</span></span><br><span class="line"><span class="built_in">print</span>(registry)</span><br><span class="line"><span class="comment"># &#123;&lt;function f2 at 0x000002183A36B488&gt;, &lt;function f3 at 0x000002183A36B378&gt;&#125;</span></span><br><span class="line"></span><br><span class="line">register(active=<span class="literal">False</span>)(f2)</span><br><span class="line"><span class="comment"># running register(active=False)-&gt;decorate(&lt;function f2 at 0x000002183A36B488&gt;)</span></span><br><span class="line"><span class="built_in">print</span>(registry)</span><br><span class="line"><span class="comment"># &#123;&lt;function f3 at 0x000002183A36B378&gt;&#125;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="5-参数化clock装饰器"><a href="#5-参数化clock装饰器" class="headerlink" title="5. 参数化clock装饰器"></a>5. 参数化clock装饰器</h4><p>为clock添加一个功能：让用户传入一个格式字符串，控制被装饰函数的输出。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">DEFAULT_FMT = <span class="string">&#x27;[&#123;elapsed:0.8f&#125;s] &#123;name&#125;(&#123;args&#125;) -&gt; &#123;result&#125;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">clock</span>(<span class="params">fmt=DEFAULT_FMT</span>):  <span class="comment"># clock 是参数化装饰器工厂函数。</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">decorate</span>(<span class="params">func</span>):			<span class="comment"># decorate 是真正的装饰器</span></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">clocked</span>(<span class="params">*args</span>):		<span class="comment"># clocked 包装被装饰的函数</span></span><br><span class="line">            t0 = time.time()</span><br><span class="line">            _res = func(*args)</span><br><span class="line">            result = <span class="built_in">repr</span>(_res)</span><br><span class="line">            elapsed = time.time() - t0</span><br><span class="line">            name = func.__name__</span><br><span class="line">            args_str = <span class="string">&#x27;, &#x27;</span>.join(<span class="built_in">repr</span>(arg) <span class="keyword">for</span> arg <span class="keyword">in</span> args)</span><br><span class="line">            <span class="built_in">print</span>(fmt.<span class="built_in">format</span>(**<span class="built_in">locals</span>()))  <span class="comment"># 使用 **locals() 是为了在 fmt 中引用 clocked 的局部变量</span></span><br><span class="line">            <span class="keyword">return</span> _res</span><br><span class="line">        <span class="keyword">return</span> clocked</span><br><span class="line">    <span class="keyword">return</span> decorate</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line"><span class="meta">    @clock()</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">snooze</span>(<span class="params">seconds</span>):</span><br><span class="line">        time.sleep(seconds)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">3</span>):</span><br><span class="line">        snooze(<span class="number">.123</span>)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">[0.12307549s] snooze((0.123,)) -&gt; None</span></span><br><span class="line"><span class="string">[0.12305403s] snooze((0.123,)) -&gt; None</span></span><br><span class="line"><span class="string">[0.12399721s] snooze((0.123,)) -&gt; None</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@clock(<span class="params"><span class="string">&#x27;&#123;name&#125;: &#123;elapsed&#125;s&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">snooze</span>(<span class="params">seconds</span>):</span><br><span class="line">    time.sleep(seconds)</span><br><span class="line"><span class="comment"># snooze: 0.12392497062683105s</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@clock(<span class="params"><span class="string">&#x27;&#123;name&#125;(&#123;args&#125;) dt=&#123;elapsed:0.3f&#125;s&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">snooze</span>(<span class="params">seconds</span>):</span><br><span class="line">    time.sleep(seconds)</span><br><span class="line"><span class="comment"># snooze((0.123,)) dt=0.123s</span></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2019/12/08/9970/" rel="prev" title="流畅的Python：函数装饰器和闭包一">
+                  <i class="fa fa-angle-left"></i> 流畅的Python：函数装饰器和闭包一
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2019/12/21/23193/" rel="next" title="流畅的Python对象引用、可变性和垃圾回收">
+                  流畅的Python对象引用、可变性和垃圾回收 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">691k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:28</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

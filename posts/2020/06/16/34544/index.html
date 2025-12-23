@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="本文主要是关于 Django 项目开发及部署过程中遇到的一些问题及解决方法。包括路由配置错误、表单类字段设置问题、拓展 User 模型后登录失败的处理、特定方法报错、子路由模块属性设置、检查未展示元素、处理服务器错误提示、部署过程以及部署后 CSS 和 JS 文件未加载的问题。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Django 博客项目中遇到的 bug">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2020/06/16/34544/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="本文主要是关于 Django 项目开发及部署过程中遇到的一些问题及解决方法。包括路由配置错误、表单类字段设置问题、拓展 User 模型后登录失败的处理、特定方法报错、子路由模块属性设置、检查未展示元素、处理服务器错误提示、部署过程以及部署后 CSS 和 JS 文件未加载的问题。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://zypdominate.github.io/images/2020/Django%E5%8D%9A%E5%AE%A21.png">
+<meta property="og:image" content="https://zypdominate.github.io/images/2020/Django%E5%8D%9A%E5%AE%A22.png">
+<meta property="og:image" content="https://zypdominate.github.io/images/2020/Django%E5%8D%9A%E5%AE%A23.png">
+<meta property="article:published_time" content="2020-06-15T16:34:43.000Z">
+<meta property="article:modified_time" content="2025-12-23T14:07:49.065Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="FixBug">
+<meta property="article:tag" content="Django">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zypdominate.github.io/images/2020/Django%E5%8D%9A%E5%AE%A21.png">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2020/06/16/34544/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2020/06/16/34544/","path":"posts/2020/06/16/34544/","title":"Django 博客项目中遇到的 bug"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Django 博客项目中遇到的 bug | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E9%85%8D%E7%BD%AE%E8%B7%AF%E7%94%B1%EF%BC%9Ainclude"><span class="nav-text">1. 配置路由：include</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-forms-%E8%A1%A8%E5%8D%95%E7%B1%BB%E5%AD%97%E6%AE%B5-fields"><span class="nav-text">2. forms 表单类字段 fields</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E6%8B%93%E5%B1%95-User-%E5%90%8E%EF%BC%8C%E4%B8%8D%E5%88%A0%E9%99%A4%E5%8E%9F%E6%9C%89%E6%95%B0%E6%8D%AE%E7%99%BB%E5%BD%95%E4%BC%9A%E5%A4%B1%E8%B4%A5"><span class="nav-text">3. 拓展 User 后，不删除原有数据登录会失败</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-Profile-objects-get-user-id-id-exists-%E5%87%BA%E9%94%99"><span class="nav-text">4. Profile.objects.get(user_id&#x3D;id).exists() 出错</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E8%A2%AB%E5%8C%85%E5%90%AB%E7%9A%84%E5%AD%90%E8%B7%AF%E7%94%B1%E6%A8%A1%E5%9D%97%E9%9C%80%E8%A6%81%E6%B7%BB%E5%8A%A0app-name%E5%B1%9E%E6%80%A7"><span class="nav-text">5. 被包含的子路由模块需要添加app_name属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-%E4%BD%BF%E7%94%A8F12%E6%A3%80%E6%9F%A5%E6%B2%A1%E6%9C%89%E5%B1%95%E7%A4%BA%E7%9A%84%E5%85%83%E7%B4%A0"><span class="nav-text">6. 使用F12检查没有展示的元素</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-A-server-error-occurred-Please-contact-the-administrator"><span class="nav-text">7. A server error occurred. Please contact the administrator.</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-%E9%83%A8%E7%BD%B2"><span class="nav-text">8. 部署</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-css%E3%80%81js%E7%AD%89%E6%B2%A1%E6%9C%89%E5%8A%A0%E8%BD%BD%E5%87%BA%E6%9D%A5"><span class="nav-text">9. css、js等没有加载出来</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2020/06/16/34544/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Django 博客项目中遇到的 bug | Magnolia's Blog">
+      <meta itemprop="description" content="本文主要是关于 Django 项目开发及部署过程中遇到的一些问题及解决方法。包括路由配置错误、表单类字段设置问题、拓展 User 模型后登录失败的处理、特定方法报错、子路由模块属性设置、检查未展示元素、处理服务器错误提示、部署过程以及部署后 CSS 和 JS 文件未加载的问题。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Django 博客项目中遇到的 bug
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-06-16 00:34:43" itemprop="dateCreated datePublished" datetime="2020-06-16T00:34:43+08:00">2020-06-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/Django/" itemprop="url" rel="index"><span itemprop="name">Django</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>10k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>9 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">本文主要是关于 Django 项目开发及部署过程中遇到的一些问题及解决方法。包括路由配置错误、表单类字段设置问题、拓展 User 模型后登录失败的处理、特定方法报错、子路由模块属性设置、检查未展示元素、处理服务器错误提示、部署过程以及部署后 CSS 和 JS 文件未加载的问题。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h4 id="1-配置路由：include"><a href="#1-配置路由：include" class="headerlink" title="1. 配置路由：include"></a>1. 配置路由：include</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">&#x27;admin/&#x27;</span>, admin.site.urls),</span><br><span class="line">    path(<span class="string">&#x27;article/&#x27;</span>, include(<span class="string">&#x27;article.urls&#x27;</span>, namespace=<span class="string">&#x27;article&#x27;</span>)),</span><br><span class="line">    path(<span class="string">&#x27;userprofile/&#x27;</span>, include(<span class="string">&#x27;userprofile.urls&#x27;</span>, namespace=<span class="string">&#x27;userprofile&#x27;</span>)),</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<p>错误写法：<code>path(&#39;userprofile/&#39;, include(&#39;userprofile.urls&#39;), namespace=&#39;userprofile&#39;),</code>，_path() 中多了个参数，namespace 应该在 include 中。</p>
+<p>报错： </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">  File &quot;D:\django_learning\blog_project\blog_project\urls.py&quot;, line 22, in &lt;module&gt;</span><br><span class="line">    path(&#x27;userprofile/&#x27;, include(&#x27;userprofile.urls&#x27;), namespace=&#x27;userprofile&#x27;),</span><br><span class="line">TypeError: _path() got an unexpected keyword argument &#x27;namespace&#x27;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="2-forms-表单类字段-fields"><a href="#2-forms-表单类字段-fields" class="headerlink" title="2. forms 表单类字段 fields"></a>2. forms 表单类字段 fields</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django <span class="keyword">import</span> forms</span><br><span class="line"><span class="keyword">from</span> django.contrib.auth.models <span class="keyword">import</span> User</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">UserRegisterForm</span>(forms.ModelForm):  <span class="comment"># 对数据库进行操作的表单应继承forms.ModelForm</span></span><br><span class="line">    <span class="comment"># 复写 User 的密码</span></span><br><span class="line">    password = forms.CharField()</span><br><span class="line">    password2 = forms.CharField()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">Meta</span>:</span><br><span class="line">        model = User</span><br><span class="line">        field = (<span class="string">&#x27;username&#x27;</span>, <span class="string">&#x27;email&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>Django项目中某 app 的 forms.py 段代码如上，执行时报错如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">  File &quot;D:\django_learning\blog_project\userprofile\urls.py&quot;, line 8, in &lt;module&gt;</span><br><span class="line">    from userprofile import views</span><br><span class="line">  File &quot;D:\django_learning\blog_project\userprofile\views.py&quot;, line 5, in &lt;module&gt;</span><br><span class="line">    from userprofile.forms import UserLoginForm, UserRegisterForm</span><br><span class="line">  File &quot;D:\django_learning\blog_project\userprofile\forms.py&quot;, line 17, in &lt;module&gt;</span><br><span class="line">    class UserRegisterForm(forms.ModelForm):  # 对数据库进行操作的表单应继承forms.ModelForm</span><br><span class="line">  File &quot;D:\env\lib\site-packages\django\forms\models.py&quot;, line 243, in __new__</span><br><span class="line">    &quot;needs updating.&quot; % name</span><br><span class="line">django.core.exceptions.ImproperlyConfigured: Creating a ModelForm without either the &#x27;fields&#x27; attribute or</span><br><span class="line"> the &#x27;exclude&#x27; attribute is prohibited; form UserRegisterForm needs updating.</span><br></pre></td></tr></table></figure>
+
+<p>在 <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/28306288/removedindjango18warning-creating-a-modelform-without-either-the-fields-attri/28306356#28306356">stackoverflow</a> 上找到有类似的报错，排在前面的几个解决方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ArticleForm</span>(forms.ModelForm):</span><br><span class="line"></span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">Meta</span>:</span><br><span class="line">        model = Article </span><br><span class="line">        fields = <span class="string">&#x27;__all__&#x27;</span> <span class="comment"># Or a list of the fields that you want to include in your form</span></span><br></pre></td></tr></table></figure>
+
+<p>意思是 需要将 fields 的字段改为 <code>__all__</code>，或者在你的 form 中想去 include 的字段，这里我就是想要 username 和 email 。</p>
+<p>或者：使用 <code>exclude  = () </code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ArticleForm</span>(forms.ModelForm):</span><br><span class="line"></span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">Meta</span>:</span><br><span class="line">        model = Article</span><br><span class="line">        exclude = ()</span><br></pre></td></tr></table></figure>
+
+<p>我尝试了两种，只有后面这种可以解决，第一种使用 <code>__all__</code> 依旧报错，什么原因呢？不明白，最后才发现我写的 field 是单数，应该是 <strong>fields</strong> ，好吧，知道了。</p>
+<hr>
+<h4 id="3-拓展-User-后，不删除原有数据登录会失败"><a href="#3-拓展-User-后，不删除原有数据登录会失败" class="headerlink" title="3. 拓展 User 后，不删除原有数据登录会失败"></a>3. 拓展 User 后，不删除原有数据登录会失败</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.db <span class="keyword">import</span> models</span><br><span class="line"><span class="keyword">from</span> django.contrib.auth.models <span class="keyword">import</span> User</span><br><span class="line"><span class="keyword">from</span> django.db.models.signals <span class="keyword">import</span> post_save</span><br><span class="line"><span class="keyword">from</span> django.dispatch <span class="keyword">import</span> receiver</span><br><span class="line"></span><br><span class="line"><span class="comment"># Create your models here.</span></span><br><span class="line"><span class="comment"># 当 userprofile 这个 app 没有改动 model 时不用迁移数据。</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 用户拓展信息</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Profile</span>(models.Model):</span><br><span class="line">    <span class="comment"># 与 User 模型构成一对一的关系</span></span><br><span class="line">    <span class="comment"># 每个Profile模型对应唯一的一个User模型，形成了对User的外接扩展</span></span><br><span class="line">    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name=<span class="string">&#x27;profile&#x27;</span>)</span><br><span class="line">    phone = models.CharField(max_length=<span class="number">20</span>, blank=<span class="literal">True</span>)</span><br><span class="line">    avatar = models.ImageField(upload_to=<span class="string">&#x27;avatar/%Y%m%d/&#x27;</span>, blank=<span class="literal">True</span>)</span><br><span class="line">    bio = models.TextField(max_length=<span class="number">500</span>, blank=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__str__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="string">f&#x27;user <span class="subst">&#123;self.user.username&#125;</span>&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 信号接收函数，每当新建 User 实例时自动调用</span></span><br><span class="line"><span class="meta">@receiver(<span class="params">post_save, sender=User</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">create_user_profile</span>(<span class="params">sender, instance, created, **kwargs</span>):</span><br><span class="line">    <span class="keyword">if</span> created:</span><br><span class="line">        Profile.objects.create(user=instance)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 信号接收函数，每当更新 User 实例时自动调用</span></span><br><span class="line"><span class="meta">@receiver(<span class="params">post_save, sender=User</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">save_user_profile</span>(<span class="params">sender, instance, **kwargs</span>):</span><br><span class="line">    instance.profile.save()</span><br></pre></td></tr></table></figure>
+
+<p>每个<code>Profile</code>模型对应唯一的一个<code>User</code>模型，形成了对User的外接扩展，因此你可以在<code>Profile</code>添加任何想要的字段。这种方法的好处是不需要对<code>User</code>进行任何改动，从而拥有完全自定义的数据表。</p>
+<p><strong>迁移好数据后，如果试图登录用户，会得到报错</strong>。这是因为之前创建的<code>User</code>数据都没有对应的<code>Profile</code>模型，违背了现有的模型。一种解决办法就是干脆删除旧的数据，因此就需要用到Django的<code>shell</code>命令。</p>
+<p>输入下面两行指令就可以轻松删除User数据库：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(env) D:\django_learning\blog_project&gt;python manage.py shell</span><br><span class="line">Python <span class="number">3.6</span><span class="number">.0</span> (v3<span class="number">.6</span><span class="number">.0</span>:41df79263a11, Dec <span class="number">23</span> <span class="number">2016</span>, 08:06:<span class="number">12</span>) [MSC v<span class="number">.1900</span> <span class="number">64</span> bit (AMD64)] on win32</span><br><span class="line"><span class="type">Type</span> <span class="string">&quot;help&quot;</span>, <span class="string">&quot;copyright&quot;</span>, <span class="string">&quot;credits&quot;</span> <span class="keyword">or</span> <span class="string">&quot;license&quot;</span> <span class="keyword">for</span> more information.</span><br><span class="line">(InteractiveConsole)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> django.contrib.auth.models <span class="keyword">import</span> User</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>User.objects.<span class="built_in">all</span>()</span><br><span class="line">&lt;QuerySet [&lt;User: zhuyuping&gt;, &lt;User: taijialan&gt;, &lt;User: zyp&gt;]&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>User.objects.<span class="built_in">all</span>().delete()</span><br><span class="line">(<span class="number">17</span>, &#123;<span class="string">&#x27;admin.LogEntry&#x27;</span>: <span class="number">9</span>, <span class="string">&#x27;auth.User_groups&#x27;</span>: <span class="number">0</span>, <span class="string">&#x27;auth.User_user_permissions&#x27;</span>: <span class="number">0</span>, <span class="string">&#x27;article.ArticlePost&#x27;</span>:<span class="number">5</span>, <span class="string">&#x27;userprofile.Profile&#x27;</span>: <span class="number">0</span>, <span class="string">&#x27;auth.User&#x27;</span>: <span class="number">3</span>&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>因为前面写的<code>article</code>模型中，与<code>User</code>的外键也采用了<code>models.CASCADE</code>级联删除模式，因此随着User的删除，<strong>相关的文章也一并删除了</strong>。</p>
+<p>输入<code>exit()</code>退出<code>shell</code>，输入指令<code>python manage.py createsuperuser</code>，<strong>重新创建管理员账户</strong>。</p>
+<hr>
+<h4 id="4-Profile-objects-get-user-id-id-exists-出错"><a href="#4-Profile-objects-get-user-id-id-exists-出错" class="headerlink" title="4. Profile.objects.get(user_id&#x3D;id).exists() 出错"></a>4. Profile.objects.get(user_id&#x3D;id).exists() 出错</h4><p>报错提示：{AttributeError}’Profile’ object has no attribute ‘exists’，’Profile’ object 只有我写的一些特殊具体的属性，没有exists属性或方法。</p>
+<p>通过 <code>dir(Profile.objects.filter(user_id=id))</code>，可以证明通过 filter 可以产生 exists 属性。</p>
+<hr>
+<h4 id="5-被包含的子路由模块需要添加app-name属性"><a href="#5-被包含的子路由模块需要添加app-name属性" class="headerlink" title="5. 被包含的子路由模块需要添加app_name属性"></a>5. 被包含的子路由模块需要添加app_name属性</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># blog_project/urls.py</span></span><br><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">&#x27;admin/&#x27;</span>, admin.site.urls),</span><br><span class="line">    path(<span class="string">&#x27;article/&#x27;</span>, include(<span class="string">&#x27;article.urls&#x27;</span>, namespace=<span class="string">&#x27;article&#x27;</span>)),</span><br><span class="line">    path(<span class="string">&#x27;userprofile/&#x27;</span>, include(<span class="string">&#x27;userprofile.urls&#x27;</span>, namespace=<span class="string">&#x27;userprofile&#x27;</span>)),</span><br><span class="line">    path(<span class="string">&#x27;password-reset/&#x27;</span>, include(<span class="string">&#x27;password_reset.urls&#x27;</span>)),</span><br><span class="line">    path(<span class="string">&#x27;comment/&#x27;</span>, include(<span class="string">&#x27;comment.urls&#x27;</span>, namespace=<span class="string">&#x27;comment&#x27;</span>)), <span class="comment"># 报错位置</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">  File &quot;D:\django_learning\blog_project\blog_project\urls.py&quot;, line 26, in &lt;module&gt;</span><br><span class="line">    path(&#x27;comment/&#x27;, include(&#x27;comment.urls&#x27;, namespace=&#x27;comment&#x27;)),</span><br><span class="line">  File &quot;D:\env\lib\site-packages\django\urls\conf.py&quot;, line 39, in include</span><br><span class="line">    &#x27;Specifying a namespace in include() without providing an app_name &#x27;</span><br><span class="line">django.core.exceptions.ImproperlyConfigured: Specifying a namespace in include() without providing an app_</span><br><span class="line">name is not supported. Set the app_name attribute in the included module, or pass a 2-tuple containing the</span><br><span class="line"> list of patterns and app_name instead.</span><br></pre></td></tr></table></figure>
+
+<p>在新增 comment 评论的模型时，通过 <code>python manage.py startapp comment</code>新建一个评论的app，然后在 setting 中的 INSTALLED_APPS 列表添加 ‘comment’，在主路由中配置子路由，接着编写 comment 的模型类，写完后需要迁移数据库，执行 <code>python manage.py makemigrations</code>， 这时候出现上面这个报错。</p>
+<p>报错信息是指，在 include() 中没有提供给一个支持的 app_name，需要在被包含的子模块（这里是 comment 目录下的 urls.py 模块）中设置 app_name 属性。</p>
+<p>具体原因是在 comment 的 urls.py 文件中没有写该 app_name &#x3D; ‘comment’， 以及配置 urlpatterns。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># comment/urls.py</span></span><br><span class="line">app_name = <span class="string">&#x27;comment&#x27;</span></span><br><span class="line">urlpatterns = []</span><br></pre></td></tr></table></figure>
+
+<p>再次执行迁移：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(env) D:\django_learning\blog_project&gt;python manage.py makemigrations</span><br><span class="line">Migrations for &#x27;comment&#x27;:</span><br><span class="line">  comment\migrations\0001_initial.py</span><br><span class="line">    - Create model Comment</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="6-使用F12检查没有展示的元素"><a href="#6-使用F12检查没有展示的元素" class="headerlink" title="6. 使用F12检查没有展示的元素"></a>6. 使用F12检查没有展示的元素</h4><p>模板中已经写好前端的展示，视图函数也给前端传参了，但是实际就是没有显示。</p>
+<p><img data-src="/../../images/2020/Django%E5%8D%9A%E5%AE%A21.png" alt="img"></p>
+<p>通过F12查看元素，可以发现该标签中没有内容，应该是没有从视图中获取到标签、或者获取到后经过前端操作后没有拿到该有的标签。</p>
+<p>自然地，先检查视图函数有没有给前端模板传递对象，然后回到该页面的 html 代码中检查，发现是 html 中的变量 articles 写错了。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;% for article in articles %&#125;</span><br><span class="line">			&#123;% for tag in articles.tags.all %&#125;</span><br><span class="line">           <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span> <span class="attr">class</span>=<span class="string">&quot;badge badge-secondary&quot;</span>&gt;</span>&#123;&#123; tag &#125;&#125;<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">       &#123;% endfor %&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="7-A-server-error-occurred-Please-contact-the-administrator"><a href="#7-A-server-error-occurred-Please-contact-the-administrator" class="headerlink" title="7. A server error occurred. Please contact the administrator."></a>7. A server error occurred. Please contact the administrator.</h4><p>修改 django 文件：D:\env\Lib\site-packages\django\views\debug.py，在打开文件时使用 utf-8，这样修改后，可以在页面看到具体的报错，而不只是一串“A server error occurred. Please contact the administrator.”。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">get_traceback_html</span>(<span class="params">self</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Return HTML version of debug 500 HTTP error page.&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">with</span> Path(CURRENT_DIR, <span class="string">&#x27;templates&#x27;</span>, <span class="string">&#x27;technical_500.html&#x27;</span>).<span class="built_in">open</span>(encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> fh:</span><br><span class="line">        t = DEBUG_ENGINE.from_string(fh.read())</span><br><span class="line">    c = Context(<span class="variable language_">self</span>.get_traceback_data(), use_l10n=<span class="literal">False</span>)</span><br><span class="line">    <span class="keyword">return</span> t.render(c)</span><br></pre></td></tr></table></figure>
+
+<p>no such column 报错：删库解决。。。重新生成迁移文件、创建数据。</p>
+<hr>
+<h4 id="8-部署"><a href="#8-部署" class="headerlink" title="8. 部署"></a>8. 部署</h4><p>以前还买了阿里云服务器，后来就没有续费了。现在在本地的 Ubuntu 上部署测试。</p>
+<ol>
+<li><p>修改 Django 的配置文件</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># my_blog/settings.py</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 关闭调试模式</span></span><br><span class="line">DEBUG = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 允许的服务器</span></span><br><span class="line">ALLOWED_HOSTS = [<span class="string">&#x27;*&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 静态文件收集目录</span></span><br><span class="line">STATIC_ROOT = os.path.join(BASE_DIR, <span class="string">&#x27;collected_static&#x27;</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>虚拟环境一般是需要在服务器上重新生成的</p>
+<p>安装包：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get upgrade</span><br><span class="line"></span><br><span class="line">sudo apt-get install python3</span><br><span class="line">sudo apt-get install python3-pip</span><br><span class="line">sudo apt-get install git</span><br><span class="line">sudo pip3 install virtualenv</span><br></pre></td></tr></table></figure>
+
+<p>从远程库中拉取项目代码：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://gitee.com/zypdominate/django_learning.git</span><br></pre></td></tr></table></figure>
+
+<p>cd 进入项目中，生成虚拟环境，并激活：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">virtualenv --python=python3.6 env</span><br><span class="line">source env/bin/activate</span><br></pre></td></tr></table></figure>
+
+<p>安装库、收集静态资源、数据迁移了：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pip3 install -r requirements.txt </span><br><span class="line">python manage.py collectstatic</span><br><span class="line">python3 manage.py migrate</span><br></pre></td></tr></table></figure>
+
+<p>代码部署基本就完成了，接下来配置 <code>Nginx</code> </p>
+<p>安装 nginx：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install nginx</span><br></pre></td></tr></table></figure>
+
+<p>启动 nginx，查看安装的 nginx 是否正常：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service nginx start</span><br></pre></td></tr></table></figure>
+
+<p>打开浏览器，输入你的服务器公网 IP 地址（可在Ubuntu上试用）查看效果。</p>
+<p>接着，重新写 Nginx 的配置文件。进入 <code>/etc/nginx/sites-available</code> 目录，这里是定义 <strong>Nginx 可用配置</strong> 的地方。输入指令 <code>sudo vi dusaiphoto.com</code> 创建配置文件，以下是已经配置好的：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">zyp@zyp-virtual-machine:/etc/nginx/sites-available$ ls</span><br><span class="line">default  my_blog  sites</span><br><span class="line">zyp@zyp-virtual-machine:/etc/nginx/sites-available$ cat my_blog </span><br><span class="line">server &#123;</span><br><span class="line">  charset utf-8;</span><br><span class="line">  listen 80;</span><br><span class="line">  server_name 192.168.171.128;  # 暂时是我本地的Ubuntu的ip地址</span><br><span class="line"></span><br><span class="line">  location /static &#123;</span><br><span class="line">    root /home/zyp/sites/django_learning/blog_project/collected_static;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  location /media &#123;</span><br><span class="line">    root /home/zyp/sites/django_learning/blog_project/media;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  location / &#123;</span><br><span class="line">    proxy_set_header Host $host;</span><br><span class="line">    proxy_pass http://unix:/tmp/192.168.171.128.socket;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>写的只是 Nginx 的<strong>可用配置</strong>，所以还需要把这个配置文件链接到<strong>在用配置</strong>上去：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -s /etc/nginx/sites-available/my_blog  /etc/nginx/sites-enabled</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">zyp@zyp-virtual-machine:/etc/nginx/sites-available$ ls</span><br><span class="line">default  my_blog  sites</span><br><span class="line">zyp@zyp-virtual-machine:/etc/nginx/sites-available$ sudo ln -s /etc/nginx/sites-available/my_blog  /etc/nginx/sites-enabled</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line">zyp@zyp-virtual-machine:/etc/nginx/sites-enabled$ ls</span><br><span class="line">my_blog  sites</span><br></pre></td></tr></table></figure>
+
+<p>至此 Nginx 就配置好了，接下来搞定 <code>Gunicorn</code>:</p>
+<ul>
+<li>安装 <code>Gunicorn</code></li>
+<li>重启 <code>Nginx</code> 服务</li>
+<li>启动 <code>Gunicorn</code></li>
+</ul>
+<p><strong>先回到项目所在的目录</strong>，并且进入<strong>虚拟环境</strong>，然后输入：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(myenv) zyp@zyp-virtual-machine:~/sites/django_learning/blog_project$ pip3 install gunicorn</span><br><span class="line">(myenv) zyp@zyp-virtual-machine:~/sites/django_learning/blog_project$ sudo service nginx reload</span><br><span class="line">(myenv) zyp@zyp-virtual-machine:~/sites/django_learning/blog_project$ gunicorn --bind unix:/tmp/192.168.171.128.socket blog_project.wsgi:application</span><br></pre></td></tr></table></figure>
+
+<p>也可以用 <code>sudo service nginx restart</code>，区别是 reload 只重载配置文件，restart 重启整个服务。</p>
+<p>最后打开浏览器，访问服务器查看效果。</p>
+</li>
+</ol>
+<hr>
+<h4 id="9-css、js等没有加载出来"><a href="#9-css、js等没有加载出来" class="headerlink" title="9. css、js等没有加载出来"></a>9. css、js等没有加载出来</h4><p>本地调试好工程后，服务起来后在浏览器上测试也是正常的，但是一部署后就发现浏览器中没有加载css、js等，只有单纯的html格式，经过查看 nginx 的日志发现了问题：没有所需要的文件。</p>
+<p><img data-src="/../../images/2020/Django%E5%8D%9A%E5%AE%A22.png" alt="img"></p>
+<p>怎么会没有该文件呢？于是查看了 nginx 的配置文件：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">  charset utf-8;</span><br><span class="line">  listen 80;</span><br><span class="line">  server_name 192.168.171.128;  # 暂时是我本地的Ubuntu的ip地址</span><br><span class="line"></span><br><span class="line">  location /static &#123;</span><br><span class="line">    root /home/zyp/sites/django_blog_tutorial/collected_static;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  location /media &#123;</span><br><span class="line">    root /home/zyp/sites/django_blog_tutorial/media;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  location / &#123;</span><br><span class="line">    proxy_set_header Host $host;</span><br><span class="line">    proxy_pass http://unix:/tmp/192.168.171.128.socket;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后查看工程中 collected_static 目录下，发现没有 static 目录，所需要的 css、js文件都直接在 collected_static 目录下，也就是少了中间件一层 static。可以推理是在执行 <code>python manage.py collectstatic</code> 后出现的问题，排查发现在 settings.py 文件中的静态文件收集目录的路径有误：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 静态文件收集目录</span></span><br><span class="line">STATIC_ROOT = os.path.join(BASE_DIR, <span class="string">&#x27;collected_static&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>添加 static 后就可以展示 css、js等了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 静态文件收集目录</span></span><br><span class="line">STATIC_ROOT = os.path.join(BASE_DIR, <span class="string">&#x27;collected_static/static&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>同理，media 目录中存放的资源在页面中加载不出来，也是路径的问题。其实这边可以修改工程中的 settings.py 文件，也可以更改 nginx 中的配置文件。</p>
+<p>最后，终于改好了：</p>
+<p><img data-src="/../../images/2020/Django%E5%8D%9A%E5%AE%A23.png" alt="img"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+              <a href="/tags/FixBug/" rel="tag"># FixBug</a>
+              <a href="/tags/Django/" rel="tag"># Django</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2020/06/10/6450/" rel="prev" title="Python 小技巧">
+                  <i class="fa fa-angle-left"></i> Python 小技巧
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2020/06/18/10318/" rel="next" title="Django mysql 版本报错">
+                  Django mysql 版本报错 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">691k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:28</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

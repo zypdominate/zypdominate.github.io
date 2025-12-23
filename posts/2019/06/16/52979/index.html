@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="断言，pytest.raises，pytest.mark.xfail，pytest_assertrepr_compare，断言自省详细信息，禁用断言重写">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pytest03 The writing and reporting of assertions in tests">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2019/06/16/52979/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="断言，pytest.raises，pytest.mark.xfail，pytest_assertrepr_compare，断言自省详细信息，禁用断言重写">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-06-16T10:23:44.000Z">
+<meta property="article:modified_time" content="2025-12-23T14:07:49.112Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="pytest">
+<meta property="article:tag" content="翻译">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2019/06/16/52979/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2019/06/16/52979/","path":"posts/2019/06/16/52979/","title":"pytest03 The writing and reporting of assertions in tests"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>pytest03 The writing and reporting of assertions in tests | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Asserting-with-the-assert-statement"><span class="nav-text">Asserting with the assert statement</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Assertions-about-expected-exceptions"><span class="nav-text">Assertions about expected exceptions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Making-use-of-context-sensitive-comparisons"><span class="nav-text">Making use of context-sensitive comparisons</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Defining-your-own-explanation-for-failed-assertions"><span class="nav-text">Defining your own explanation for failed assertions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Assertion-introspection-details"><span class="nav-text">Assertion introspection details</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Assertion-rewriting-caches-files-on-disk"><span class="nav-text">Assertion rewriting caches files on disk</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Disabling-assert-rewriting"><span class="nav-text">Disabling assert rewriting</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2019/06/16/52979/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="pytest03 The writing and reporting of assertions in tests | Magnolia's Blog">
+      <meta itemprop="description" content="断言，pytest.raises，pytest.mark.xfail，pytest_assertrepr_compare，断言自省详细信息，禁用断言重写">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          pytest03 The writing and reporting of assertions in tests
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-06-16 18:23:44" itemprop="dateCreated datePublished" datetime="2019-06-16T18:23:44+08:00">2019-06-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/pytest/" itemprop="url" rel="index"><span itemprop="name">pytest</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>8.9k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>8 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">断言，pytest.raises，pytest.mark.xfail，pytest_assertrepr_compare，断言自省详细信息，禁用断言重写</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="Asserting-with-the-assert-statement"><a href="#Asserting-with-the-assert-statement" class="headerlink" title="Asserting with the assert statement"></a>Asserting with the <code>assert</code> statement</h2><p>断言 <code>assert</code> 陈述</p>
+<p><code>pytest</code> 允许你使用标准的python <code>assert</code> 用于验证Python测试中的期望和值。例如，可以编写以下内容：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># content of test_assert1.py</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">f</span>():</span><br><span class="line">    <span class="keyword">return</span> <span class="number">3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_function</span>():</span><br><span class="line">    <span class="keyword">assert</span> f() == <span class="number">4</span></span><br></pre></td></tr></table></figure>
+
+<p>断言函数会返回某个值。如果此断言失败，你将看到函数调用的返回值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">$ pytest test_assert1.py</span><br><span class="line">=========================== test session starts ============================</span><br><span class="line">platform linux -- Python <span class="number">3.</span>x.y, pytest-<span class="number">4.</span>x.y, py-<span class="number">1.</span>x.y, pluggy-<span class="number">0.</span>x.y</span><br><span class="line">cachedir: $PYTHON_PREFIX/.pytest_cache</span><br><span class="line">rootdir: $REGENDOC_TMPDIR</span><br><span class="line">collected <span class="number">1</span> item</span><br><span class="line"></span><br><span class="line">test_assert1.py F                                                    [<span class="number">100</span>%]</span><br><span class="line"></span><br><span class="line">================================= FAILURES =================================</span><br><span class="line">______________________________ test_function _______________________________</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_function</span>():</span><br><span class="line">&gt;       <span class="keyword">assert</span> f() == <span class="number">4</span></span><br><span class="line">E       <span class="keyword">assert</span> <span class="number">3</span> == <span class="number">4</span></span><br><span class="line">E        +  where <span class="number">3</span> = f()</span><br><span class="line"></span><br><span class="line">test_assert1.py:<span class="number">5</span>: AssertionError</span><br><span class="line">========================= <span class="number">1</span> failed <span class="keyword">in</span> <span class="number">0.12</span> seconds =========================</span><br></pre></td></tr></table></figure>
+
+<p><code>pytest</code> 支持显示最常见的子表达式的值，包括调用、属性、比较以及二进制和一元运算符。（见 <a target="_blank" rel="noopener" href="https://www.osgeo.cn/pytest/example/reportingdemo.html#tbreportdemo">用pytest演示python失败报告</a> ）这允许你在不丢失自省信息的情况下使用不带样板代码的惯用python构造。</p>
+<p>但是，如果使用如下断言指定消息：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">assert</span> a % <span class="number">2</span> == <span class="number">0</span>, <span class="string">&quot;value was odd, should be even&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>这样根本不进行断言内省，消息将简单地显示在追溯中。</p>
+<hr>
+<h2 id="Assertions-about-expected-exceptions"><a href="#Assertions-about-expected-exceptions" class="headerlink" title="Assertions about expected exceptions"></a>Assertions about expected exceptions</h2><p>关于预期异常的断言</p>
+<p>为了编写有关引发的异常的断言，可以使用 <code>pytest.raises</code> 作为这样的上下文管理器：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_zero_division</span>():</span><br><span class="line">    <span class="keyword">with</span> pytest.raises(ZeroDivisionError):</span><br><span class="line">        <span class="number">1</span> / <span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<p>如果你需要访问实际的异常信息，可以使用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">test_recursion_depth</span>():</span><br><span class="line">    <span class="keyword">with</span> pytest.raises(RuntimeError) <span class="keyword">as</span> excinfo:</span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">f</span>():</span><br><span class="line">            f()</span><br><span class="line">        f()</span><br><span class="line">    <span class="keyword">assert</span> <span class="string">&#x27;maximum recursion&#x27;</span> <span class="keyword">in</span> <span class="built_in">str</span>(excinfo.value)</span><br></pre></td></tr></table></figure>
+
+<p><code>excinfo</code> 是一个 <code>ExceptionInfo</code> 实例，它是引发的实际异常的包装。感兴趣的主要特征是 <code>.type</code> ， <code>.value</code> 和 <code>.traceback</code> .</p>
+<p>你可以通过给上下文管理器传递一个<code>match</code>关键字参数，用于测试正则表达式是否匹配异常的字符串表示形式（类似于 <code>unittest</code> 中的 <code>TestCase.assertRaisesRegexp</code> 方法）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">f</span>():</span><br><span class="line">    <span class="keyword">raise</span> ValueError(<span class="string">&quot;Exception 123 raised&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_match</span>():</span><br><span class="line">    <span class="keyword">with</span> pytest.raises(ValueError, <span class="keyword">match</span>=<span class="string">r&#x27;.* 123 .*&#x27;</span>):</span><br><span class="line">        myfunc()</span><br></pre></td></tr></table></figure>
+
+<p> <code>match</code> 方法的regexp参数与 <code>re.search</code> 函数相同，因此在上面的示例中 <code>match=&#39;123&#39;</code> 也会起作用的。</p>
+<ul>
+<li>在这个例子中，<code>test_match</code> 使用 <code>pytest.raises</code> 来检查 <code>f()</code> 是否抛出了 <code>ValueError</code>。</li>
+<li>如果 <code>f()</code> 抛出了 <code>ValueError</code>，测试通过。</li>
+<li>如果 <code>f()</code> 没有抛出任何异常，测试失败。</li>
+<li>如果 <code>f()</code> 抛出了其他异常，测试失败。</li>
+</ul>
+<p>有另一种形式的 <code>pytest.raises</code> 函数，其中传递的函数将用给定的 <code>*args</code> 和 <code>**kwargs</code> 并断言引发了给定的异常：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pytest.raises(ExpectedException, func, *args, **kwargs)</span><br></pre></td></tr></table></figure>
+
+<p>如果出现故障，如 <em>no exception</em> or <em>wrong exception</em> ，这份报告将为你提供有益的输出。</p>
+<p>请注意，也可以将“引发”参数指定为 <code>pytest.mark.xfail</code> ，它检查测试是否以比引发任何异常更具体的方式失败。</p>
+<ul>
+<li><p><code>pytest.mark.xfail</code> 是一个标记，用于标记一个测试函数，表示这个测试预计会失败。如果测试确实失败了，那么 <code>pytest</code> 会报告这个测试为“xfail”（预期失败），而不是失败。</p>
+</li>
+<li><p>使用 <code>pytest.raises</code> 对于测试自己代码中故意引发的异常的情况，可能会更好。而使用 <code>@pytest.mark.xfail</code> 使用check函数可能更适合记录未修复的错误（测试描述了“应该”发生的情况）或依赖项中的错误。</p>
+</li>
+</ul>
+<p>举例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@pytest.mark.xfail(<span class="params">raises=IndexError</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_f</span>():</span><br><span class="line">    f()</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在这个例子中，<code>test_f</code> 被标记为 <code>xfail</code>，并且预期 <code>f()</code> 会抛出 <code>IndexError</code> 异常。</li>
+<li>如果 <code>f()</code> 抛出了 <code>IndexError</code>，测试会被标记为“xfail”。</li>
+<li>如果 <code>f()</code> 没有抛出任何异常，测试会被标记为“xpass”（意外通过）。</li>
+<li>如果 <code>f()</code> 抛出了其他异常，测试会被标记为“failed”。</li>
+</ul>
+<p>假设你有一个函数 <code>process_data</code>，在处理某些数据时会抛出 <code>ValueError</code>，但你知道这是一个已知的问题，尚未修复：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">process_data</span>(<span class="params">data</span>):</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> data:</span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">&quot;Data cannot be empty&quot;</span>)</span><br><span class="line">    <span class="comment"># 处理数据的逻辑</span></span><br><span class="line">    <span class="keyword">return</span> data</span><br><span class="line"></span><br><span class="line"><span class="meta">@pytest.mark.xfail(<span class="params">raises=ValueError</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_process_data</span>():</span><br><span class="line">    process_data([])</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">python <span class="literal">-m</span> pytest .\test_xfail.py</span><br><span class="line">============================================================================== test session starts =============================================================================== </span><br><span class="line">platform win32 <span class="literal">--</span> Python <span class="number">3.12</span>.<span class="number">0</span>, py<span class="built_in">test-7</span>.<span class="number">0.1</span>, pluggy<span class="literal">-1</span>.<span class="number">0.0</span></span><br><span class="line">rootdir: D:\Developer\pytest_learning\pytest\<span class="number">3</span>.The writing and reporting of assertions <span class="keyword">in</span> tests</span><br><span class="line">plugins: allure<span class="literal">-pytest-2</span>.<span class="number">9.43</span>, Faker<span class="literal">-13</span>.<span class="number">3.0</span>, assume<span class="literal">-2</span>.<span class="number">4.3</span></span><br><span class="line">collected <span class="number">1</span> item                                                                                                                                                                   </span><br><span class="line"></span><br><span class="line">test_xfail.py x                                                                                                                                                             [<span class="number">100</span>%] </span><br><span class="line"></span><br><span class="line">=============================================================================== <span class="number">1</span> xfailed <span class="keyword">in</span> <span class="number">0.12</span>s =============================================================================== </span><br></pre></td></tr></table></figure>
+
+<p>在这个测试中，<code>test_process_data</code> 被标记为 <code>xfail</code>，并且预期 <code>process_data([])</code> 会抛出 <code>ValueError</code>。如果 <code>process_data([])</code> 抛出了 <code>ValueError</code>，测试会被标记为“xfail”。如果 <code>process_data([])</code> 没有抛出任何异常，测试会被标记为“xpass”。</p>
+<p>使用场景：</p>
+<ul>
+<li>**<code>pytest.raises</code>**：适用于测试你自己代码中故意引发的异常的情况。例如，你有一个函数在某些条件下会抛出特定的异常，你希望确保这些异常被正确抛出。</li>
+<li>**<code>@pytest.mark.xfail</code>**：更适合记录未修复的错误（测试描述了“应该”发生的情况）或依赖项中的错误。例如，你知道某个测试在当前环境下会失败，但你希望在未来修复这个问题后，测试能够通过。如果是 <code>process_data(1)</code>，这个用例就会执行成功。</li>
+</ul>
+<hr>
+<h2 id="Making-use-of-context-sensitive-comparisons"><a href="#Making-use-of-context-sensitive-comparisons" class="headerlink" title="Making use of context-sensitive comparisons"></a>Making use of context-sensitive comparisons</h2><p>利用上下文相关的比较</p>
+<p>当遇到比较时<code>pytest</code> 对提供上下文敏感信息具有丰富的支持。例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># content of test_assert2.py</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_set_comparison</span>():</span><br><span class="line">    set1 = <span class="built_in">set</span>(<span class="string">&quot;1308&quot;</span>)</span><br><span class="line">    set2 = <span class="built_in">set</span>(<span class="string">&quot;8035&quot;</span>)</span><br><span class="line">    <span class="keyword">assert</span> set1 == set2</span><br></pre></td></tr></table></figure>
+
+<p>运行此模块：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">$ pytest test_assert2.py</span><br><span class="line">=========================== test session starts ============================</span><br><span class="line">platform linux -- Python <span class="number">3.</span>x.y, pytest-<span class="number">4.</span>x.y, py-<span class="number">1.</span>x.y, pluggy-<span class="number">0.</span>x.y</span><br><span class="line">cachedir: $PYTHON_PREFIX/.pytest_cache</span><br><span class="line">rootdir: $REGENDOC_TMPDIR</span><br><span class="line">collected <span class="number">1</span> item</span><br><span class="line"></span><br><span class="line">test_assert2.py F                                                    [<span class="number">100</span>%]</span><br><span class="line"></span><br><span class="line">================================= FAILURES =================================</span><br><span class="line">___________________________ test_set_comparison ____________________________</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_set_comparison</span>():</span><br><span class="line">        set1 = <span class="built_in">set</span>(<span class="string">&quot;1308&quot;</span>)</span><br><span class="line">        set2 = <span class="built_in">set</span>(<span class="string">&quot;8035&quot;</span>)</span><br><span class="line">&gt;       <span class="keyword">assert</span> set1 == set2</span><br><span class="line">E       AssertionError: <span class="keyword">assert</span> &#123;<span class="string">&#x27;0&#x27;</span>, <span class="string">&#x27;1&#x27;</span>, <span class="string">&#x27;3&#x27;</span>, <span class="string">&#x27;8&#x27;</span>&#125; == &#123;<span class="string">&#x27;0&#x27;</span>, <span class="string">&#x27;3&#x27;</span>, <span class="string">&#x27;5&#x27;</span>, <span class="string">&#x27;8&#x27;</span>&#125;</span><br><span class="line">E         Extra items <span class="keyword">in</span> the left <span class="built_in">set</span>:</span><br><span class="line">E         <span class="string">&#x27;1&#x27;</span></span><br><span class="line">E         Extra items <span class="keyword">in</span> the right <span class="built_in">set</span>:</span><br><span class="line">E         <span class="string">&#x27;5&#x27;</span></span><br><span class="line">E         Use -v to get the full diff</span><br><span class="line"></span><br><span class="line">test_assert2.py:<span class="number">5</span>: AssertionError</span><br><span class="line">========================= <span class="number">1</span> failed <span class="keyword">in</span> <span class="number">0.12</span> seconds =========================</span><br></pre></td></tr></table></figure>
+
+<p>对一些情况进行特殊比较：</p>
+<ul>
+<li>比较长字符串：显示文本差异</li>
+<li>比较长序列：第一个失败下标</li>
+<li>比较字典：不同的条目</li>
+</ul>
+<hr>
+<h2 id="Defining-your-own-explanation-for-failed-assertions"><a href="#Defining-your-own-explanation-for-failed-assertions" class="headerlink" title="Defining your own explanation for failed assertions"></a>Defining your own explanation for failed assertions</h2><p>为失败的断言定义自己的解释</p>
+<p>可以通过执行 <code>pytest_assertrepr_compare</code> 钩子来增加自己细节解释。</p>
+<ul>
+<li><p><code>pytest_assertrepr_compare</code>(<em>config</em>, <em>op</em>, <em>left</em>, <em>right</em>)</p>
+<p>返回失败的断言表达式中比较解释。如果没有自定义解释，则返回“None”，否则返回字符串列表。字符串将由换行符联接，但任何字符串中的换行符将被转义。请注意，除了第一行之外，其他所有行都将略微缩进，目的是为了将第一行作为摘要。</p>
+</li>
+</ul>
+<p>例如，考虑在 conftest.py 中增加如下的钩子，来为<code>Foo</code>对象提供替代解释：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># content of conftest.py</span></span><br><span class="line"><span class="keyword">from</span> test_foocompare <span class="keyword">import</span> Foo</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">pytest_assertrepr_compare</span>(<span class="params">op, left, right</span>):</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">isinstance</span>(left, Foo) <span class="keyword">and</span> <span class="built_in">isinstance</span>(right, Foo) <span class="keyword">and</span> op == <span class="string">&quot;==&quot;</span>:</span><br><span class="line">        <span class="keyword">return</span> [<span class="string">&#x27;Comparing Foo instances:&#x27;</span>,</span><br><span class="line">                <span class="string">&#x27;   vals: %s != %s&#x27;</span> % (left.val, right.val)]</span><br></pre></td></tr></table></figure>
+
+<p>现在，假设这个测试模块：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># content of test_foocompare.py</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Foo</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, val</span>):</span><br><span class="line">        <span class="variable language_">self</span>.val = val</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__eq__</span>(<span class="params">self, other</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.val == other.val</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_compare</span>():</span><br><span class="line">    f1 = Foo(<span class="number">1</span>)</span><br><span class="line">    f2 = Foo(<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">assert</span> f1 == f2</span><br></pre></td></tr></table></figure>
+
+<p>你可以运行测试模块并在conftest文件中定义自定义输出：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ pytest -q test_foocompare.py</span><br><span class="line">F                                                                    [<span class="number">100</span>%]</span><br><span class="line">================================= FAILURES =================================</span><br><span class="line">_______________________________ test_compare _______________________________</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_compare</span>():</span><br><span class="line">        f1 = Foo(<span class="number">1</span>)</span><br><span class="line">        f2 = Foo(<span class="number">2</span>)</span><br><span class="line">&gt;       <span class="keyword">assert</span> f1 == f2</span><br><span class="line">E       <span class="keyword">assert</span> Comparing Foo instances:</span><br><span class="line">E            vals: <span class="number">1</span> != <span class="number">2</span></span><br><span class="line"></span><br><span class="line">test_foocompare.py:<span class="number">11</span>: AssertionError</span><br><span class="line"><span class="number">1</span> failed <span class="keyword">in</span> <span class="number">0.12</span> seconds</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="Assertion-introspection-details"><a href="#Assertion-introspection-details" class="headerlink" title="Assertion introspection details"></a>Assertion introspection details</h2><p>断言自省详细信息</p>
+<p>通过在运行断言语句之前重写它们，可以获得有关失败断言的报告详细信息。重写的断言语句将自省信息放入断言失败消息中。 <code>pytest</code> 只重写由其测试收集过程直接发现的测试模块，因此 <strong>支持模块中的断言（本身不是测试模块）将不会被重写</strong> .</p>
+<p>你可以手动使能断言，为一个导入的模块重写，这个模块在导入前通过register_assert_rewrite调用。（一个很好的地方是在您的根目录中 <code>conftest.py</code> ）</p>
+<p>示例</p>
+<p>假设你有一个支持模块 <code>utils.py</code>，其中包含一些辅助函数，并且你在测试模块中使用了这些函数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># utils.py</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">check_positive</span>(<span class="params">num</span>):</span><br><span class="line">    <span class="keyword">assert</span> num &gt; <span class="number">0</span>, <span class="string">&quot;Number must be positive&quot;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># test_utils.py</span></span><br><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"><span class="keyword">from</span> utils <span class="keyword">import</span> check_positive</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_check_positive</span>():</span><br><span class="line">    check_positive(<span class="number">10</span>)  <span class="comment"># 应该通过</span></span><br><span class="line">    check_positive(-<span class="number">1</span>)  <span class="comment"># 应该失败</span></span><br></pre></td></tr></table></figure>
+
+<p>默认行为</p>
+<p>默认情况下，<code>pytest</code> 不会重写 <code>utils.py</code> 中的断言，因此 <code>test_check_positive</code> 失败时，你只会看到一个简单的 <code>AssertionError</code>，而不会看到详细的自省信息，部分如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">test_utils.py:3 (test_check_positive)</span><br><span class="line">def test_check_positive():</span><br><span class="line">        check_positive(10)  # 应该通过</span><br><span class="line">&gt;       check_positive(-1)  # 应该失败</span><br><span class="line"></span><br><span class="line">test_utils.py:6: </span><br><span class="line">_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _</span><br><span class="line"></span><br><span class="line">num = -1</span><br><span class="line"></span><br><span class="line">    def check_positive(num):</span><br><span class="line">&gt;       assert num &gt; 0, &quot;Number must be positive&quot;</span><br><span class="line">E       AssertionError: Number must be positive</span><br><span class="line"></span><br><span class="line">..\..\utils\__init__.py:2: AssertionError</span><br></pre></td></tr></table></figure>
+
+<p>手动启用断言重写</p>
+<p>为了在 <code>utils.py</code> 中启用断言的重写，你可以在 <code>conftest.py</code> 中调用 <code>pytest.register_assert_rewrite</code>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># conftest.py</span></span><br><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">pytest_configure</span>(<span class="params">config</span>):</span><br><span class="line">    pytest.register_assert_rewrite(<span class="string">&#x27;utils&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>运行测试</p>
+<p>现在，当你运行 <code>pytest</code> 时，<code>utils.py</code> 中的断言也会被重写，你将获得详细的自省信息：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">test_utils.py:3 (test_check_positive)</span><br><span class="line">-1 != 0</span><br><span class="line"></span><br><span class="line">Expected :0</span><br><span class="line">Actual   :-1</span><br><span class="line">&lt;Click to see difference&gt;</span><br><span class="line"></span><br><span class="line">def test_check_positive():</span><br><span class="line">        check_positive(10)  # 应该通过</span><br><span class="line">&gt;       check_positive(-1)  # 应该失败</span><br></pre></td></tr></table></figure>
+
+<p>总结</p>
+<ul>
+<li><strong>断言自省</strong>：<code>pytest</code> 通过重写断言语句来提供详细的错误信息。</li>
+<li><strong>默认行为</strong>：<code>pytest</code> 只重写测试模块中的断言。</li>
+<li><strong>手动启用</strong>：通过 <code>pytest.register_assert_rewrite</code> 可以在支持模块中启用断言的重写。</li>
+<li><strong>最佳实践</strong>：在 <code>conftest.py</code> 中调用 <code>pytest.register_assert_rewrite</code> 来注册需要重写的模块。</li>
+</ul>
+<hr>
+<h2 id="Assertion-rewriting-caches-files-on-disk"><a href="#Assertion-rewriting-caches-files-on-disk" class="headerlink" title="Assertion rewriting caches files on disk"></a>Assertion rewriting caches files on disk</h2><p>断言重写将文件缓存在磁盘上</p>
+<p><code>pytest</code> 会将重写的模块写回磁盘进行缓存（可以提高后续测试运行的性能，因为不需要每次都重新编译和重写模块）。</p>
+<p>可以通过设置 <code>sys.dont_write_bytecode = True</code>，来禁用 <code>.pyc</code> 文件的缓存。</p>
+<p>例如，为了避免在经常移动文件的项目中留下过时的.pyc文件。在一些项目中，文件经常被移动或<strong>重命名</strong>。如果 <code>pytest</code> 将重写后的模块缓存到磁盘上，可能会导致旧的 <code>.pyc</code> 文件残留，从而引起问题，比如重命名重跑用例会有意想不到的问题。禁用缓存可以避免这种情况。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">sys.dont_write_bytecode = <span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+<p>请注意，你仍然可以获得断言内省的好处，唯一的变化是 <code>.pyc</code> 文件不会缓存在磁盘上。</p>
+<p>此外，如果重写无法写入新的 <code>.pyc</code> 文件，它将自动跳过缓存，即只读文件系统或压缩文件中的文件。</p>
+<hr>
+<h2 id="Disabling-assert-rewriting"><a href="#Disabling-assert-rewriting" class="headerlink" title="Disabling assert rewriting"></a>Disabling assert rewriting</h2><p>禁用断言重写</p>
+<p><code>pytest</code> 通过使用导入钩子hook的方式写入新的 <code>pyc</code> 文件夹，在导入时重写测试模块。大多数时候这是透明的。但是，如果你自己操作导入机制，导入钩子可能会产生干扰。假设你有一个项目，其中包含自定义的导入机制。在这种情况下，<code>pytest</code> 的断言重写机制可能会干扰你的自定义导入。</p>
+<p>如果是这种情况，你有两个选择：</p>
+<ul>
+<li>通过添加字符串<code>PYTEST_DONT_REWRITE</code> 到它的docstring，禁用特定模块的重写 。</li>
+<li>通过使用 <code>--assert=plain</code> ，禁用所有模块的重写.<ul>
+<li>添加断言重写作为一个可替换的自省机制</li>
+<li>介绍 <code>--assert</code> 选项。不赞成使用 <code>--no-assert</code> 和 <code>--nomagic</code> .</li>
+<li>移除 <code>--no-assert</code> 和 <code>--nomagic</code> 选项。移除 <code>--assert=reinterp</code> 选项。</li>
+</ul>
+</li>
+</ul>
+<p>假设你有一个自定义的导入器 <code>custom_importer.py</code>，它修改了 <code>sys.meta_path</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># custom_importer.py</span></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CustomImporter</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">find_spec</span>(<span class="params">self, fullname, path, target=<span class="literal">None</span></span>):</span><br><span class="line">        <span class="comment"># 自定义的导入逻辑</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;CustomImporter: Finding spec for <span class="subst">&#123;fullname&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">sys.meta_path.insert(<span class="number">0</span>, CustomImporter())</span><br></pre></td></tr></table></figure>
+
+<p>测试模块</p>
+<p>假设你有一个测试模块 <code>test_module.py</code>，其中包含一个简单的测试：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># test_module.py</span></span><br><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_example</span>():</span><br><span class="line">    <span class="keyword">assert</span> <span class="number">1</span> + <span class="number">1</span> == <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<p>运行测试</p>
+<p>当你运行 <code>pytest</code> 时，<code>pytest</code> 的导入钩子可能会与你的自定义导入器发生冲突：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pytest test_module.py</span><br></pre></td></tr></table></figure>
+
+<p>禁用断言重写</p>
+<p>为了禁用 <code>pytest</code> 的断言重写机制，你可以在运行 <code>pytest</code> 时使用 <code>--no-assert</code> 选项：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pytest --no-assert test_module.py</span><br></pre></td></tr></table></figure>
+
+<p>解释</p>
+<ul>
+<li><strong><code>--no-assert</code> 选项</strong>：这个选项告诉 <code>pytest</code> 不要使用断言重写机制。这样可以避免 <code>pytest</code> 的导入钩子与你的自定义导入机制发生冲突。</li>
+<li><strong>影响</strong>：禁用断言重写后，你将失去断言自省的详细信息。也就是说，断言失败时，你只会看到简单的 <code>AssertionError</code>，而不会看到详细的上下文信息。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/pytest/" rel="tag"># pytest</a>
+              <a href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag"># 翻译</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2019/06/09/50554/" rel="prev" title="pytest01 easy start">
+                  <i class="fa fa-angle-left"></i> pytest01 easy start
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2019/06/23/41647/" rel="next" title="pytest04 fixtures explicit, modular, scalable">
+                  pytest04 fixtures explicit, modular, scalable <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">691k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:28</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

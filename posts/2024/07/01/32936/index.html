@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="iOS App 测试环境升级，遇到的问题以及解决方法  Mac 实体机升级到 Sonima 14.5 Xcode 升级到 15.3  问题1： WebDriverAgent 编译失败">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS 平台自动化测试升级">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2024/07/01/32936/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="iOS App 测试环境升级，遇到的问题以及解决方法  Mac 实体机升级到 Sonima 14.5 Xcode 升级到 15.3  问题1： WebDriverAgent 编译失败">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://zypdominate.github.io/images/iOS%E7%8E%AF%E5%A2%83%E5%8D%87%E7%BA%A71.png">
+<meta property="og:image" content="https://zypdominate.github.io/images/iOS%E7%8E%AF%E5%A2%83%E5%8D%87%E7%BA%A72.png">
+<meta property="og:image" content="https://zypdominate.github.io/images/iOS%E7%8E%AF%E5%A2%83%E5%8D%87%E7%BA%A73.png">
+<meta property="article:published_time" content="2024-07-01T11:45:18.000Z">
+<meta property="article:modified_time" content="2025-12-23T14:07:49.157Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="FixBug">
+<meta property="article:tag" content="iOS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zypdominate.github.io/images/iOS%E7%8E%AF%E5%A2%83%E5%8D%87%E7%BA%A71.png">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2024/07/01/32936/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2024/07/01/32936/","path":"posts/2024/07/01/32936/","title":"iOS 平台自动化测试升级"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>iOS 平台自动化测试升级 | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2024/07/01/32936/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="iOS 平台自动化测试升级 | Magnolia's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          iOS 平台自动化测试升级
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2024-07-01 19:45:18" itemprop="dateCreated datePublished" datetime="2024-07-01T19:45:18+08:00">2024-07-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/%E6%B5%8B%E5%BC%80/" itemprop="url" rel="index"><span itemprop="name">测开</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/%E6%B5%8B%E5%BC%80/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" itemprop="url" rel="index"><span itemprop="name">环境搭建</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>4.2k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>4 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>iOS App 测试环境升级，遇到的问题以及解决方法</p>
+<blockquote>
+<p>Mac 实体机升级到 Sonima 14.5</p>
+<p>Xcode 升级到 15.3</p>
+</blockquote>
+<p><strong>问题1： WebDriverAgent 编译失败</strong></p>
+<p>尝试下载 最新版本的<a target="_blank" rel="noopener" href="https://github.com/appium/WebDriverAgent/releases/tag/v8.7.2">WDA 源码</a>编译，可以编译成功。</p>
+<p><strong>问题2：具体坐标直接点击的代码都会报错。</strong></p>
+<p>向 <a target="_blank" rel="noopener" href="https://github.com/appium/appium">appium</a> 开源项目报了这个问题，过了10分钟就得到回复</p>
+<blockquote>
+<p>Please use W3C Actions instead.<br>Also, we do not support Appium 1 anymore - please upgrade to Appium 2.</p>
+</blockquote>
+<p>于是升级相关配置和修改所有涉及到的代码，使用 W3C Action 替换原来的 MultiAction、TouchAction。</p>
+<p><strong>问题3：升级 Appium 从 1.2.0 升级到 2.9，执行报错，unexpected keyword argument ‘desired_capabilites’</strong></p>
+<p><img data-src="/../../images/iOS%E7%8E%AF%E5%A2%83%E5%8D%87%E7%BA%A71.png"></p>
+<p>排查，搜到一个解决方法 <a target="_blank" rel="noopener" href="https://github.com/appium/python-client/issues/878">https://github.com/appium/python-client/issues/878</a></p>
+<p>该问题已经在 2.10 以上版本修复，于是再更新 Appium 到 2.11.1</p>
+<p><strong>问题4：系统弹框元素无法被识别到</strong></p>
+<p><img data-src="/../../images/iOS%E7%8E%AF%E5%A2%83%E5%8D%87%E7%BA%A72.png"></p>
+<p>之前也有这个问题，但是可以通过 driver.page_source 来定位到，现在升级后不行。</p>
+<p>解决：不直接点击元素，而是使用脚本语句处理</p>
+<p><code>driver.execute_script(&#39;mobile: alert&#39;,&#123;&#39;action&#39;: &#39;accept&#39;, &#39;buttonLabel&#39;: “Continue”&#125;</code></p>
+<p><strong>问题5：登录google页面元素无法获取</strong></p>
+<p>之前偶尔也会遇到这个问题，但是重启模拟器、在Xcode重新编译WDA、重启Appium后，就可以定位到登录页面元素，这次升级后却不行。</p>
+<p><img data-src="/../../images/iOS%E7%8E%AF%E5%A2%83%E5%8D%87%E7%BA%A73.png"></p>
+<p>重新安装了 Appium Server GUI 1.22.1版本（之前用的是 Appium 1.21.0-1），发现只要启动了Appium Server GUI 客户端后，不需要再通过 Xcode 编译出 WDA 到模拟器中，直接运行代码启动webdriver，模拟器中会自动生成 WDA，此时 Editor app 也能启动起来。</p>
+<p>虽然现在不用自己去编译WDA 了，但是进入 Appium Server GUI 1.22.1 安装路径下的 <code>/Applications/Appium\ Server\ GUI.app/Contents/Resources/app/node_modules/appium/node_modules/appium-webdriveragent</code>，打开 WebDriverAgent.xcodeproj 来编译 WDA 会报错，无法生成WDA，但用 github 上的 WebDriverAgent-8.7.2 包来编译，是没问题的。</p>
+<p>所以，现在使用 Appium Server GUI 1.22.1版本时，要么不自己去编译WDA，要么要用最新的包来编译 WDA，才能正常运行代码。</p>
+<hr>
+<p>部分修改代码</p>
+<p>点击坐标的方式改变，使用 PointerInput 和 ActionBuilder，不再支持 <code>TouchAction(self.driver).tap(x=x, y=y, count=1).perform()</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> selenium.webdriver <span class="keyword">import</span> ActionChains</span><br><span class="line"><span class="keyword">from</span> selenium.webdriver.common.actions <span class="keyword">import</span> interaction</span><br><span class="line"><span class="keyword">from</span> selenium.webdriver.common.actions.mouse_button <span class="keyword">import</span> MouseButton</span><br><span class="line"><span class="keyword">from</span> selenium.webdriver.common.actions.action_builder <span class="keyword">import</span> ActionBuilder</span><br><span class="line"><span class="keyword">from</span> selenium.webdriver.common.actions.pointer_input <span class="keyword">import</span> PointerInput</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">pointer = PointerInput(kind=interaction.POINTER_TOUCH, name=<span class="string">&#x27;finger1&#x27;</span>)</span><br><span class="line">actions = ActionBuilder(<span class="variable language_">self</span>.driver, mouse=pointer)</span><br><span class="line">actions.pointer_action.move_to_location(x, y)</span><br><span class="line">actions.pointer_action.pointer_down()</span><br><span class="line">actions.pointer_action.pointer_up()</span><br><span class="line">actions.perform()</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">pointer = PointerInput(kind=interaction.POINTER_TOUCH, name=<span class="string">&#x27;finger1&#x27;</span>)</span><br><span class="line">actions = ActionBuilder(<span class="variable language_">self</span>.driver, mouse=pointer)</span><br><span class="line">actions.pointer_action.move_to_location(start_x, start_y)</span><br><span class="line">actions.pointer_action.pointer_down()</span><br><span class="line">actions.pointer_action.pause(duration)</span><br><span class="line">actions.pointer_action.move_to_location(end_x, end_y)</span><br><span class="line">actions.pointer_action.pointer_up()</span><br><span class="line">actions.perform()</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">actions = ActionChains(<span class="variable language_">self</span>.driver)</span><br><span class="line">actions.w3c_actions.devices = []</span><br><span class="line">pointer_input0 = actions.w3c_actions.add_pointer_input(<span class="string">&#x27;touch&#x27;</span>, <span class="string">&#x27;finger0&#x27;</span>)</span><br><span class="line">pointer_input0.create_pointer_move(x=x, y=y)</span><br><span class="line">pointer_input0.create_pointer_down()</span><br><span class="line">pointer_input0.create_pause(<span class="number">0.5</span>)</span><br><span class="line">pointer_input0.create_pointer_move(x=x1, y=y1)</span><br><span class="line">pointer_input0.create_pointer_up(MouseButton.LEFT)</span><br><span class="line">pointer_input1 = actions.w3c_actions.add_pointer_input(<span class="string">&#x27;touch&#x27;</span>, <span class="string">&#x27;finger1&#x27;</span>)</span><br><span class="line">pointer_input1.create_pointer_move(x=x, y=y)</span><br><span class="line">pointer_input1.create_pointer_down()</span><br><span class="line">pointer_input1.create_pause(<span class="number">0.5</span>)</span><br><span class="line">pointer_input1.create_pointer_move(x=x2, y=y2)</span><br><span class="line">pointer_input1.create_pointer_up(MouseButton.LEFT)</span><br><span class="line">actions.perform()</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">pointer = PointerInput(kind=interaction.POINTER_TOUCH, name=<span class="string">&#x27;finger1&#x27;</span>)</span><br><span class="line">actions = ActionBuilder(<span class="variable language_">self</span>.driver, mouse=pointer)</span><br><span class="line"><span class="keyword">for</span> index, point <span class="keyword">in</span> <span class="built_in">enumerate</span>(coordinate_list):</span><br><span class="line">    x, y = point</span><br><span class="line">    <span class="keyword">if</span> index == <span class="number">0</span>:</span><br><span class="line">        <span class="comment"># Long press on the first point</span></span><br><span class="line">        actions.pointer_action.move_to_location(x=x, y=y)</span><br><span class="line">        actions.pointer_action.pointer_down().pause(<span class="number">0.5</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="comment"># Move to subsequent points</span></span><br><span class="line">        actions.pointer_action.move_to_location(x=x, y=y).pause(<span class="number">0.5</span>)</span><br><span class="line">actions.pointer_action.pointer_up()</span><br><span class="line">actions.perform()</span><br></pre></td></tr></table></figure>
+
+<p>不再支持像 find_element_by_accessibility_id、find_element_by_name 这类的接口，而是使用 <code>find_element(MobileBy.ACCESSIBILITY_ID, locator)</code>、<code>find_element(By.NAME, locator)</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># WebDriverWait(self.driver, timeout=time_out, poll_frequency=0.5, ignored_exceptions=None).until(lambda x: x.find_element_by_accessibility_id(locator))</span></span><br><span class="line"></span><br><span class="line">WebDriverWait(<span class="variable language_">self</span>.driver, timeout=time_out, poll_frequency=<span class="number">0.5</span>, ignored_exceptions=<span class="literal">None</span>).until(<span class="keyword">lambda</span> x: x.find_element(MobileBy.ACCESSIBILITY_ID, locator))</span><br></pre></td></tr></table></figure>
+
+<p>处理系统弹框</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">handle_system_alert</span>(<span class="params">self, button=<span class="string">&#x27;Continue&#x27;</span></span>):</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        WebDriverWait(<span class="variable language_">self</span>.driver, <span class="number">10</span>).until(ec.alert_is_present())</span><br><span class="line">        <span class="variable language_">self</span>.driver.execute_script(<span class="string">&#x27;mobile: alert&#x27;</span>, &#123;<span class="string">&#x27;action&#x27;</span>: <span class="string">&#x27;accept&#x27;</span>, <span class="string">&#x27;buttonLabel&#x27;</span>: <span class="string">f&#x27;<span class="subst">&#123;button&#125;</span>&#x27;</span>&#125;)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;No alert present: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/FixBug/" rel="tag"># FixBug</a>
+              <a href="/tags/iOS/" rel="tag"># iOS</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2024/02/11/57207/" rel="prev" title="gitlab-runner.exe exec 调试 ci 配置">
+                  <i class="fa fa-angle-left"></i> gitlab-runner.exe exec 调试 ci 配置
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2024/10/01/1800/" rel="next" title="Python 数据类型，是否可变、可哈希">
+                  Python 数据类型，是否可变、可哈希 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">691k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:28</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="本文主要介绍了 Python 中模块导入时和运行时的情况，通过举例说明代码执行顺序，并分析了模块被导入和直接运行两种场景下的不同表现。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python代码执行顺序">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2020/04/08/25924/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="本文主要介绍了 Python 中模块导入时和运行时的情况，通过举例说明代码执行顺序，并分析了模块被导入和直接运行两种场景下的不同表现。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-04-08T15:34:59.000Z">
+<meta property="article:modified_time" content="2025-12-23T14:07:49.075Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2020/04/08/25924/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2020/04/08/25924/","path":"posts/2020/04/08/25924/","title":"Python代码执行顺序"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Python代码执行顺序 | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A8%A1%E5%9D%97%E5%AF%BC%E5%85%A5%E6%97%B6%E5%92%8C%E8%BF%90%E8%A1%8C%E6%97%B6%E6%AF%94%E8%BE%83"><span class="nav-text">模块导入时和运行时比较</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%BE%E4%BE%8B%EF%BC%9A%E7%90%86%E8%A7%A3%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F%E7%9A%84%E7%BB%83%E4%B9%A0"><span class="nav-text">举例：理解代码执行顺序的练习</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF1-%EF%BC%9A%E8%A2%AB%E5%BD%93%E5%81%9A%E6%A8%A1%E5%9D%97%E5%AF%BC%E5%85%A5%E5%88%B0%E5%85%B6%E4%BB%96%E6%A8%A1%E5%9D%97%E4%B8%AD"><span class="nav-text">场景1 ：被当做模块导入到其他模块中</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF2-%EF%BC%9A%E7%9B%B4%E6%8E%A5%E8%BF%90%E8%A1%8C%E6%A8%A1%E5%9D%97"><span class="nav-text">场景2 ：直接运行模块</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2020/04/08/25924/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Python代码执行顺序 | Magnolia's Blog">
+      <meta itemprop="description" content="本文主要介绍了 Python 中模块导入时和运行时的情况，通过举例说明代码执行顺序，并分析了模块被导入和直接运行两种场景下的不同表现。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Python代码执行顺序
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-04-08 23:34:59" itemprop="dateCreated datePublished" datetime="2020-04-08T23:34:59+08:00">2020-04-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>4.4k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>4 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">本文主要介绍了 Python 中模块导入时和运行时的情况，通过举例说明代码执行顺序，并分析了模块被导入和直接运行两种场景下的不同表现。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h4 id="模块导入时和运行时比较"><a href="#模块导入时和运行时比较" class="headerlink" title="模块导入时和运行时比较"></a>模块导入时和运行时比较</h4><p>Python程序员会区分“导入时”和“运行时”，不过这两个术语没有严格的定义，而且二者之间存在着灰色地带。</p>
+<p>在导入时，解释器会从上到下一次性解析完 <code>.py</code> 模块的源码，然后生成用于执行的字节码。如果句法有错误，就在此时报告。</p>
+<p>如果本地的 <code>__pycache__</code> 文件夹中有最新的 <code>.pyc</code> 文件，解释器会跳过上述步骤，因为已经有运行所需的字节码了。</p>
+<hr>
+<p>编译肯定是导入时的活动，不过那个时期还会做些其他事，因为Python中的语句几乎都是可执行的，也就是说语句可能会运行用户代码，修改用户程序的状态。</p>
+<p>尤其是 <code>import</code> 语句，它不只是声明，在进程中首次导入模块时，还会运行所导入模块中的全部顶层代码——以后导入相同的模块则使用缓存，只做名称绑定。那些顶层代码可以做任何事，包括通常在“运行时”做的事，例如连接数据库。</p>
+<p>因此，“导入时”与“运行时”之间的界线是模糊的：import语句可以触发任何“运行时”行为。</p>
+<hr>
+<p>导入时会“运行全部顶层代码”，但是“顶层代码”会经过一些加工。导入模块时，解释器会执行顶层的def语句，可是这么做有什么作用呢？</p>
+<p>解释器会编译函数的定义体（首次导入模块时），把函数对象绑定到对应的全局名称上，但是显然解释器不会执行函数的定义体。通常这意味着解释器在导入时定义顶层函数，但是仅当在运行时调用函数时才会执行函数的定义体。</p>
+<p>对类来说，情况就不同了：在导入时，解释器会执行每个类的定义体，甚至会执行嵌套类的定义体。执行类定义体的结果是，定义了类的属性和方法，并构建了类对象。从这个意义上理解，类的定义体属于“顶层代码”，因为它在导入时运行。</p>
+<hr>
+<h4 id="举例：理解代码执行顺序的练习"><a href="#举例：理解代码执行顺序的练习" class="headerlink" title="举例：理解代码执行顺序的练习"></a>举例：理解代码执行顺序的练习</h4><p><strong>强烈建议在代码中添加断点，debug一步一步地查看执行顺序。</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># evalsupport.py</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;&lt;[100]&gt; evalsupport module start&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">deco_alpha</span>(<span class="params">cls</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;&lt;[200]&gt; deco_alpha&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">inner_1</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;&lt;[300]&gt; deco_alpha:inner_1&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    cls.method_y = inner_1</span><br><span class="line">    <span class="keyword">return</span> cls</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MetaAleph</span>(<span class="title class_ inherited__">type</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;&lt;[400]&gt; MetaAleph body&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">cls, name, bases, dic</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;&lt;[500]&gt; MetaAleph.__init__&#x27;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">inner_2</span>(<span class="params">self</span>):</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&#x27;&lt;[600]&gt; MetaAleph.__init__:inner_2&#x27;</span>)</span><br><span class="line"></span><br><span class="line">        cls.method_z = inner_2</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;&lt;[700]&gt; evalsupport module end&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># evaltime.py</span></span><br><span class="line"><span class="keyword">from</span> evalsupport <span class="keyword">import</span> deco_alpha</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;&lt;[1]&gt; evaltime module start&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ClassOne</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;&lt;[2]&gt; ClassOne body&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;&lt;[3]&gt; ClassOne.__init__&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__del__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;&lt;[4]&gt; ClassOne.__del__&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">method_x</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;&lt;[5]&gt; ClassOne.method_x&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">ClassTwo</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;&lt;[6]&gt; ClassTwo body&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 先计算被装饰的类ClassThree的定义体，然后运行装饰器函数。</span></span><br><span class="line"><span class="meta">@deco_alpha</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ClassThree</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;&lt;[7]&gt; ClassThree body&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">method_y</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;&lt;[8]&gt; ClassThree.method_y&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ClassFour</span>(<span class="title class_ inherited__">ClassThree</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;&lt;[9]&gt; ClassFour body&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">method_y</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;&lt;[10]&gt; ClassFour.method_y&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;&lt;[11]&gt; ClassOne tests&#x27;</span>, <span class="number">30</span> * <span class="string">&#x27;.&#x27;</span>)</span><br><span class="line">    one = ClassOne()</span><br><span class="line">    one.method_x()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;&lt;[12]&gt; ClassThree tests&#x27;</span>, <span class="number">30</span> * <span class="string">&#x27;.&#x27;</span>)</span><br><span class="line">    three = ClassThree()</span><br><span class="line">    three.method_y()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;&lt;[13]&gt; ClassFour tests&#x27;</span>, <span class="number">30</span> * <span class="string">&#x27;.&#x27;</span>)</span><br><span class="line">    four = ClassFour()</span><br><span class="line">    four.method_y()</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;&lt;[14]&gt; evaltime module end&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="场景1-：被当做模块导入到其他模块中"><a href="#场景1-：被当做模块导入到其他模块中" class="headerlink" title="场景1 ：被当做模块导入到其他模块中"></a>场景1 ：被当做模块导入到其他模块中</h4><p>evaltime.py 被当做模块导入到其他模块中</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;[<span class="number">100</span>]&gt; evalsupport module start</span><br><span class="line">&lt;[<span class="number">400</span>]&gt; MetaAleph body</span><br><span class="line">&lt;[<span class="number">700</span>]&gt; evalsupport module end</span><br><span class="line">&lt;[<span class="number">1</span>]&gt; evaltime module start</span><br><span class="line">&lt;[<span class="number">2</span>]&gt; ClassOne body</span><br><span class="line">&lt;[<span class="number">6</span>]&gt; ClassTwo body</span><br><span class="line">&lt;[<span class="number">7</span>]&gt; ClassThree body</span><br><span class="line">&lt;[<span class="number">200</span>]&gt; deco_alpha</span><br><span class="line">&lt;[<span class="number">9</span>]&gt; ClassFour body</span><br><span class="line">&lt;[<span class="number">14</span>]&gt; evaltime module end</span><br></pre></td></tr></table></figure>
+
+<p>导入evaltime模块时，其中的 evalsupport 模块中的所有顶层代码在导入模块时运行；解释器会编译 deco_alpha 函数，但是不会执行定义体；ClassThree 被装饰器 deco_alpha 修饰，先计算被装饰的类 ClassThree 的定义体，然后运行装饰器函数deco_alpha ；evaltime模块是导入的，因此不会运行 <code>if __name__==&#39;__main__&#39;:</code> 块。</p>
+<p>小结：</p>
+<ul>
+<li>这个场景由简单的 import evaltime 语句触发；</li>
+<li>解释器会执行所导入模块及其依赖（evalsupport）中的每个类定义体；</li>
+<li>解释器先计算类的定义体，然后调用依附在类上的装饰器函数，这是合理的行为，因为必须先构建类对象，装饰器才有类对象可处理；</li>
+<li>在这个场景中，只运行了一个用户定义的函数或方法——deco_alpha装饰器。</li>
+</ul>
+<hr>
+<h4 id="场景2-：直接运行模块"><a href="#场景2-：直接运行模块" class="headerlink" title="场景2 ：直接运行模块"></a>场景2 ：直接运行模块</h4><p>运行evaltime.py</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;[<span class="number">100</span>]&gt; evalsupport module start</span><br><span class="line">&lt;[<span class="number">400</span>]&gt; MetaAleph body</span><br><span class="line">&lt;[<span class="number">700</span>]&gt; evalsupport module end</span><br><span class="line">&lt;[<span class="number">1</span>]&gt; evaltime module start</span><br><span class="line">&lt;[<span class="number">2</span>]&gt; ClassOne body</span><br><span class="line">&lt;[<span class="number">6</span>]&gt; ClassTwo body</span><br><span class="line">&lt;[<span class="number">7</span>]&gt; ClassThree body</span><br><span class="line">&lt;[<span class="number">200</span>]&gt; deco_alpha</span><br><span class="line">&lt;[<span class="number">9</span>]&gt; ClassFour body</span><br><span class="line">&lt;[<span class="number">11</span>]&gt; ClassOne tests ..............................</span><br><span class="line">&lt;[<span class="number">3</span>]&gt; ClassOne.__init__</span><br><span class="line">&lt;[<span class="number">5</span>]&gt; ClassOne.method_x</span><br><span class="line">&lt;[<span class="number">12</span>]&gt; ClassThree tests ..............................</span><br><span class="line">&lt;[<span class="number">300</span>]&gt; deco_alpha:inner_1</span><br><span class="line">&lt;[<span class="number">13</span>]&gt; ClassFour tests ..............................</span><br><span class="line">&lt;[<span class="number">10</span>]&gt; ClassFour.method_y</span><br><span class="line">&lt;[<span class="number">14</span>]&gt; evaltime module end</span><br><span class="line">&lt;[<span class="number">4</span>]&gt; ClassOne.__del__</span><br></pre></td></tr></table></figure>
+
+<p>deco_alpha 装饰器修改了 <code>ClassThree.method_y</code> 方法，因此调用 <code>three.method_y()</code>时会运行 inner_1 函数的定义体。只有程序结束时，绑定在全局变量 one 上的 ClassOne 实例才会被垃圾回收程序回收。</p>
+<p>场景2主要想说明的是，类装饰器可能对子类没有影响。在示例中，把 ClassFour 定义为 ClassThree 的子类，ClassThree 类上依附的 @deco_alpha 装饰器把 method_y 方法替换掉了，但是这对 ClassFour 类根本没有影响。当然，如果 <code>ClassFour.method_y</code> 方法使用 <code>super(...)</code> 调用 <code>ClassThree.method_y</code> 方法，我们便会看到装饰器起作用，执行inner_1函数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ClassFour</span>(<span class="title class_ inherited__">ClassThree</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;&lt;[9]&gt; ClassFour body&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">method_y</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;&lt;[10]&gt; ClassFour.method_y&#x27;</span>)</span><br><span class="line">        <span class="built_in">super</span>(ClassFour, <span class="variable language_">self</span>).method_y()</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;[<span class="number">13</span>]&gt; ClassFour tests ..............................</span><br><span class="line">&lt;[<span class="number">10</span>]&gt; ClassFour.method_y</span><br><span class="line">&lt;[<span class="number">300</span>]&gt; deco_alpha:inner_1  <span class="comment"># 装饰器起作用了</span></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2020/04/05/700/" rel="prev" title="流畅的Python 属性描述符—验证属性">
+                  <i class="fa fa-angle-left"></i> 流畅的Python 属性描述符—验证属性
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2020/04/11/25962/" rel="next" title="含元类、类装饰器的Python代码执行顺序">
+                  含元类、类装饰器的Python代码执行顺序 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">691k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:28</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

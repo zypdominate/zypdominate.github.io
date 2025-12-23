@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="systemd 服务配置，是 Linux 上非常核心且常用的运维技能之一，很多人只停留在用命令行 nohup 或 &amp; 启动后台进程，而 systemd 能提供更可靠的服务管理（自动重启、开机自启、日志统一管理、依赖关系控制等）。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="提升效率和管理的 systemd">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2025/10/04/31611/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="systemd 服务配置，是 Linux 上非常核心且常用的运维技能之一，很多人只停留在用命令行 nohup 或 &amp; 启动后台进程，而 systemd 能提供更可靠的服务管理（自动重启、开机自启、日志统一管理、依赖关系控制等）。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-10-04T08:00:18.000Z">
+<meta property="article:modified_time" content="2025-12-23T14:07:49.186Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="tools">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2025/10/04/31611/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2025/10/04/31611/","path":"posts/2025/10/04/31611/","title":"提升效率和管理的 systemd"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>提升效率和管理的 systemd | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%83%8C%E6%99%AF"><span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#systemd-%E5%8A%9F%E8%83%BD"><span class="nav-text">systemd 功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E8%B7%B5%E5%9C%BA%E6%99%AF"><span class="nav-text">实践场景</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Jenkins-Agent-%E6%9C%8D%E5%8A%A1"><span class="nav-text">Jenkins Agent 服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GitLab-Runner-%E6%9C%8D%E5%8A%A1"><span class="nav-text">GitLab Runner 服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python-HTTP-%E9%9D%99%E6%80%81%E6%96%87%E4%BB%B6%E6%9C%8D%E5%8A%A1"><span class="nav-text">Python HTTP 静态文件服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Flask-%E6%9C%8D%E5%8A%A1"><span class="nav-text">Flask 服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Timer"><span class="nav-text">Timer</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2025/10/04/31611/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="提升效率和管理的 systemd | Magnolia's Blog">
+      <meta itemprop="description" content="systemd 服务配置，是 Linux 上非常核心且常用的运维技能之一，很多人只停留在用命令行 nohup 或 &amp; 启动后台进程，而 systemd 能提供更可靠的服务管理（自动重启、开机自启、日志统一管理、依赖关系控制等）。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          提升效率和管理的 systemd
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2025-10-04 16:00:18" itemprop="dateCreated datePublished" datetime="2025-10-04T16:00:18+08:00">2025-10-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>11k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>10 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">systemd 服务配置，是 Linux 上非常核心且常用的运维技能之一，很多人只停留在用命令行 nohup 或 & 启动后台进程，而 systemd 能提供更可靠的服务管理（自动重启、开机自启、日志统一管理、依赖关系控制等）。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>最近工作频繁和 Linux 打交道，发现一个挺有用的配置：systemd，多次使用到 systemd 的场景：</p>
+<ol>
+<li>jenkins 启动节点的服务，避免手动执行 nohup、手动重连</li>
+<li>gitlab-runner 的服务，gitlab-runner install 时会创建一个 systemd 服务</li>
+<li>配置 python http 服务，启动一个服务，让其他人可以访问某个目录下的 html 静态文件</li>
+</ol>
+<h2 id="systemd-功能"><a href="#systemd-功能" class="headerlink" title="systemd 功能"></a>systemd 功能</h2><p><strong>systemd</strong>（System Daemon）是 Linux 的系统和服务管理器，用于控制系统启动和后台服务。</p>
+<ul>
+<li>统一管理（<code>systemctl start|stop|enable|status</code>）：所有服务用同样的命令</li>
+<li>开机自启（<code>WantedBy=multi-user.target</code>）</li>
+<li>自动重启崩溃的服务（<code>Restart=always</code>）</li>
+<li>日志集成：通过 journalctl 统一查看日志</li>
+<li>依赖控制（<code>After=</code>、<code>Requires=</code>）：可以定义服务启动顺序</li>
+<li>资源限制: 可以限制 CPU、内存等资源</li>
+</ul>
+<h2 id="实践场景"><a href="#实践场景" class="headerlink" title="实践场景"></a>实践场景</h2><h3 id="Jenkins-Agent-服务"><a href="#Jenkins-Agent-服务" class="headerlink" title="Jenkins Agent 服务"></a>Jenkins Agent 服务</h3><figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[Unit]</span></span><br><span class="line"><span class="attr">Description</span>=Jenkins Agent Service</span><br><span class="line"><span class="attr">After</span>=network.target</span><br><span class="line"></span><br><span class="line"><span class="section">[Service]</span></span><br><span class="line"><span class="attr">Type</span>=simple</span><br><span class="line"><span class="attr">User</span>=magnolia</span><br><span class="line"><span class="attr">WorkingDirectory</span>=/home/magnolia/jenkins_home</span><br><span class="line"><span class="attr">ExecStart</span>=/usr/bin/java -jar /home/magnolia/jenkins_home/agent.jar \</span><br><span class="line">    -url http://127.0.0.1:8081/ \</span><br><span class="line">    -secret @/home/magnolia/jenkins_home/secret-file \</span><br><span class="line">    -name linux \</span><br><span class="line">    -webSocket \</span><br><span class="line">    -workDir /home/magnolia/jenkins_home/</span><br><span class="line"><span class="attr">Restart</span>=<span class="literal">on</span>-failure</span><br><span class="line"><span class="attr">RestartSec</span>=<span class="number">10</span></span><br><span class="line"><span class="attr">StandardOutput</span>=journal</span><br><span class="line"><span class="attr">StandardError</span>=journal</span><br><span class="line"></span><br><span class="line"><span class="section">[Install]</span></span><br><span class="line"><span class="attr">WantedBy</span>=multi-user.target</span><br></pre></td></tr></table></figure>
+
+<p>在用户目录，创建一个 service 文件，软连接到 <code>/etc/systemd/system/</code> (<strong>分离操作系统文件和本地配置</strong>)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> <span class="built_in">ln</span> -s  /home/magnolia/jenkins_home/jenkins-agent.service /etc/systemd/system/jenkins-agent.service</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> systemctl stop jenkins-agent</span><br><span class="line"><span class="built_in">sudo</span> systemctl daemon-reload</span><br><span class="line"><span class="built_in">sudo</span> systemctl start jenkins-agent</span><br><span class="line"><span class="built_in">sudo</span> systemctl status jenkins-agent</span><br><span class="line"><span class="built_in">sudo</span> journalctl -u jenkins-agent -f</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="GitLab-Runner-服务"><a href="#GitLab-Runner-服务" class="headerlink" title="GitLab Runner 服务"></a>GitLab Runner 服务</h3><figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[Unit]</span></span><br><span class="line"><span class="attr">Description</span>=GitLab Runner</span><br><span class="line"><span class="attr">ConditionFileIsExecutable</span>=/usr/local/bin/gitlab-runner</span><br><span class="line"><span class="attr">After</span>=network.target</span><br><span class="line"><span class="section">[Service]</span></span><br><span class="line"><span class="attr">StartLimitInterval</span>=<span class="number">5</span></span><br><span class="line"><span class="attr">StartLimitBurst</span>=<span class="number">10</span></span><br><span class="line"><span class="attr">ExecStart</span>=/usr/local/bin/gitlab-runner <span class="string">&quot;run&quot;</span> <span class="string">&quot;--config&quot;</span> <span class="string">&quot;/etc/gitlab-runner/config.toml&quot;</span> <span class="string">&quot;--working-directory&quot;</span> <span class="string">&quot;/home/tools/gitlab-runner&quot;</span> <span class="string">&quot;--service&quot;</span> <span class="string">&quot;gitlab-runner&quot;</span> <span class="string">&quot;--user&quot;</span> <span class="string">&quot;gitlab-runner&quot;</span></span><br><span class="line"><span class="attr">Restart</span>=always</span><br><span class="line"><span class="attr">RestartSec</span>=<span class="number">120</span></span><br><span class="line"><span class="attr">EnvironmentFile</span>=-/etc/sysconfig/gitlab-runner</span><br><span class="line"><span class="section">[Install]</span></span><br><span class="line"><span class="attr">WantedBy</span>=multi-user.target</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Python-HTTP-静态文件服务"><a href="#Python-HTTP-静态文件服务" class="headerlink" title="Python HTTP 静态文件服务"></a>Python HTTP 静态文件服务</h3><figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[Unit]</span></span><br><span class="line"><span class="attr">Description</span>=Python HTTP Static File Server</span><br><span class="line"><span class="attr">After</span>=network.target</span><br><span class="line"></span><br><span class="line"><span class="section">[Service]</span></span><br><span class="line"><span class="attr">Type</span>=simple</span><br><span class="line"><span class="attr">User</span>=autotest</span><br><span class="line"><span class="attr">WorkingDirectory</span>=/home/autotest/work/auto-doc/doc/build/</span><br><span class="line"><span class="attr">ExecStart</span>=/usr/bin/python3.<span class="number">6</span> -m http.server <span class="number">8000</span> --bind <span class="number">0.0</span>.<span class="number">0.0</span></span><br><span class="line"><span class="attr">Restart</span>=<span class="literal">on</span>-failure</span><br><span class="line"><span class="attr">RestartSec</span>=<span class="number">5</span></span><br><span class="line"></span><br><span class="line"><span class="section">[Install]</span></span><br><span class="line"><span class="attr">WantedBy</span>=multi-user.target</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Flask-服务"><a href="#Flask-服务" class="headerlink" title="Flask 服务"></a>Flask 服务</h3><p>一个用于启动 flask 服务的 sh 脚本方式，start.sh：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># shellcheck disable=SC1090</span></span><br><span class="line"><span class="built_in">source</span> ~/tools/miniforge3/etc/profile.d/conda.sh</span><br><span class="line">conda activate vltenvLinux</span><br><span class="line"><span class="built_in">which</span> python</span><br><span class="line">python --version</span><br><span class="line">flask --version</span><br><span class="line">gunicorn --version</span><br><span class="line"><span class="built_in">export</span> $(grep -v <span class="string">&#x27;^#&#x27;</span> .<span class="built_in">env</span> | xargs)</span><br><span class="line"></span><br><span class="line">TIMESTAMP=$(<span class="built_in">date</span> <span class="string">&#x27;+%Y_%m_%d_%H_%M_%S&#x27;</span>)</span><br><span class="line">ENABLE_SCHEDULER=<span class="literal">true</span> gunicorn -w 4 -b 0.0.0.0:5001 app:app \</span><br><span class="line">    --access-logfile <span class="string">&quot;logs/gunicorn_access_<span class="variable">$&#123;TIMESTAMP&#125;</span>.log&quot;</span> \</span><br><span class="line">    --error-logfile <span class="string">&quot;logs/gunicorn_error_<span class="variable">$&#123;TIMESTAMP&#125;</span>.log&quot;</span> \</span><br><span class="line">    --log-level info \</span><br><span class="line">    --<span class="built_in">timeout</span> 120 \</span><br><span class="line">    --keep-alive 5 \</span><br><span class="line">    --max-requests 1000 \</span><br><span class="line">    --max-requests-jitter 100 \</span><br><span class="line">    --preload</span><br></pre></td></tr></table></figure>
+
+<p>转为 systemd 管理</p>
+<p>step1，创建 systemd 服务文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># /home/autotest/vlt/vlt_track</span></span><br><span class="line">(vltenvLinux) [autotest@dgvxl2905 vlt_track]$ <span class="built_in">cat</span> vlt_track_app.service</span><br><span class="line">[Unit]</span><br><span class="line">Description=VLT TRACK Flask Application with Gunicorn</span><br><span class="line">After=network.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=notify</span><br><span class="line">User=autotest</span><br><span class="line">WorkingDirectory=/home/autotest/vlt/vlt_track</span><br><span class="line"></span><br><span class="line">Environment=<span class="string">&quot;PATH=/home/autotest/tools/miniforge3/envs/vltenvLinux/bin:/usr/local/bin:/usr/bin:/bin&quot;</span></span><br><span class="line">EnvironmentFile=/home/autotest/vlt/vlt_track/.env</span><br><span class="line">Environment=<span class="string">&quot;ENABLE_SCHEDULER=true&quot;</span></span><br><span class="line"></span><br><span class="line">ExecStart=/home/autotest/tools/miniforge3/envs/vltenvLinux/bin/gunicorn \</span><br><span class="line">    -w 4 \</span><br><span class="line">    -b 0.0.0.0:5000 \</span><br><span class="line">    app:app \</span><br><span class="line">    --access-logfile /home/autotest/vlt/vlt_track/logs/gunicorn_access.log \</span><br><span class="line">    --error-logfile /home/autotest/vlt/vlt_track/logs/gunicorn_error.log \</span><br><span class="line">    --log-level info \</span><br><span class="line">    --<span class="built_in">timeout</span> 120 \</span><br><span class="line">    --keep-alive 5 \</span><br><span class="line">    --max-requests 1000 \</span><br><span class="line">    --max-requests-jitter 100 \</span><br><span class="line">    --preload</span><br><span class="line"></span><br><span class="line"><span class="comment"># 优雅重启（用于日志轮转）</span></span><br><span class="line">ExecReload=/bin/kill -USR1 <span class="variable">$MAINPID</span></span><br><span class="line"></span><br><span class="line">Restart=always</span><br><span class="line">RestartSec=10</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p /home/autotest/vlt/vlt_track/logs</span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">ln</span> -s /home/autotest/vlt/vlt_track/vlt_track_app.service /etc/systemd/system/vlt_track_app.service</span><br></pre></td></tr></table></figure>
+
+<p>step2，创建 logrotate 配置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">(base) [root@dgvxl2905 vlt_track]# <span class="built_in">cd</span> /etc/logrotate.d/</span><br><span class="line">(base) [root@dgvxl2905 logrotate.d]# <span class="built_in">cat</span> vlt_track</span><br><span class="line">/home/autotest/vlt/vlt_track/logs/gunicorn_*.<span class="built_in">log</span> &#123;</span><br><span class="line">    su autotest autotest</span><br><span class="line">    daily</span><br><span class="line">    rotate 30</span><br><span class="line">    compress</span><br><span class="line">    delaycompress</span><br><span class="line">    notifempty</span><br><span class="line">    missingok</span><br><span class="line">    dateext</span><br><span class="line">    dateformat _%Y%m%d</span><br><span class="line">    create 0644 autotest autotest</span><br><span class="line">    sharedscripts</span><br><span class="line">    postrotate</span><br><span class="line">    /bin/systemctl reload vlt_track_app.service &gt; /dev/null 2&gt;&amp;1 || <span class="literal">true</span></span><br><span class="line">    endscript</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>测试 logrotate 配置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">(base) [root@dgvxl2905 logrotate.d]# logrotate -d /etc/logrotate.d/vlt_track</span><br><span class="line">reading config file /etc/logrotate.d/vlt_track</span><br><span class="line">Allocating <span class="built_in">hash</span> table <span class="keyword">for</span> state file, size 15360 B</span><br><span class="line"></span><br><span class="line">Handling 1 logs</span><br><span class="line"></span><br><span class="line">rotating pattern: /home/autotest/vlt/vlt_track/logs/gunicorn_*.<span class="built_in">log</span>  after 1 days (30 rotations)</span><br><span class="line">empty <span class="built_in">log</span> files are not rotated, old logs are removed</span><br><span class="line">switching euid to 5991 and egid to 5991</span><br><span class="line">considering <span class="built_in">log</span> /home/autotest/vlt/vlt_track/logs/gunicorn_access_2025_08_06_11_21_11.<span class="built_in">log</span></span><br><span class="line">  <span class="built_in">log</span> does not need rotating (<span class="built_in">log</span> has been already rotated)considering <span class="built_in">log</span> /home/autotest/vlt/vlt_track/logs/gunicorn_access_2025_08_06_11_48_12.<span class="built_in">log</span></span><br></pre></td></tr></table></figure>
+
+<p>step3，启动服务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl start vlt_track_app</span><br><span class="line">systemctl status vlt_track_app</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">(base) [root@dgvxl2905 vlt_track]# systemctl status vlt_track_app</span><br><span class="line">● vlt_track_app.service - VLT TRACK Flask Application with Gunicorn</span><br><span class="line">   Loaded: loaded (/home/autotest/vlt/vlt_track/vlt_track_app.service; linked; vendor preset: disabled)</span><br><span class="line">   Active: active (running) since Fri 2025-10-17 10:17:41 CST; 2s ago</span><br><span class="line"> Main PID: 6208 (gunicorn)</span><br><span class="line">   Status: <span class="string">&quot;Gunicorn arbiter booted&quot;</span></span><br><span class="line">    Tasks: 8</span><br><span class="line">   Memory: 54.3M</span><br><span class="line">   CGroup: /system.slice/vlt_track_app.service</span><br><span class="line">           ├─6208 /home/autotest/tools/miniforge3/envs/vltenvLinux/bin/python /home/autotest/tools/miniforge3/envs/vltenvLinux/bin/gunicorn -w 4 -b 0.0.0.0:...</span><br><span class="line">           ├─6213 /home/autotest/tools/miniforge3/envs/vltenvLinux/bin/python /home/autotest/tools/miniforge3/envs/vltenvLinux/bin/gunicorn -w 4 -b 0.0.0.0:...</span><br><span class="line">           ├─6228 /home/autotest/tools/miniforge3/envs/vltenvLinux/bin/python /home/autotest/tools/miniforge3/envs/vltenvLinux/bin/gunicorn -w 4 -b 0.0.0.0:...</span><br><span class="line">           ├─6229 /home/autotest/tools/miniforge3/envs/vltenvLinux/bin/python /home/autotest/tools/miniforge3/envs/vltenvLinux/bin/gunicorn -w 4 -b 0.0.0.0:...</span><br><span class="line">           └─6230 /home/autotest/tools/miniforge3/envs/vltenvLinux/bin/python /home/autotest/tools/miniforge3/envs/vltenvLinux/bin/gunicorn -w 4 -b 0.0.0.0:...</span><br><span class="line"></span><br><span class="line">Oct 17 10:17:40 dgvxl2905 systemd[1]: Starting VLT TRACK Flask Application with Gunicorn...</span><br><span class="line">Oct 17 10:17:41 dgvxl2905 gunicorn[6208]: 2025-10-17 10:17:41.336 | INFO     | utils.api_scanner:start_scheduler:297 - API扫描-定时任务已启动</span><br><span class="line">Oct 17 10:17:41 dgvxl2905 gunicorn[6208]: 2025-10-17 10:17:41.336 | INFO     | utils.api_scanner:start_scheduler:298 - API扫描-定时任务时间: 1点0分</span><br><span class="line">Oct 17 10:17:41 dgvxl2905 gunicorn[6208]: 2025-10-17 10:17:41.336 | INFO     | utils.api_scanner:init_api_scanner_scheduler:564 - API扫描-定时任务已…PID: 6208)</span><br><span class="line">Oct 17 10:17:41 dgvxl2905 gunicorn[6208]: 2025-10-17 10:17:41.338 | INFO     | utils.statistics_collector:start_scheduler:37 - 统计数据-定时任务已启…PID: 6208)</span><br><span class="line">Oct 17 10:17:41 dgvxl2905 gunicorn[6208]: 2025-10-17 10:17:41.338 | INFO     | utils.statistics_collector:init_statistics_collector_scheduler:70 - …(PID: 6208)</span><br><span class="line">Oct 17 10:17:41 dgvxl2905 systemd[1]: Started VLT TRACK Flask Application with Gunicorn.</span><br><span class="line">Hint: Some lines were ellipsized, use -l to show <span class="keyword">in</span> full.</span><br></pre></td></tr></table></figure>
+
+<h3 id="Timer"><a href="#Timer" class="headerlink" title="Timer"></a>Timer</h3><p>场景：每天凌晨2点自动清理 &#x2F;tmp 目录中的旧文件。</p>
+<p>step1：创建要执行的脚本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">(base) magnolia@Magnolia:~/tools/systemd_tasks$ <span class="built_in">sudo</span> vi cleanup-tmp.sh</span><br><span class="line">(base) magnolia@Magnolia:~/tools/systemd_tasks$ <span class="built_in">cat</span> cleanup-tmp.sh</span><br><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line"><span class="comment"># 删除 /tmp 目录下 7 天前的文件</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;<span class="subst">$(date)</span>: 开始清理临时文件...&quot;</span></span><br><span class="line">find /tmp -<span class="built_in">type</span> f -mtime +7 -delete</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;<span class="subst">$(date)</span>: 清理完成！&quot;</span></span><br><span class="line">(base) magnolia@Magnolia:~/tools/systemd_tasks$ <span class="built_in">sudo</span> <span class="built_in">chmod</span> +x cleanup-tmp.sh</span><br></pre></td></tr></table></figure>
+
+<p>step2：创建 Service 文件（定义要做什么）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">(base) magnolia@Magnolia:~/tools/systemd_tasks$ <span class="built_in">sudo</span> vi cleanup-tmp.service</span><br><span class="line">(base) magnolia@Magnolia:~/tools/systemd_tasks$ <span class="built_in">cat</span> cleanup-tmp.service</span><br><span class="line">[Unit]</span><br><span class="line">Description=清理临时文件</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=oneshot</span><br><span class="line">ExecStart=/home/magnolia/tools/systemd_tasks/cleanup-tmp.sh</span><br></pre></td></tr></table></figure>
+
+<p>step3：创建 Timer 文件（定义什么时候执行）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">(base) magnolia@Magnolia:~/tools/systemd_tasks$ <span class="built_in">sudo</span> vi cleanup-tmp.timer</span><br><span class="line">(base) magnolia@Magnolia:~/tools/systemd_tasks$ <span class="built_in">cat</span> cleanup-tmp.timer</span><br><span class="line">[Unit]</span><br><span class="line">Description=每天凌晨2点清理临时文件</span><br><span class="line"></span><br><span class="line">[Timer]</span><br><span class="line">OnCalendar=*-*-* 02:00:00</span><br><span class="line">Persistent=<span class="literal">true</span>  <span class="comment"># 如果错过了执行时间（比如关机了），开机后会立即执行一次</span></span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=timers.target</span><br><span class="line"></span><br><span class="line">(base) magnolia@Magnolia:~/tools/systemd_tasks$ <span class="built_in">ls</span> -l</span><br><span class="line">total 12</span><br><span class="line">-rw-r--r-- 1 root root 103 Oct  8 10:37 cleanup-tmp.service</span><br><span class="line">-rwxr-xr-x 1 root root 166 Oct  8 10:31 cleanup-tmp.sh</span><br><span class="line">-rw-r--r-- 1 root root 139 Oct  8 10:40 cleanup-tmp.timer</span><br></pre></td></tr></table></figure>
+
+<p>step4：软连接到 <code>/etc/systemd/system/</code></p>
+<p>在用户目录集中管理自定义配置，便于维护，systemd 通过软连接获取</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(base) magnolia@Magnolia:/etc/systemd/system$ <span class="built_in">sudo</span> <span class="built_in">ln</span> -s /home/magnolia/tools/systemd_tasks/cleanup-tmp.service  /etc/systemd/system/cleanup-tmp.service</span><br><span class="line">(base) magnolia@Magnolia:/etc/systemd/system$ <span class="built_in">sudo</span> <span class="built_in">ln</span> -s /home/magnolia/tools/systemd_tasks/cleanup-tmp.timer  /etc/systemd/system/cleanup-tmp.timer</span><br><span class="line">(base) magnolia@Magnolia:/etc/systemd/system$ <span class="built_in">ls</span> -l</span><br><span class="line">total 48</span><br><span class="line">lrwxrwxrwx 1 root root   54 Oct  8 10:54 cleanup-tmp.service -&gt; /home/magnolia/tools/systemd_tasks/cleanup-tmp.service</span><br><span class="line">lrwxrwxrwx 1 root root   52 Oct  8 10:56 cleanup-tmp.timer -&gt; /home/magnolia/tools/systemd_tasks/cleanup-tmp.timer</span><br></pre></td></tr></table></figure>
+
+<p>step5：启用和管理 Timer</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">(base) magnolia@Magnolia:/etc/systemd/system$ <span class="built_in">sudo</span> systemctl daemon-reload</span><br><span class="line">(base) magnolia@Magnolia:/etc/systemd/system$ <span class="built_in">sudo</span> systemctl <span class="built_in">enable</span> cleanup-tmp.timer</span><br><span class="line">Created symlink /etc/systemd/system/timers.target.wants/cleanup-tmp.timer → /home/magnolia/tools/systemd_tasks/cleanup-tmp.timer.</span><br><span class="line">(base) magnolia@Magnolia:/etc/systemd/system$ <span class="built_in">sudo</span> systemctl start cleanup-tmp.timer</span><br><span class="line">(base) magnolia@Magnolia:/etc/systemd/system$ <span class="built_in">sudo</span> systemctl status cleanup-tmp.timer</span><br><span class="line">● cleanup-tmp.timer - 每天凌晨2点清理临时文件</span><br><span class="line">     Loaded: loaded (/etc/systemd/system/cleanup-tmp.timer; enabled; preset: enabled)</span><br><span class="line">     Active: active (waiting) since Wed 2025-10-08 10:57:27 CST; 4s ago</span><br><span class="line">    Trigger: Thu 2025-10-09 02:00:00 CST; 15h left</span><br><span class="line">   Triggers: ● cleanup-tmp.service</span><br><span class="line"></span><br><span class="line">Oct 08 10:57:27 Magnolia systemd[1]: Started cleanup-tmp.timer - 每天凌晨2点清理临时文件.</span><br><span class="line">(base) magnolia@Magnolia:/etc/systemd/system$ systemctl list-timers</span><br><span class="line">NEXT                            LEFT LAST                              PASSED UNIT                         ACTIVATES</span><br><span class="line">Wed 2025-10-08 15:26:32 CST 4h 28min Wed 2025-10-08 02:40:01 CST 1h 12min ago motd-news.timer              motd-news.service</span><br><span class="line">Wed 2025-10-08 16:23:34 CST 5h 25min Fri 2025-10-03 10:54:44 CST      18h ago systemd-tmpfiles-clean.timer systemd-tmpfiles-clean.service</span><br><span class="line">Thu 2025-10-09 00:00:00 CST      13h Wed 2025-10-08 00:00:07 CST 1h 19min ago dpkg-db-backup.timer         dpkg-db-backup.service</span><br><span class="line">Thu 2025-10-09 00:00:00 CST      13h Wed 2025-10-08 00:00:07 CST 1h 19min ago logrotate.timer              logrotate.service</span><br><span class="line">Thu 2025-10-09 01:59:50 CST      15h Wed 2025-10-08 08:38:33 CST 1h 11min ago apt-daily.timer              apt-daily.service</span><br><span class="line">Thu 2025-10-09 02:00:00 CST      15h -                                      - cleanup-tmp.timer            cleanup-tmp.service</span><br><span class="line">Thu 2025-10-09 06:47:26 CST      19h Wed 2025-10-08 07:07:45 CST 1h 11min ago apt-daily-upgrade.timer      apt-daily-upgrade.service</span><br><span class="line">Thu 2025-10-09 07:51:38 CST      20h Wed 2025-10-08 02:38:48 CST 1h 13min ago man-db.timer                 man-db.service</span><br><span class="line">Sun 2025-10-12 03:10:17 CST   3 days Sun 2025-10-05 03:25:10 CST      11h ago e2scrub_all.timer            e2scrub_all.service</span><br><span class="line"></span><br><span class="line">9 timers listed.</span><br><span class="line">Pass --all to see loaded but inactive timers, too.</span><br><span class="line">(base) magnolia@Magnolia:/etc/systemd/system$ <span class="built_in">sudo</span> journalctl -u cleanup-tmp.timer -f</span><br><span class="line">Oct 08 10:57:27 Magnolia systemd[1]: Started cleanup-tmp.timer - 每天凌晨2点清理临时文件.</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/tools/" rel="tag"># tools</a>
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2025/10/01/6863/" rel="prev" title="gitlab-runner在实践中理解">
+                  <i class="fa fa-angle-left"></i> gitlab-runner在实践中理解
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2025/10/19/57786/" rel="next" title="systemd 管理 Flask 服务实践">
+                  systemd 管理 Flask 服务实践 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">691k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:28</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

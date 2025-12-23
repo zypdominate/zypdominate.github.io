@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="学习完 Android （Java版）基础教程，整理完毕。虽然现在 Android 不火了，但是借此也学了 Java。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android基础教程">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2025/04/12/45353/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="学习完 Android （Java版）基础教程，整理完毕。虽然现在 Android 不火了，但是借此也学了 Java。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-04-12T06:45:18.000Z">
+<meta property="article:modified_time" content="2025-12-23T14:07:49.164Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="Android">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2025/04/12/45353/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2025/04/12/45353/","path":"posts/2025/04/12/45353/","title":"Android基础教程"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Android基础教程 | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B"><span class="nav-text">视频学习教程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Gitee-%E5%9C%B0%E5%9D%80"><span class="nav-text">Gitee 地址</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B5%84%E6%BA%90IDs-%E5%8F%98%E6%88%90-non-final"><span class="nav-text">资源IDs 变成 non-final</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%98%E9%87%8F%E5%A3%B0%E6%98%8E%E4%B8%BA-final"><span class="nav-text">变量声明为 final</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#override-%E6%B3%A8%E8%A7%A3"><span class="nav-text">override 注解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-png"><span class="nav-text">.9.png</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%8D%E5%90%88%E6%8C%89%E9%92%AE"><span class="nav-text">复合按钮</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%BC%E5%85%A5-Nullable"><span class="nav-text">导入 Nullable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Boolean-%E4%B8%8E-boolean"><span class="nav-text">Boolean 与 boolean</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E5%8C%96%E6%9F%A5%E8%AF%A2%E5%92%8C%E9%9D%99%E6%80%81%E6%9F%A5%E8%AF%A2"><span class="nav-text">参数化查询和静态查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#android-intent-action-VIEW"><span class="nav-text">android.intent.action.VIEW</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bug%E8%AE%B0%E5%BD%95"><span class="nav-text">Bug记录</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B4%AD%E7%89%A9%E8%BD%A6%E6%95%B0%E7%9B%AE%E5%8F%AA%E6%9B%B4%E6%96%B0%E4%B8%80%E6%AC%A1"><span class="nav-text">购物车数目只更新一次</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86"><span class="nav-text">问题处理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Run%E5%90%8E%E6%A8%A1%E6%8B%9F%E5%99%A8%E6%9C%AA%E5%90%AF%E5%8A%A8app"><span class="nav-text">Run后模拟器未启动app</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A8%A1%E6%8B%9F%E5%99%A8%E8%BF%9B%E7%A8%8B%E8%A2%AB%E5%8D%A0%E7%94%A8"><span class="nav-text">模拟器进程被占用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%B0%E5%BD%95"><span class="nav-text">记录</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2025/04/12/45353/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Android基础教程 | Magnolia's Blog">
+      <meta itemprop="description" content="学习完 Android （Java版）基础教程，整理完毕。虽然现在 Android 不火了，但是借此也学了 Java。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Android基础教程
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2025-04-12 14:45:18" itemprop="dateCreated datePublished" datetime="2025-04-12T14:45:18+08:00">2025-04-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>7.3k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>7 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">学习完 Android （Java版）基础教程，整理完毕。虽然现在 Android 不火了，但是借此也学了 Java。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="视频学习教程"><a href="#视频学习教程" class="headerlink" title="视频学习教程"></a>视频学习教程</h3><p>视频链接：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV19U4y1R7zV/?spm_id_from=333.1387.homepage.video_card.click&vd_source=da0de97e2f4ff6cad66a0c7dc427c949">2022 最新 Android 基础教程，从开发入门到项目实战，看它就够了，更新中_哔哩哔哩_bilibili</a></p>
+<p>学习下来，有遇到很多问题，在 chatgpt、claude 和 Android Studio 插件通义千问的帮助下，一一解决。</p>
+<p>目前还是有很多不懂的，虽然学了一遍，敲了一遍，但是 Android 体系还是太多，需要不断地学习。</p>
+<h3 id="Gitee-地址"><a href="#Gitee-地址" class="headerlink" title="Gitee 地址"></a>Gitee 地址</h3><p><a target="_blank" rel="noopener" href="https://gitee.com/zypdominate/android-learning">Magnolia&#x2F;AndroidLearning</a></p>
+<hr>
+<p>下面是一些记录。</p>
+<h3 id="资源IDs-变成-non-final"><a href="#资源IDs-变成-non-final" class="headerlink" title="资源IDs 变成 non-final"></a>资源IDs 变成 non-final</h3><p>Resource IDs will be non-final by default in Android Gradle Plugin version 8.0, avoid using them in switch case statements.</p>
+<p>在 Android Gradle Plugin 8.0 中，资源 ID 默认变为 <em>non-final</em>，意思是它们不再是编译时常量，而是动态生成的。这是因为 Android 的资源 ID 现在默认使用了新的构建优化方式，使得每次构建时资源 ID 可能发生变化，从而减少了重编译时间，但也带来了以下变化：</p>
+<p>解释 <code>non-final</code></p>
+<ul>
+<li><strong>原本的 final 行为</strong>：在 Android Gradle Plugin 8.0 之前，资源 ID（如 <code>R.id.example_button</code>）被编译成 <code>final</code> 常量（不可变的静态值），因此可以直接用于 <code>switch</code> 语句，因为编译器在编译时可以确定它们的值。</li>
+<li><strong>non-final 意味着动态生成</strong>：从 8.0 开始，资源 ID 不再是 <code>final</code> 的。它们的值在每次构建时可能会动态生成，无法在编译时确定。因此，在 <code>switch</code> 语句中使用这些非固定值会导致编译错误，因为 <code>switch</code> 语句要求常量。</li>
+</ul>
+<p>影响和替代方案</p>
+<p>由于资源 ID 变为 non-final，在 Android Gradle Plugin 8.0+ 中，不能在 <code>switch</code> 语句中使用它们。可以使用 <code>if-else</code> 结构来替代 <code>switch</code>。</p>
+<h3 id="变量声明为-final"><a href="#变量声明为-final" class="headerlink" title="变量声明为 final"></a>变量声明为 final</h3><p>将变量声明为 final 有以下好处：</p>
+<ul>
+<li>不可变性：确保该变量在初始化后不能被修改，提高代码的安全性和可预测性。</li>
+<li>线程安全：在多线程环境中，final 变量可以避免多个线程同时修改同一个变量带来的问题。</li>
+<li>优化：编译器可以对 final 变量进行一些优化，提高性能。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="type">String</span> <span class="variable">mRequest</span> <span class="operator">=</span> <span class="string">&quot;你好，在吗？&quot;</span>;</span><br><span class="line"><span class="comment">// 可以写成:</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">mRequest</span> <span class="operator">=</span> <span class="string">&quot;你好，在吗？&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="override-注解"><a href="#override-注解" class="headerlink" title="override 注解"></a>override 注解</h3><p><code>@Override</code> 注解在 Java 中用于表示一个方法是在重写父类或实现接口中的方法。使用 @Override 有以下几个好处：</p>
+<ul>
+<li>提高可读性：明确告知其他开发者这个方法是一个重写的方法。</li>
+<li>编译器检查：如果方法签名与父类或接口中的方法不匹配，编译器会报错，帮助开发者发现潜在的错误。</li>
+</ul>
+<p>如果不加 <code>@Override</code> 注解，代码仍然可以正常编译和运行，但会有以下问题：</p>
+<ul>
+<li>缺乏明确性：其他开发者阅读代码时可能不清楚这个方法是否是重写的。</li>
+<li>潜在错误：如果方法签名写错了（例如拼写错误或参数类型不匹配），编译器不会报错，但方法不会被正确调用，导致难以调试的问题。</li>
+</ul>
+<h3 id="9-png"><a href="#9-png" class="headerlink" title=".9.png"></a>.9.png</h3><p>在 Android 开发中，<code>.9.png</code> 是一种特殊的图片格式，称为 <strong>Nine-Patch (九宫格)</strong> 图片。这种格式的图片在 <code>.png</code> 图片基础上做了特殊处理，主要用于实现<strong>拉伸和缩放</strong>效果，适应不同尺寸的屏幕和控件。</p>
+<p>特点与用途</p>
+<ol>
+<li><strong>灵活拉伸</strong>：Nine-Patch 图片可以指定哪些区域可被拉伸，哪些区域保持不变。这对于按钮、对话框背景等需要根据内容大小动态调整的控件非常有用。</li>
+<li><strong>边界标记</strong>：Nine-Patch 图片的边界上有一像素宽的黑色线条，Android 会根据这些标记确定哪些部分可以拉伸，哪些部分保持原样。具体来说：<ul>
+<li><strong>左侧和上侧边界</strong>：定义图片可以被拉伸的区域。</li>
+<li><strong>右侧和下侧边界</strong>：定义内容显示区域。</li>
+</ul>
+</li>
+<li><strong>高效适配</strong>：Nine-Patch 图片在适应不同分辨率和屏幕尺寸时，不会失真或模糊，提供较好的视觉效果。适合用于各种弹窗、输入框背景、气泡等需要拉伸的图形背景。</li>
+</ol>
+<p>示例应用</p>
+<ul>
+<li>按钮背景、输入框背景、对话框背景等需要根据内容大小动态变化的 UI 元素。</li>
+</ul>
+<p>创建方法</p>
+<p>Nine-Patch 图片可以通过 Android Studio 的 <strong>Draw 9-Patch 工具</strong>制作，或直接在图片上手动添加一像素的黑色边界。Android 会根据这些边界像素的标记进行渲染处理。</p>
+<p>Nine-Patch 图片通过简单的标记，能以更小的资源量适配不同屏幕，是一种高效的图片处理方式。</p>
+<h3 id="复合按钮"><a href="#复合按钮" class="headerlink" title="复合按钮"></a>复合按钮</h3><p>由复合按钮 <code>CompoundButton</code> 派生而来的控件包括：<code>CheckBox</code>，<code>RadioButton</code>，<code>Switch</code>。</p>
+<h3 id="导入-Nullable"><a href="#导入-Nullable" class="headerlink" title="导入 Nullable"></a>导入 Nullable</h3><p><code>import androidx.annotation.Nullable;</code> </p>
+<p>作用是导入 <code>Nullable</code> 注解。这个注解来自 AndroidX 库，用于标记方法参数、返回值或字段，表示它们可以为 <code>null</code>。</p>
+<ul>
+<li><strong>代码可读性</strong>：提高代码的可读性和维护性，明确指出某个变量或参数可以为 <code>null</code>。</li>
+<li><strong>静态分析</strong>：帮助 IDE 和静态代码分析工具进行更准确的检查，减少潜在的空指针异常。</li>
+</ul>
+<p>示例</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Nullable</span></span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">getName</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> name;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>在这个示例中，<code>@Nullable</code> 注解表明 <code>getName</code> 方法的返回值可以为 <code>null</code>。</p>
+<h3 id="Boolean-与-boolean"><a href="#Boolean-与-boolean" class="headerlink" title="Boolean 与 boolean"></a>Boolean 与 boolean</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Boolean</span> <span class="variable">married</span> <span class="operator">=</span> ck_married.isChecked(); </span><br><span class="line"><span class="type">boolean</span> <span class="variable">married</span> <span class="operator">=</span> ck_married.isChecked(); 这两种写法有什么区别？</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><p><strong><code>Boolean married = ck_married.isChecked();</code></strong></p>
+<ul>
+<li><strong>类型</strong>：<code>Boolean</code> 是 <code>boolean</code> 的包装类。</li>
+<li><strong>值</strong>：可以为 <code>true</code>、<code>false</code> 或 <code>null</code>。</li>
+<li><strong>使用场景</strong>：适用于需要表示 <code>null</code> 值的情况，例如在集合中存储布尔值或处理可能为 <code>null</code> 的返回值。</li>
+</ul>
+</li>
+<li><p><strong><code>boolean married = ck_married.isChecked();</code></strong></p>
+<ul>
+<li><strong>类型</strong>：<code>boolean</code> 是基本数据类型。</li>
+<li><strong>值</strong>：只能为 <code>true</code> 或 <code>false</code>。</li>
+<li><strong>使用场景</strong>：适用于不需要表示 <code>null</code> 值的情况，性能更好，占用内存更少。</li>
+</ul>
+</li>
+</ol>
+<p>在代码中：</p>
+<ul>
+<li>**<code>Boolean married = ck_married.isChecked();</code>**：这里 <code>married</code> 变量可以为 <code>true</code>、<code>false</code> 或 <code>null</code>。但由于 <code>isChecked()</code> 方法总是返回 <code>true</code> 或 <code>false</code>，所以 <code>married</code> 不会为 <code>null</code>。</li>
+<li>**<code>boolean married = ck_married.isChecked();</code>**：这里 <code>married</code> 变量只能为 <code>true</code> 或 <code>false</code>，更符合实际需求，因为 <code>isChecked()</code> 方法不会返回 <code>null</code>。</li>
+</ul>
+<p>推荐做法</p>
+<p>在大多数情况下，特别是当你确定变量不会为 <code>null</code> 时，推荐使用基本数据类型 <code>boolean</code>，因为它更高效且占用内存更少。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">boolean</span> <span class="variable">married</span> <span class="operator">=</span> ck_married.isChecked();</span><br></pre></td></tr></table></figure>
+
+<p>总结</p>
+<ul>
+<li>**<code>Boolean</code>**：包装类，可以为 <code>null</code>。</li>
+<li>**<code>boolean</code>**：基本数据类型，不能为 <code>null</code>。</li>
+<li><strong>推荐</strong>：在不需要表示 <code>null</code> 值的情况下，使用 <code>boolean</code>。</li>
+</ul>
+<h3 id="参数化查询和静态查询"><a href="#参数化查询和静态查询" class="headerlink" title="参数化查询和静态查询"></a>参数化查询和静态查询</h3><p><strong>参数化查询</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">sql</span> <span class="operator">=</span> <span class="string">&quot;select * from &quot;</span> + TABLE_NAME + <span class="string">&quot; where phone=? and remember=1&quot;</span>;</span><br><span class="line"><span class="type">Cursor</span> <span class="variable">cursor</span> <span class="operator">=</span> mRDB.rawQuery(sql, <span class="keyword">new</span> <span class="title class_">String</span>[]&#123;phone&#125;);</span><br></pre></td></tr></table></figure>
+
+
+<ol>
+<li><p>SQL 查询：</p>
+<ul>
+<li><code>select * from &lt;TABLE_NAME&gt; where phone=? and remember=1</code>：这条 SQL 语句从表中选择所有列，条件是 <code>phone</code> 等于某个值且 <code>remember</code> 等于 1。</li>
+<li><code>?</code> 是一个占位符，用于防止 SQL 注入攻击。</li>
+</ul>
+</li>
+<li><p>参数化查询：</p>
+<ul>
+<li><code>new String[]&#123;phone&#125;</code>：这是一个字符串数组，包含一个元素 <code>phone</code>。这个数组中的值会替换 SQL 语句中的 <code>?</code> 占位符。</li>
+<li>例如，如果 <code>phone</code> 的值是 <code>&quot;1234567890&quot;</code>，那么最终的 SQL 语句会变成 <code>select * from &lt;TABLE_NAME&gt; where phone=&#39;1234567890&#39; and remember=1</code>。</li>
+</ul>
+</li>
+</ol>
+<p><strong>静态查询</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">sql</span> <span class="operator">=</span> <span class="string">&quot;select * from &quot;</span> + TABLE_NAME + <span class="string">&quot; where remember=1 order by _id desc limit 1&quot;</span>;</span><br><span class="line"><span class="type">Cursor</span> <span class="variable">cursor</span> <span class="operator">=</span> mRDB.rawQuery(sql, <span class="literal">null</span>);</span><br></pre></td></tr></table></figure>
+
+
+<ol>
+<li><p>SQL 查询：</p>
+<ul>
+<li><code>select * from &lt;TABLE_NAME&gt; where remember=1 order by _id desc limit 1</code>：这条 SQL 语句从表中选择所有列，条件是 <code>remember</code> 等于 1，并按 <code>_id</code> 列降序排列，只取第一行。</li>
+<li>没有使用占位符 <code>?</code>，因为查询条件中没有动态参数。</li>
+</ul>
+</li>
+<li><p>参数化查询：</p>
+<ul>
+<li><code>null</code>：表示没有参数需要传递给 SQL 语句。</li>
+</ul>
+</li>
+</ol>
+<p>为什么前者多了 <code>new String[]&#123;phone&#125;</code></p>
+<ul>
+<li>参数化查询：<code>new String[]&#123;phone&#125;</code> 用于传递动态参数 <code>phone</code> 给 SQL 语句中的占位符 <code>?</code>。这样做可以防止 SQL 注入攻击，提高安全性。</li>
+<li>静态查询：第二段代码没有动态参数，因此不需要传递参数数组，直接使用 <code>null</code> 即可。</li>
+</ul>
+<p>总结</p>
+<ul>
+<li>第一段代码：使用参数化查询，动态传递 <code>phone</code> 参数。</li>
+<li>第二段代码：使用静态查询，没有动态参数。</li>
+</ul>
+<hr>
+<h3 id="android-intent-action-VIEW"><a href="#android-intent-action-VIEW" class="headerlink" title="android.intent.action.VIEW"></a>android.intent.action.VIEW</h3><p> <code>&quot;android.intent.action.VIEW&quot;</code> 或者 <code>&quot;android.intent.action.ACTION_VIEW&quot;</code> 都可以</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Intent</span> <span class="variable">intent</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Intent</span>(Intent.ACTION_VIEW);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">activity</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:name</span>=<span class="string">&quot;.ThirdActivity&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:exported</span>=<span class="string">&quot;false&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">tools:ignore</span>=<span class="string">&quot;AppLinkUrlError&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">&quot;android.intent.action.ACTION_VIEW&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">&quot;android.intent.category.DEFAULT&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">data</span> <span class="attr">android:scheme</span>=<span class="string">&quot;http&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">activity</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>简要解释原因</p>
+<p>在 Android 中，<code>Intent</code> 的 <code>action</code> 属性用于指定操作类型。<code>&quot;android.intent.action.VIEW&quot;</code> 和 <code>&quot;android.intent.action.ACTION_VIEW&quot;</code> 实际上是同一个常量的不同表示形式。</p>
+<ul>
+<li>**<code>&quot;android.intent.action.VIEW&quot;</code>**：这是直接使用字符串形式的 action 名称。</li>
+<li>**<code>&quot;android.intent.action.ACTION_VIEW&quot;</code>**：这是通过 <code>Intent</code> 类中的静态常量 <code>Intent.ACTION_VIEW</code> 来引用的。</li>
+</ul>
+<p>这两种方式在功能上是等价的，因为它们都指向同一个标准的 Android 操作名称 <code>&quot;android.intent.action.VIEW&quot;</code>。</p>
+<p>分点描述</p>
+<ul>
+<li><p><strong>字符串形式 vs 常量形式</strong>：</p>
+<ul>
+<li>使用字符串形式（如 <code>&quot;android.intent.action.VIEW&quot;</code>）时，代码更直观，但容易出现拼写错误。</li>
+<li>使用常量形式（如 <code>Intent.ACTION_VIEW</code>）时，代码更安全，编译器可以进行类型检查和自动补全，减少错误。</li>
+</ul>
+</li>
+<li><p><strong>推荐使用常量形式</strong>：</p>
+<ul>
+<li>使用常量形式可以提高代码的可读性和维护性。</li>
+<li>编译器可以在编译时检查常量的有效性，避免运行时错误。</li>
+</ul>
+</li>
+</ul>
+<p>示例代码</p>
+<p>在 <code>AndroidManifest.xml</code> 中使用常量形式</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">activity</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:name</span>=<span class="string">&quot;.ThirdActivity&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:exported</span>=<span class="string">&quot;false&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">tools:ignore</span>=<span class="string">&quot;AppLinkUrlError&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">&quot;android.intent.action.VIEW&quot;</span> /&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 或者使用 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">&quot;android.intent.action.ACTION_VIEW&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">&quot;android.intent.category.DEFAULT&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">data</span> <span class="attr">android:scheme</span>=<span class="string">&quot;http&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">activity</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>在 Java 代码中使用常量形式</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (v.getId() == R.id.btn_jump2web) &#123;</span><br><span class="line">    <span class="type">Intent</span> <span class="variable">intent</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Intent</span>(Intent.ACTION_VIEW);</span><br><span class="line">    intent.setData(Uri.parse(<span class="string">&quot;http://www.baidu.com&quot;</span>));</span><br><span class="line">    startActivity(intent);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>虽然 <code>&quot;android.intent.action.VIEW&quot;</code> 和 <code>&quot;android.intent.action.ACTION_VIEW&quot;</code> 都可以正常工作，但建议使用常量形式 <code>Intent.ACTION_VIEW</code>，以提高代码的安全性和可维护性。</p>
+<hr>
+<h3 id="Bug记录"><a href="#Bug记录" class="headerlink" title="Bug记录"></a>Bug记录</h3><h4 id="购物车数目只更新一次"><a href="#购物车数目只更新一次" class="headerlink" title="购物车数目只更新一次"></a>购物车数目只更新一次</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">addToCart</span><span class="params">(<span class="type">int</span> goodsId, String goodsName)</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">goodsCount</span> <span class="operator">=</span> MyApplication.getInstance().goodsCount;</span><br><span class="line">    ++goodsCount;</span><br><span class="line">    tv_count.setText(String.valueOf(goodsCount));</span><br><span class="line">    mDBHelper.insertCardInfo(goodsId);</span><br><span class="line">    ToastUtil.show(<span class="built_in">this</span>, <span class="string">&quot;已添加一件&quot;</span> + goodsName + <span class="string">&quot;到购物车&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>原因：仅对局部变量 <code>goodsCount</code> 进行自增操作，此时<code>MyApplication.getInstance().goodsCount</code>的值并没有被修改，首次操作时， goodsCount 加一了，所以购物车数目会加一。但是，后面再添加就不会更新，因为每次获取的 goodsCount 都是一样的值，tv_count 更新也都是第一次更新的数字。</p>
+<p>先对<code>MyApplication.getInstance().goodsCount</code>进行自增操作，然后将自增后的结果赋值给<code>goodsCount</code>，确保<code>MyApplication.getInstance().goodsCount</code> 和UI显示同步更新。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">addToCart</span><span class="params">(<span class="type">int</span> goodsId, String goodsName)</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">goodsCount</span> <span class="operator">=</span> ++MyApplication.getInstance().goodsCount;</span><br><span class="line">    tv_count.setText(String.valueOf(goodsCount));</span><br><span class="line">    mDBHelper.insertCardInfo(goodsId);</span><br><span class="line">    ToastUtil.show(<span class="built_in">this</span>, <span class="string">&quot;已添加一件&quot;</span> + goodsName + <span class="string">&quot;到购物车&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="问题处理"><a href="#问题处理" class="headerlink" title="问题处理"></a>问题处理</h3><h4 id="Run后模拟器未启动app"><a href="#Run后模拟器未启动app" class="headerlink" title="Run后模拟器未启动app"></a>Run后模拟器未启动app</h4><p>可能的原因或者解决方法</p>
+<ul>
+<li><p>模拟器是否多开，在另一个中启动</p>
+</li>
+<li><p>重启模拟器，清除模拟器数据（wipe data）后重启</p>
+</li>
+<li><p>adb devices 查看状态</p>
+<p>如果是 unauthorized，尝试 <code>adb kill-server, adb start-server</code>，设置 <code>cold boot</code> 启动</p>
+</li>
+<li><p>查看 AndroidManifest.xml  是否配置正确</p>
+</li>
+</ul>
+<h4 id="模拟器进程被占用"><a href="#模拟器进程被占用" class="headerlink" title="模拟器进程被占用"></a>模拟器进程被占用</h4><blockquote>
+<p>AVD Pixel_2_API_31 is already running. If that is not the case, delete the files at D:\software\Android.android\avd&#x2F;Pixel_2_API_31.avd&#x2F;*.lock and try again.</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">taskkill /F /IM qemu-system-* /IM emulator-* /IM adb.exe</span><br><span class="line">del /F /Q D:\software\Android\.android\avd\Pixel_2_API_31.avd\*.lock</span><br></pre></td></tr></table></figure>
+
+<p>使用 procexp.exe 找到并结束进程。</p>
+<hr>
+<h3 id="记录"><a href="#记录" class="headerlink" title="记录"></a>记录</h3><p>AndroidStudio 中， debug 运行代码，生成包 <code>build/intermediates/apk/debug/chapter06-debug.apk</code> </p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/Android/" rel="tag"># Android</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2025/03/30/25613/" rel="prev" title="将第三方库转换为真正的 pytest 插件">
+                  <i class="fa fa-angle-left"></i> 将第三方库转换为真正的 pytest 插件
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2025/04/12/13174/" rel="next" title="Miniforge 管理 Python 虚拟环境">
+                  Miniforge 管理 Python 虚拟环境 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">691k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:28</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

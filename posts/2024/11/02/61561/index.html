@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="在线展示我的Demo: Content — Sphinx-Auto 2.0 documentation 关于现在自动化框架暂无清晰的API文档，给今后的代码编写、查阅及维护造成一定的困扰，为了实现将所有测试用例脚本中的注释导出、查阅，查阅网上多数人使用的工具，决定采用sphinx实现自动产生参考文档、索引等。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Sphinx 一键生成文档">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2024/11/02/61561/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="在线展示我的Demo: Content — Sphinx-Auto 2.0 documentation 关于现在自动化框架暂无清晰的API文档，给今后的代码编写、查阅及维护造成一定的困扰，为了实现将所有测试用例脚本中的注释导出、查阅，查阅网上多数人使用的工具，决定采用sphinx实现自动产生参考文档、索引等。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://zypdominate.github.io/images/2024/sphinx1.png">
+<meta property="og:image" content="https://zypdominate.github.io/images/2024/sphinx2.png">
+<meta property="article:published_time" content="2024-11-02T04:10:00.000Z">
+<meta property="article:modified_time" content="2025-12-23T14:07:49.151Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="tools">
+<meta property="article:tag" content="sphinx">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zypdominate.github.io/images/2024/sphinx1.png">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2024/11/02/61561/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2024/11/02/61561/","path":"posts/2024/11/02/61561/","title":"Sphinx 一键生成文档"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Sphinx 一键生成文档 | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E"><span class="nav-text">关于</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%84%E6%93%8D%E4%BD%9C"><span class="nav-text">常规操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E9%94%AE%E7%94%9F%E6%88%90%E6%96%87%E6%A1%A3"><span class="nav-text">一键生成文档</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E6%9C%8D%E5%8A%A1%E6%9F%A5%E7%9C%8B"><span class="nav-text">启动服务查看</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sphinx-%E8%AF%AD%E6%B3%95"><span class="nav-text">sphinx 语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-text">Reference</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2024/11/02/61561/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Sphinx 一键生成文档 | Magnolia's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Sphinx 一键生成文档
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2024-11-02 12:10:00" itemprop="dateCreated datePublished" datetime="2024-11-02T12:10:00+08:00">2024-11-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%94%9F%E4%BA%A7%E5%8A%9B/" itemprop="url" rel="index"><span itemprop="name">生产力</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%94%9F%E4%BA%A7%E5%8A%9B/%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">工具</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>8.9k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>8 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>在线展示我的Demo: <a href="https://gitee.com/link?target=https://sphinx-auto.readthedocs.io/en/latest/index.html">Content — Sphinx-Auto 2.0 documentation</a></p>
+<h2 id="关于"><a href="#关于" class="headerlink" title="关于"></a>关于</h2><p>现在自动化框架暂无清晰的API文档，给今后的代码编写、查阅及维护造成一定的困扰，为了实现将所有测试用例脚本中的注释导出、查阅，查阅网上多数人使用的工具，决定采用sphinx实现自动产生参考文档、索引等。</p>
+<p>sphinx的优点：</p>
+<ul>
+<li>支持多种输出格式：html、Latex、ePub等；</li>
+<li>丰富的扩展</li>
+<li>结构化文档</li>
+<li>自动索引</li>
+<li>支持语法高亮</li>
+</ul>
+<p>环境配置</p>
+<ul>
+<li>安装 Python3</li>
+<li>sphinx：<code>pip install sphinx</code></li>
+</ul>
+<h2 id="常规操作"><a href="#常规操作" class="headerlink" title="常规操作"></a>常规操作</h2><ol>
+<li><p>进入 doc 目录下，输入 <code>sphinx-quickstart</code>，会出现一些选项，根据需要填写即可</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">PS D:\Developer\SphinxAuto\doc&gt; sphinx-apidoc -o ./source ../src/</span><br><span class="line">PS D:\Developer\SphinxAuto\doc&gt; sphinx-quickstart</span><br><span class="line">Welcome to the Sphinx 8.1.3 quickstart utility.</span><br><span class="line">Please enter values <span class="keyword">for</span> the following settings (just press Enter to</span><br><span class="line">accept a default value, <span class="keyword">if</span> one is given <span class="keyword">in</span> brackets).</span><br><span class="line">You have two options <span class="keyword">for</span> placing the build directory <span class="keyword">for</span> Sphinx output.</span><br><span class="line">Either, you use a directory <span class="string">&quot;_build&quot;</span> within the root path, or you separate</span><br><span class="line"><span class="string">&quot;source&quot;</span> and <span class="string">&quot;build&quot;</span> directories within the root path.</span><br><span class="line">&gt; Separate <span class="built_in">source</span> and build directories (y/n) [n]: y</span><br><span class="line"></span><br><span class="line">The project name will occur <span class="keyword">in</span> several places <span class="keyword">in</span> the built documentation.</span><br><span class="line">&gt; Project name: Sphinx-Auto</span><br><span class="line">&gt; Project release []: 2.0</span><br><span class="line"></span><br><span class="line">If the documents are to be written <span class="keyword">in</span> a language other than English,</span><br><span class="line">you can <span class="keyword">select</span> a language here by its language code. Sphinx will <span class="keyword">then</span></span><br><span class="line">translate text that it generates into that language.</span><br><span class="line"></span><br><span class="line">For a list of supported codes, see</span><br><span class="line">https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-language.</span><br><span class="line">&gt; Project language [en]: zh_CN</span><br><span class="line"></span><br><span class="line">Creating file D:\Developer\SphinxAuto\doc\<span class="built_in">source</span>\conf.py.</span><br><span class="line">Creating file D:\Developer\SphinxAuto\doc\<span class="built_in">source</span>\index.rst.</span><br><span class="line">Creating file D:\Developer\SphinxAuto\doc\Makefile.</span><br><span class="line">Creating file D:\Developer\SphinxAuto\doc\make.bat.</span><br><span class="line"></span><br><span class="line">Finished: An initial directory structure has been created.</span><br><span class="line"></span><br><span class="line">You should now populate your master file D:\Developer\SphinxAuto\doc\<span class="built_in">source</span>\index.rst and create other documentation</span><br><span class="line"><span class="built_in">source</span> files. Use the Makefile to build the docs, like so:</span><br><span class="line">   make builder</span><br><span class="line"><span class="built_in">where</span> <span class="string">&quot;builder&quot;</span> is one of the supported builders, e.g. html, latex or linkcheck.</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>然后出现以下目录结构：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">doc</span><br><span class="line">├── build</span><br><span class="line">├── source</span><br><span class="line">│   ├── conf.py</span><br><span class="line">│   ├── index.rst</span><br><span class="line">│   ├─_static</span><br><span class="line">│   └─_templates</span><br><span class="line">├── make.bat</span><br><span class="line">└── Makefile</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>部分分解说明</p>
+<ul>
+<li><strong>Makefile</strong>：可以将它看作是一个包含指令的文件，在使用 <code>make</code> 命令时，使用这些指令来构建文档输出。</li>
+<li><strong>build</strong>：这是触发特定输出后用来存放所生成的文件的目录。</li>
+<li><strong>conf.py</strong>：这是一个 Python 文件，用于存放 Sphinx 的配置值，包括在终端执行 <code>sphinx-quickstart</code> 时选中的那些值。</li>
+<li><strong>index.rst</strong>：文档项目的 root 目录。如果将文档划分为其他文件，该目录会连接这些文件。</li>
+</ul>
+</li>
+<li><p>conf.py文件中可以修改配置：</p>
+<p>配置confi.py：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">sys.path.insert(<span class="number">0</span>, os.path.abspath(<span class="string">&#x27;../../src&#x27;</span>))  <span class="comment"># 指向src(需要导出用例的目录)</span></span><br></pre></td></tr></table></figure>
+
+<p>为sphinx添加扩展：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">extensions = [<span class="string">&#x27;sphinx.ext.autodoc&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;sphinx.ext.doctest&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;sphinx.ext.intersphinx&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;sphinx.ext.todo&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;sphinx.ext.coverage&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;sphinx.ext.mathjax&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;sphinx.ext.napoleon&#x27;</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<p>更换sphinx的主题：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># html_theme = &#x27;alabaster&#x27; 默认主题</span></span><br><span class="line"><span class="keyword">import</span> sphinx_rtd_theme    <span class="comment"># 需要先pip install sphinx_rtd_theme</span></span><br><span class="line">html_theme = <span class="string">&#x27;sphinx_rtd_theme&#x27;</span></span><br><span class="line">html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]</span><br></pre></td></tr></table></figure>
+
+<p>大部分主题 <a target="_blank" rel="noopener" href="https://sphinx-themes.readthedocs.io/en/latest/#themes">Sphinx Themes Gallery (sphinx-themes.readthedocs.io)</a>，特别是对于命名+入参很长的函数,显示效果都不如 furo 和 sphinx_book_theme 。</p>
+<p>使用发现这两个主题有一些差异：</p>
+<ul>
+<li>furo<ul>
+<li>在渲染 markdown 文件时，会将所有一级标题（<code>#</code> 标题）都显示在侧边栏中，因此会展示 README.md 文件中的所有一级标题（如 Usage、接口文档、其他注意事项 等）</li>
+<li>展示 python 模块时，右侧边栏会列出所有的函数，包括类的方法</li>
+</ul>
+</li>
+<li>sphinx_book_theme<ul>
+<li>在渲染 markdown 文件时，默认只显示第一个一级标题，不展开后续的一级标题内容，简化左侧边栏，不支持定制</li>
+<li>展示 python 模块时，右侧边栏只会列出类名、函数，不包括类的方法</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>生成html文件</p>
+<p>进入 doc 目录，如下操作，会把src所有文件一次性生成，可能会产生重复内容：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sphinx-apidoc -o ./source ../src/ # 这是将src目录下的所有py脚本注释导出，包括src中所有子目录中的脚本</span><br></pre></td></tr></table></figure>
+
+<p>需要导出哪个目录的脚本注释，就单独导出。</p>
+<p>正确操作：命令行切换到doc目录下，依次执行：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sphinx-apidoc -o [生成rst的位置] [项目代码的位置] -f(强制重新覆盖写，否则会检测，如果有同名文件存在，会跳过不更新)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sphinx-apidoc -o ./source ../src/scripts1/  # 这是将src/scriptes1/目录下的所有py脚本注释导出，包含子目录中的py脚本</span><br><span class="line">sphinx-apidoc -o ./source ../src/scripts2/</span><br></pre></td></tr></table></figure>
+
+<p>再执行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">make clean  # 删除build目录下的文件（第一次build为空文件夹）</span><br><span class="line">make html	# 在build目录下生成 doctrees、html 目录</span><br></pre></td></tr></table></figure>
+
+<p>确认最后输出中含有 <code>build succeesed</code>，再去build&#x2F;html目录中检查是否生成了对应的html等其他文件。</p>
+</li>
+<li><p>谷歌浏览器打开build&#x2F;html&#x2F;index.html，查看API文档</p>
+</li>
+</ol>
+<p>有个问题，<code>sphinx-apidoc -o ./source ../src/</code> 方式生成的 .rst 文件后，打开 html，没有展示出各个模块，需要手动去修改 index.rst 文件，很复杂。所以不采用这种命令生成方式。而是手动配置 .rst 文件， 不断调试，让页面展示成我想要的样子，接着用 python 脚本处理，自动化构造 .rst 文件。</p>
+<hr>
+<h2 id="一键生成文档"><a href="#一键生成文档" class="headerlink" title="一键生成文档"></a>一键生成文档</h2><p>为了省事，编写  <a href="auto_generate.py">auto_generate.py</a> ，完成文档的编译和更新，并在浏览器中打开。</p>
+<p>脚本已经很好地实现了自动化生成 Sphinx 文档的功能，包括创建 <code>.rst</code> 文件、构建 <code>index.rst</code> 索引、拷贝 README 文件，并调用 <code>sphinx-autobuild</code> ，在生成 .rst 文件后进行编译，生成实时 HTML 文档。不用再手动执行  <code>make clean</code>，<code>make html</code> 手动编译。</p>
+<p>自动化脚本没有使用 <code>sphinx-apidoc</code> 来生成 .rst 文件，而是构造色生成 .rst 文件，通过排版布局，来显示文档。</p>
+<p><code>index.rst</code> 文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Content</span><br><span class="line">==================</span><br><span class="line">.. toctree::</span><br><span class="line">   :maxdepth: 2</span><br><span class="line"></span><br><span class="line">   README</span><br><span class="line">   module1/script_a.rst</span><br><span class="line">   module1/submodule1/script1.rst</span><br><span class="line">   module1/submodule2/script2.rst</span><br><span class="line">   module2/script_b.rst</span><br><span class="line">   module2/submoduleA/sub_script_a.rst</span><br><span class="line">   module2/submoduleB/sub_script_b.rst</span><br><span class="line"></span><br><span class="line">Indices and Tables</span><br><span class="line">==================</span><br><span class="line">* :ref:`genindex`</span><br><span class="line">* :ref:`modindex`</span><br><span class="line">* :ref:`search`</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="/../../images/2024/sphinx1.png"></p>
+<p><img data-src="/../../images/2024/sphinx2.png"></p>
+<hr>
+<h2 id="启动服务查看"><a href="#启动服务查看" class="headerlink" title="启动服务查看"></a>启动服务查看</h2><ul>
+<li><p>本地直接打开 html 文件， <a href="file:///D:/Developer/SphinxAuto/doc/build/index.html">Content — Sphinx Demo 2.0 文档</a></p>
+</li>
+<li><p>使用 python3 自带的 <code>http.server</code> 模块快速启动一个静态文件服务器</p>
+<p><code>python -m http.server 8001</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">PS D:\Developer\SphinxAuto\doc\build&gt; python -m http.server 8001 </span><br><span class="line">Serving HTTP on :: port 8001 (http://[::]:8001/) ...</span><br><span class="line">::ffff:127.0.0.1 - - [02/Nov/2024 01:01:20] <span class="string">&quot;GET / HTTP/1.1&quot;</span> 200 -</span><br><span class="line">::ffff:127.0.0.1 - - [02/Nov/2024 01:01:20] <span class="string">&quot;GET /_static/pygments.css?v=a746c00c HTTP/1.1&quot;</span> 200 -</span><br></pre></td></tr></table></figure>
+
+<p>执行命令，在 <code>doc/build</code> 启动一个 HTTP 服务器，访问：<a target="_blank" rel="noopener" href="http://127.0.0.1:8001/">Content — Sphinx Demo 2.0 文档</a></p>
+</li>
+<li><p>Sphinx 内置服务器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install sphinx-autobuild</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sphinx-autobuild &lt;source_dir&gt; &lt;build_dir&gt; --host 0.0.0.0 --port 8001</span><br><span class="line">sphinx-autobuild .\<span class="built_in">source</span>\  .\build\  --host 0.0.0.0 --port 8001</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">PS D:\Developer\SphinxAuto\doc&gt; sphinx-autobuild .\<span class="built_in">source</span>\  .\build\  --host 0.0.0.0 --port 8001</span><br><span class="line">[sphinx-autobuild] Starting initial build</span><br><span class="line">[sphinx-autobuild] &gt; python -m sphinx build <span class="string">&#x27;.\source\&#x27;</span> <span class="string">&#x27;.\build\&#x27;</span></span><br><span class="line">Running Sphinx v8.1.3</span><br><span class="line">loading translations [zh_CN]... <span class="keyword">done</span></span><br><span class="line">WARNING: html_static_path entry <span class="string">&#x27;_static&#x27;</span> does not exist</span><br><span class="line">loading pickled environment... The configuration has changed (4 options: <span class="string">&#x27;html_permalinks_icon&#x27;</span>, <span class="string">&#x27;html_sourcelink_suffix&#x27;</span>, <span class="string">&#x27;html_theme_options&#x27;</span>, <span class="string">&#x27;templates_path&#x27;</span>)</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line">myst v4.0.0: MdParserConfig(commonmark_only=False, gfm_only=False, enable_extensions=<span class="built_in">set</span>(), disable_syntax=[], all_links_external=False, links_external_new_tab=False, url_schemes=</span><br><span class="line">(<span class="string">&#x27;http&#x27;</span>, <span class="string">&#x27;https&#x27;</span>, <span class="string">&#x27;mailto&#x27;</span>, <span class="string">&#x27;ftp&#x27;</span>), ref_domains=None, fence_as_directive=<span class="built_in">set</span>(), number_code_blocks=[], title_to_header=False, heading_anchors=0, heading_slug_func=None, html_meta=</span><br><span class="line">&#123;&#125;, footnote_sort=True, footnote_transition=True, words_per_minute=200, substitutions=&#123;&#125;, linkify_fuzzy_links=True, dmath_allow_labels=True, dmath_allow_space=True, dmath_allow_di</span><br><span class="line">gits=True, dmath_double_inline=False, update_mathjax=True, mathjax_classes=<span class="string">&#x27;tex2jax_process|mathjax_process|math|output_area&#x27;</span>, enable_checkboxes=False, suppress_warnings=[], highlight_code_blocks=True)</span><br><span class="line">building [mo]: targets <span class="keyword">for</span> 0 po files that are out of <span class="built_in">date</span></span><br><span class="line">writing output... </span><br><span class="line">building [html]: targets <span class="keyword">for</span> 0 <span class="built_in">source</span> files that are out of <span class="built_in">date</span></span><br><span class="line">updating environment: 0 added, 0 changed, 0 removed</span><br><span class="line">reading sources... </span><br><span class="line">looking <span class="keyword">for</span> now-outdated files... none found</span><br><span class="line">no targets are out of <span class="built_in">date</span>.</span><br><span class="line">build succeeded, 1 warning.</span><br><span class="line"></span><br><span class="line">The HTML pages are <span class="keyword">in</span> build.</span><br><span class="line">[sphinx-autobuild] Serving on http://0.0.0.0:8001</span><br><span class="line">[sphinx-autobuild] Waiting to detect changes...</span><br></pre></td></tr></table></figure>
+
+<p>访问：<a target="_blank" rel="noopener" href="http://127.0.0.1:8001/">Content — Sphinx Demo 2.0 文档</a></p>
+<p>好处：监测 doc 目录中的文件是否变化，在第一次编译成功后，只要改动了文件内容、文件位置变化等，它会自动重新编译。当然，如果是 src 工程代码变化，不会被自动检测到，需要手动更新 rst 文件。</p>
+</li>
+</ul>
+<hr>
+<h2 id="sphinx-语法"><a href="#sphinx-语法" class="headerlink" title="sphinx 语法"></a>sphinx 语法</h2><p>sphinx采用 reStructuredText (reST) 的概念和语法 。</p>
+<ol>
+<li><p>章节标题： 在双上划线符号之间（或为下划线）, 并且符号的长度不能小于文本的长度: </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Welcome to UTest API documentation!</span><br><span class="line">=======================================</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>通常没有专门的符号表示标题的等级，但是对于Python 文档，可以这样认为:</p>
+<ul>
+<li><code>#</code> 及上划线表示部分</li>
+<li><code>*</code> 及上划线表示章节</li>
+<li><code>=</code>, 小章节</li>
+<li><code>-</code>, 子章节</li>
+<li><code>^</code>, 子章节的子章节</li>
+<li><code>&quot;</code>, 段落</li>
+</ul>
+</li>
+<li><p>内联标记 (与markdown语法一致)</p>
+<ul>
+<li>星号: <code>*text*</code>   斜体： <em>example演示</em></li>
+<li>双星号: <code>**text**</code>  加粗 ：<strong>example演示</strong></li>
+<li>反引号: ```code```   代码样式： <code>example演示</code></li>
+</ul>
+<p> <strong>注</strong>：星号及反引号在文本中容易与内联标记符号混淆，可使用反斜杠符号转义. </p>
+<p>标记的一些限制：</p>
+<ul>
+<li>不能相互嵌套</li>
+<li>内容前后不能由空白: 这样写<code>* text*</code> 是错误的</li>
+<li>如果内容需要特殊字符分隔. 使用反斜杠转义，如: <code>thisis\ *one*\ word</code></li>
+</ul>
+</li>
+<li><p>列表</p>
+<p> 列表标记仅在段落的开头，列表可以嵌套，但是需跟父列表使用<strong>空行分隔</strong> </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">* Item Foo</span><br><span class="line">   </span><br><span class="line">   * childitem foo1</span><br><span class="line">   * childitem foo2</span><br><span class="line">   </span><br><span class="line">* Item Bar</span><br><span class="line">   </span><br><span class="line">   1. childitem bar1</span><br><span class="line">   2. childitem bar2</span><br><span class="line">   </span><br><span class="line">    #. Item 1</span><br><span class="line">#. Item2</span><br><span class="line"></span><br><span class="line">   * childitem foo1</span><br><span class="line">   * childitem foo2</span><br><span class="line">   </span><br><span class="line">1. item3</span><br><span class="line">2. item4</span><br><span class="line">   </span><br><span class="line">   1. childitem1</span><br><span class="line">   2. chidlitem2</span><br><span class="line">   </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>跳转到某一标签</p>
+<p>方式一：</p>
+<p> 标签直接放在章节标题前面</p>
+<p>在 demo1.rst 中设置标签：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.. _demo1.py-label:</span><br><span class="line"></span><br><span class="line">demo1 module</span><br><span class="line">============</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p> 在其他文件中可以通过 :ref:`demo1.py-label` 来跳转</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">:ref:`demo1.py-label`.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>方式二：</p>
+<p> 标签不放在章节开头，但是需要给出明确的链接</p>
+<p>在demo3.rst中设置标签，此时标签可以不放在章节开头：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">demo3 module</span><br><span class="line">============</span><br><span class="line">.. _demo3.py-label:</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p> 在其他文件中可以通过 :ref:`name &lt;demo3.py-label&gt;`. 来跳转，这里name可以任意命名</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">:ref:`name &lt;demo3.py-label&gt;`.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>显性标记</p>
+<p>显性标记不展示在html中，有点像注释的感觉。主要是用在那些需做特殊处理的reST结构中，如尾注，突出段落，评论，通用指令。显式标记以 <code>..</code> 开始，后跟空白符，段落的缩进一样。（在显示标记与正常的段落间需有空行）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.. sphinx_demo documentation master file, created by</span><br><span class="line">   sphinx-quickstart on Fri Nov  1 11:10:41 2019.</span><br><span class="line"></span><br><span class="line">.. toctree::</span><br><span class="line">   :maxdepth: 4</span><br><span class="line">   :caption: Contents:</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>某个测试框架使用模板：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">test_123</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    [用例描述]：</span></span><br><span class="line"><span class="string">        版本测试用例简述（通俗易懂）</span></span><br><span class="line"><span class="string">    [测试策略]：</span></span><br><span class="line"><span class="string">        * 跳过条件；</span></span><br><span class="line"><span class="string">        * 设备间策略差异等.</span></span><br><span class="line"><span class="string">    [测试数据]：</span></span><br><span class="line"><span class="string">        1. 示例1:遍历测试所有支持的编码格式</span></span><br><span class="line"><span class="string">        2. 示例2:不同采集制式下，遍历不同ucode模式</span></span><br><span class="line"><span class="string">    [前置条件]：</span></span><br><span class="line"><span class="string">        1. module-setup_module:</span></span><br><span class="line"><span class="string">        2. class-setup_class:</span></span><br><span class="line"><span class="string">        3. function-setup_function:</span></span><br><span class="line"><span class="string">    [测试步骤]：</span></span><br><span class="line"><span class="string">        1. 示例1：</span></span><br><span class="line"><span class="string">            1. 设置（修改）。。。。，检查。。。；</span></span><br><span class="line"><span class="string">            2. 设置。。。。，检查。。。；</span></span><br><span class="line"><span class="string">            3. 设置。。。。，检查。。。；</span></span><br><span class="line"><span class="string">        2. 示例2：</span></span><br><span class="line"><span class="string">            1. 设置。。。。；</span></span><br><span class="line"><span class="string">            2. 设置。。。。；</span></span><br><span class="line"><span class="string">            3. 检查的违章包括：</span></span><br><span class="line"><span class="string">                * 压线、 11</span></span><br><span class="line"><span class="string">                * 压双黄线、 9</span></span><br><span class="line"><span class="string">                * 压单黄线、10</span></span><br><span class="line"><span class="string">                * 逆行、2</span></span><br><span class="line"><span class="string">    [后置条件]：</span></span><br><span class="line"><span class="string">        1. function-setup_function:</span></span><br><span class="line"><span class="string">        2. class-setup_class:</span></span><br><span class="line"><span class="string">        3. module-setup_module:</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>注意点：</p>
+<ol>
+<li>注释中的换行一律使用Enter，然后使用Tab缩进；</li>
+<li>在[用例描述]：[测试策略]：这样的标题后面不要写文字，Enter换行后写； 如果没有需要添加的内容，换行后写“无”字；</li>
+<li>对于选择用序号1.2.3还是* ， 如果有明确的先后步骤请使用1.2.3. ， 没有先后顺序或步骤根据自己审美选择用1.2.3或* ；</li>
+<li>使用1.2.3.时需要英文输入法, 同时注意标记符号与 内容之间需要有空格；</li>
+</ol>
+</li>
+</ol>
+<hr>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ol>
+<li><p>代码风格：</p>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://google.github.io/styleguide/pyguide.html#doc-function-args">styleguide | Style guides for Google-originated open-source projects</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://numpydoc.readthedocs.io/en/latest/example.html#example">Example — numpydoc v1.9.0rc0.dev0 Manual</a></p>
+</li>
+</ul>
+</li>
+<li><p>markdown 纯文档 sphinx demo</p>
+<p><a target="_blank" rel="noopener" href="https://gitee.com/xxpcb/sphinx-demo/blob/master/source/Cpp/01%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/index.rst">source&#x2F;Cpp&#x2F;01设计模式&#x2F;index.rst · xxpcb&#x2F;SphinxDemo - 码云 - 开源中国 (gitee.com)</a></p>
+<p>小记：他这边用了多个 index.rst，配合多级目录，嵌套使用，侧边栏可以点击展开。</p>
+</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/tools/" rel="tag"># tools</a>
+              <a href="/tags/sphinx/" rel="tag"># sphinx</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2024/10/26/16911/" rel="prev" title="drawio画流程图">
+                  <i class="fa fa-angle-left"></i> drawio画流程图
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2024/11/02/51099/" rel="next" title="Python 使用property 重构类">
+                  Python 使用property 重构类 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">691k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:28</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

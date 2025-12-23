@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="Windows11 安装 wsl">
+<meta property="og:type" content="article">
+<meta property="og:title" content="windows上使用wsl">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2025/03/04/5474/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="Windows11 安装 wsl">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-03-04T13:00:00.000Z">
+<meta property="article:modified_time" content="2025-12-23T14:07:49.180Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="tools">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2025/03/04/5474/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2025/03/04/5474/","path":"posts/2025/03/04/5474/","title":"windows上使用wsl"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>windows上使用wsl | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A3%80%E6%9F%A5%E7%8A%B6%E6%80%81"><span class="nav-text">检查状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-wsl"><span class="nav-text">安装 wsl</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4"><span class="nav-text">命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%AD%E8%A8%80%E9%85%8D%E7%BD%AE"><span class="nav-text">语言配置</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2025/03/04/5474/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="windows上使用wsl | Magnolia's Blog">
+      <meta itemprop="description" content="Windows11 安装 wsl">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          windows上使用wsl
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2025-03-04 21:00:00" itemprop="dateCreated datePublished" datetime="2025-03-04T21:00:00+08:00">2025-03-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%94%9F%E4%BA%A7%E5%8A%9B/" itemprop="url" rel="index"><span itemprop="name">生产力</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%94%9F%E4%BA%A7%E5%8A%9B/%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">工具</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>3.2k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>3 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">Windows11 安装 wsl</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>准备给 Windows11 上安装 wsl，没有安装前，搜索 wsl 后点击，弹出窗口并闪退。</p>
+<h3 id="检查状态"><a href="#检查状态" class="headerlink" title="检查状态"></a>检查状态</h3><p> <code>wsl --status</code></p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;wsl --status</span><br><span class="line">默认版本: <span class="number">2</span></span><br><span class="line">当前计算机配置不支持 WSL1。</span><br><span class="line">若要使用 WSL1，请启用“Windows Subsystem <span class="keyword">for</span> Linux”可选组件。</span><br><span class="line">当前计算机配置不支持 WSL2。</span><br><span class="line">请启用“虚拟机平台”可选组件，并确保在 BIOS 中启用虚拟化。</span><br><span class="line">通过运行以下命令启用“虚拟机平台”: wsl.exe --install --no-distribution</span><br><span class="line">有关信息，请访问 https://aka.ms/enablevirtualization</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>打开”控制面板” &gt; “程序” &gt; “启用或关闭 Windows 功能”</li>
+<li>勾选以下选项后重启：<ul>
+<li>“Hyper-V” （我的win11上无）</li>
+<li>“Windows 虚拟机监控程序平台”</li>
+<li>“Windows Subsystem for Linux”</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt;wsl --status</span><br><span class="line">默认版本: <span class="number">2</span></span><br><span class="line"></span><br><span class="line">&gt;wsl --list --verbose</span><br><span class="line">适用于 Linux 的 Windows 子系统没有已安装的分发。</span><br><span class="line">可通过安装包含以下说明的分发来解决此问题：</span><br><span class="line"></span><br><span class="line">使用“wsl.exe --list --online&#x27; ”列出可用的分发</span><br><span class="line">和 “wsl.exe --install &lt;Distro&gt;” 进行安装。</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装-wsl"><a href="#安装-wsl" class="headerlink" title="安装 wsl"></a>安装 wsl</h3><p><code>wsl --install Ubuntu</code></p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&gt;wsl --list --online</span><br><span class="line">以下是可安装的有效分发的列表。</span><br><span class="line">使用 &#x27;wsl.exe --install &lt;Distro&gt;&#x27; 安装。</span><br><span class="line"></span><br><span class="line">NAME                            FRIENDLY NAME</span><br><span class="line">Debian                          Debian GNU/Linux</span><br><span class="line">SUSE-Linux-Enterprise-<span class="number">15</span>-SP5    SUSE Linux Enterprise <span class="number">15</span> SP5</span><br><span class="line">SUSE-Linux-Enterprise-<span class="number">15</span>-SP6    SUSE Linux Enterprise <span class="number">15</span> SP6</span><br><span class="line">Ubuntu                          Ubuntu</span><br><span class="line">Ubuntu-<span class="number">24</span>.<span class="number">04</span>                    Ubuntu <span class="number">24</span>.<span class="number">04</span> LTS</span><br><span class="line">kali-linux                      Kali Linux Rolling</span><br><span class="line">openSUSE-Tumbleweed             openSUSE Tumbleweed</span><br><span class="line">openSUSE-Leap-<span class="number">15</span>.<span class="number">6</span>              openSUSE Leap <span class="number">15</span>.<span class="number">6</span></span><br><span class="line">Ubuntu-<span class="number">18</span>.<span class="number">04</span>                    Ubuntu <span class="number">18</span>.<span class="number">04</span> LTS</span><br><span class="line">Ubuntu-<span class="number">20</span>.<span class="number">04</span>                    Ubuntu <span class="number">20</span>.<span class="number">04</span> LTS</span><br><span class="line">Ubuntu-<span class="number">22</span>.<span class="number">04</span>                    Ubuntu <span class="number">22</span>.<span class="number">04</span> LTS</span><br><span class="line">OracleLinux_7_9                 Oracle Linux <span class="number">7</span>.<span class="number">9</span></span><br><span class="line">OracleLinux_8_7                 Oracle Linux <span class="number">8</span>.<span class="number">7</span></span><br><span class="line">OracleLinux_9_1                 Oracle Linux <span class="number">9</span>.<span class="number">1</span></span><br><span class="line"></span><br><span class="line">&gt;wsl --install Ubuntu</span><br><span class="line">正在下载: Ubuntu</span><br><span class="line">正在安装: Ubuntu</span><br><span class="line">已成功安装分发。它可通过 “wsl.exe -d Ubuntu” 启动</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">wsl: 检测到 <span class="title">localhost</span> 代理配置，但未镜像到 <span class="title">WSL</span>。<span class="title">NAT</span> 模式下的 <span class="title">WSL</span> 不支持 <span class="title">localhost</span> 代理。</span></span><br><span class="line"><span class="function"><span class="title">Provisioning</span> <span class="title">the</span> <span class="title">new</span> <span class="title">WSL</span> <span class="title">instance</span> <span class="title">Ubuntu</span></span></span><br><span class="line"><span class="function"><span class="title">This</span> <span class="title">might</span> <span class="title">take</span> <span class="title">a</span> <span class="title">while</span>...</span></span><br><span class="line"><span class="function"><span class="title">Create</span> <span class="title">a</span> <span class="title">default</span> <span class="title">Unix</span> <span class="title">user</span> <span class="title">account</span>: <span class="title">Magnolia</span></span></span><br><span class="line"><span class="function"><span class="title">Invalid</span> <span class="title">username</span>. <span class="title">A</span> <span class="title">valid</span> <span class="title">username</span> <span class="title">must</span> <span class="title">start</span> <span class="title">with</span> <span class="title">a</span> <span class="title">lowercase</span> <span class="title">letter</span> <span class="title">or</span> <span class="title">underscore</span>, <span class="title">and</span> <span class="title">can</span> <span class="title">contain</span> <span class="title">lowercase</span> <span class="title">letters</span>, <span class="title">digits</span>, <span class="title">underscores</span>, <span class="title">and</span> <span class="title">dashes</span>.</span></span><br><span class="line"><span class="function"><span class="title">Create</span> <span class="title">a</span> <span class="title">default</span> <span class="title">Unix</span> <span class="title">user</span> <span class="title">account</span>: <span class="title">magnolia</span></span></span><br><span class="line"><span class="function"><span class="title">New</span> <span class="title">password</span>:</span></span><br><span class="line"><span class="function"><span class="title">Retype</span> <span class="title">new</span> <span class="title">password</span>:</span></span><br><span class="line"><span class="function"><span class="title">passwd</span>: <span class="title">password</span> <span class="title">updated</span> <span class="title">successfully</span></span></span><br><span class="line"><span class="function"><span class="title">To</span> <span class="title">run</span> <span class="title">a</span> <span class="title">command</span> <span class="title">as</span> <span class="title">administrator</span> (<span class="title">user</span> &quot;<span class="title">root</span>&quot;), <span class="title">use</span> &quot;<span class="title">sudo</span> &lt;<span class="title">command</span>&gt;&quot;.</span></span><br><span class="line"><span class="function"><span class="title">See</span> &quot;<span class="title">man</span> <span class="title">sudo_root</span>&quot; <span class="title">for</span> <span class="title">details</span>.</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">Welcome</span> <span class="title">to</span> <span class="title">Ubuntu</span> 24.04.2 <span class="title">LTS</span> (<span class="title">GNU</span>/<span class="title">Linux</span> 5.15.167.4-<span class="title">microsoft</span>-<span class="title">standard</span>-<span class="title">WSL2</span> <span class="title">x86_64</span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"> * <span class="title">Documentation</span>:  <span class="title">https</span>://<span class="title">help.ubuntu.com</span></span></span><br><span class="line"><span class="function"> * <span class="title">Management</span>:     <span class="title">https</span>://<span class="title">landscape.canonical.com</span></span></span><br><span class="line"><span class="function"> * <span class="title">Support</span>:        <span class="title">https</span>://<span class="title">ubuntu.com</span>/<span class="title">pro</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"> <span class="title">System</span> <span class="title">information</span> <span class="title">as</span> <span class="title">of</span> <span class="title">Tue</span> <span class="title">Mar</span>  4 21:26:59 <span class="title">CST</span> 2025</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">  <span class="title">System</span> <span class="title">load</span>:  0.03                <span class="title">Processes</span>:             36</span></span><br><span class="line"><span class="function">  <span class="title">Usage</span> <span class="title">of</span> /:   0.1% <span class="title">of</span> 1006.85<span class="title">GB</span>   <span class="title">Users</span> <span class="title">logged</span> <span class="title">in</span>:       0</span></span><br><span class="line"><span class="function">  <span class="title">Memory</span> <span class="title">usage</span>: 3%                  <span class="title">IPv4</span> <span class="title">address</span> <span class="title">for</span> <span class="title">eth0</span>: 172.20.107.81</span></span><br><span class="line"><span class="function">  <span class="title">Swap</span> <span class="title">usage</span>:   0%</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">This</span> <span class="title">message</span> <span class="title">is</span> <span class="title">shown</span> <span class="title">once</span> <span class="title">a</span> <span class="title">day</span>. <span class="title">To</span> <span class="title">disable</span> <span class="title">it</span> <span class="title">please</span> <span class="title">create</span> <span class="title">the</span></span></span><br><span class="line"><span class="function">/<span class="title">home</span>/<span class="title">magnolia</span>/.<span class="title">hushlogin</span> <span class="title">file</span>.</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h3><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">wsl --list --verbose  # 查看可用的 WSL 发行版</span><br><span class="line">wsl --shutdown  # 重启WSL</span><br><span class="line">wsl pwd  # 可以查看当前路径，来验证 WSL 是否正常工作</span><br><span class="line">wsl ls</span><br><span class="line">wsl --update</span><br><span class="line"></span><br><span class="line"># 收集 WSL 诊断信息</span><br><span class="line">wsl --status</span><br><span class="line">wsl --systeminfo</span><br><span class="line"></span><br><span class="line"># 更新包</span><br><span class="line">sudo apt update</span><br><span class="line"></span><br><span class="line"># <span class="built_in">tree</span></span><br><span class="line">sudo apt install <span class="built_in">tree</span></span><br><span class="line"><span class="built_in">tree</span> -L <span class="number">3</span> -a -I &quot;syslog|__pycache__|*.log&quot;  # 展示筛选后的当前目录结构</span><br></pre></td></tr></table></figure>
+
+<p>在 Windows 命令行</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">C:\<span class="title">Users</span>\<span class="title">username</span>&gt;<span class="title">wsl</span> <span class="title">pwd</span></span></span><br><span class="line"><span class="function">/<span class="title">mnt</span>/<span class="title">c</span>/<span class="title">Users</span>/<span class="title">username</span></span></span><br></pre></td></tr></table></figure>
+
+<p>创建 <code>/etc/wsl.conf</code>，禁用 Windows 访问 Linux 文件系统：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[automount]</span><br><span class="line">enabled = <span class="literal">true</span></span><br><span class="line">options = <span class="string">&quot;metadata&quot;</span></span><br><span class="line">mountFsTab = <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+<p>这样可以 <strong>加速 WSL 访问 Windows 文件系统</strong>，避免不必要的同步。</p>
+<p>使用 <code>wsl --shutdown</code> 释放 WSL 资源：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl --shutdown</span><br></pre></td></tr></table></figure>
+
+
+
+<p>访问 WSL 目录</p>
+<p>在 Windows 资源管理器 中访问 WSL 目录：</p>
+<ol>
+<li>打开 资源管理器 - 地址栏 <code>\\wsl$</code>，看到 WSL 安装的所有 Linux 发行版，比如 <code>Ubuntu</code>。</li>
+<li>进入 <code>\\wsl$\Ubuntu\home\yourname</code>，像管理普通文件一样操作 WSL 里的文件。</li>
+</ol>
+<p>在 WSL 中遇到 <code>ls</code> 命令显示中文文件名出现 <code>??????</code> 的问题，通常是由于<strong>字符编码</strong>或<strong>语言环境（Locale）设置不正确</strong>导致的。以下是解决方法：</p>
+<hr>
+<h3 id="语言配置"><a href="#语言配置" class="headerlink" title="语言配置"></a>语言配置</h3><p>检查并设置正确的 Locale</p>
+<p>WSL 默认可能未配置中文语言环境，需要手动启用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看当前 locale 设置</span></span><br><span class="line">locale</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装中文语言包（Ubuntu/Debian 示例）</span></span><br><span class="line"><span class="built_in">sudo</span> apt update &amp;&amp; <span class="built_in">sudo</span> apt install locales fonts-noto-cjk</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成并设置中文 locale（UTF-8 编码）</span></span><br><span class="line"><span class="built_in">sudo</span> locale-gen zh_CN.UTF-8</span><br><span class="line"><span class="built_in">sudo</span> update-locale LANG=zh_CN.UTF-8</span><br><span class="line"></span><br><span class="line"><span class="comment"># 临时生效（仅当前会话）</span></span><br><span class="line"><span class="built_in">export</span> LANG=zh_CN.UTF-8</span><br></pre></td></tr></table></figure>
+
+<p><strong>重启 WSL</strong> 后生效（关闭终端重新打开）。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/tools/" rel="tag"># tools</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2025/03/02/46741/" rel="prev" title="GitLab Pages 托管静态网站">
+                  <i class="fa fa-angle-left"></i> GitLab Pages 托管静态网站
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2025/03/15/6513/" rel="next" title="windows 文件被占用">
+                  windows 文件被占用 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">691k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:28</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

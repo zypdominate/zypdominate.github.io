@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="本文主要介绍了 Python 中处理属性的多种方法，包括使用动态属性转换和访问 JSON 类数据、处理无效属性名、使用特殊方法创建对象、使用特性验证属性、特性覆盖属性、定义特性工厂函数、特殊属性对属性处理的影响以及处理属性的内置函数和特殊方法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="流畅的Python 动态属性和特征">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2020/04/03/31259/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="本文主要介绍了 Python 中处理属性的多种方法，包括使用动态属性转换和访问 JSON 类数据、处理无效属性名、使用特殊方法创建对象、使用特性验证属性、特性覆盖属性、定义特性工厂函数、特殊属性对属性处理的影响以及处理属性的内置函数和特殊方法。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://zypdominate.github.io/images/2020/%E6%B5%81%E7%95%85%E7%9A%84python-%E5%8A%A8%E6%80%81%E5%B1%9E%E6%80%A7%E5%92%8C%E7%89%B9%E5%BE%811.png">
+<meta property="og:image" content="https://zypdominate.github.io/images/2020/%E6%B5%81%E7%95%85%E7%9A%84python-%E5%8A%A8%E6%80%81%E5%B1%9E%E6%80%A7%E5%92%8C%E7%89%B9%E5%BE%812.png">
+<meta property="article:published_time" content="2020-04-02T16:06:02.000Z">
+<meta property="article:modified_time" content="2025-12-23T14:07:49.091Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zypdominate.github.io/images/2020/%E6%B5%81%E7%95%85%E7%9A%84python-%E5%8A%A8%E6%80%81%E5%B1%9E%E6%80%A7%E5%92%8C%E7%89%B9%E5%BE%811.png">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2020/04/03/31259/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2020/04/03/31259/","path":"posts/2020/04/03/31259/","title":"流畅的Python 动态属性和特征"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>流畅的Python 动态属性和特征 | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%8A%A8%E6%80%81%E5%B1%9E%E6%80%A7%E8%BD%AC%E6%8D%A2%E6%95%B0%E6%8D%AE"><span class="nav-text">使用动态属性转换数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%8A%A8%E6%80%81%E5%B1%9E%E6%80%A7%E8%AE%BF%E9%97%AEJSON%E7%B1%BB%E6%95%B0%E6%8D%AE"><span class="nav-text">使用动态属性访问JSON类数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%84%E7%90%86%E6%97%A0%E6%95%88%E5%B1%9E%E6%80%A7%E5%90%8D"><span class="nav-text">处理无效属性名</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-new-%E6%96%B9%E6%B3%95%E4%BB%A5%E7%81%B5%E6%B4%BB%E7%9A%84%E6%96%B9%E5%BC%8F%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1"><span class="nav-text">使用__new__方法以灵活的方式创建对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%89%B9%E6%80%A7%E9%AA%8C%E8%AF%81%E5%B1%9E%E6%80%A7%EF%BC%9Aproperty"><span class="nav-text">使用特性验证属性：property</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%89%B9%E6%80%A7%E4%BC%9A%E8%A6%86%E7%9B%96%E5%B1%9E%E6%80%A7"><span class="nav-text">特性会覆盖属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89%E4%B8%80%E4%B8%AA%E7%89%B9%E6%80%A7%E5%B7%A5%E5%8E%82%E5%87%BD%E6%95%B0"><span class="nav-text">定义一个特性工厂函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BD%B1%E5%93%8D%E5%B1%9E%E6%80%A7%E5%A4%84%E7%90%86%E6%96%B9%E5%BC%8F%E7%9A%84%E7%89%B9%E6%AE%8A%E5%B1%9E%E6%80%A7"><span class="nav-text">影响属性处理方式的特殊属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%84%E7%90%86%E5%B1%9E%E6%80%A7%E7%9A%84%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0"><span class="nav-text">处理属性的内置函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%84%E7%90%86%E5%B1%9E%E6%80%A7%E7%9A%84%E7%89%B9%E6%AE%8A%E6%96%B9%E6%B3%95"><span class="nav-text">处理属性的特殊方法</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2020/04/03/31259/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="流畅的Python 动态属性和特征 | Magnolia's Blog">
+      <meta itemprop="description" content="本文主要介绍了 Python 中处理属性的多种方法，包括使用动态属性转换和访问 JSON 类数据、处理无效属性名、使用特殊方法创建对象、使用特性验证属性、特性覆盖属性、定义特性工厂函数、特殊属性对属性处理的影响以及处理属性的内置函数和特殊方法。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          流畅的Python 动态属性和特征
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-04-03 00:06:02" itemprop="dateCreated datePublished" datetime="2020-04-03T00:06:02+08:00">2020-04-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>11k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>10 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">本文主要介绍了 Python 中处理属性的多种方法，包括使用动态属性转换和访问 JSON 类数据、处理无效属性名、使用特殊方法创建对象、使用特性验证属性、特性覆盖属性、定义特性工厂函数、特殊属性对属性处理的影响以及处理属性的内置函数和特殊方法。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h4 id="使用动态属性转换数据"><a href="#使用动态属性转换数据" class="headerlink" title="使用动态属性转换数据"></a>使用动态属性转换数据</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line"><span class="keyword">from</span> urllib.request <span class="keyword">import</span> urlopen</span><br><span class="line"></span><br><span class="line">URL = <span class="string">&#x27;https://www.oreilly.com/pub/sc/osconfeed&#x27;</span></span><br><span class="line">JSON_FILE = <span class="string">r&#x27;D:\keeplearning\myLearning\python\book2\osconfeed.json&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">load</span>():</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(JSON_FILE):</span><br><span class="line">        msg = <span class="string">f&#x27;downloading <span class="subst">&#123;URL&#125;</span> to <span class="subst">&#123;JSON_FILE&#125;</span>&#x27;</span></span><br><span class="line">        warnings.warn(msg)</span><br><span class="line">        <span class="keyword">with</span> urlopen(URL) <span class="keyword">as</span> remote, <span class="built_in">open</span>(JSON_FILE, <span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> local:</span><br><span class="line">            local.write(remote.read())</span><br><span class="line">    <span class="comment"># with open(JSON_FILE, mode=&#x27;rb&#x27;) as fp:</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(JSON_FILE, mode=<span class="string">&#x27;r&#x27;</span>, encoding=<span class="string">&#x27;utf8&#x27;</span>) <span class="keyword">as</span> fp:</span><br><span class="line">        <span class="built_in">print</span>(json.load(fp))</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="comment"># load()</span></span><br><span class="line">    feed = load2()</span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">sorted</span>(feed[<span class="string">&#x27;Schedule&#x27;</span>].keys()))</span><br><span class="line">    <span class="comment"># [&#x27;conferences&#x27;, &#x27;events&#x27;, &#x27;speakers&#x27;, &#x27;venues&#x27;]</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> key, value <span class="keyword">in</span> <span class="built_in">sorted</span>(feed[<span class="string">&#x27;Schedule&#x27;</span>].items()):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;<span class="built_in">len</span>(value)&#125;</span>,<span class="subst">&#123;key&#125;</span>&#x27;</span>)</span><br><span class="line">    <span class="comment"># 1,conferences</span></span><br><span class="line">    <span class="comment"># 494,events</span></span><br><span class="line">    <span class="comment"># 357,speakers</span></span><br><span class="line">    <span class="comment"># 53,venues</span></span><br></pre></td></tr></table></figure>
+
+<p>在with语句中 <strong>使用两个上下文管理器</strong>（从Python 3.1起允许这么做），分别用于读取和保存远程文件。<code>json.load</code> 函数解析JSON文件，返回Python原生对象。在这个数据源中有这几种数据类型：dict、list、str和int。</p>
+<hr>
+<h4 id="使用动态属性访问JSON类数据"><a href="#使用动态属性访问JSON类数据" class="headerlink" title="使用动态属性访问JSON类数据"></a>使用动态属性访问JSON类数据</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> abc</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FronzenJSON</span>():</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    一个只读接口，使用属性表示法访问JSON类对象</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, mapping</span>):</span><br><span class="line">        <span class="variable language_">self</span>.__data = <span class="built_in">dict</span>(mapping)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__getattr__</span>(<span class="params">self, name</span>):</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">hasattr</span>(<span class="variable language_">self</span>.__data, name):</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">getattr</span>(<span class="variable language_">self</span>.__data, name)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> FronzenJSON.build(<span class="variable language_">self</span>.__data[name])</span><br><span class="line"></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">build</span>(<span class="params">cls, obj</span>):</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">isinstance</span>(obj, abc.Mapping):</span><br><span class="line">            <span class="keyword">return</span> cls(obj)</span><br><span class="line">        <span class="keyword">elif</span> <span class="built_in">isinstance</span>(obj, abc.MutableSequence):</span><br><span class="line">            <span class="keyword">return</span> [cls.build(item) <span class="keyword">for</span> item <span class="keyword">in</span> obj]</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> obj</span><br></pre></td></tr></table></figure>
+
+<p>使用mapping参数构建一个字典。这么做有两个目的：<br>(1)确保传入的是字典（或者是能转换成字典的对象）；<br>(2)安全起见，创建一个副本。</p>
+<p>仅当没有指定名称（name）的属性时才调用 <code>__getattr__</code> 方法，调用keys、items等方法就是通过这种方式处理的；build 函数中，如果obj是映射，那就构建一个FrozenJSON对象；如果是MutableSequence对象，必然是列表，因此，我们把obj中的每个元素递归地传给 .build() 方法，构建一个列表。</p>
+<hr>
+<h4 id="处理无效属性名"><a href="#处理无效属性名" class="headerlink" title="处理无效属性名"></a>处理无效属性名</h4><p>FrozenJSON类有个缺陷：没有对名称为Python关键字的属性做特殊处理。比如说像下面这样构建一个对象：<code> grad = FrozenJSON(&#123;&#39;name&#39;: &#39;Jim Bo&#39;, &#39;class&#39;: 1982&#125;)</code>，此时无法读取 grad.class 的值，在pycharm中直接会提示此处代码有问题，因为在 Python 中 class 是保留字。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">grad = FrozenJSON(&#123;<span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;Jim Bo&#x27;</span>, <span class="string">&#x27;class&#x27;</span>: <span class="number">1982</span>&#125;)</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">getattr</span>(grad, <span class="string">&#x27;class&#x27;</span>))</span><br></pre></td></tr></table></figure>
+
+<p>FrozenJSON类的目的是为了便于访问数据，因此更好的方法是检查传给<code>FrozenJSON.__init__</code> 方法的映射中是否有键的名称为关键字，如果有，那么在键名后加上_，然后通过下述方式读取：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> keyword</span><br><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> abc</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FrozenJSON</span>():</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, mapping</span>):</span><br><span class="line">        <span class="variable language_">self</span>._data = &#123;&#125;</span><br><span class="line">        <span class="keyword">for</span> key, value <span class="keyword">in</span> mapping.items():</span><br><span class="line">            <span class="keyword">if</span> keyword.iskeyword(key):  <span class="comment"># 处理无效属性名</span></span><br><span class="line">                key += <span class="string">&#x27;_&#x27;</span></span><br><span class="line">            <span class="variable language_">self</span>._data[key] = value</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__getattr__</span>(<span class="params">self, name</span>):</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">hasattr</span>(<span class="variable language_">self</span>._data, name):</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;hasattr:&quot;</span>, name)</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">getattr</span>(<span class="variable language_">self</span>._data, name)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">if</span> keyword.iskeyword(name): <span class="comment"># 这里也需要处理无效属性名</span></span><br><span class="line">                name += <span class="string">&#x27;_&#x27;</span></span><br><span class="line">            <span class="keyword">return</span> FrozenJSON.build(<span class="variable language_">self</span>._data[name])</span><br><span class="line"></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">build</span>(<span class="params">cls, obj</span>):</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">isinstance</span>(obj, abc.Mapping):</span><br><span class="line">            <span class="keyword">return</span> cls(obj)</span><br><span class="line">        <span class="keyword">elif</span> <span class="built_in">isinstance</span>(obj, abc.MutableSequence):</span><br><span class="line">            <span class="keyword">return</span> [cls.build(item) <span class="keyword">for</span> item <span class="keyword">in</span> obj]</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> obj</span><br><span class="line">          </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    grad = FrozenJSON(&#123;<span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;Jim Bo&#x27;</span>, <span class="string">&#x27;class&#x27;</span>: <span class="number">1982</span>&#125;)</span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">getattr</span>(grad, <span class="string">&#x27;class&#x27;</span>))</span><br><span class="line">    <span class="built_in">print</span>(grad.class_)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="使用-new-方法以灵活的方式创建对象"><a href="#使用-new-方法以灵活的方式创建对象" class="headerlink" title="使用__new__方法以灵活的方式创建对象"></a>使用__new__方法以灵活的方式创建对象</h4><p>通常把 <code>__init__</code> 称为构造方法，这是从其他语言借鉴过来的术语。<br>其实，用于构建实例的是特殊方法 <code>__new__</code> ：这是个类方法（使用特殊方式处理，因此不必使用@classmethod装饰器），必须返回一个实例。</p>
+<p>返回的实例会作为第一个参数（即self）传给 <code>__init__</code> 方法。因为调用 <code>__init__</code> 方法时要传入实例，而且禁止返回任何值，所以 <code>__init__</code> 方法其实是“初始化方法”。</p>
+<p>真正的构造方法是 <code>__new__</code>。我们几乎不需要自己编写 <code>__new__</code> 方法，因为从object类继承的实现已经足够了。</p>
+<p>从 <code>__new__</code> 方法到 <code>__init__</code> 方法，是最常见的，但不是唯一的。<code>__new__</code> 方法也可以返回其他类的实例，此时，解释器不会调用 <code>__init__</code> 方法。</p>
+<p>使用 <code>__new__</code> 方法取代build方法，构建可能是也可能不是FrozenJSON实例的新对象：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> keyword</span><br><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> abc</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FrozenJSON</span>():</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__new__</span>(<span class="params">cls, arg</span>):</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">isinstance</span>(arg, abc.Mapping):</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">super</span>().__new__(cls)</span><br><span class="line">        <span class="keyword">elif</span> <span class="built_in">isinstance</span>(arg, abc.MutableSequence):</span><br><span class="line">            <span class="keyword">return</span> [cls(item) <span class="keyword">for</span> item <span class="keyword">in</span> arg]</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> arg</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, mapping</span>):</span><br><span class="line">        <span class="variable language_">self</span>._data = &#123;&#125;</span><br><span class="line">        <span class="keyword">for</span> key, value <span class="keyword">in</span> mapping.items():</span><br><span class="line">            <span class="keyword">if</span> keyword.iskeyword(key):</span><br><span class="line">                key += <span class="string">&#x27;_&#x27;</span></span><br><span class="line">            <span class="variable language_">self</span>._data[key] = value</span><br><span class="line">            </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__getattr__</span>(<span class="params">self, name</span>):</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">hasattr</span>(<span class="variable language_">self</span>._data, name):</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">getattr</span>(<span class="variable language_">self</span>._data, name)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">if</span> keyword.iskeyword(name):</span><br><span class="line">                name += <span class="string">&#x27;_&#x27;</span></span><br><span class="line">            <span class="keyword">return</span> FrozenJSON(<span class="variable language_">self</span>._data[name])</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    grad = FrozenJSON(&#123;<span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;Jim Bo&#x27;</span>, <span class="string">&#x27;class&#x27;</span>: <span class="number">1982</span>&#125;)</span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">getattr</span>(grad, <span class="string">&#x27;class&#x27;</span>))</span><br><span class="line">    <span class="built_in">print</span>(grad.class_)</span><br></pre></td></tr></table></figure>
+
+<p><code>__new__</code> 是类方法，第一个参数是类本身，余下的参数与 <code>__init__</code>  方法一样，只不过没有 self。</p>
+<p><code>return super().__new__(cls)</code> 默认的行为是委托给超类的 <code>__new__</code> 方法，这里调用的是object基类的 <code>__new__</code> 方法，把唯一的参数设为FrozenJSON。<code>__new__</code> 方法中余下的代码与原先的build方法完全一样，之前，这里调用的是FrozenJSON.build方法，现在只需调用FrozenJSON构造方法。</p>
+<p><code>__new__</code> 方法的第一个参数是类，因为创建的对象通常是那个类的实例。所以，在<code>FrozenJSON.__new__</code> 方法中，<code>super（　）.__new__(cls)</code> 表达式会调用<code>object.__new__(FrozenJSON)</code>，而object类构建的实例其实是FrozenJSON实例，即那个实例的<code>__class__</code> 属性存储的是FrozenJSON类的引用。不过，真正的构建操作由解释器调用C语言实现的<code>object.__new__</code>方法执行。</p>
+<hr>
+<h4 id="使用特性验证属性：property"><a href="#使用特性验证属性：property" class="headerlink" title="使用特性验证属性：property"></a>使用特性验证属性：property</h4><p>假设有个销售散装有机食物的电商应用，客户可以按重量订购坚果、干果或杂粮。在这个<br>系统中，每个订单中都有一系列商品，而每个商品都可以使用示例中的类表示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">LineItem</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, description, weight, price</span>):</span><br><span class="line">        <span class="variable language_">self</span>.description = description</span><br><span class="line">        <span class="variable language_">self</span>.weight = weight</span><br><span class="line">        <span class="variable language_">self</span>.price = price</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">subtotal</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.weight * <span class="variable language_">self</span>.price</span><br><span class="line"></span><br><span class="line"><span class="meta">    @property  </span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">weight</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.__weight</span><br><span class="line"></span><br><span class="line"><span class="meta">    @weight.setter</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">weight</span>(<span class="params">self, value</span>):</span><br><span class="line">        <span class="keyword">if</span> value &gt; <span class="number">0</span>:</span><br><span class="line">            <span class="variable language_">self</span>.__weight = value</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">&#x27;value must be &gt; 0&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">item = LineItem(<span class="string">&#x27;TestItem&#x27;</span>, <span class="number">1</span>, <span class="number">10</span>)</span><br><span class="line"><span class="built_in">print</span>(item.weight)</span><br></pre></td></tr></table></figure>
+
+<p>@property 装饰读值方法，此时的 weight 函数将真正的值存储在私有属性 __weight 中，被装饰的读值方法有个 .setter 属性，这个属性也是装饰器，这个装饰器把读值方法和设值方法绑定在一起。</p>
+<hr>
+<p>虽然内置的 property 经常用作装饰器，但它其实是一个类。<strong>在 Python 中，函数和类通常可以互换，因为二者都是可调用的对象，而且没有实例化对象的 new 运算符，所以调用构造方法与调用工厂函数没有区别</strong>。此外，只要能返回新的可调用对象，代替被装饰的函数，二者都可以用作装饰器。</p>
+<p>property 构造方法的完整签名：<code>property(fget=None, fset=None, fdel=None, doc=None)</code><br>所有参数都是可选的，如果没有把函数传给某个参数，那么得到的特性对象就不允许执行相应的操作。</p>
+<p>曾经没有 @ 装饰器句法，不使用装饰器定义特性的“经典”句法如示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">LineItem</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, description, weight, price</span>):</span><br><span class="line">        <span class="variable language_">self</span>.description = description</span><br><span class="line">        <span class="variable language_">self</span>.weight = weight</span><br><span class="line">        <span class="variable language_">self</span>.price = price</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">subtotal</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.weight * <span class="variable language_">self</span>.price</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_weight</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.__weight</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">set_weight</span>(<span class="params">self, value</span>):</span><br><span class="line">        <span class="keyword">if</span> value &gt; <span class="number">0</span>:</span><br><span class="line">            <span class="variable language_">self</span>.__weight = value</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">&#x27;value must be &gt; 0&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    weight = <span class="built_in">property</span>(get_weight, set_weight)</span><br><span class="line"></span><br><span class="line">item = LineItem(<span class="string">&#x27;TestItem&#x27;</span>, <span class="number">1</span>, <span class="number">10</span>)</span><br><span class="line"><span class="built_in">print</span>(item.weight)</span><br></pre></td></tr></table></figure>
+
+<p><code>weight = property(get_weight, set_weight)</code> 通过构建 property 对象，然后赋值给公开的类属性。</p>
+<p>通过加断点debug，看出两种方法的执行过程是不同的：</p>
+<ol>
+<li>使用 property(get_weight, set_weight)：</li>
+</ol>
+<p>  <img data-src="/../../images/2020/%E6%B5%81%E7%95%85%E7%9A%84python-%E5%8A%A8%E6%80%81%E5%B1%9E%E6%80%A7%E5%92%8C%E7%89%B9%E5%BE%811.png"></p>
+<ol start="2">
+<li>使用 @property：<br>  <img data-src="/../../images/2020/%E6%B5%81%E7%95%85%E7%9A%84python-%E5%8A%A8%E6%80%81%E5%B1%9E%E6%80%A7%E5%92%8C%E7%89%B9%E5%BE%812.png"></li>
+</ol>
+<hr>
+<h4 id="特性会覆盖属性"><a href="#特性会覆盖属性" class="headerlink" title="特性会覆盖属性"></a>特性会覆盖属性</h4><p>特性都是类属性，但是特性管理的其实是实例属性的存取。</p>
+<p>实例属性掩盖类的数据属性：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Class</span>:</span><br><span class="line">    data = <span class="string">&#x27;class data attr&#x27;</span></span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">prop</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&#x27;prop func&#x27;</span></span><br><span class="line">    </span><br><span class="line">obj = Class()</span><br><span class="line"><span class="built_in">vars</span>(obj)    <span class="comment"># vars 函数返回 obj 的 __dict__ 属性，表明没有实例属性。</span></span><br><span class="line">Out[<span class="number">4</span>]: &#123;&#125;</span><br><span class="line">obj.data</span><br><span class="line">Out[<span class="number">5</span>]: <span class="string">&#x27;class data attr&#x27;</span></span><br><span class="line">obj.data = <span class="string">&#x27;new data attr&#x27;</span></span><br><span class="line"><span class="built_in">vars</span>(obj)</span><br><span class="line">Out[<span class="number">7</span>]: &#123;<span class="string">&#x27;data&#x27;</span>: <span class="string">&#x27;new data attr&#x27;</span>&#125;</span><br><span class="line">obj.data</span><br><span class="line">Out[<span class="number">8</span>]: <span class="string">&#x27;new data attr&#x27;</span></span><br><span class="line">Class.data</span><br><span class="line">Out[<span class="number">9</span>]: <span class="string">&#x27;class data attr&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>尝试覆盖 obj 实例的 prop 特性：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">Class.prop</span><br><span class="line">Out[<span class="number">10</span>]: &lt;<span class="built_in">property</span> at <span class="number">0x27ba3839cc8</span>&gt;</span><br><span class="line">obj.prop</span><br><span class="line">Out[<span class="number">11</span>]: <span class="string">&#x27;prop func&#x27;</span></span><br><span class="line">obj.prop = <span class="string">&#x27;new prop func&#x27;</span>  <span class="comment"># 设置实例属性 prop ，结果失败</span></span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  ......</span><br><span class="line">    obj.prop = <span class="string">&#x27;new prop func&#x27;</span></span><br><span class="line">AttributeError: can<span class="string">&#x27;t set attribute</span></span><br><span class="line"><span class="string">obj.__dict__[&#x27;</span>prop<span class="string">&#x27;] = &#x27;</span>nnew<span class="string">&#x27;</span></span><br><span class="line"><span class="string">vars(obj)</span></span><br><span class="line"><span class="string">Out[14]: &#123;&#x27;</span>data<span class="string">&#x27;: &#x27;</span>new data att<span class="string">r&#x27;, &#x27;</span>prop<span class="string">&#x27;: &#x27;</span>nnew<span class="string">&#x27;&#125;</span></span><br><span class="line"><span class="string">obj.prop</span></span><br><span class="line"><span class="string">Out[15]: &#x27;</span>prop func<span class="string">&#x27;</span></span><br><span class="line"><span class="string">Class.prop = &#x27;</span><span class="keyword">class</span> <span class="title class_">prop</span><span class="string">&#x27;</span></span><br><span class="line"><span class="string">obj.prop</span></span><br><span class="line"><span class="string">Out[17]: &#x27;</span>nnew<span class="string">&#x27;</span></span><br><span class="line"><span class="string">Class.prop</span></span><br><span class="line"><span class="string">Out[18]: &#x27;</span><span class="keyword">class</span> <span class="title class_">prop</span><span class="string">&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>为 Class 类新添一个特性，覆盖实例属性:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">obj.data</span><br><span class="line">Out[<span class="number">19</span>]: <span class="string">&#x27;new data attr&#x27;</span></span><br><span class="line">Class.data</span><br><span class="line">Out[<span class="number">20</span>]: <span class="string">&#x27;class data attr&#x27;</span></span><br><span class="line">Class.data = <span class="built_in">property</span>(<span class="keyword">lambda</span> <span class="variable language_">self</span>: <span class="string">&#x27;the &quot;data&quot; prop value&#x27;</span>)</span><br><span class="line">obj.data</span><br><span class="line">Out[<span class="number">22</span>]: <span class="string">&#x27;the &quot;data&quot; prop value&#x27;</span></span><br><span class="line"><span class="keyword">del</span> Class.data</span><br><span class="line">obj.data</span><br><span class="line">Out[<span class="number">24</span>]: <span class="string">&#x27;new data attr&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>obj.attr 这样的表达式不会从 obj 开始寻找 attr，而是从 <code>obj.__class__</code> 开始，而且，仅当类中没有名为 attr 的特性时，Python 才会在 obj 实例中寻找。</strong></p>
+<hr>
+<h4 id="定义一个特性工厂函数"><a href="#定义一个特性工厂函数" class="headerlink" title="定义一个特性工厂函数"></a>定义一个特性工厂函数</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 工厂函数</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">quantity</span>(<span class="params">storage_name</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">qty_getter</span>(<span class="params">instance</span>):</span><br><span class="line">        <span class="comment"># 值直接从 instance.__dict__ 中获取，为的是跳过特性，防止无限递归。</span></span><br><span class="line">        <span class="keyword">return</span> instance.__dict__[storage_name]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">qty_setter</span>(<span class="params">instance, value</span>):</span><br><span class="line">        <span class="keyword">if</span> value &gt; <span class="number">0</span>:</span><br><span class="line">            instance.__dict__[storage_name] = value  <span class="comment"># 也是为了跳过特性</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">&#x27;value must be &gt; 0&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">property</span>(qty_getter, qty_setter)</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">LineItem</span>:</span><br><span class="line">    weight = quantity(<span class="string">&#x27;weight&#x27;</span>)</span><br><span class="line">    price = quantity(<span class="string">&#x27;price&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, description, weight, price</span>):</span><br><span class="line">        <span class="variable language_">self</span>.description = description</span><br><span class="line">        <span class="variable language_">self</span>.weight = weight</span><br><span class="line">        <span class="variable language_">self</span>.price = price</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">subtotal</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.weight * <span class="variable language_">self</span>.price</span><br><span class="line"></span><br><span class="line">      </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    item = LineItem(<span class="string">&quot;Test Item&quot;</span>, <span class="number">8</span>, <span class="number">18</span>)</span><br><span class="line">    <span class="built_in">print</span>(item.weight, item.price)</span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">sorted</span>(<span class="built_in">vars</span>(item).items()))</span><br></pre></td></tr></table></figure>
+
+<p>在工厂函数的最后一行，使用 property 对象包装 qty_getter 和 qty_setter 函数。需要运行这两个函数时，它们会从闭包中读取 storage_name，确定从哪里获取属性的值，或者在哪里存储属性的值。</p>
+<p>工厂函数构建的特性利用了前面所述的行为：weight 特性覆盖了 weight 实例属性，因此对 self.weight 或 item.weight 的每个引用都由特性函数处理，只有直接存取 <code>__dict__</code> 属性才能跳过特性的处理逻辑。</p>
+<hr>
+<h4 id="影响属性处理方式的特殊属性"><a href="#影响属性处理方式的特殊属性" class="headerlink" title="影响属性处理方式的特殊属性"></a>影响属性处理方式的特殊属性</h4><p><code>__class__</code> </p>
+<p>对象所属类的引用（即 <code>obj.__class__</code> 与 <code>type(obj)</code> 的作用相同）。Python的某些特殊方法，例如<code>__getattr__</code>，只在对象的类中寻找，而不在实例中寻找。</p>
+<p><code>__dict__</code></p>
+<p>一个映射，存储对象或类的可写属性。有 <code>__dict__</code> 属性的对象，任何时候都能随意设置新属性。如果类有 <code>__slots__</code> 属性，它的实例可能没有 <code>__dict__</code> 属性。参见下面对<code>__slots__</code> 属性的说明。</p>
+<p><code>__slots__</code> </p>
+<p>类可以定义这个这属性，限制实例能有哪些属性。<code>__slots__</code> 属性的值是一个字符串组成的元组，指明允许有的属性。如果 <code>__slots__</code> 中没有 ‘<code>__dict__</code>‘，那么该类的实例没有 <code>__dict__</code> 属性，实例只允许有指定名称的属性。</p>
+<hr>
+<h4 id="处理属性的内置函数"><a href="#处理属性的内置函数" class="headerlink" title="处理属性的内置函数"></a>处理属性的内置函数</h4><p><code>dir([object])</code></p>
+<p>列出对象的大多数属性。官方文档说，dir函数的目的是交互式使用，因此没有提供完整的属性列表，只列出一组“重要的”属性名。dir函数能审查有或没有 <code>__dict__</code> 属性的对象。dir函数不会列出<code>__dict__</code> 属性本身，但会列出其中的键。dir函数也不会列出类的几个特殊属性，例如 <code>__mro__</code>、<code>__bases__</code> 和 <code>__name__</code>。如果没有指定可选的object参数，dir函数会列出当前作用域中的名称。</p>
+<p><code>getattr(object, name[, default])</code></p>
+<p>从object对象中获取 name 字符串对应的属性。获取的属性可能来自对象所属的类或超类。如果没有指定的属性，getattr函数抛出AttributeError异常，或者返回default参数的值（如果设定了这个参数的话）。</p>
+<p><code>hasattr(object, name)</code></p>
+<p>如果object对象中存在指定的属性，或者能以某种方式（例如继承）通过object对象获取指定的属性，返回True。文档说道：“这个函数的实现方法是调用getattr(object, name)函数，看看是否抛出AttributeError异常。”</p>
+<p><code>setattr(object, name, value)</code></p>
+<p>把object对象指定属性的值设为value，前提是object对象能接受那个值。这个函数可能会创建一个新属性，或者覆盖现有的属性。</p>
+<p><code>vars([object])</code></p>
+<p>返回object对象的 <code>__dict__</code> 属性；如果实例所属的类定义了 <code>__slots__</code> 属性，实例没有 <code>__dict__</code> 属性，那么vars函数不能处理那个实例（相反，dir函数能处理这样的实例）。如果没有指定参数，那么 vars() 函数的作用与 locals() 函数一样：返回表示本地作用域的字典。</p>
+<hr>
+<h4 id="处理属性的特殊方法"><a href="#处理属性的特殊方法" class="headerlink" title="处理属性的特殊方法"></a>处理属性的特殊方法</h4><p>使用点号或内置的getattr、hasattr和setattr函数存取属性都会触发下述列表中相应的特殊方法。但是，直接通过实例的__dict__属性读写属性不会触发这些特殊方法——如果需要，通常会使用这种方式跳过特殊方法。</p>
+<p>假设有个名为Class的类，obj是Class类的实例，attr是obj的属性。</p>
+<p><code>__delattr__(self, name)</code> </p>
+<p>只要使用del语句删除属性，就会调用这个方法。例如，<code>del obj.attr</code> 语句触发 <code>Class.__delattr__(obj, &#39;attr&#39;)</code> 方法。</p>
+<p><code>__dir__(self)</code> </p>
+<p>把对象传给dir函数时调用，列出属性。例如，<code>dir(obj)</code> 触发 <code>Class.__dir__(obj)</code> 方法。</p>
+<p><code>__getattr__(self, name)</code> </p>
+<p>仅当获取指定的属性失败，搜索过obj、Class和超类之后调用。表达式 <code>obj.no_such_attr</code>、<code>getattr(obj, &#39;no_such_attr&#39;)</code> 和 <code>hasattr(obj, &#39;no_such_attr&#39;)</code> 可能会触发<code>Class.__getattr__(obj,&#39;no_such_attr&#39;)</code> 方法，但是，仅当在obj、Class和超类中找不到指定的属性时才会触发。</p>
+<p><code>__getattribute__(self, name)</code> </p>
+<p>尝试获取指定的属性时总会调用这个方法，不过，寻找的属性是特殊属性或特殊方法时除外。点号与 getattr 和 hasattr 内置函数会触发这个方法。调用 <code>__getattribute__</code> 方法且抛出AttributeError异常时，才会调用 <code>__getattr__</code> 方法。<strong>为了在获取obj实例的属性时不导致无限递归，<code>__getattribute__</code> 方法的实现要使用 <code>super().__getattribute__(obj, name)</code> 。</strong></p>
+<p><code>__setattr__(self, name, value)</code></p>
+<p>尝试设置指定的属性时总会调用这个方法。点号和setattr内置函数会触发这个方法。例如，<code>obj.attr=42</code> 和 <code>setattr(obj, &#39;attr&#39;, 42)</code> 都会触发 <code>Class.__setattr__(obj, ‘attr’, 42)</code> 方法。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2020/03/14/19948/" rel="prev" title="Python：使用future并发下载图片">
+                  <i class="fa fa-angle-left"></i> Python：使用future并发下载图片
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2020/04/05/700/" rel="next" title="流畅的Python 属性描述符—验证属性">
+                  流畅的Python 属性描述符—验证属性 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">691k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:28</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

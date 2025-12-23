@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="除了掌握Python本身的语法以及使用外，对其内部机制的探索可以更深入理解和掌握语言本身蕴含的思想和理念。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="编写高质量代码：Python中的内部机制（下）">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2019/10/20/9934/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="除了掌握Python本身的语法以及使用外，对其内部机制的探索可以更深入理解和掌握语言本身蕴含的思想和理念。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-10-20T14:11:48.000Z">
+<meta property="article:modified_time" content="2025-12-23T14:07:49.135Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2019/10/20/9934/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2019/10/20/9934/","path":"posts/2019/10/20/9934/","title":"编写高质量代码：Python中的内部机制（下）"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>编写高质量代码：Python中的内部机制（下） | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Python%E5%AF%B9%E8%B1%A1%E5%8D%8F%E8%AE%AE"><span class="nav-text">Python对象协议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%AD%E4%BB%A3%E5%99%A8%E5%8D%8F%E8%AE%AE"><span class="nav-text">迭代器协议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E5%99%A8"><span class="nav-text">生成器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E7%94%9F%E6%88%90%E5%99%A8%E7%9A%84%E5%8D%8F%E7%A8%8B"><span class="nav-text">基于生成器的协程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E8%B1%A1%E7%9A%84%E7%AE%A1%E7%90%86%E4%B8%8E%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6"><span class="nav-text">对象的管理与垃圾回收</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2019/10/20/9934/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="编写高质量代码：Python中的内部机制（下） | Magnolia's Blog">
+      <meta itemprop="description" content="除了掌握Python本身的语法以及使用外，对其内部机制的探索可以更深入理解和掌握语言本身蕴含的思想和理念。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          编写高质量代码：Python中的内部机制（下）
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-10-20 22:11:48" itemprop="dateCreated datePublished" datetime="2019-10-20T22:11:48+08:00">2019-10-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>5k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>5 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">除了掌握Python本身的语法以及使用外，对其内部机制的探索可以更深入理解和掌握语言本身蕴含的思想和理念。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p><strong>Rome was not built in one day， coding will not advance vigorously with one effort.</strong></p>
+<h2 id="Python对象协议"><a href="#Python对象协议" class="headerlink" title="Python对象协议"></a>Python对象协议</h2><p>可以这样比方：在Python中我需要调用你的某个方法，你正好有这个方法。</p>
+<p>举例：如果有占位符%s，那么按照字符串转换的协议，Python会自动去调用相应对象的<code>__str__()</code>方法。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Obj</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__str__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&#x27;called __str__&#x27;</span> </span><br><span class="line">    </span><br><span class="line">obj = Obj()</span><br><span class="line"><span class="built_in">print</span>(obj)  <span class="comment"># called __str__</span></span><br></pre></td></tr></table></figure>
+
+<p>除了<code>__str__()</code>方法，其他<code>__repr__()</code>、<code>__init__</code>、<code>__floate__</code>、<code>__nonezero__</code>等，统称为类型转换协议。</p>
+<p>其他协议：</p>
+<ol>
+<li><p>用于比较大小的协议<br><code>__cmp__()</code>方法：当两者相等时返回0，当self&lt;other时返回负值，反之返回正值。Python又有<code>__eq__()</code>、<code>__lt__()</code>、<code>__gt__()</code>等来实现相等、不等、小于和大于的判定，这就是Python对&#x3D;&#x3D;、!&#x3D;、&lt;、&gt;等操作符的进行重载的支撑机制。</p>
+</li>
+<li><p>数值类型相关的协议</p>
+<ul>
+<li>数值运算符：<code>__add__</code>、<code>__sub__</code>、<code>__mul__</code>、<code>__div__</code>、<code>__pow__</code></li>
+<li>位运算符：<code>__lshift__</code>、<code>__rshift__</code>、<code>__and__</code>、<code>__or__</code>、<code>__xor__</code>、<code>__invert__</code></li>
+<li>运算赋值符：<code>__iadd__</code>、<code>__isub__</code>、<code>__imul__</code>、<code>__idiv__</code>、<code>__ipow__</code></li>
+<li>其他：<code>__pos__</code> - 正、<code>__neg__</code> - 负、<code>__abs__</code> - 绝对值</li>
+</ul>
+</li>
+<li><p>容器类型协议</p>
+<ul>
+<li><p>python中内置了len函数，通过<code>__len__</code>完成</p>
+</li>
+<li><p><code>__getitem__</code>、<code>__setitem__</code>、<code>__delitem__</code>对应读、写和删除</p>
+</li>
+<li><p><code>__reversed__</code>对内置函数reversed支持</p>
+</li>
+<li><p>对成员关系的判断符in和not in的支持：<code>__contained__</code></p>
+</li>
+</ul>
+</li>
+<li><p>可调用对象协议<br>可调用对象即类似函数对象，能够让类实例表现得像函数一样，这样就可以让每一个函数调用都有所不同。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Functor</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, content</span>):</span><br><span class="line">        <span class="variable language_">self</span>._content = content</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__call__</span>(<span class="params">self, *args, **kwargs</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&#x27;do something <span class="subst">&#123;self._content&#125;</span>&#x27;</span>)</span><br><span class="line"></span><br><span class="line">func = Functor(<span class="string">&quot;a1&quot;</span>)</span><br><span class="line">func2 = Functor(<span class="string">&quot;a2&quot;</span>)</span><br><span class="line"></span><br><span class="line">func()   <span class="comment"># do something a1</span></span><br><span class="line">func2()	 <span class="comment"># do something a2</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>与可调用对象差不多的，还有一个可哈希对象，它是用过<code>__hash__()</code>方法来支持hash()这个内置函数的，在创建自己的类型时非常有用，因为只有支持可哈希协议的类型才能作为dict的键类型（不过只要继承自object的新式类默认就支持了）。</p>
+</li>
+<li><p>上下文管理器协议，也就是对with语句的支持。协议通过<code>__enter__</code>、<code>__exit__</code>两个方法来实现对资源的清理，确保资源无论在什么情况下都会被正常清理。</p>
+</li>
+</ol>
+<hr>
+<h2 id="迭代器协议"><a href="#迭代器协议" class="headerlink" title="迭代器协议"></a>迭代器协议</h2><ul>
+<li><p>实现了一个<code>__iter__()</code>方法，返回一个迭代器</p>
+</li>
+<li><p>实现next()方法，返回当前元素，并指向下一个元素的位置，如果当前元素已无元素，则抛出StopIteration异常。</p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">mylist = <span class="built_in">range</span>(<span class="number">2</span>)</span><br><span class="line"><span class="built_in">next</span>(mylist)</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">&quot;D:\Python3.6.0\lib\site-packages\IPython\core\interactiveshell.py&quot;</span>, line <span class="number">2961</span>, <span class="keyword">in</span> run_code</span><br><span class="line">    <span class="built_in">exec</span>(code_obj, <span class="variable language_">self</span>.user_global_ns, <span class="variable language_">self</span>.user_ns)</span><br><span class="line">  File <span class="string">&quot;&lt;ipython-input-10-bae65c1f3ff5&gt;&quot;</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    <span class="built_in">next</span>(mylist)</span><br><span class="line">TypeError: <span class="string">&#x27;range&#x27;</span> <span class="built_in">object</span> <span class="keyword">is</span> <span class="keyword">not</span> an iterator</span><br><span class="line">  </span><br><span class="line">myiter = mylist.__iter__()</span><br><span class="line">myiter</span><br><span class="line">Out[<span class="number">2</span>]: &lt;range_iterator at <span class="number">0x208ddf3b3f0</span>&gt;</span><br><span class="line"><span class="built_in">next</span>(myiter)</span><br><span class="line">Out[<span class="number">3</span>]: <span class="number">0</span></span><br><span class="line"><span class="built_in">next</span>(myiter)</span><br><span class="line">Out[<span class="number">4</span>]: <span class="number">1</span></span><br><span class="line"><span class="built_in">next</span>(myiter)</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">&quot;D:\Python3.6.0\lib\site-packages\IPython\core\interactiveshell.py&quot;</span>, line <span class="number">2961</span>, <span class="keyword">in</span> run_code</span><br><span class="line">    <span class="built_in">exec</span>(code_obj, <span class="variable language_">self</span>.user_global_ns, <span class="variable language_">self</span>.user_ns)</span><br><span class="line">  File <span class="string">&quot;&lt;ipython-input-15-ce4a7df7b15f&gt;&quot;</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    <span class="built_in">next</span>(myiter)</span><br><span class="line">StopIteration</span><br></pre></td></tr></table></figure>
+
+<p>其实for语句就是福获取容器的迭代器、调用迭代器的next()方法以及对StopIteration进行处理等流程进行封装的语法糖（类似的还有in、not in)。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mylist = <span class="built_in">range</span>(<span class="number">3</span>)</span><br><span class="line">myiter = <span class="built_in">iter</span>(mylist)</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="built_in">next</span>(myiter))</span><br><span class="line">    <span class="keyword">except</span> StopIteration:</span><br><span class="line">        <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+
+<p>使用容器的优点：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Fib</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.a, <span class="variable language_">self</span>.b = <span class="number">0</span>, <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__iter__</span>(<span class="params">self</span>):  <span class="comment"># 使得&#x27;Fib&#x27; object is iterable</span></span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__next__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.a, <span class="variable language_">self</span>.b = <span class="variable language_">self</span>.b, <span class="variable language_">self</span>.a + <span class="variable language_">self</span>.b</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.a</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i, j <span class="keyword">in</span> <span class="built_in">enumerate</span>(Fib()):</span><br><span class="line">    <span class="built_in">print</span>(j)</span><br><span class="line">    <span class="keyword">if</span> i &gt; <span class="number">10</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">        </span><br><span class="line"><span class="comment"># 传统使用容器储存数列</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">traditional</span>(<span class="params">n</span>):</span><br><span class="line">    reslist = []</span><br><span class="line">    a, b = <span class="number">0</span>, <span class="number">1</span></span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> count &lt; n:</span><br><span class="line">        reslist.append(b)</span><br><span class="line">        a, b = b, a + b</span><br><span class="line">        count += <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> reslist</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(traditional(<span class="number">10</span>))</span><br></pre></td></tr></table></figure>
+
+<p><strong>与直接使用容器的代码相比，它仅使用两个变量，显而易见更省内存，并在一些应用场合更省CPU计算资源，所以在编写代码中应当多多使用迭代器协议，避免劣化代码。</strong></p>
+<hr>
+<h2 id="生成器"><a href="#生成器" class="headerlink" title="生成器"></a>生成器</h2><p>如果一个函数使用了yield语句，那么它就是一个生成器函数。</p>
+<p>当调用生成器函数时，返回一个迭代器，不过迭代器是以生成器对象的形式出现的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">fib</span>(<span class="params">n</span>):</span><br><span class="line">    a, b = <span class="number">0</span>, <span class="number">1</span></span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> count &lt; n:</span><br><span class="line">        <span class="keyword">yield</span> b</span><br><span class="line">        a, b = b, a + b</span><br><span class="line">        count += <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">list</span>(fib(<span class="number">5</span>)))</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">dir</span>(fib(<span class="number">5</span>)))</span><br><span class="line"><span class="comment"># [&#x27;__class__&#x27;, &#x27;__del__&#x27;, &#x27;__delattr__&#x27;, &#x27;__dir__&#x27;, &#x27;__doc__&#x27;, &#x27;__eq__&#x27;, &#x27;__format__&#x27;, &#x27;__ge__&#x27;, &#x27;__getattribute__&#x27;, &#x27;__gt__&#x27;, &#x27;__hash__&#x27;, &#x27;__init__&#x27;, &#x27;__init_subclass__&#x27;, &#x27;__iter__&#x27;, &#x27;__le__&#x27;, &#x27;__lt__&#x27;, &#x27;__name__&#x27;, &#x27;__ne__&#x27;, &#x27;__new__&#x27;, &#x27;__next__&#x27;, &#x27;__qualname__&#x27;, &#x27;__reduce__&#x27;, &#x27;__reduce_ex__&#x27;, &#x27;__repr__&#x27;, &#x27;__setattr__&#x27;, &#x27;__sizeof__&#x27;, &#x27;__str__&#x27;, &#x27;__subclasshook__&#x27;, &#x27;close&#x27;, &#x27;gi_code&#x27;, &#x27;gi_frame&#x27;, &#x27;gi_running&#x27;, &#x27;gi_yieldfrom&#x27;, &#x27;send&#x27;, &#x27;throw&#x27;]</span></span><br></pre></td></tr></table></figure>
+
+<p>相对传统使用容器储存数列，使用yield代码量减少。</p>
+<p>通过dir(fib(5))对象带有<code>__iter__</code>和<code>__next__</code>方法可以看出它是一个迭代器。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">echo</span>(<span class="params">value</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;**begin&quot;</span>)</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            value = <span class="keyword">yield</span> value</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            <span class="built_in">print</span>(e)</span><br><span class="line">        <span class="keyword">finally</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;finish**&quot;</span>)</span><br><span class="line"></span><br><span class="line">gen = echo(<span class="number">1</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">next</span>(gen))  <span class="comment"># print(gen.__next__())</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">next</span>(gen))</span><br><span class="line"><span class="built_in">print</span>(gen.send(<span class="number">2</span>))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">**begin</span><br><span class="line">1</span><br><span class="line">finish**</span><br><span class="line">None</span><br><span class="line">finish**</span><br><span class="line">2</span><br><span class="line">finish**</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="基于生成器的协程"><a href="#基于生成器的协程" class="headerlink" title="基于生成器的协程"></a>基于生成器的协程</h2><p>先看基于生产者消费者模型，对抢占式多线程编程实现和协程编程实现进行对比。</p>
+<p>伪代码：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">队列容器</span></span><br><span class="line">var q:= new queue</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">消费者线程</span></span><br><span class="line">loop </span><br><span class="line">	lock(q)</span><br><span class="line">	get item from q</span><br><span class="line">	unlock(q)</span><br><span class="line">	if item</span><br><span class="line">		use this item</span><br><span class="line">	else</span><br><span class="line">		sleep</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">消费者线程</span></span><br><span class="line">loop</span><br><span class="line">	create some new item</span><br><span class="line">	lock(q)</span><br><span class="line">	add the items to q</span><br><span class="line">	unlock(q)</span><br></pre></td></tr></table></figure>
+
+<p>可以看出，线程实现至少有两点缺点：</p>
+<ul>
+<li>对队列的操作需要有显式\隐式（使用线程安全点的队列）的加锁操作</li>
+<li>消费者线程还要通过sleep把CPU资源实时地“谦让”给生产者线程使用，其中适时多久，基本上只能静态地使用经验值，效果往往不尽人意</li>
+</ul>
+<p>而使用协程可以解决这个问题，以下是基于协程的生产者消费模型实现（伪代码）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 队列容器</span></span><br><span class="line">var q:= new queue</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生产者协程</span></span><br><span class="line">loop </span><br><span class="line">	<span class="keyword">while</span> q <span class="keyword">is</span> <span class="keyword">not</span> full:</span><br><span class="line">		create some new items</span><br><span class="line">		add the items to q</span><br><span class="line">	<span class="keyword">yield</span> to consume</span><br><span class="line">	</span><br><span class="line"><span class="comment"># 消费者协程</span></span><br><span class="line">loop </span><br><span class="line">	<span class="keyword">while</span> q <span class="keyword">is</span> <span class="keyword">not</span> empty</span><br><span class="line">		remove some items <span class="keyword">from</span> q</span><br><span class="line">		use the items</span><br><span class="line">	<span class="keyword">yield</span> to produce</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="对象的管理与垃圾回收"><a href="#对象的管理与垃圾回收" class="headerlink" title="对象的管理与垃圾回收"></a>对象的管理与垃圾回收</h2><p>Python并不需要用户自己来像C语言一样来管理内存，它具备垃圾回收机制。</p>
+<p>Python中内存管理方式：使用引用计数器（Reference counting）的方法来表示该对象当前有多少个引用。当其他对象引用该对象时，其引用计数会增加1，而删除一个对当前对象的引用，其引用计数会减1。只有当引用计数的值为0时该对象才会被垃圾收集器回收，因为它表示这个对象不再被其他对象引用，是个不可达对象。</p>
+<p>但是，其缺点是无法解决循环引用的问题，即两个对象相互引用。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2019/10/20/56015/" rel="prev" title="编写高质量代码：Python中的内部机制（上）">
+                  <i class="fa fa-angle-left"></i> 编写高质量代码：Python中的内部机制（上）
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2019/11/02/33468/" rel="next" title="流畅的Python：数据模型">
+                  流畅的Python：数据模型 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">691k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:28</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

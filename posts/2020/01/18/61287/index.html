@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="Python 中自定义类的一些高级特性和实现方法，包括使用reprlib.repr函数生成对象的安全表示形式、实现序列协议、处理切片、动态存取属性、散列和快速等值测试等。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="流畅的Python：序列的修改、散列和切片">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2020/01/18/61287/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="Python 中自定义类的一些高级特性和实现方法，包括使用reprlib.repr函数生成对象的安全表示形式、实现序列协议、处理切片、动态存取属性、散列和快速等值测试等。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-01-18T06:17:28.000Z">
+<meta property="article:modified_time" content="2025-12-23T14:07:49.095Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2020/01/18/61287/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2020/01/18/61287/","path":"posts/2020/01/18/61287/","title":"流畅的Python：序列的修改、散列和切片"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>流畅的Python：序列的修改、散列和切片 | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8reprlib-repr-%E7%9A%84%E5%BA%8F%E5%88%97"><span class="nav-text">使用reprlib.repr()的序列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%8F%E8%AE%AE%E5%92%8C%E9%B8%AD%E5%AD%90%E6%A8%A1%E5%9E%8B"><span class="nav-text">协议和鸭子模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%AF%E5%88%87%E7%89%87%E7%9A%84%E5%BA%8F%E5%88%97"><span class="nav-text">可切片的序列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%87%E7%89%87%E5%8E%9F%E7%90%86"><span class="nav-text">切片原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%83%BD%E5%A4%84%E7%90%86%E5%88%87%E7%89%87%E7%9A%84-getitem-%E6%96%B9%E6%B3%95"><span class="nav-text">能处理切片的 __getitem__ 方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E5%AD%98%E5%8F%96%E5%B1%9E%E6%80%A7"><span class="nav-text">动态存取属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%A3%E5%88%97%E5%92%8C%E5%BF%AB%E9%80%9F%E7%AD%89%E5%80%BC%E6%B5%8B%E8%AF%95"><span class="nav-text">散列和快速等值测试</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2020/01/18/61287/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="流畅的Python：序列的修改、散列和切片 | Magnolia's Blog">
+      <meta itemprop="description" content="Python 中自定义类的一些高级特性和实现方法，包括使用reprlib.repr函数生成对象的安全表示形式、实现序列协议、处理切片、动态存取属性、散列和快速等值测试等。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          流畅的Python：序列的修改、散列和切片
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-01-18 14:17:28" itemprop="dateCreated datePublished" datetime="2020-01-18T14:17:28+08:00">2020-01-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>12k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>11 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">Python 中自定义类的一些高级特性和实现方法，包括使用reprlib.repr函数生成对象的安全表示形式、实现序列协议、处理切片、动态存取属性、散列和快速等值测试等。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h4 id="使用reprlib-repr-的序列"><a href="#使用reprlib-repr-的序列" class="headerlink" title="使用reprlib.repr()的序列"></a>使用reprlib.repr()的序列</h4><p>为了编写 Vector(3,  4)和 Vector(3,  4,  5) 这样的代码，我们可以让<code>__init__</code>方法接受任意个参数（通过 *args）；但是，序列类型的构造方法最好接受可迭代的对象为参数，因为所有内置的序列类型都是这样做的。</p>
+<p>如果 Vector 实例的分量超过 6 个，repr() 生成的字符串就会使用 … 省略一部分。包含大量元素的集合类型一定要这么做，因为字符串表示形式是用于调试的（因此不想让大型对象在控制台或日志中输出几千行内容）。使用 reprlib 模块可以生成长度有限的表示形式。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="keyword">import</span> reprlib</span><br><span class="line"><span class="keyword">from</span> array <span class="keyword">import</span> array</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Vector</span>:</span><br><span class="line">    typecode = <span class="string">&#x27;d&#x27;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, components</span>):</span><br><span class="line">        <span class="variable language_">self</span>._classname = <span class="built_in">type</span>(<span class="variable language_">self</span>).__name__</span><br><span class="line">        <span class="variable language_">self</span>._components = array(<span class="variable language_">self</span>.typecode, components)  <span class="comment"># array(&#x27;d&#x27;, [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0])</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__iter__</span>(<span class="params">self</span>):		<span class="comment"># 为了迭代</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">iter</span>(<span class="variable language_">self</span>._components)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__repr__</span>(<span class="params">self</span>):</span><br><span class="line">        components = reprlib.<span class="built_in">repr</span>(<span class="variable language_">self</span>._components)  <span class="comment"># 获取有限长度表示</span></span><br><span class="line">        <span class="comment"># &quot;array(&#x27;d&#x27;, [1.0, 2.0, 3.0, 4.0, 5.0, ...])&quot;</span></span><br><span class="line">        components = components[components.find(<span class="string">&#x27;[&#x27;</span>):-<span class="number">1</span>]</span><br><span class="line">        <span class="keyword">return</span> <span class="string">f&#x27;<span class="subst">&#123;self._classname&#125;</span>(<span class="subst">&#123;components&#125;</span>)&#x27;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__str__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">str</span>(<span class="built_in">tuple</span>(<span class="variable language_">self</span>))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__bytes__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> (<span class="built_in">bytes</span>([<span class="built_in">ord</span>(<span class="variable language_">self</span>.typecode)]) + <span class="built_in">bytes</span>(<span class="variable language_">self</span>._components))</span><br><span class="line">      	<span class="comment"># 这里不能像abs和bool函数里写的那样直接写self，会导致循环调用__bytes__</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__eq__</span>(<span class="params">self, other</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">tuple</span>(<span class="variable language_">self</span>) == <span class="built_in">tuple</span>(other)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__abs__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> math.sqrt(<span class="built_in">sum</span>(x * x <span class="keyword">for</span> x <span class="keyword">in</span> <span class="variable language_">self</span>))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__bool__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">bool</span>(<span class="built_in">abs</span>(<span class="variable language_">self</span>))</span><br><span class="line"></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">frombytes</span>(<span class="params">cls, octets</span>):</span><br><span class="line">        typecode = <span class="built_in">chr</span>(octets[<span class="number">0</span>])  <span class="comment"># d b&#x27;d\x00\x00\x00\x0.....</span></span><br><span class="line">        memv = <span class="built_in">memoryview</span>(octets[<span class="number">1</span>:]).cast(typecode)</span><br><span class="line">        <span class="keyword">return</span> cls(memv)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">vector = Vector([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>])</span><br><span class="line"><span class="built_in">print</span>(vector)  <span class="comment"># (1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0)</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">repr</span>(vector))		<span class="comment"># Vector([1.0, 2.0, 3.0, 4.0, 5.0, ...])</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">bytes</span>(vector))</span><br><span class="line"><span class="comment"># b&#x27;d\x00\x00\x00\x00\x00\x00\xf0?\x00\x00\x00\x00\x00\x00\x00@\x00\x00\x00\x00\x00\x00\x08@\x00\x00\x00\x00\x00\x00\x10@\x00\x00\x00\x00\x00\x00\x14@\x00\x00\x00\x00\x00\x00\x18@\x00\x00\x00\x00\x00\x00\x1c@\x00\x00\x00\x00\x00\x00 @&#x27;</span></span><br><span class="line"><span class="built_in">print</span>(vector.frombytes(<span class="built_in">bytes</span>(vector)))  <span class="comment"># (1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0)</span></span><br></pre></td></tr></table></figure>
+
+<p><code>reprlib.repr</code> 这个函数用于生成大型结构或递归结构的安全表示形式，它会限制输出字符串的长度，用 ‘…’ 表示截断的部分。希望 Vector 实例的表示形式是 Vector([3.0,  4.0,  5.0]) 这样，而不是 Vector(array(‘d’,  [3.0,  4.0, 5.0]))，因为 Vector 实例中的数组是实现细节。</p>
+<p>写<code>__repr__</code>方法时，本可以生成简化的 components 显示形式 <code>reprlib.repr(list(self._components))</code>，然而，这么做有点浪费，因为要把 <code>self._components </code> 中的每个元素复制到一个列表中，然后使用列表的表示形式。而是直接把 <code>self._components</code> 传给 <code>reprlib.repr</code> 函数，然后去掉 [] 外面的字符，</p>
+<p><strong>调用 <code>repr()</code> 函数的目的是调试，因此绝对不能抛出异常。如果 <code>__repr__</code> 方法的实现有问题，那么必须处理，尽量输出有用的内容，让用户能够识别目标对象。</strong></p>
+<hr>
+<h4 id="协议和鸭子模型"><a href="#协议和鸭子模型" class="headerlink" title="协议和鸭子模型"></a>协议和鸭子模型</h4><p>在 Python 中创建功能完善的序列类型无需使用继承，只需实现符合<strong>序列协议的方法</strong>。</p>
+<p>在面向对象编程中，<strong>协议是非正式的接口</strong>，只在文档中定义，在代码中不定义。例如，Python 的序列协议只需要 <code>__len__</code>和 <code>__getitem__</code> 两个方法。任何类（如 Spam），只要使用标准的签名和语义实现了这两个方法能用在任何期待序列的地方。Spam 是不是哪个类的子类无关紧要，只要提供了所需的方法即可。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> collections</span><br><span class="line"></span><br><span class="line">Card = collections.namedtuple(<span class="string">&#x27;Card&#x27;</span>, [<span class="string">&#x27;rank&#x27;</span>, <span class="string">&#x27;suit&#x27;</span>])</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FranchDeck</span>:</span><br><span class="line">    ranks = [<span class="built_in">str</span>(n) <span class="keyword">for</span> n <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>, <span class="number">11</span>)] + <span class="built_in">list</span>(<span class="string">&#x27;JQKA&#x27;</span>)</span><br><span class="line">    suits = <span class="string">&#x27;spades diamends clubs hearts&#x27;</span>.split()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>._cards = [Card(rank, suit)</span><br><span class="line">                       <span class="keyword">for</span> suit <span class="keyword">in</span> <span class="variable language_">self</span>.suits</span><br><span class="line">                       <span class="keyword">for</span> rank <span class="keyword">in</span> <span class="variable language_">self</span>.ranks]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__len__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">len</span>(<span class="variable language_">self</span>._cards)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__getitem__</span>(<span class="params">self, position</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>._cards[position]</span><br><span class="line"></span><br><span class="line">f = FranchDeck()</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> f:</span><br><span class="line">    <span class="built_in">print</span>(i)</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">len</span>(f))</span><br></pre></td></tr></table></figure>
+
+<p> FrenchDeck 类能充分利用 Python 的很多功能，因为它实现了序列协议，不过代码中并没有声明这一点。我们说它是序列，因为它的行为像序列，这才是重点。</p>
+<p>不要检查它是不是鸭子、它的叫声像不像鸭子、它的走路姿势像不像鸭子，等等。具体检查什么取决于你想使用语言的<strong>哪些行为</strong>。 ——  Alex Martelli </p>
+<p>协议是非正式的，没有强制力，因此如果你知道类的具体使用场景，通常只需要实现一个协议的部分。例如，为了支持迭代，只需实现 <code>__getitem__</code> 方法，没必要提供 <code>__len__</code> 方法。</p>
+<hr>
+<h4 id="可切片的序列"><a href="#可切片的序列" class="headerlink" title="可切片的序列"></a>可切片的序列</h4><p>让 Vector 表现为序列所需的两个方法：<code>__len__</code> 和 <code>__getitem__</code> 。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Vector</span>:</span><br><span class="line">    typecode = <span class="string">&#x27;d&#x27;</span></span><br><span class="line">    <span class="comment"># 省略其他函数，加入len、getitem</span></span><br><span class="line">		<span class="keyword">def</span> <span class="title function_">__len__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">len</span>(<span class="variable language_">self</span>._components)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__getitem__</span>(<span class="params">self, index</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>._components[index]</span><br><span class="line"></span><br><span class="line">vector = Vector(<span class="built_in">range</span>(<span class="number">7</span>))</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">len</span>(vector))  <span class="comment"># 7</span></span><br><span class="line"><span class="built_in">print</span>(vector[<span class="number">0</span>])  <span class="comment"># 0.0</span></span><br><span class="line"><span class="built_in">print</span>(vector[<span class="number">1</span>:<span class="number">3</span>])  <span class="comment"># array(&#x27;d&#x27;, [1.0, 2.0])  </span></span><br></pre></td></tr></table></figure>
+
+<p>这里切片生成还只是普通的数组。</p>
+<hr>
+<h4 id="切片原理"><a href="#切片原理" class="headerlink" title="切片原理"></a>切片原理</h4><p>举例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Myseq</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__getitem__</span>(<span class="params">self, index</span>):</span><br><span class="line">        <span class="keyword">return</span> index</span><br><span class="line">seq = Myseq()</span><br><span class="line"></span><br><span class="line">seq[<span class="number">1</span>]</span><br><span class="line"><span class="number">1</span></span><br><span class="line">seq[<span class="number">1</span>:<span class="number">4</span>]</span><br><span class="line"><span class="built_in">slice</span>(<span class="number">1</span>, <span class="number">4</span>, <span class="literal">None</span>)</span><br><span class="line"></span><br><span class="line">seq[<span class="number">1</span>:<span class="number">4</span>:<span class="number">2</span>]</span><br><span class="line"><span class="built_in">slice</span>(<span class="number">1</span>, <span class="number">4</span>, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">seq[<span class="number">1</span>:<span class="number">4</span>:<span class="number">2</span>, <span class="number">9</span>]</span><br><span class="line">(<span class="built_in">slice</span>(<span class="number">1</span>, <span class="number">4</span>, <span class="number">2</span>), <span class="number">9</span>)  <span class="comment"># 如果[]中有逗号，那么__getitem__收到的是元组。</span></span><br><span class="line"></span><br><span class="line">seq[<span class="number">1</span>:<span class="number">4</span>:<span class="number">2</span>, <span class="number">7</span>:<span class="number">9</span>]   <span class="comment"># 元组中甚至可以有多个切片对象。</span></span><br><span class="line">(<span class="built_in">slice</span>(<span class="number">1</span>, <span class="number">4</span>, <span class="number">2</span>), <span class="built_in">slice</span>(<span class="number">7</span>, <span class="number">9</span>, <span class="literal">None</span>))</span><br></pre></td></tr></table></figure>
+
+<p>关于slice：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">slice</span></span><br><span class="line">&lt;<span class="keyword">class</span> <span class="string">&#x27;slice&#x27;</span>&gt;  <span class="comment"># slice 是内置的类型</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">dir</span>(<span class="built_in">slice</span>)</span><br><span class="line">[<span class="string">&#x27;__class__&#x27;</span>, <span class="string">&#x27;__delattr__&#x27;</span>, <span class="string">&#x27;__dir__&#x27;</span>, <span class="string">&#x27;__doc__&#x27;</span>, <span class="string">&#x27;__eq__&#x27;</span>, <span class="string">&#x27;__format__&#x27;</span>, <span class="string">&#x27;__ge__&#x27;</span>, <span class="string">&#x27;__getattribute__&#x27;</span>, <span class="string">&#x27;__gt__&#x27;</span>, <span class="string">&#x27;__hash__&#x27;</span>, <span class="string">&#x27;__init__&#x27;</span>, <span class="string">&#x27;__init_subclass__&#x27;</span>, <span class="string">&#x27;__le__&#x27;</span>, <span class="string">&#x27;__lt__&#x27;</span>, <span class="string">&#x27;__ne__&#x27;</span>, <span class="string">&#x27;__new__&#x27;</span>, <span class="string">&#x27;__reduce__&#x27;</span>, <span class="string">&#x27;__reduce_ex__&#x27;</span>, <span class="string">&#x27;__repr__&#x27;</span>, <span class="string">&#x27;__setattr__&#x27;</span>, <span class="string">&#x27;__sizeof__&#x27;</span>, <span class="string">&#x27;__str__&#x27;</span>, <span class="string">&#x27;__subclasshook__&#x27;</span>, <span class="string">&#x27;indices&#x27;</span>, <span class="string">&#x27;start&#x27;</span>, <span class="string">&#x27;step&#x27;</span>, <span class="string">&#x27;stop&#x27;</span>]</span><br></pre></td></tr></table></figure>
+
+<p>slice 有 start、stop 和 step 数据属性，以及 indices 方法。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">help</span>(<span class="built_in">slice</span>.indices)</span><br><span class="line">Help on method_descriptor:</span><br><span class="line">indices(...)</span><br><span class="line">    S.indices(<span class="built_in">len</span>) -&gt; (start, stop, stride)</span><br><span class="line">    </span><br><span class="line">    Assuming a sequence of length <span class="built_in">len</span>, calculate the start <span class="keyword">and</span> stop</span><br><span class="line">    indices, <span class="keyword">and</span> the stride(步幅) length of the extended <span class="built_in">slice</span> described by</span><br><span class="line">    S. Out of bounds indices are clipped(截断) <span class="keyword">in</span> a manner consistent <span class="keyword">with</span> the</span><br><span class="line">    handling of normal slices.</span><br></pre></td></tr></table></figure>
+
+<p>indices 方法开放了内置序列实现的棘手逻辑，用于优雅地处理缺失索引和负数索引，以及长度超过目标序列的切片。这个方法会“整顿”元组，把 start、stop 和 stride 都变成非负数，而且都落在指定长度序列的边界内。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">slice</span>(<span class="literal">None</span>, <span class="number">10</span>, <span class="number">2</span>).indices(<span class="number">5</span>)</span><br><span class="line">(<span class="number">0</span>, <span class="number">5</span>, <span class="number">2</span>)</span><br><span class="line"><span class="built_in">slice</span>(-<span class="number">3</span>, <span class="literal">None</span>, <span class="literal">None</span>).indices(<span class="number">5</span>)</span><br><span class="line">(<span class="number">2</span>, <span class="number">5</span>, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;ABCDE&#x27;</span>[:<span class="number">10</span>:<span class="number">2</span>] </span><br><span class="line"><span class="string">&#x27;ACE&#x27;</span></span><br><span class="line"><span class="string">&#x27;ABCDE&#x27;</span>[-<span class="number">3</span>:]</span><br><span class="line"><span class="string">&#x27;CDE&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="能处理切片的-getitem-方法"><a href="#能处理切片的-getitem-方法" class="headerlink" title="能处理切片的 __getitem__ 方法"></a>能处理切片的 <code>__getitem__</code> 方法</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="keyword">import</span> numbers</span><br><span class="line"><span class="keyword">import</span> reprlib</span><br><span class="line"><span class="keyword">from</span> array <span class="keyword">import</span> array</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Vector</span>:</span><br><span class="line">    typecode = <span class="string">&#x27;d&#x27;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, components</span>):</span><br><span class="line">        <span class="variable language_">self</span>._classname = <span class="built_in">type</span>(<span class="variable language_">self</span>).__name__  <span class="comment"># Vector</span></span><br><span class="line">        <span class="variable language_">self</span>._components = array(<span class="variable language_">self</span>.typecode, components)  <span class="comment"># array(&#x27;d&#x27;, [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0])</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__iter__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">iter</span>(<span class="variable language_">self</span>._components)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__repr__</span>(<span class="params">self</span>):</span><br><span class="line">        components = reprlib.<span class="built_in">repr</span>(<span class="variable language_">self</span>._components)  <span class="comment"># &quot;array(&#x27;d&#x27;, [1.0, 2.0, 3.0, 4.0, 5.0, ...])&quot;</span></span><br><span class="line">        components = components[components.find(<span class="string">&#x27;[&#x27;</span>):-<span class="number">1</span>]</span><br><span class="line">        <span class="keyword">return</span> <span class="string">f&#x27;<span class="subst">&#123;self._classname&#125;</span>(<span class="subst">&#123;components&#125;</span>)&#x27;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__str__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="string">f&#x27;<span class="subst">&#123;self._classname&#125;</span>(<span class="subst">&#123;<span class="built_in">list</span>(self)&#125;</span>)&#x27;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__bytes__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> (<span class="built_in">bytes</span>([<span class="built_in">ord</span>(<span class="variable language_">self</span>.typecode)]) + <span class="built_in">bytes</span>(<span class="variable language_">self</span>._components))</span><br><span class="line">        <span class="comment"># 这里不能像abs和bool函数里写的那样直接写self，会导致循环调用__bytes__</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__eq__</span>(<span class="params">self, other</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">tuple</span>(<span class="variable language_">self</span>) == <span class="built_in">tuple</span>(other)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__abs__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> math.sqrt(<span class="built_in">sum</span>(x * x <span class="keyword">for</span> x <span class="keyword">in</span> <span class="variable language_">self</span>))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__bool__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">bool</span>(<span class="built_in">abs</span>(<span class="variable language_">self</span>))</span><br><span class="line"></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">frombytes</span>(<span class="params">cls, octets</span>):</span><br><span class="line">        typecode = <span class="built_in">chr</span>(octets[<span class="number">0</span>])  <span class="comment"># d b&#x27;d\x00\x00\x00\x0.....</span></span><br><span class="line">        memv = <span class="built_in">memoryview</span>(octets[<span class="number">1</span>:]).cast(typecode)</span><br><span class="line">        <span class="keyword">return</span> cls(memv)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__len__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">len</span>(<span class="variable language_">self</span>._components)</span><br><span class="line"></span><br><span class="line">		<span class="comment"># 主要是__getitem__函数的修改</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__getitem__</span>(<span class="params">self, index</span>):</span><br><span class="line">        cls = <span class="built_in">type</span>(<span class="variable language_">self</span>)  <span class="comment"># &lt;class &#x27;__main__.Vector&#x27;&gt;</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">isinstance</span>(index, <span class="built_in">slice</span>):</span><br><span class="line">            <span class="keyword">return</span> cls(<span class="variable language_">self</span>._components[index])</span><br><span class="line">        <span class="keyword">elif</span> <span class="built_in">isinstance</span>(index, numbers.Integral):</span><br><span class="line">            <span class="keyword">return</span> <span class="variable language_">self</span>._components[index]</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            msg = <span class="string">f&#x27;<span class="subst">&#123;cls.__name__&#125;</span> indices must be integers&#x27;</span></span><br><span class="line">            <span class="keyword">raise</span> TypeError(msg.<span class="built_in">format</span>(cls=cls))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">vector = Vector(<span class="built_in">range</span>(<span class="number">7</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">repr</span>(vector))  <span class="comment"># Vector([0.0, 1.0, 2.0, 3.0, 4.0, ...])</span></span><br><span class="line"><span class="built_in">print</span>(vector)  <span class="comment"># Vector([0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0])</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">len</span>(vector))  <span class="comment"># 7</span></span><br><span class="line"><span class="built_in">print</span>(vector[<span class="number">0</span>])  <span class="comment"># 0.0</span></span><br><span class="line"><span class="built_in">print</span>(vector[<span class="number">1</span>:<span class="number">3</span>])  <span class="comment"># Vector([1.0, 2.0])</span></span><br><span class="line"><span class="built_in">print</span>(vector.frombytes(<span class="built_in">bytes</span>(vector)))  <span class="comment"># Vector([0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0])</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="动态存取属性"><a href="#动态存取属性" class="headerlink" title="动态存取属性"></a>动态存取属性</h4><p>在 Vector2d 中，使用 @property 装饰器把 x 和 y 标记为只读特性（以前的例子）。我们可以在Vector 中编写四个特性，但这样太麻烦。特殊方法 <code>__getattr__</code> 提供了更好的方式。属性查找失败后，解释器会调用 <code>__getattr__</code> 方法：</p>
+<ul>
+<li>对于 <code>my_obj.x</code> 表达式，Python会检查 <code>my_obj</code> 实例有没有名为 <code>x</code> 的属性；</li>
+<li>若没有，到类（<code>my_obj.__class__</code>）中查找 (可查阅 <code>dir(vector.__class__</code> )；</li>
+<li>若仍没有，顺着继承树继续查找；</li>
+<li><strong>若依旧找不到，调用 my_obj 所属类中定义的 <code>__getattr__</code> 方法</strong>，传入 self 和属性名称的字符串形式（如 ‘x’）。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Vector</span>:</span><br><span class="line">    typecode = <span class="string">&#x27;d&#x27;</span></span><br><span class="line">    shortcut_name = <span class="string">&#x27;xyzw&#x27;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, components</span>):</span><br><span class="line">        <span class="variable language_">self</span>.cls = <span class="built_in">type</span>(<span class="variable language_">self</span>)  <span class="comment"># &lt;class &#x27;__main__.Vector&#x27;&gt;</span></span><br><span class="line">        <span class="variable language_">self</span>._classname = <span class="variable language_">self</span>.cls.__name__  <span class="comment"># Vector</span></span><br><span class="line">        <span class="variable language_">self</span>._components = array(<span class="variable language_">self</span>.typecode, components)  </span><br><span class="line"></span><br><span class="line">    <span class="comment"># 属性查找失败后，解释器会调用 __getattr__ 方法</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__getattr__</span>(<span class="params">self, item</span>):</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(item) == <span class="number">1</span> <span class="keyword">and</span> item <span class="keyword">in</span> <span class="variable language_">self</span>.shortcut_name:</span><br><span class="line">            <span class="keyword">return</span> <span class="variable language_">self</span>._components[<span class="variable language_">self</span>.shortcut_name.index(item)]</span><br><span class="line">        <span class="comment"># if len(item) == 1:</span></span><br><span class="line">        <span class="comment">#     index = self.cls.shortcut_name.find(item)</span></span><br><span class="line">        <span class="comment">#     if 0 &lt;= index &lt; len(self._components):</span></span><br><span class="line">        <span class="comment">#         return self._components[index]</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            msg = <span class="string">f&#x27;<span class="subst">&#123;self.cls&#125;</span> object has no attribute <span class="subst">&#123;item&#125;</span>&#x27;</span></span><br><span class="line">            <span class="keyword">raise</span> AttributeError(msg)</span><br><span class="line">            </span><br><span class="line">     <span class="comment"># 省略其他函数</span></span><br><span class="line">    </span><br><span class="line">vector = Vector(<span class="built_in">range</span>(<span class="number">1</span>,<span class="number">7</span>))</span><br><span class="line"><span class="built_in">print</span>(vector.x)  <span class="comment"># 1.0  使用 vector.x 获取第一个元素（v[0]）</span></span><br><span class="line">vector.x = <span class="number">10</span>    <span class="comment"># 为 vector.x 赋新值，这个操作应该抛出异常。</span></span><br><span class="line"><span class="built_in">print</span>(vector.x)  <span class="comment"># 10   向量的分量没变。</span></span><br><span class="line"><span class="built_in">print</span>(vector)    <span class="comment"># Vector([1.0, 2.0, 3.0, 4.0, 5.0, 6.0])</span></span><br></pre></td></tr></table></figure>
+
+<p>最后打印vector，发现向量的分量数组中没有新值，为什么 vector.x 返回10 ？之所以前后矛盾，是 <code>__getattr__</code> 的运作方式导致的：</p>
+<p>仅当对象没有指定名称的属性时，Python 才会调用 <code>__getattr__</code> 方法，这是一种后备机制。可是，像 v.x  &#x3D;  10 这样赋值之后，v 对象有 x 属性了，因此使用 v.x 获取 x 属性的值时不会调用 <code>__getattr__</code> 方法了，解释器直接返回绑定到 v.x 上的值，即 10。另一方面，<code>__getattr__</code> 方法的实现没有考虑到<code>self._components</code> 之外的实例属性，而是从这个属性中获取 <code>shortcut_names</code> 中所列的“虚拟属性”。</p>
+<p>如何才能处理上述现象，使用 <code>__setattr__</code>，避免这种前后矛盾的现象，需要改写 Vector 类中设置属性的逻辑。 之前是使用 @property 装饰器把 x 和 y 标记为只读特性，现在不使用这种方式，但是想达到的目的是一样的：如果为 .x 或 .y 实 例 属 性 赋 值， 会 抛 出AttributeError；为了避免歧义，在 Vector 类中，如果为名称是单个小写字母的属性赋值，我们也想抛出那个异常。为此，我们要实现 <code>__setattr__</code> 方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Vector</span>:</span><br><span class="line">    typecode = <span class="string">&#x27;d&#x27;</span></span><br><span class="line">    shortcut_name = <span class="string">&#x27;xyzw&#x27;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, components</span>):</span><br><span class="line">        <span class="variable language_">self</span>.cls = <span class="built_in">type</span>(<span class="variable language_">self</span>) </span><br><span class="line">        <span class="variable language_">self</span>._classname = <span class="variable language_">self</span>.cls.__name__  </span><br><span class="line">        <span class="variable language_">self</span>._components = array(<span class="variable language_">self</span>.typecode, components)  </span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__getattr__</span>(<span class="params">self, item</span>):</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(item) == <span class="number">1</span> <span class="keyword">and</span> item <span class="keyword">in</span> <span class="variable language_">self</span>.shortcut_name:</span><br><span class="line">            <span class="keyword">return</span> <span class="variable language_">self</span>._components[<span class="variable language_">self</span>.shortcut_name.index(item)]</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            msg = <span class="string">f&#x27;<span class="subst">&#123;self._classname&#125;</span> object has no attribute: <span class="subst">&#123;item&#125;</span>&#x27;</span></span><br><span class="line">            <span class="keyword">raise</span> AttributeError(msg)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__setattr__</span>(<span class="params">self, key, value</span>):</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(key) == <span class="number">1</span>:  <span class="comment"># 这里只特别处理名称是单个字符的属性</span></span><br><span class="line">            <span class="keyword">if</span> key <span class="keyword">in</span> <span class="variable language_">self</span>.cls.shortcut_name:</span><br><span class="line">                error = <span class="string">f&#x27;readonly attribute <span class="subst">&#123;self._classname&#125;</span>&#x27;</span></span><br><span class="line">            <span class="keyword">elif</span> key.islower():</span><br><span class="line">                error = <span class="string">f&#x27;can\&#x27;t set attrbute &quot;a&quot; to &quot;z&quot; in <span class="subst">&#123;self._classname&#125;</span>&#x27;</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                error = <span class="string">&#x27;&#x27;</span></span><br><span class="line">            <span class="keyword">if</span> error:</span><br><span class="line">                <span class="keyword">raise</span> AttributeError(error)</span><br><span class="line">        <span class="built_in">super</span>().__setattr__(key, value)  <span class="comment"># 默认情况：在超类上调用 __setattr__ 方法，提供标准行为。</span></span><br><span class="line">       </span><br><span class="line">    <span class="comment"># 省略其他函数</span></span><br><span class="line">    </span><br><span class="line">vector = Vector(<span class="built_in">range</span>(<span class="number">1</span>,<span class="number">7</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># print(vector.a)  # AttributeError: Vector object has no attribute: a</span></span><br><span class="line"><span class="built_in">print</span>(vector.x)  <span class="comment"># 1.0</span></span><br><span class="line">vector.x = <span class="number">10</span>  <span class="comment"># AttributeError: readonly attribute Vector</span></span><br><span class="line"><span class="comment"># vector.a = 10  # AttributeError: can&#x27;t set attrbute &quot;a&quot; to &quot;z&quot; in Vector</span></span><br><span class="line"><span class="comment"># vector.A = 10</span></span><br><span class="line"><span class="comment"># print(vector.A)  # 10</span></span><br></pre></td></tr></table></figure>
+
+<p>抄注：super() 函数用于动态访问超类的方法，对 Python 这样支持多重继承的动态语言来说，必须能这么做。程序员经常使用这个函数把子类方法的某些任务委托给超类中适当的方法。</p>
+<hr>
+<h4 id="散列和快速等值测试"><a href="#散列和快速等值测试" class="headerlink" title="散列和快速等值测试"></a>散列和快速等值测试</h4><p>计算聚合异或的 3 种方式：一种使用 for 循环，两种使用 reduce 函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> functools</span><br><span class="line"><span class="keyword">import</span> operator</span><br><span class="line"></span><br><span class="line">n = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">6</span>):</span><br><span class="line">    n ^= i</span><br><span class="line"><span class="built_in">print</span>(n)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(functools.reduce(<span class="keyword">lambda</span> a, b: a ^ b, <span class="built_in">range</span>(<span class="number">6</span>)))</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(functools.reduce(operator.xor, <span class="built_in">range</span>(<span class="number">6</span>)))</span><br></pre></td></tr></table></figure>
+
+<p>注：operator 模块以函数的形式提供了 Python 的全部中缀运算符，从而减少使用 lambda 表达式。</p>
+<p>再次实现 <code>__hash__ </code>方法，加上现有的 <code>__eq__</code>方法，这会把 Vector 实例变成可散列的对象。之前的示例中的 <code>__hash__</code> 方法简单地计算 <code>hash(self.x) ^ hash(self.y)</code>。这一次，我们要使用 ^（异或）运算符依次计算各个分量的散列值，像这样：v[0]  ^  v[1]  ^  v[2]…。这正是 <code>functools.reduce</code> 函数的作用。之前说 reduce 没有以往那么常用，但是计算向量所有分量的散列值非常适合使用这个函数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Vector</span>:</span><br><span class="line">    typecode = <span class="string">&#x27;d&#x27;</span></span><br><span class="line">    shortcut_name = <span class="string">&#x27;xyzw&#x27;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, components</span>):</span><br><span class="line">        <span class="variable language_">self</span>.cls = <span class="built_in">type</span>(<span class="variable language_">self</span>)  <span class="comment"># &lt;class &#x27;__main__.Vector&#x27;&gt;</span></span><br><span class="line">        <span class="variable language_">self</span>._classname = <span class="variable language_">self</span>.cls.__name__  <span class="comment"># Vector</span></span><br><span class="line">        <span class="variable language_">self</span>._components = array(<span class="variable language_">self</span>.typecode, components) </span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__iter__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">iter</span>(<span class="variable language_">self</span>._components)</span><br><span class="line">    <span class="comment"># 省略其他函数</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__len__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">len</span>(<span class="variable language_">self</span>._components)</span><br><span class="line">      </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__hash__</span>(<span class="params">self</span>):</span><br><span class="line">        hashed = (<span class="built_in">hash</span>(x) <span class="keyword">for</span> x <span class="keyword">in</span> <span class="variable language_">self</span>._components)  <span class="comment"># 创建生成器表达式，惰性计算各个分量的散列值。</span></span><br><span class="line">        <span class="keyword">return</span> functools.reduce(operator.xor, hashed, <span class="number">0</span>)  <span class="comment"># 把hashed给reduce 函数，使用xor函数计算聚合的散列值；第三个参数，0是初始值。</span></span><br><span class="line">    </span><br><span class="line">vector = Vector(<span class="built_in">range</span>(<span class="number">1</span>,<span class="number">7</span>))</span><br></pre></td></tr></table></figure>
+
+<p>注：使用 reduce 函数时最好提供第三个参数，<code>reduce(function,  iterable, initializer)</code>，这样能避免这个异常：TypeError: reduce() of empty sequence with  no  initial  value。如果序列为空，initializer 是返回的结果；否则，在归约中使用它作为第一个参数，因此应该使用恒等值。比如，对 +、| 和 ^ 来说，initializer 应该是 0；而对 * 和 &amp; 来说，应该是 1。</p>
+<p>修改 <code> __eq__</code> 方法，减少处理时间和内存用量——对大型向量来说：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">__eq__</span>(<span class="params">self, other</span>):</span><br><span class="line">    <span class="comment"># return tuple(self) == tuple(other)  # 对于多维向量比较太耗时、低效</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(<span class="variable language_">self</span>) != <span class="built_in">len</span>(other):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">for</span> a, b <span class="keyword">in</span> <span class="built_in">zip</span>(<span class="variable language_">self</span>, other):  <span class="comment"># zip 函数生成一个由元组构成的生成器</span></span><br><span class="line">        <span class="keyword">if</span> a != b:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>用于计算聚合值的整个 for 循环可以替换成一行 all 函数调用：如果所有分量对的比较结果都是 True，那么结果就是 True。只要有一次比较的结果是False，all 函数就返回 False。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">__eq__</span>(<span class="params">self, other</span>):</span><br><span class="line">    <span class="comment"># 使用聚合函数 all</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">len</span>(<span class="variable language_">self</span>) == <span class="built_in">len</span>(other) <span class="keyword">and</span> <span class="built_in">all</span>(a == b <span class="keyword">for</span> a, b <span class="keyword">in</span> <span class="built_in">zip</span>(<span class="variable language_">self</span>, other))</span><br></pre></td></tr></table></figure>
+<p>首先要检查两个操作数的长度是否相同，因为 zip 函数会在最短的那个操作数耗尽时停止。</p>
+<p>关于 zip 函数：</p>
+<p>内置的 zip 函数。使用 zip 函数能轻松地并行迭代两个或更多可迭代对象，它返回的元组可以拆包成变量，分别对应各个并行输入中的一个元素。zip 函数的名字取自拉链系结物（zipper fastener），因为这个物品用于把两个拉链边的链牙咬合在一起，这形象地说明了 zip(left,  right) 的作用。zip 函数与文件压缩没有关系。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">zip</span>(<span class="built_in">range</span>(<span class="number">3</span>), <span class="string">&#x27;abc&#x27;</span>)</span><br><span class="line">&lt;<span class="built_in">zip</span> <span class="built_in">object</span> at <span class="number">0x0000023375683D08</span>&gt;</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">list</span>(<span class="built_in">zip</span>(<span class="built_in">range</span>(<span class="number">3</span>), <span class="string">&#x27;abc&#x27;</span>))</span><br><span class="line">[(<span class="number">0</span>, <span class="string">&#x27;a&#x27;</span>), (<span class="number">1</span>, <span class="string">&#x27;b&#x27;</span>), (<span class="number">2</span>, <span class="string">&#x27;c&#x27;</span>)]</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">list</span>(<span class="built_in">zip</span>(<span class="built_in">range</span>(<span class="number">3</span>), <span class="string">&#x27;abc&#x27;</span>, [<span class="number">0.0</span>, <span class="number">1.1</span>, <span class="number">2.2</span>, <span class="number">3.3</span>]))</span><br><span class="line">[(<span class="number">0</span>, <span class="string">&#x27;a&#x27;</span>, <span class="number">0.0</span>), (<span class="number">1</span>, <span class="string">&#x27;b&#x27;</span>, <span class="number">1.1</span>), (<span class="number">2</span>, <span class="string">&#x27;c&#x27;</span>, <span class="number">2.2</span>)]</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> itertools <span class="keyword">import</span> zip_longest</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">list</span>(zip_longest(<span class="built_in">range</span>(<span class="number">3</span>), <span class="string">&#x27;ABC&#x27;</span>, [<span class="number">0.0</span>, <span class="number">1.1</span>, <span class="number">2.2</span>, <span class="number">3.3</span>], fillvalue=-<span class="number">1</span>))</span><br><span class="line">[(<span class="number">0</span>, <span class="string">&#x27;A&#x27;</span>, <span class="number">0.0</span>), (<span class="number">1</span>, <span class="string">&#x27;B&#x27;</span>, <span class="number">1.1</span>), (<span class="number">2</span>, <span class="string">&#x27;C&#x27;</span>, <span class="number">2.2</span>), (-<span class="number">1</span>, -<span class="number">1</span>, <span class="number">3.3</span>)]</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2020/01/11/11785/" rel="prev" title="Git：分支merge主线代码">
+                  <i class="fa fa-angle-left"></i> Git：分支merge主线代码
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2020/01/29/62496/" rel="next" title="流畅的Python 从协议到抽象基类">
+                  流畅的Python 从协议到抽象基类 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">691k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:28</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

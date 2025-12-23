@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="一等函数，高阶函数，可调用函数，用户可调用的类型，函数注解，支持函数式编程的包">
+<meta property="og:type" content="article">
+<meta property="og:title" content="流畅的Python：把函数视作对象之一等函数">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2019/11/24/21030/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="一等函数，高阶函数，可调用函数，用户可调用的类型，函数注解，支持函数式编程的包">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-11-24T14:09:43.000Z">
+<meta property="article:modified_time" content="2025-12-23T14:07:49.131Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2019/11/24/21030/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2019/11/24/21030/","path":"posts/2019/11/24/21030/","title":"流畅的Python：把函数视作对象之一等函数"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>流畅的Python：把函数视作对象之一等函数 | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E4%B8%80%E7%AD%89%E5%87%BD%E6%95%B0"><span class="nav-text">1. 一等函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0"><span class="nav-text">2. 高阶函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E5%8F%AF%E8%B0%83%E7%94%A8%E5%AF%B9%E8%B1%A1"><span class="nav-text">3. 可调用对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E7%94%A8%E6%88%B7%E5%8F%AF%E8%B0%83%E7%94%A8%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="nav-text">4. 用户可调用的类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E5%87%BD%E6%95%B0%E6%B3%A8%E8%A7%A3"><span class="nav-text">5. 函数注解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-%E6%94%AF%E6%8C%81%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%E7%9A%84%E5%8C%85"><span class="nav-text">6. 支持函数式编程的包</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2019/11/24/21030/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="流畅的Python：把函数视作对象之一等函数 | Magnolia's Blog">
+      <meta itemprop="description" content="一等函数，高阶函数，可调用函数，用户可调用的类型，函数注解，支持函数式编程的包">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          流畅的Python：把函数视作对象之一等函数
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-11-24 22:09:43" itemprop="dateCreated datePublished" datetime="2019-11-24T22:09:43+08:00">2019-11-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>8.9k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>8 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">一等函数，高阶函数，可调用函数，用户可调用的类型，函数注解，支持函数式编程的包</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h4 id="1-一等函数"><a href="#1-一等函数" class="headerlink" title="1. 一等函数"></a>1. 一等函数</h4><p>Python 中，函数是一等对象。编程语言理论家把“一等对象”定义为满足下述条件的程序实体： </p>
+<ul>
+<li>在运行时创建</li>
+<li>能赋值给变量或数据结构中的元素 </li>
+<li>能作为参数传给函数 </li>
+<li>能作为函数的返回结果</li>
+</ul>
+<p>在 Python 中，整数、字符串和字典都是一等对象。函数也可以作为一等对象。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">factorial</span>(<span class="params">n</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    阶乘</span></span><br><span class="line"><span class="string">    :param n: num </span></span><br><span class="line"><span class="string">    :return: num!</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span> <span class="keyword">if</span> n &lt; <span class="number">1</span> <span class="keyword">else</span> n * factorial(n-<span class="number">1</span>)</span><br><span class="line">  </span><br><span class="line">factorial.__doc__</span><br><span class="line">Out[<span class="number">2</span>]: <span class="string">&#x27;\n    阶乘\n    :param n: num \n    :return: num!\n    &#x27;</span></span><br><span class="line">factorial(<span class="number">30</span>)</span><br><span class="line">Out[<span class="number">3</span>]: <span class="number">265252859812191058636308480000000</span></span><br><span class="line"><span class="built_in">type</span>(factorial)</span><br><span class="line">Out[<span class="number">4</span>]: function</span><br></pre></td></tr></table></figure>
+
+<p>这是一个控制台会话，<code>def factorial(n):</code>是在“运行时”创建一个函数。<code>__doc__</code> 是函数对象众多属性中的一个。  factorial 是 function 类的实例。</p>
+<p>函数对象的“一等”本性:<br>我们可以把 factorial 函数赋值给变量 fact，然后通过变量名调用。我们还能把它作为参数传给 map 函数。map 函数返回一个可迭代对象，里面的元素是把第一个参数（一个函数）应用到第二个参数（一个可迭代对象，这里 是 range(11)）中各个元素上得到的结果。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 通过别的名称使用函数，再把函数作为参数传递</span></span><br><span class="line">fact = factorial</span><br><span class="line">fact(<span class="number">5</span>)</span><br><span class="line">Out[<span class="number">5</span>]: <span class="number">120</span></span><br><span class="line"><span class="built_in">type</span>(fact)</span><br><span class="line">Out[<span class="number">6</span>]: function</span><br><span class="line">  </span><br><span class="line"><span class="built_in">map</span>(fact, <span class="built_in">range</span>(<span class="number">5</span>))</span><br><span class="line">Out[<span class="number">7</span>]: &lt;<span class="built_in">map</span> at <span class="number">0x212ba2663c8</span>&gt;</span><br><span class="line"><span class="built_in">list</span>(<span class="built_in">map</span>(fact, <span class="built_in">range</span>(<span class="number">5</span>)))</span><br><span class="line">Out[<span class="number">8</span>]: [<span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">6</span>, <span class="number">24</span>]</span><br></pre></td></tr></table></figure>
+
+<p>有了一等函数，就可以使用函数式风格编程。函数式编程的特点之一是使用高阶函数。</p>
+<hr>
+<h4 id="2-高阶函数"><a href="#2-高阶函数" class="headerlink" title="2. 高阶函数"></a>2. 高阶函数</h4><p>接受函数为参数，或者把函数作为结果返回的函数是高阶函数（higher-order function）。在函数式编程范式中，最为人熟知的高阶函数有 map、filter、reduce。</p>
+<p>此外，内置函数 sorted 也是：可选的 key 参数用于提供一个函数，它会应用到各个元素上进行排序。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">reverse</span>(<span class="params">word</span>): </span><br><span class="line">    <span class="keyword">return</span> word[::-<span class="number">1</span>] </span><br><span class="line">fruits = [<span class="string">&#x27;strawberry&#x27;</span>, <span class="string">&#x27;fig&#x27;</span>, <span class="string">&#x27;apple&#x27;</span>, <span class="string">&#x27;cherry&#x27;</span>, <span class="string">&#x27;raspberry&#x27;</span>, <span class="string">&#x27;banana&#x27;</span>]</span><br><span class="line"><span class="built_in">sorted</span>(fruits, key=reverse)</span><br><span class="line">Out[<span class="number">16</span>]: [<span class="string">&#x27;banana&#x27;</span>, <span class="string">&#x27;apple&#x27;</span>, <span class="string">&#x27;fig&#x27;</span>, <span class="string">&#x27;raspberry&#x27;</span>, <span class="string">&#x27;strawberry&#x27;</span>, <span class="string">&#x27;cherry&#x27;</span>]</span><br></pre></td></tr></table></figure>
+
+<p>map、filter和reduce的现代替代品：</p>
+<p>map 和 filter 还是内置函数，但是由于引入了<strong>列表推导和生成器表达式</strong>，它们变得没那么重要了。列表推导或生成器表达式具有 map 和 filter 两个函数的功能，而且更易于阅读。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Python3 中，map 和 filter 返回生成器（一种迭代器），因此现在它们的直接替代品是生成器表达式</span></span><br><span class="line"><span class="built_in">list</span>(<span class="built_in">map</span>(fact,<span class="built_in">range</span>(<span class="number">6</span>)))</span><br><span class="line">Out[<span class="number">17</span>]: [<span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">6</span>, <span class="number">24</span>, <span class="number">120</span>]</span><br><span class="line">[fact(n) <span class="keyword">for</span> n <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">6</span>)]   <span class="comment"># 使用列表推导执行相同的操作。</span></span><br><span class="line">Out[<span class="number">18</span>]: [<span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">6</span>, <span class="number">24</span>, <span class="number">120</span>]</span><br><span class="line">  </span><br><span class="line"><span class="built_in">list</span>(<span class="built_in">map</span>(fact, <span class="built_in">filter</span>(<span class="keyword">lambda</span> n:n%<span class="number">2</span>, <span class="built_in">range</span>(<span class="number">6</span>))))</span><br><span class="line">Out[<span class="number">19</span>]: [<span class="number">1</span>, <span class="number">6</span>, <span class="number">120</span>]</span><br><span class="line">[fact(n) <span class="keyword">for</span> n <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">6</span>) <span class="keyword">if</span> n%<span class="number">2</span>]  <span class="comment"># 列表推导式，取代map、filter，并避免了lambda 表达式</span></span><br><span class="line">Out[<span class="number">20</span>]: [<span class="number">1</span>, <span class="number">6</span>, <span class="number">120</span>]</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在 Python2中，reduce 是内置函数，但是在 Python3 中放到 functools 模块里了。</span></span><br><span class="line"><span class="comment"># 这个函数最常用于求和，自2003年发布的 Python2.3开始，最好使用内置的sum函数。</span></span><br><span class="line"><span class="comment"># 在可读性和性能方面，这是一项重大改善.</span></span><br><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> reduce</span><br><span class="line"><span class="keyword">from</span> operator <span class="keyword">import</span> add</span><br><span class="line">reduce(add, <span class="built_in">range</span>(<span class="number">6</span>))</span><br><span class="line">Out[<span class="number">25</span>]: <span class="number">15</span></span><br></pre></td></tr></table></figure>
+
+<p>sum 和 reduce 的通用思想是把某个操作连续应用到序列的元素上，累计之前的结果，把一系列值归约成一个值。all 和 any 也是内置的归约函数。</p>
+<p>all(iterable):  如果 iterable 的每个元素都是真值，返回 True；all([]) 返回 True。 有0即为假</p>
+<p>any(iterable) : 只要 iterable 中有元素是真值，就返回 True；any([]) 返回 False。 有1即为真</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Python <span class="number">3.6</span><span class="number">.0</span> (v3<span class="number">.6</span><span class="number">.0</span>:41df79263a11, Dec <span class="number">23</span> <span class="number">2016</span>, 08:06:<span class="number">12</span>) [MSC v<span class="number">.1900</span> <span class="number">64</span> bit (AMD64)] on win32</span><br><span class="line"><span class="type">Type</span> <span class="string">&quot;copyright&quot;</span>, <span class="string">&quot;credits&quot;</span> <span class="keyword">or</span> <span class="string">&quot;license()&quot;</span> <span class="keyword">for</span> more information.</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">all</span>([<span class="number">1</span>,<span class="number">0</span>])</span><br><span class="line"><span class="literal">False</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">all</span>([<span class="number">1</span>])</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">all</span>([])</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">any</span>([<span class="number">1</span>,<span class="number">0</span>])</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">any</span>([<span class="number">0</span>])</span><br><span class="line"><span class="literal">False</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">any</span>([])</span><br><span class="line"><span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="3-可调用对象"><a href="#3-可调用对象" class="headerlink" title="3. 可调用对象"></a>3. 可调用对象</h4><p>除了用户定义的函数，调用运算符（即 ()）还可以应用到其他对象上。如果想判断对象能否调用，可以使用内置的 callable() 函数。Python 数据模型文档列出了 <strong>7 种可调用对象</strong>。</p>
+<ol>
+<li><p><strong>用户定义的函数</strong> </p>
+<p>使用 def 语句或 lambda 表达式创建。</p>
+</li>
+<li><p><strong>内置函数</strong></p>
+<p>使用 C 语言（CPython）实现的函数，如 len 或 time.strftime。</p>
+</li>
+<li><p><strong>内置方法</strong> </p>
+<p>使用 C 语言实现的方法，如 dict.get。</p>
+</li>
+<li><p><strong>方法</strong> </p>
+<p>在类的定义体中定义的函数。 </p>
+</li>
+<li><p><strong>类</strong> </p>
+<p>调用类时会运行类的 <code>__new__ </code>方法创建一个实例，然后运行<code>__init__</code>方法，初始化实例，最后把实例返回给调用方。因为 Python 没有 new 运算符，所以调用类相当于调用函数。（通常，调用类会创建那个类的实例，不过覆盖 <code>__new__ </code>方法的话，也可能出现 其他行为。）</p>
+</li>
+<li><p><strong>类的实例</strong> </p>
+<p>如果类定义了<code>__call__</code>方法，那么它的实例可以作为函数调用。</p>
+</li>
+<li><p><strong>生成器函数</strong> </p>
+<p>使用 yield 关键字的函数或方法。调用生成器函数返回的是生成器对象。</p>
+</li>
+</ol>
+<p>Python 中有各种各样可调用的类型，因此判断对象能否调用，最安全的方法是使用内置的 callable() 函数： </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>[<span class="built_in">callable</span>(item) <span class="keyword">for</span> item <span class="keyword">in</span> [<span class="built_in">str</span>, <span class="built_in">abs</span>, <span class="number">100</span>]]</span><br><span class="line">[<span class="literal">True</span>, <span class="literal">True</span>, <span class="literal">False</span>]</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="4-用户可调用的类型"><a href="#4-用户可调用的类型" class="headerlink" title="4. 用户可调用的类型"></a>4. 用户可调用的类型</h4><p>不仅 Python 函数是真正的对象，任何 Python 对象都可以表现得像函数。为此，只需实现实例方法 <code>__call__</code>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">BingoCase</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, items</span>):</span><br><span class="line">        <span class="variable language_">self</span>._items = <span class="built_in">list</span>(items)</span><br><span class="line">        random.shuffle(<span class="variable language_">self</span>._items)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">pickitem</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="variable language_">self</span>._items.pop()</span><br><span class="line">        <span class="keyword">except</span> IndexError <span class="keyword">as</span> e:</span><br><span class="line">            <span class="keyword">raise</span> LookupError(<span class="string">&#x27;pick from empty BingoCase&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__call__</span>(<span class="params">self, *args, **kwargs</span>):  <span class="comment"># bingo.pickitem()的快捷方式为bingo()</span></span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.pickitem()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">bingo = BingoCase([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>])</span><br><span class="line"><span class="built_in">print</span>(bingo.pickitem())</span><br><span class="line"><span class="built_in">print</span>(bingo())</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">callable</span>(bingo))</span><br></pre></td></tr></table></figure>
+
+<p>实现<code>__call__</code>方法的类是创建函数类对象的简便方式，此时必须在内部维护一个状态，让它在调用之间可用，例如 BingoCage 中的剩余元素。装饰器就是这样，有时要在多次调用之间“记住”某些事（例如备忘memoization），即缓存消耗大的计算结果，供后面使用。</p>
+<p>创建保有内部状态的函数，还有一种截然不同的方式——闭包。</p>
+<hr>
+<h4 id="5-函数注解"><a href="#5-函数注解" class="headerlink" title="5. 函数注解"></a>5. 函数注解</h4><p>Python3提供了一种句法，用于为函数声明中的参数和返回值附加元数据。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">clip</span>(<span class="params">text: <span class="built_in">str</span>, max_len: <span class="string">&#x27;int &gt; 0&#x27;</span> = <span class="number">8</span></span>) -&gt; <span class="built_in">str</span>:  <span class="comment"># 有注解的函数声明</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    在max_len前面或后面的第一个空格处截断文本</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    end = <span class="literal">None</span></span><br><span class="line">    space_before = space_after = <span class="string">&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(text) &gt; max_len:</span><br><span class="line">        space_before = text.rfind(<span class="string">&#x27; &#x27;</span>, <span class="number">0</span>, max_len)</span><br><span class="line">        <span class="built_in">print</span>(space_before)</span><br><span class="line">        <span class="keyword">if</span> space_before &gt;= <span class="number">0</span>:</span><br><span class="line">            end = space_before</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            space_after = text.rfind(<span class="string">&#x27; &#x27;</span>, max_len)</span><br><span class="line">            <span class="built_in">print</span>(space_after)</span><br><span class="line">            <span class="keyword">if</span> space_after &gt;= <span class="number">0</span>:</span><br><span class="line">                end = space_after</span><br><span class="line">    <span class="keyword">if</span> end <span class="keyword">is</span> <span class="literal">None</span>:  <span class="comment"># 没找到空格</span></span><br><span class="line">        end = <span class="built_in">len</span>(text)</span><br><span class="line">    <span class="keyword">return</span> text[:end].rstrip()</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(clip(<span class="string">&quot;1adsfd2sdfjkl 3dsfa 4jskldf&quot;</span>))</span><br><span class="line"><span class="built_in">print</span>(clip.__annotations__)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">1adsfd2sdfjkl 3dsfa</span></span><br><span class="line"><span class="string">&#123;&#x27;text&#x27;: &lt;class &#x27;str&#x27;&gt;, &#x27;max_len&#x27;: &#x27;int &gt; 0&#x27;, &#x27;return&#x27;: &lt;class &#x27;str&#x27;&gt;&#125;</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>函数声明中的各个参数可以<strong>在 : 之后增加注解表达式</strong>。如果<strong>参数有默认值，注解放在参数名和 &#x3D; 号之间</strong>。如果想<strong>注解返回值，在 ) 和函数声明末尾的 : 之间添加 -&gt; 和一个表达式</strong>。那个表达式可以是任何类型。注解中最常用的类型是类（如 str 或 int）和字符串（如’int &gt; 0’）。在示例中，max_len 参数的注解用的是字符串。</p>
+<p>注解不会做任何处理，只是存储在函数的 <code>__annotations__ </code>属性（一个字典）中。</p>
+<p>Python 对注解所做的唯一的事情是，把它们存储在函数的<code> __annotations</code>__ 属性里。仅此而已，Python 不做检查、不做强制、不做验证，什么操作都不做。换句话说，注解对Python 解释器没有任何意义。注解只是元数据，可以供 IDE、框架和装饰器等工具使用。</p>
+<hr>
+<h4 id="6-支持函数式编程的包"><a href="#6-支持函数式编程的包" class="headerlink" title="6. 支持函数式编程的包"></a>6. 支持函数式编程的包</h4><p><strong>operator模块</strong></p>
+<p>operator 模块为多个算术运算符提供了对应的函数，从而避免编写 lambda a, b: a*b 这种平凡的匿名函数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> reduce</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">func</span>(<span class="params">n</span>):	</span><br><span class="line">    <span class="keyword">return</span> reduce(<span class="keyword">lambda</span> a, b:a*b, <span class="built_in">range</span>(<span class="number">1</span>,n+<span class="number">1</span>))</span><br><span class="line">func(<span class="number">4</span>)</span><br><span class="line">Out[<span class="number">2</span>]: <span class="number">24</span></span><br><span class="line">  </span><br><span class="line"><span class="keyword">from</span> operator <span class="keyword">import</span> mul</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">fact</span>(<span class="params">n</span>):</span><br><span class="line">    <span class="keyword">return</span> reduce(mul, <span class="built_in">range</span>(<span class="number">1</span>,n+<span class="number">1</span>))</span><br><span class="line">fact(<span class="number">4</span>)</span><br><span class="line">Out[<span class="number">3</span>]: <span class="number">24</span></span><br></pre></td></tr></table></figure>
+
+<p>operator 模块中还有一类函数，能替代从序列中取出元素或读取对象属性的 lambda 表达式：因此，itemgetter 和 attrgetter 其实会自行构建函数。</p>
+<p><strong>itemgetter</strong> 使用 [] 运算符，因此它不仅支持序列，还支持映射和任何实现 <code>__getitem__</code> 方法的类。itemgetter 的常见用途：根据元组的某个字段给元组列表排序</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">metro_data = [ </span><br><span class="line">  (<span class="string">&#x27;Tokyo&#x27;</span>, <span class="string">&#x27;JP&#x27;</span>, <span class="number">36.933</span>, (<span class="number">35.689722</span>, <span class="number">139.691667</span>)), </span><br><span class="line">  (<span class="string">&#x27;Delhi NCR&#x27;</span>, <span class="string">&#x27;IN&#x27;</span>, <span class="number">21.935</span>, (<span class="number">28.613889</span>, <span class="number">77.208889</span>)), </span><br><span class="line">  (<span class="string">&#x27;Mexico City&#x27;</span>, <span class="string">&#x27;MX&#x27;</span>, <span class="number">20.142</span>, (<span class="number">19.433333</span>, -<span class="number">99.133333</span>)), </span><br><span class="line">  (<span class="string">&#x27;New York-Newark&#x27;</span>, <span class="string">&#x27;US&#x27;</span>, <span class="number">20.104</span>, (<span class="number">40.808611</span>, -<span class="number">74.020386</span>)), </span><br><span class="line">  (<span class="string">&#x27;Sao Paulo&#x27;</span>, <span class="string">&#x27;BR&#x27;</span>, <span class="number">19.649</span>, (-<span class="number">23.547778</span>, -<span class="number">46.635833</span>)), ]</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> operator <span class="keyword">import</span> itemgetter</span><br><span class="line"><span class="keyword">for</span> city <span class="keyword">in</span> <span class="built_in">sorted</span>(metro_data, key=itemgetter(<span class="number">1</span>)):</span><br><span class="line">    <span class="built_in">print</span>(city)</span><br><span class="line">    </span><br><span class="line"><span class="comment"># 如果把多个参数传给 itemgetter，它构建的函数会返回提取的值构成的元组：</span></span><br><span class="line">names = itemgetter(<span class="number">0</span>, <span class="number">1</span>)</span><br><span class="line"><span class="keyword">for</span> city <span class="keyword">in</span> metro_data:</span><br><span class="line">    <span class="built_in">print</span>(names(city))</span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">(&#x27;Tokyo&#x27;, &#x27;JP&#x27;)</span></span><br><span class="line"><span class="string">(&#x27;Delhi NCR&#x27;, &#x27;IN&#x27;)</span></span><br><span class="line"><span class="string">(&#x27;Mexico City&#x27;, &#x27;MX&#x27;)</span></span><br><span class="line"><span class="string">(&#x27;New York-Newark&#x27;, &#x27;US&#x27;)</span></span><br><span class="line"><span class="string">(&#x27;Sao Paulo&#x27;, &#x27;BR&#x27;)</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>attrgetter</strong> 与 itemgetter 作用类似，它创建的函数根据名称提取对象的属性。如果把多个属性名传给 attrgetter，它也会返回提取的值构成的元组。此外，如果参数名中包含 .（点号），attrgetter 会深入嵌套对象，获取指定的属性。这些行为如下例所示，这个控制台会话不短，因为我们要构建一个嵌套结构，这样才能展示attrgetter 如何处理包含点号的属性名。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> namedtuple </span><br><span class="line"></span><br><span class="line">metro_data = [ </span><br><span class="line">(<span class="string">&#x27;Tokyo&#x27;</span>, <span class="string">&#x27;JP&#x27;</span>, <span class="number">36.933</span>, (<span class="number">35.689722</span>, <span class="number">139.691667</span>)), </span><br><span class="line">(<span class="string">&#x27;Delhi NCR&#x27;</span>, <span class="string">&#x27;IN&#x27;</span>, <span class="number">21.935</span>, (<span class="number">28.613889</span>, <span class="number">77.208889</span>)), </span><br><span class="line">(<span class="string">&#x27;Mexico City&#x27;</span>, <span class="string">&#x27;MX&#x27;</span>, <span class="number">20.142</span>, (<span class="number">19.433333</span>, -<span class="number">99.133333</span>)), </span><br><span class="line">(<span class="string">&#x27;New York-Newark&#x27;</span>, <span class="string">&#x27;US&#x27;</span>, <span class="number">20.104</span>, (<span class="number">40.808611</span>, -<span class="number">74.020386</span>)), </span><br><span class="line">(<span class="string">&#x27;Sao Paulo&#x27;</span>, <span class="string">&#x27;BR&#x27;</span>, <span class="number">19.649</span>, (-<span class="number">23.547778</span>, -<span class="number">46.635833</span>)), ]</span><br><span class="line"></span><br><span class="line">LatLong = namedtuple(<span class="string">&#x27;LatLong&#x27;</span>, <span class="string">&#x27;lat long&#x27;</span>) </span><br><span class="line">Metropolis = namedtuple(<span class="string">&#x27;Metropolis&#x27;</span>, <span class="string">&#x27;name cc pop coord&#x27;</span>) </span><br><span class="line">metro_areas = [Metropolis(name, cc, pop, LatLong(lat, long)) <span class="keyword">for</span> name, cc, pop, (lat, long) <span class="keyword">in</span> metro_data]</span><br><span class="line"></span><br><span class="line">metro_areas[<span class="number">0</span>]</span><br><span class="line">Out[<span class="number">3</span>]: Metropolis(name=<span class="string">&#x27;Tokyo&#x27;</span>, cc=<span class="string">&#x27;JP&#x27;</span>, pop=<span class="number">36.933</span>, coord=LatLong(lat=<span class="number">35.689722</span>, long=<span class="number">139.691667</span>))</span><br><span class="line">metro_areas[<span class="number">0</span>].coord.lat</span><br><span class="line">Out[<span class="number">4</span>]: <span class="number">35.689722</span></span><br><span class="line">  </span><br><span class="line"><span class="keyword">from</span> operator <span class="keyword">import</span> attrgetter</span><br><span class="line">name_lat = attrgetter(<span class="string">&#x27;name&#x27;</span>, <span class="string">&#x27;coord.lat&#x27;</span>)  <span class="comment"># 定义一个 attrgetter，获取 name 属性和嵌套的 coord.lat 属性</span></span><br><span class="line"><span class="keyword">for</span> city <span class="keyword">in</span> <span class="built_in">sorted</span>(metro_areas, key=attrgetter(<span class="string">&#x27;coord.lat&#x27;</span>)): <span class="comment"># 使用 attrgetter，按照纬度排序城市列表。</span></span><br><span class="line">    <span class="built_in">print</span>(name_lat(city)) </span><br><span class="line">    </span><br><span class="line">(<span class="string">&#x27;Sao Paulo&#x27;</span>, -<span class="number">23.547778</span>)</span><br><span class="line">(<span class="string">&#x27;Mexico City&#x27;</span>, <span class="number">19.433333</span>)</span><br><span class="line">(<span class="string">&#x27;Delhi NCR&#x27;</span>, <span class="number">28.613889</span>)</span><br><span class="line">(<span class="string">&#x27;Tokyo&#x27;</span>, <span class="number">35.689722</span>)</span><br><span class="line">(<span class="string">&#x27;New York-Newark&#x27;</span>, <span class="number">40.808611</span>)</span><br></pre></td></tr></table></figure>
+
+<p> operator 模块中定义的部分函数（省略了以 _ 开头的名称，因为它们基本上是实现细节）:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[name <span class="keyword">for</span> name <span class="keyword">in</span> <span class="built_in">dir</span>(operator) <span class="keyword">if</span> <span class="keyword">not</span> name.startswith(<span class="string">&#x27;_&#x27;</span>)] </span><br><span class="line">[<span class="string">&#x27;abs&#x27;</span>, <span class="string">&#x27;add&#x27;</span>, <span class="string">&#x27;and_&#x27;</span>, <span class="string">&#x27;attrgetter&#x27;</span>, <span class="string">&#x27;concat&#x27;</span>, <span class="string">&#x27;contains&#x27;</span>, <span class="string">&#x27;countOf&#x27;</span>, <span class="string">&#x27;delitem&#x27;</span>, <span class="string">&#x27;eq&#x27;</span>, <span class="string">&#x27;floordiv&#x27;</span>, <span class="string">&#x27;ge&#x27;</span>, <span class="string">&#x27;getitem&#x27;</span>, <span class="string">&#x27;gt&#x27;</span>, <span class="string">&#x27;iadd&#x27;</span>, <span class="string">&#x27;iand&#x27;</span>, <span class="string">&#x27;iconcat&#x27;</span>, <span class="string">&#x27;ifloordiv&#x27;</span>, <span class="string">&#x27;ilshift&#x27;</span>, <span class="string">&#x27;imatmul&#x27;</span>, <span class="string">&#x27;imod&#x27;</span>, <span class="string">&#x27;imul&#x27;</span>, <span class="string">&#x27;index&#x27;</span>, <span class="string">&#x27;indexOf&#x27;</span>, <span class="string">&#x27;inv&#x27;</span>, <span class="string">&#x27;invert&#x27;</span>, <span class="string">&#x27;ior&#x27;</span>, <span class="string">&#x27;ipow&#x27;</span>, <span class="string">&#x27;irshift&#x27;</span>, <span class="string">&#x27;is_&#x27;</span>, <span class="string">&#x27;is_not&#x27;</span>, <span class="string">&#x27;isub&#x27;</span>, <span class="string">&#x27;itemgetter&#x27;</span>, <span class="string">&#x27;itruediv&#x27;</span>, <span class="string">&#x27;ixor&#x27;</span>, <span class="string">&#x27;le&#x27;</span>, <span class="string">&#x27;length_hint&#x27;</span>, <span class="string">&#x27;lshift&#x27;</span>, <span class="string">&#x27;lt&#x27;</span>, <span class="string">&#x27;matmul&#x27;</span>, <span class="string">&#x27;methodcaller&#x27;</span>, <span class="string">&#x27;mod&#x27;</span>, <span class="string">&#x27;mul&#x27;</span>, <span class="string">&#x27;ne&#x27;</span>, <span class="string">&#x27;neg&#x27;</span>, <span class="string">&#x27;not_&#x27;</span>, <span class="string">&#x27;or_&#x27;</span>, <span class="string">&#x27;pos&#x27;</span>, <span class="string">&#x27;pow&#x27;</span>, <span class="string">&#x27;rshift&#x27;</span>, <span class="string">&#x27;setitem&#x27;</span>, <span class="string">&#x27;sub&#x27;</span>, <span class="string">&#x27;truediv&#x27;</span>, <span class="string">&#x27;truth&#x27;</span>, <span class="string">&#x27;xor&#x27;</span>]</span><br></pre></td></tr></table></figure>
+
+<p><strong>methodcaller</strong> 它的作用与 attrgetter和 itemgetter 类似，它会自行创建函数。methodcaller 创建的函数会在对象上调用参数指定的方法。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> operator <span class="keyword">import</span> methodcaller</span><br><span class="line"></span><br><span class="line">s = <span class="string">&quot;abcd efg&quot;</span></span><br><span class="line">upcase = methodcaller(<span class="string">&#x27;upper&#x27;</span>)</span><br><span class="line">upcase(s)</span><br><span class="line">Out[<span class="number">16</span>]: <span class="string">&#x27;ABCD EFG&#x27;</span></span><br><span class="line">  </span><br><span class="line">replace_case = methodcaller(<span class="string">&#x27;replace&#x27;</span>,<span class="string">&#x27; &#x27;</span>,<span class="string">&#x27;-&#x27;</span>)</span><br><span class="line">replace_case(s)</span><br><span class="line">Out[<span class="number">18</span>]: <span class="string">&#x27;abcd-efg&#x27;</span></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2019/11/09/14734/" rel="prev" title="流畅的Python：集合">
+                  <i class="fa fa-angle-left"></i> 流畅的Python：集合
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2019/11/27/7873/" rel="next" title="RuntimeError dictionary changed size during iteration 遍历字典时报错">
+                  RuntimeError dictionary changed size during iteration 遍历字典时报错 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">691k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:28</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="本文主要介绍了 Python 中用作协程的生成器的相关知识，包括基本行为、计算移动平均值、预激协程的装饰器、终止协程和异常处理、让协程返回值以及使用yield from等内容。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="流畅的Python 协程(基础)">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2020/03/11/64845/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="本文主要介绍了 Python 中用作协程的生成器的相关知识，包括基本行为、计算移动平均值、预激协程的装饰器、终止协程和异常处理、让协程返回值以及使用yield from等内容。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-03-10T16:02:07.000Z">
+<meta property="article:modified_time" content="2025-12-23T14:07:49.092Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2020/03/11/64845/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2020/03/11/64845/","path":"posts/2020/03/11/64845/","title":"流畅的Python 协程(基础)"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>流畅的Python 协程(基础) | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%A8%E4%BD%9C%E5%8D%8F%E7%A8%8B%E7%9A%84%E7%94%9F%E6%88%90%E5%99%A8%E7%9A%84%E5%9F%BA%E6%9C%AC%E8%A1%8C%E4%B8%BA"><span class="nav-text">用作协程的生成器的基本行为</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%8D%8F%E7%A8%8B%E8%AE%A1%E7%AE%97%E7%A7%BB%E5%8A%A8%E5%B9%B3%E5%9D%87%E5%80%BC"><span class="nav-text">使用协程计算移动平均值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A2%84%E6%BF%80%E5%8D%8F%E7%A8%8B%E7%9A%84%E8%A3%85%E9%A5%B0%E5%99%A8"><span class="nav-text">预激协程的装饰器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%88%E6%AD%A2%E5%8D%8F%E7%A8%8B%E5%92%8C%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86"><span class="nav-text">终止协程和异常处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%A9%E5%8D%8F%E7%A8%8B%E8%BF%94%E5%9B%9E%E5%80%BC"><span class="nav-text">让协程返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8yield-from"><span class="nav-text">使用yield from</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2020/03/11/64845/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="流畅的Python 协程(基础) | Magnolia's Blog">
+      <meta itemprop="description" content="本文主要介绍了 Python 中用作协程的生成器的相关知识，包括基本行为、计算移动平均值、预激协程的装饰器、终止协程和异常处理、让协程返回值以及使用yield from等内容。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          流畅的Python 协程(基础)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-03-11 00:02:07" itemprop="dateCreated datePublished" datetime="2020-03-11T00:02:07+08:00">2020-03-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>7.4k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>7 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">本文主要介绍了 Python 中用作协程的生成器的相关知识，包括基本行为、计算移动平均值、预激协程的装饰器、终止协程和异常处理、让协程返回值以及使用yield from等内容。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h4 id="用作协程的生成器的基本行为"><a href="#用作协程的生成器的基本行为" class="headerlink" title="用作协程的生成器的基本行为"></a>用作协程的生成器的基本行为</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">simple_coroutine</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;—&gt; Coroutines started&quot;</span>)</span><br><span class="line">    var = <span class="keyword">yield</span>   <span class="comment"># 协程使用生成器函数定义：定义体中有yield关键字。</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;—&gt; Coroutines received <span class="subst">&#123;var&#125;</span>&quot;</span>)</span><br><span class="line">    </span><br><span class="line">cor = simple_coroutine()</span><br><span class="line"></span><br><span class="line">cor</span><br><span class="line">Out[<span class="number">4</span>]: &lt;generator <span class="built_in">object</span> simple_coroutine at <span class="number">0x000001D368E8F410</span>&gt;</span><br><span class="line">  </span><br><span class="line"><span class="built_in">next</span>(cor)  <span class="comment"># 激活协程</span></span><br><span class="line">—&gt; Coroutines started</span><br><span class="line"></span><br><span class="line">cor.send(<span class="number">123</span>)</span><br><span class="line">—&gt; Coroutines received <span class="number">123</span></span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">&quot;D:\Python3.6.0\lib\site-packages\IPython\core\interactiveshell.py&quot;</span>, line <span class="number">2961</span>, <span class="keyword">in</span> run_code</span><br><span class="line">    <span class="built_in">exec</span>(code_obj, <span class="variable language_">self</span>.user_global_ns, <span class="variable language_">self</span>.user_ns)</span><br><span class="line">  File <span class="string">&quot;&lt;ipython-input-6-3cd430c98ae0&gt;&quot;</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    cor.send(<span class="number">123</span>)</span><br><span class="line">StopIteration</span><br></pre></td></tr></table></figure>
+
+<p><code>var = yield</code>：yield在表达式中使用；如果协程只需从客户那里接收数据，那么产出的值是None——这个值是隐式指定的，因为yield关键字右边没有表达式。<strong>首先要调用 <code>next(...)</code> 函数，因为生成器还没启动，没在yield语句处暂停，所以一开始无法发送数据</strong>。</p>
+<p>协程可以身处四个状态中的一个。当前状态可以使用 <code>inspect.getgeneratorstate(...)</code> 函数确定，该函数会返回下述字符串中的一个：</p>
+<ul>
+<li>‘GEN_CREATED’：等待开始执行；</li>
+<li>‘GEN_RUNNING’：解释器正在执行；</li>
+<li>‘GEN_SUSPENDED’：在yield表达式处暂停；</li>
+<li>‘GEN_CLOSED’：执行结束；</li>
+</ul>
+<p>因为send方法的参数会成为暂停的yield表达式的值，所以，仅当协程处于暂停状态时才能调用send方法，例如cor.send(123)。不过，如果协程还没激活（即，状态是’GEN_CREATED’），情况就不同了。因此，**始终要调用next(cor)激活协程——也可以调用cor.send(None)**，效果一样。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cor = simple_coroutine()</span><br><span class="line">cor.send(<span class="literal">None</span>)  <span class="comment"># 激活协程</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># &lt;generator object simple_coroutine at 0x000002601BE2E200&gt;</span></span><br><span class="line"><span class="comment"># Coroutines started</span></span><br></pre></td></tr></table></figure>
+
+<p>如果创建协程对象后立即把None之外的值发给它，会出现下述错误：can’t send non-None value to a just-started generator.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">cor = simple_coroutine()</span><br><span class="line">cor.send(<span class="number">123</span>)</span><br><span class="line"></span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">&quot;D:\Python3.6.0\lib\site-packages\IPython\core\interactiveshell.py&quot;</span>, line <span class="number">2961</span>, <span class="keyword">in</span> run_code</span><br><span class="line">    <span class="built_in">exec</span>(code_obj, <span class="variable language_">self</span>.user_global_ns, <span class="variable language_">self</span>.user_ns)</span><br><span class="line">  File <span class="string">&quot;&lt;ipython-input-12-3cd430c98ae0&gt;&quot;</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    cor.send(<span class="number">123</span>)</span><br><span class="line">TypeError: can<span class="string">&#x27;t send non-None value to a just-started generator</span></span><br></pre></td></tr></table></figure>
+
+<p>最先调用 <code>next(cor)</code> 函数这一步通常称为“预激”（prime）协程（即，让协程向前执行到第一个yield表达式，准备好作为活跃的协程使用）。</p>
+<hr>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">simple_coroutine2</span>(<span class="params">a</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;——&gt; started a:<span class="subst">&#123;a&#125;</span>&quot;</span>)</span><br><span class="line">    b = <span class="keyword">yield</span> a</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;——&gt; receiced b:<span class="subst">&#123;b&#125;</span>&quot;</span>)</span><br><span class="line">    c = <span class="keyword">yield</span> a + b</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;——&gt; receiced c:<span class="subst">&#123;c&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">cor2 = simple_coroutine2(<span class="number">1</span>)</span><br><span class="line"><span class="built_in">print</span>(getgeneratorstate(cor2))  <span class="comment"># GEN_CREATED  协程未启动</span></span><br><span class="line"></span><br><span class="line">cor2.send(<span class="literal">None</span>)</span><br><span class="line"><span class="built_in">print</span>(getgeneratorstate(cor2))  <span class="comment"># GEN_SUSPENDED</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(cor2.send(<span class="number">2</span>))</span><br><span class="line"><span class="built_in">print</span>(cor2.send(<span class="number">10</span>))</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">GEN_CREATED</span></span><br><span class="line"><span class="string">——&gt; started a:1</span></span><br><span class="line"><span class="string">GEN_SUSPENDED</span></span><br><span class="line"><span class="string">——&gt; receiced b:2</span></span><br><span class="line"><span class="string">3</span></span><br><span class="line"><span class="string">——&gt; receiced c:10</span></span><br><span class="line"><span class="string">Traceback (most recent call last):</span></span><br><span class="line"><span class="string">  File &quot;.../a5_3_demo_coroutine.py&quot;, line 29, in &lt;module&gt;</span></span><br><span class="line"><span class="string">    print(cor2.send(10))</span></span><br><span class="line"><span class="string">StopIteration</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>协程在yield关键字所在的位置暂停执行。在赋值语句中，&#x3D;右边的代码在赋值之前执行。因此，对于<code>b=yield a</code> 这行代码来说，等到客户端代码再激活协程时才会设定b的值。</p>
+<p>simple_coroutine2 协程的执行过程分为3个阶段：各个阶段都在yield表达式中结束，而且下一个阶段都从那一行代码开始，然后再把yield表达式的值赋给变量。</p>
+<hr>
+<h4 id="使用协程计算移动平均值"><a href="#使用协程计算移动平均值" class="headerlink" title="使用协程计算移动平均值"></a>使用协程计算移动平均值</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">average</span>():</span><br><span class="line">    total, count = <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">    average = <span class="literal">None</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        var = <span class="keyword">yield</span> average</span><br><span class="line">        total += var</span><br><span class="line">        count += <span class="number">1</span></span><br><span class="line">        average = total / count</span><br><span class="line"></span><br><span class="line">avg = average()</span><br><span class="line">avg.send(<span class="literal">None</span>)  <span class="comment"># 预激协程</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(avg.send(<span class="number">1</span>))</span><br><span class="line"><span class="built_in">print</span>(avg.send(<span class="number">3</span>))</span><br><span class="line"><span class="built_in">print</span>(avg.send(<span class="number">5</span>))</span><br></pre></td></tr></table></figure>
+
+<p>无限循环表明，只要调用方不断把值发给这个协程，它就会一直接收值，然后生成结果。仅当调用方在协程上调用.close（）方法，或者没有对协程的引用而被垃圾回收程序回收时，这个协程才会终止。这里的yield表达式用于暂停执行协程，把结果发给调用方；还用于接收调用方后面发给协程的值，恢复无限循环。</p>
+<hr>
+<h4 id="预激协程的装饰器"><a href="#预激协程的装饰器" class="headerlink" title="预激协程的装饰器"></a>预激协程的装饰器</h4><p>使用协程之前必须预激，可是这一步容易忘记。为了避免忘记，可以在协程上使用一个特殊的装饰器。</p>
+<p>如果不预激，那么协程没什么用。调用my_coro.send(x)之前，记住一定要调用 next(my_coro) 或者my_coro.send(None) 。为了简化协程的用法，有时会使用一个预激装饰器。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> wraps</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">coroutine</span>(<span class="params">func</span>):</span><br><span class="line">    <span class="comment"># 装饰器：向前执行到第一个yield表达式，预激func</span></span><br><span class="line"><span class="meta">    @wraps(<span class="params">func</span>)</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">primer</span>(<span class="params">*args, **kwargs</span>):</span><br><span class="line">        gen = func(*args, **kwargs)</span><br><span class="line">        <span class="built_in">next</span>(gen)</span><br><span class="line">        <span class="keyword">return</span> gen</span><br><span class="line">    <span class="keyword">return</span> primer</span><br><span class="line"></span><br><span class="line"><span class="meta">@coroutine</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">average_primer</span>():</span><br><span class="line">    total, count = <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">    average = <span class="literal">None</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        var = <span class="keyword">yield</span> average</span><br><span class="line">        total += var</span><br><span class="line">        count += <span class="number">1</span></span><br><span class="line">        average = total / count</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="keyword">from</span> inspect <span class="keyword">import</span> getgeneratorstate</span><br><span class="line">    avg_primer = average_primer()</span><br><span class="line">    <span class="built_in">print</span>(getgeneratorstate(avg_primer))  <span class="comment"># GEN_SUSPENDED</span></span><br><span class="line">    <span class="built_in">print</span>(avg_primer.send(<span class="number">1</span>))</span><br><span class="line">    <span class="built_in">print</span>(avg_primer.send(<span class="number">3</span>))</span><br><span class="line">    <span class="built_in">print</span>(avg_primer.send(<span class="number">5</span>))</span><br></pre></td></tr></table></figure>
+
+<p>在 coroutine 函数中把被装饰的生成器函数替换成这里的 primer 函数，接着调用被装饰的函数，获取生成器对象，预激生成器，最后返回预激后的生成器。根据 getgeneratorstate 得到的状态为 GEN_SUSPENDED 可知，此时 avg_primer 状态已经不是 GEN_CREATED 协程未启动状态，而是在yield表达式处暂停。</p>
+<hr>
+<h4 id="终止协程和异常处理"><a href="#终止协程和异常处理" class="headerlink" title="终止协程和异常处理"></a>终止协程和异常处理</h4><p>协程中未处理的异常会向上冒泡，传给next函数或send方法的调用方（即触发协程的对象）。</p>
+<p>客户代码可以在生成器对象上调用两个方法，显式地把异常发给协程。这两个方法是 <strong>throw</strong> 和<strong>close</strong> 。</p>
+<p><code>generator.throw(exc_type[, exc_value[, traceback]])</code> 致使生成器在暂停的yield表达式处抛出指定的异常。如果生成器处理了抛出的异常，代码会向前执行到下一个yield表达式，而产出的值会成为调用generator.throw方法得到的返回值。如果生成器没有处理抛出的异常，异常会向上冒泡，传到调用方的上下文中。</p>
+<p><code>generator.close（）</code> 致使生成器在暂停的yield表达式处抛出GeneratorExit异常。如果生成器没有处理这个异常，或者抛出了StopIteration异常（通常是指运行到结尾），调用方不会报错。如果收到GeneratorExit异常，生成器一定不能产出值，否则解释器会抛出RuntimeError异常。生成器抛出的其他异常会向上冒泡，传给调用方。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> inspect <span class="keyword">import</span> getgeneratorstate</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">DemoException</span>(<span class="title class_ inherited__">BaseException</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;为这次演示定义的异常类型。&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">demo_exc_handling</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;-&gt; coroutine started&#x27;</span>)</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            var = <span class="keyword">yield</span></span><br><span class="line">        <span class="keyword">except</span> DemoException <span class="keyword">as</span> e:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&#x27;*** DemoException handled. Continuing...&#x27;</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&#x27;-&gt; coroutine received: &#123;!r&#125;&#x27;</span>.<span class="built_in">format</span>(var))</span><br><span class="line">    <span class="comment"># raise RuntimeError(&#x27;This line should never run.&#x27;)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line"></span><br><span class="line">    cor_exc = demo_exc_handling()</span><br><span class="line">    cor_exc.send(<span class="literal">None</span>)</span><br><span class="line">    <span class="built_in">print</span>(getgeneratorstate(cor_exc))  <span class="comment"># GEN_SUSPENDED</span></span><br><span class="line">    cor_exc.send(<span class="number">1</span>)               <span class="comment"># -&gt; coroutine received: 1   </span></span><br><span class="line">    cor_exc.send(<span class="number">2</span>)               <span class="comment"># -&gt; coroutine received: 2</span></span><br><span class="line">    cor_exc.close()</span><br><span class="line">    <span class="built_in">print</span>(getgeneratorstate(cor_exc))  <span class="comment"># GEN_CLOSED</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 如果把DemoException异常传入demo_exc_handling协程，它会处理，然后继续运行</span></span><br><span class="line">cor_exc.throw(DemoException)  <span class="comment"># *** DemoException handled. Continuing...</span></span><br><span class="line"><span class="built_in">print</span>(getgeneratorstate(cor_exc))  <span class="comment"># GEN_SUSPENDED</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 如果传入协程的异常没有处理，协程会停止，即状态变成&#x27;GEN_CLOSED&#x27;</span></span><br><span class="line">cor_exc.throw(ZeroDivisionError)</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">		...</span><br><span class="line">    ZeroDivisionError</span><br><span class="line"><span class="comment"># 由于前面已经抛出异常了，所以后面的代码无法执行，只有在控制台操作才能看出状态</span></span><br><span class="line"><span class="built_in">print</span>(getgeneratorstate(cor_exc))  <span class="comment"># GEN_CLOSED</span></span><br></pre></td></tr></table></figure>
+
+<p>如果不管协程如何结束都想做些清理工作，要把协程定义体中相关的代码放入try&#x2F;finally块中，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">demo_exc_handling</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;-&gt; coroutine started&#x27;</span>)</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                var = <span class="keyword">yield</span></span><br><span class="line">            <span class="keyword">except</span> DemoException <span class="keyword">as</span> e:</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&#x27;*** DemoException handled. Continuing...&#x27;</span>)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&#x27;-&gt; coroutine received: &#123;!r&#125;&#x27;</span>.<span class="built_in">format</span>(var))</span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;-&gt; coroutine ending, clearing something.&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="让协程返回值"><a href="#让协程返回值" class="headerlink" title="让协程返回值"></a>让协程返回值</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> namedtuple</span><br><span class="line"></span><br><span class="line">Result = namedtuple(<span class="string">&#x27;Result&#x27;</span>, <span class="string">&#x27;count average&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">average</span>():</span><br><span class="line">    total, count = <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">    _avg = <span class="literal">None</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        var = <span class="keyword">yield</span></span><br><span class="line">        <span class="keyword">if</span> var <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        total += var</span><br><span class="line">        count += <span class="number">1</span></span><br><span class="line">        _avg = total / count</span><br><span class="line">    <span class="keyword">return</span> Result(count, _avg)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    avg = average()</span><br><span class="line">    avg.send(<span class="literal">None</span>)</span><br><span class="line">    avg.send(<span class="number">1</span>)</span><br><span class="line">    avg.send(<span class="number">2</span>)</span><br><span class="line">    avg.send(<span class="number">3</span>)</span><br><span class="line">    avg.send(<span class="literal">None</span>)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">Traceback (most recent call last):</span></span><br><span class="line"><span class="string">   ...</span></span><br><span class="line"><span class="string">StopIteration: Result(count=3, average=2.0)</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>发送 None 会终止循环，导致协程结束，返回结果。一如既往，生成器对象会抛出StopIteration 异常。异常对象的 value 属性保存着返回的值。</p>
+<p>何获取协程返回的值: 把 <code> avg.send(None)</code> 用try包含。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    avg.send(<span class="literal">None</span>)</span><br><span class="line"><span class="keyword">except</span> StopIteration <span class="keyword">as</span> e:</span><br><span class="line">    <span class="built_in">print</span>(e)</span><br><span class="line"><span class="comment"># Result(count=3, average=2.0)</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="使用yield-from"><a href="#使用yield-from" class="headerlink" title="使用yield from"></a>使用yield from</h4><p>yield  from 结构会在内部自动捕获 StopIteration 异常。这种处理方式与for 循环处理StopIteration 异常的方式一样：循环机制使用用户易于理解的方式处理异常。对 yield  from 结构来说，解释器不仅会捕获 StopIteration 异常，还会把 value 属性的值变成 yield  from 表达式的值。</p>
+<p>yield from 可用于简化 for 循环中的 yield 表达式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">gen</span>():</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="string">&quot;ABC&quot;</span>:</span><br><span class="line">        <span class="keyword">yield</span> i</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]:</span><br><span class="line">        <span class="keyword">yield</span> j</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">list</span>(gen()))  <span class="comment"># [&#x27;A&#x27;, &#x27;B&#x27;, &#x27;C&#x27;, 1, 2, 3]</span></span><br></pre></td></tr></table></figure>
+
+<p>使用yield from：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">gen2</span>():</span><br><span class="line">    <span class="keyword">yield</span> <span class="keyword">from</span> <span class="string">&quot;ABC&quot;</span></span><br><span class="line">    <span class="keyword">yield</span> <span class="keyword">from</span> [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">list</span>(gen2()))  <span class="comment"># [&#x27;A&#x27;, &#x27;B&#x27;, &#x27;C&#x27;, 1, 2, 3]</span></span><br></pre></td></tr></table></figure>
+
+<p>yield from 在扁平化处理嵌套型的序列中的应用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">gen3</span>(<span class="params">*args</span>):</span><br><span class="line">    <span class="keyword">for</span> item <span class="keyword">in</span> args:</span><br><span class="line">        <span class="keyword">yield</span> <span class="keyword">from</span> item</span><br><span class="line"></span><br><span class="line">a = (<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line">b = <span class="string">&quot;ABC&quot;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">list</span>(gen3(a, b)))  <span class="comment"># [1, 2, 3, &#x27;A&#x27;, &#x27;B&#x27;, &#x27;C&#x27;]</span></span><br></pre></td></tr></table></figure>
+
+<p><code>yield  from  x</code>  表达式对 x 对象所做的第一件事是，调用 iter(x)，从中获取迭代器，因此 x 可以是任何可迭代的对象。</p>
+<p>如果 yield  from 结构唯一的作用是替代产出值的嵌套 for 循环，这个结构很有可能不会添加到 Python 语言中。yield  from 结构的本质作用无法通过简单的可迭代对象说明，而要发散思维，使用嵌套的生成器。</p>
+<p>yield  from 的主要功能是打开双向通道，把最外层的调用方与最内层的子生成器连接起来，这样二者可以直接发送和产出值，还可以直接传入异常，而不用在位于中间的协程中添加大量处理异常的样板代码。有了这个结构，协程可以通过以前不可能的方式委托职责。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2020/03/09/60844/" rel="prev" title="TypeError，自定义异常类">
+                  <i class="fa fa-angle-left"></i> TypeError，自定义异常类
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2020/03/14/19948/" rel="next" title="Python：使用future并发下载图片">
+                  Python：使用future并发下载图片 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">691k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:28</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

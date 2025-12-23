@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="介绍Selenium自动化测试工具的高级应用，包括表单操作、处理弹框、等待机制、鼠标键盘事件模拟、JavaScript执行、屏幕截图及frame定位，提供丰富的代码示例。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Selenium 常用操作汇总">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2020/08/02/23731/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="介绍Selenium自动化测试工具的高级应用，包括表单操作、处理弹框、等待机制、鼠标键盘事件模拟、JavaScript执行、屏幕截图及frame定位，提供丰富的代码示例。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-08-01T16:52:13.000Z">
+<meta property="article:modified_time" content="2025-12-23T14:07:49.080Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="Selenium">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2020/08/02/23731/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2020/08/02/23731/","path":"posts/2020/08/02/23731/","title":"Selenium 常用操作汇总"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Selenium 常用操作汇总 | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Selenium-%E6%93%8D%E4%BD%9C-form-%E8%A1%A8%E5%8D%95"><span class="nav-text">Selenium 操作 form 表单</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Selenium-%E6%93%8D%E4%BD%9C-checkbox-%E5%92%8C-radiobutton"><span class="nav-text">Selenium 操作 checkbox 和 radiobutton</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Selenium-%E6%93%8D%E4%BD%9C%E4%B8%8B%E6%8B%89%E5%88%97%E8%A1%A8"><span class="nav-text">Selenium 操作下拉列表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Selenium-%E5%A4%84%E7%90%86%E5%BC%B9%E6%A1%86"><span class="nav-text">Selenium 处理弹框</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Selenium-%E4%B8%89%E7%A7%8D%E7%AD%89%E5%BE%85%E6%96%B9%E5%BC%8F"><span class="nav-text">Selenium 三种等待方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Selenium-%E7%AD%89%E5%BE%85%E6%9D%A1%E4%BB%B6"><span class="nav-text">Selenium 等待条件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Selenium-%E9%BC%A0%E6%A0%87%E5%92%8C%E9%94%AE%E7%9B%98%E6%93%8D%E4%BD%9C"><span class="nav-text">Selenium 鼠标和键盘操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Selenium-%E6%89%A7%E8%A1%8C-JavaScript-%E8%84%9A%E6%9C%AC"><span class="nav-text">Selenium 执行 JavaScript 脚本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Selenium-%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE"><span class="nav-text">Selenium 屏幕截图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Selenium-%E5%AE%9A%E4%BD%8D-frame-iframe"><span class="nav-text">Selenium 定位 frame iframe</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2020/08/02/23731/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Selenium 常用操作汇总 | Magnolia's Blog">
+      <meta itemprop="description" content="介绍Selenium自动化测试工具的高级应用，包括表单操作、处理弹框、等待机制、鼠标键盘事件模拟、JavaScript执行、屏幕截图及frame定位，提供丰富的代码示例。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Selenium 常用操作汇总
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-08-02 00:52:13" itemprop="dateCreated datePublished" datetime="2020-08-02T00:52:13+08:00">2020-08-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/Selenium/" itemprop="url" rel="index"><span itemprop="name">Selenium</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>18k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>16 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">介绍Selenium自动化测试工具的高级应用，包括表单操作、处理弹框、等待机制、鼠标键盘事件模拟、JavaScript执行、屏幕截图及frame定位，提供丰富的代码示例。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="Selenium-操作-form-表单"><a href="#Selenium-操作-form-表单" class="headerlink" title="Selenium 操作 form 表单"></a>Selenium 操作 form 表单</h2><p>form 表单是常用的测试用例对象，大多数 web 应用程序都有这方面的功能。例如：用户登录、注册都会用到 form 表单。</p>
+<p>form 表单的流程：</p>
+<ol>
+<li>定位表单元素</li>
+<li>输入测试值</li>
+<li>判断表单元素属性</li>
+<li>获取表单元素属性</li>
+<li>提交表单进行验证</li>
+</ol>
+<p>实例：在本地使用了 file 协议加载本地文件，自定义一个 form 表单，使用 selenium 实现了表单的数据输入、提交。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Title<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;javascript:alert(&#x27;hello&#x27;)&quot;</span>&gt;</span></span><br><span class="line">    username: <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">name</span>=<span class="string">&quot;username&quot;</span> <span class="attr">id</span>=<span class="string">&quot;username&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">    password: <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;password&quot;</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span> <span class="attr">id</span>=<span class="string">&quot;password&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">    submit<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">value</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">id</span>=<span class="string">&quot;submit&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> time <span class="keyword">import</span> sleep</span><br><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"><span class="keyword">from</span> Selenium.utils.util <span class="keyword">import</span> PROJECT_PATH  <span class="comment"># 自定义的Selenium目录</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TestCase</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.path = os.path.join(PROJECT_PATH, <span class="string">&#x27;static&#x27;</span>)</span><br><span class="line">        <span class="variable language_">self</span>.forms_file = <span class="string">&#x27;file:///&#x27;</span> + <span class="variable language_">self</span>.path + <span class="string">&#x27;/demo2_3_forms.html&#x27;</span></span><br><span class="line">        <span class="variable language_">self</span>.driver = webdriver.Chrome()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">quit</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.driver.quit()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_forms_file</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.driver.get(<span class="variable language_">self</span>.forms_file)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_login</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.get_forms_file()</span><br><span class="line">        username = <span class="variable language_">self</span>.driver.find_element_by_id(<span class="string">&#x27;username&#x27;</span>)</span><br><span class="line">        username.send_keys(<span class="string">&#x27;admin&#x27;</span>)</span><br><span class="line">        password = <span class="variable language_">self</span>.driver.find_element_by_id(<span class="string">&#x27;password&#x27;</span>)</span><br><span class="line">        password.send_keys(<span class="string">&#x27;123456&#x27;</span>)</span><br><span class="line">        <span class="built_in">print</span>(username.get_attribute(<span class="string">&#x27;value&#x27;</span>))</span><br><span class="line">        <span class="built_in">print</span>(password.get_attribute(<span class="string">&#x27;value&#x27;</span>))</span><br><span class="line">        sleep(<span class="number">2</span>)</span><br><span class="line">        <span class="variable language_">self</span>.driver.find_element_by_id(<span class="string">&#x27;submit&#x27;</span>).click()</span><br><span class="line">        sleep(<span class="number">1</span>)</span><br><span class="line">        <span class="variable language_">self</span>.driver.switch_to.alert.accept()</span><br><span class="line">        sleep(<span class="number">1</span>)</span><br><span class="line">        username.clear()</span><br><span class="line">        password.clear()</span><br><span class="line">        sleep(<span class="number">1</span>)</span><br><span class="line">        <span class="variable language_">self</span>.quit()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="keyword">case</span> = TestCase()</span><br><span class="line">    <span class="comment"># print(case.get_forms_file())</span></span><br><span class="line">    <span class="keyword">case</span>.test_login()</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="Selenium-操作-checkbox-和-radiobutton"><a href="#Selenium-操作-checkbox-和-radiobutton" class="headerlink" title="Selenium 操作 checkbox 和 radiobutton"></a>Selenium 操作 checkbox 和 radiobutton</h2><ul>
+<li>form 表单里常用 checkbox 和 radiobutton， checkbox 是多选框，radiobutton 是单选框；</li>
+<li>例如，一个注册表单收集用户爱好可以用 checkbox，输入性别可以用 radiobutton；</li>
+</ul>
+<p>关于 checkbox</p>
+<ul>
+<li>如果 checkbox 有 id 属性，可以直接通过 id 定位；若没有则通过 input 标签名称定位，然后通过 type 属性过滤；</li>
+<li>选择或反选 checkbox，使用 click() 方法；</li>
+</ul>
+<p>实例：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Title<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;javascript:alert(&#x27;test&#x27;)&quot;</span>&gt;</span></span><br><span class="line">    swimming: <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;checkbox&quot;</span> <span class="attr">name</span>=<span class="string">&quot;swimming&quot;</span> <span class="attr">value</span>=<span class="string">&quot;swimming&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">    reading: <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;checkbox&quot;</span> <span class="attr">name</span>=<span class="string">&quot;reading&quot;</span> <span class="attr">value</span>=<span class="string">&quot;reading&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">hr</span>&gt;</span></span><br><span class="line">    gender: <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;radio&quot;</span> <span class="attr">name</span>=<span class="string">&quot;gender&quot;</span> <span class="attr">value</span>=<span class="string">&quot;male&quot;</span>&gt;</span>male &amp;nbsp</span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;radio&quot;</span> <span class="attr">name</span>=<span class="string">&quot;gender&quot;</span> <span class="attr">value</span>=<span class="string">&quot;female&quot;</span>&gt;</span>female <span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">    login: <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">name</span>=<span class="string">&quot;submit&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> time <span class="keyword">import</span> sleep</span><br><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> Selenium.utils.util <span class="keyword">import</span> PROJECT_PATH</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TestCase</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.path = os.path.join(PROJECT_PATH, <span class="string">&#x27;static&#x27;</span>)</span><br><span class="line">        <span class="variable language_">self</span>.file = <span class="string">&#x27;file:///&#x27;</span> + <span class="variable language_">self</span>.path + <span class="string">&#x27;/demo2_4_checkbox_radiobutton.html&#x27;</span></span><br><span class="line">        <span class="variable language_">self</span>.driver = webdriver.Chrome()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_path</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.driver.get(<span class="variable language_">self</span>.file)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">quit</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.driver.quit()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_checkbox</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.get_path()</span><br><span class="line">        sleep(<span class="number">2</span>)</span><br><span class="line">        checkbox1 = <span class="variable language_">self</span>.driver.find_element_by_name(<span class="string">&#x27;swimming&#x27;</span>)</span><br><span class="line">        checkbox2 = <span class="variable language_">self</span>.driver.find_element_by_name(<span class="string">&#x27;reading&#x27;</span>)</span><br><span class="line">        <span class="keyword">for</span> ele <span class="keyword">in</span> [checkbox1, checkbox2]:</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> ele.is_selected():</span><br><span class="line">                ele.click()</span><br><span class="line">                sleep(<span class="number">1</span>)</span><br><span class="line">        <span class="variable language_">self</span>.quit()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_radiobutton</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.get_path()</span><br><span class="line">        radios = <span class="variable language_">self</span>.driver.find_elements_by_name(<span class="string">&#x27;gender&#x27;</span>)</span><br><span class="line">        <span class="keyword">for</span> radio <span class="keyword">in</span> radios:</span><br><span class="line">            radio.click()</span><br><span class="line">            sleep(<span class="number">1</span>)</span><br><span class="line">        <span class="variable language_">self</span>.quit()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="keyword">case</span> = TestCase()</span><br><span class="line">    <span class="comment"># case.test_checkbox()</span></span><br><span class="line">    <span class="keyword">case</span>.test_radiobutton()</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="Selenium-操作下拉列表"><a href="#Selenium-操作下拉列表" class="headerlink" title="Selenium 操作下拉列表"></a>Selenium 操作下拉列表</h2><p>处理下拉列表，需要用到工具栏 Select 。</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>方法&#x2F;属性</th>
+<th>方法&#x2F;属性描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>select_by_value()</td>
+<td>根据值选择</td>
+</tr>
+<tr>
+<td>2</td>
+<td>select_by_index()</td>
+<td>根据索引选择</td>
+</tr>
+<tr>
+<td>3</td>
+<td>select_by_visible_text()</td>
+<td>根据文本选择</td>
+</tr>
+<tr>
+<td>4</td>
+<td>deselect_by_value</td>
+<td>根据值反选</td>
+</tr>
+<tr>
+<td>5</td>
+<td>deselect_by_index</td>
+<td>根据索引反选</td>
+</tr>
+<tr>
+<td>6</td>
+<td>deselect_by_visible_text</td>
+<td>根据文本反选</td>
+</tr>
+<tr>
+<td>7</td>
+<td>deselect_all</td>
+<td>反选所有</td>
+</tr>
+<tr>
+<td>8</td>
+<td>options</td>
+<td>所有选项</td>
+</tr>
+<tr>
+<td>9</td>
+<td>all_selected_options</td>
+<td>所有选中选项</td>
+</tr>
+<tr>
+<td>10</td>
+<td>first_selected_option</td>
+<td>第一个选择选项</td>
+</tr>
+</tbody></table>
+<p>实例：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Title<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;javascript:alert(&#x27;test select&#x27;)&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">&quot;provise&quot;</span>&gt;</span>provide:<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">select</span> <span class="attr">name</span>=<span class="string">&quot;provise&quot;</span> <span class="attr">id</span>=<span class="string">&quot;provise&quot;</span> <span class="attr">multiple</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">&quot;bj&quot;</span>&gt;</span>beijing<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">&quot;hz&quot;</span>&gt;</span>hangzhou<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">&quot;nj&quot;</span>&gt;</span>nanjing<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> time <span class="keyword">import</span> sleep</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"><span class="keyword">from</span> selenium.webdriver.support.select <span class="keyword">import</span> Select</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> Selenium.utils.util <span class="keyword">import</span> PROJECT_PATH</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TestCase</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.path = os.path.join(PROJECT_PATH, <span class="string">&#x27;static&#x27;</span>)</span><br><span class="line">        <span class="variable language_">self</span>.file = <span class="string">&#x27;file:///&#x27;</span> + <span class="variable language_">self</span>.path + <span class="string">&#x27;/demo2_5_select.html&#x27;</span></span><br><span class="line">        <span class="variable language_">self</span>.driver = webdriver.Chrome()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_path</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.driver.get(<span class="variable language_">self</span>.file)</span><br><span class="line">        sleep(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">quit</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.driver.quit()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_select_by_value</span>(<span class="params">self</span>):</span><br><span class="line">        ele = <span class="variable language_">self</span>.driver.find_element_by_id(<span class="string">&#x27;provise&#x27;</span>)</span><br><span class="line">        select_obj = Select(ele)</span><br><span class="line">        select_obj.select_by_value(<span class="string">&#x27;nj&#x27;</span>)</span><br><span class="line">        sleep(<span class="number">1.5</span>)</span><br><span class="line">        select_obj.select_by_value(<span class="string">&#x27;hz&#x27;</span>)</span><br><span class="line">        sleep(<span class="number">1.5</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_select_by_index</span>(<span class="params">self</span>):</span><br><span class="line">        ele = <span class="variable language_">self</span>.driver.find_element_by_id(<span class="string">&#x27;provise&#x27;</span>)</span><br><span class="line">        select_obj = Select(ele)</span><br><span class="line">        select_obj.select_by_index(<span class="number">2</span>)</span><br><span class="line">        sleep(<span class="number">1.5</span>)</span><br><span class="line">        select_obj.select_by_index(<span class="number">1</span>)</span><br><span class="line">        sleep(<span class="number">1.5</span>)</span><br><span class="line">        select_obj.select_by_index(<span class="number">0</span>)</span><br><span class="line">        sleep(<span class="number">1.5</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_select_by_visible_text</span>(<span class="params">self</span>):</span><br><span class="line">        ele = <span class="variable language_">self</span>.driver.find_element_by_id(<span class="string">&#x27;provise&#x27;</span>)</span><br><span class="line">        select_obj = Select(ele)</span><br><span class="line">        select_obj.select_by_visible_text(<span class="string">&#x27;beijing&#x27;</span>)</span><br><span class="line">        sleep(<span class="number">1.5</span>)</span><br><span class="line">        select_obj.select_by_visible_text(<span class="string">&#x27;nanjing&#x27;</span>)</span><br><span class="line">        sleep(<span class="number">1.5</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_select_multiple</span>(<span class="params">self</span>):</span><br><span class="line">        ele = <span class="variable language_">self</span>.driver.find_element_by_id(<span class="string">&#x27;provise&#x27;</span>)</span><br><span class="line">        select_obj = Select(ele)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">3</span>):</span><br><span class="line">            select_obj.select_by_index(i)</span><br><span class="line">            sleep(<span class="number">1</span>)</span><br><span class="line">        select_obj.deselect_all()</span><br><span class="line">        sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_options</span>(<span class="params">self</span>):</span><br><span class="line">        ele = <span class="variable language_">self</span>.driver.find_element_by_id(<span class="string">&#x27;provise&#x27;</span>)</span><br><span class="line">        select_obj = Select(ele)</span><br><span class="line">        <span class="keyword">for</span> option <span class="keyword">in</span> select_obj.options:</span><br><span class="line">            <span class="built_in">print</span>(option)</span><br><span class="line">            <span class="built_in">print</span>(option.text)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="keyword">case</span> = TestCase()</span><br><span class="line">    <span class="keyword">case</span>.get_path()</span><br><span class="line">    <span class="comment"># case.test_select_by_value()</span></span><br><span class="line">    <span class="comment"># case.test_select_by_index()</span></span><br><span class="line">    <span class="comment"># case.test_select_by_visible_text()</span></span><br><span class="line">    <span class="comment"># case.test_select_multiple()</span></span><br><span class="line">    <span class="keyword">case</span>.test_options()</span><br><span class="line">    <span class="keyword">case</span>.quit()</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="Selenium-处理弹框"><a href="#Selenium-处理弹框" class="headerlink" title="Selenium 处理弹框"></a>Selenium 处理弹框</h2><p>页面上的弹框有三种：</p>
+<ul>
+<li>alert：用来提示</li>
+<li>confirm：用来确认</li>
+<li>prompt：输入内容</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>方法&#x2F;属性</th>
+<th>方法&#x2F;属性描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>accept()</td>
+<td>接受</td>
+</tr>
+<tr>
+<td>2</td>
+<td>dismiss()</td>
+<td>取消</td>
+</tr>
+<tr>
+<td>3</td>
+<td>text</td>
+<td>显示的文本</td>
+</tr>
+<tr>
+<td>4</td>
+<td>send_keys</td>
+<td>输入内容</td>
+</tr>
+</tbody></table>
+<p>实例：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Title<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;javascript:alert(&#x27;提示框&#x27;)&quot;</span> <span class="attr">id</span>=<span class="string">&quot;alert&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">    Alert</span><br><span class="line"><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;javascript:confirm(&#x27;确认框&#x27;)&quot;</span> <span class="attr">id</span>=<span class="string">&quot;confirm&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">    Confirm</span><br><span class="line"><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;javascript:var inputvar = prompt(&#x27;请输入&#x27;);document.write(inputvar)&quot;</span> <span class="attr">id</span>=<span class="string">&quot;prompt&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">    Prompt</span><br><span class="line"><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--&lt;a href=&quot;javascript:prompt(&#x27;请输入&#x27;)&quot; id=&quot;prompt&quot;&gt;&lt;br&gt;--&gt;</span></span><br><span class="line"><span class="comment">&lt;!--    Prompt--&gt;</span></span><br><span class="line"><span class="comment">&lt;!--&lt;/a&gt;--&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"><span class="keyword">from</span> time <span class="keyword">import</span> sleep</span><br><span class="line"><span class="keyword">from</span> Selenium.utils.util <span class="keyword">import</span> PROJECT_PATH</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TestCase</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.path = os.path.join(PROJECT_PATH, <span class="string">&#x27;static&#x27;</span>)</span><br><span class="line">        <span class="variable language_">self</span>.file = <span class="string">&#x27;file:///&#x27;</span> + <span class="variable language_">self</span>.path + <span class="string">&#x27;/demo2_6_alert.html&#x27;</span></span><br><span class="line">        <span class="variable language_">self</span>.driver = webdriver.Chrome()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_path</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.driver.get(<span class="variable language_">self</span>.file)</span><br><span class="line">        sleep(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">quit</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.driver.quit()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_alert</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.get_path()</span><br><span class="line">        ele = <span class="variable language_">self</span>.driver.find_element_by_id(<span class="string">&#x27;alert&#x27;</span>)</span><br><span class="line">        ele.click()</span><br><span class="line">        alert_obj = <span class="variable language_">self</span>.driver.switch_to.alert  <span class="comment"># 切换到alert</span></span><br><span class="line">        <span class="built_in">print</span>(alert_obj.text)</span><br><span class="line">        sleep(<span class="number">1</span>)</span><br><span class="line">        alert_obj.accept()</span><br><span class="line">        sleep(<span class="number">1</span>)</span><br><span class="line">        <span class="variable language_">self</span>.quit()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_confirm</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.get_path()</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>):</span><br><span class="line">            ele = <span class="variable language_">self</span>.driver.find_element_by_id(<span class="string">&#x27;confirm&#x27;</span>)</span><br><span class="line">            ele.click()</span><br><span class="line">            alert_obj = <span class="variable language_">self</span>.driver.switch_to.alert</span><br><span class="line">            sleep(<span class="number">1</span>)</span><br><span class="line">            <span class="keyword">if</span> i == <span class="number">0</span>:</span><br><span class="line">                alert_obj.accept()  <span class="comment"># 确认</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                alert_obj.dismiss()  <span class="comment"># 取消</span></span><br><span class="line">            sleep(<span class="number">1</span>)</span><br><span class="line">        <span class="variable language_">self</span>.quit()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_prompt</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.get_path()</span><br><span class="line">        ele = <span class="variable language_">self</span>.driver.find_element_by_id(<span class="string">&#x27;prompt&#x27;</span>)</span><br><span class="line">        ele.click()</span><br><span class="line">        prompt_obj = <span class="variable language_">self</span>.driver.switch_to.alert</span><br><span class="line">        <span class="built_in">print</span>(prompt_obj.text)</span><br><span class="line">        sleep(<span class="number">3</span>)</span><br><span class="line">        <span class="comment"># prompt_obj.send_keys(&#x27;100&#x27;)</span></span><br><span class="line">        prompt_obj.accept()</span><br><span class="line">        sleep(<span class="number">3</span>)</span><br><span class="line">        <span class="variable language_">self</span>.quit()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="keyword">case</span> = TestCase()</span><br><span class="line">    <span class="comment"># case.test_alert()</span></span><br><span class="line">    <span class="comment"># case.test_confirm()</span></span><br><span class="line">    <span class="keyword">case</span>.test_prompt()</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="Selenium-三种等待方式"><a href="#Selenium-三种等待方式" class="headerlink" title="Selenium 三种等待方式"></a>Selenium 三种等待方式</h2><p>在 UI 自动化测试中，必然会遇到测试环境不稳定的情况，网络延迟等，如果不做任何处理，代码会由于没有找到元素而报错。除此，有的页面会使用 ajax 异步加载机制，需要用到等待。</p>
+<p>常用的等待有三种：</p>
+<ul>
+<li><p>time.sleep 固定等待</p>
+<p>在开发自动化测试框架过程中，忌讳使用Python自带模块time的sleep方法进行等待，虽然可以自定义时间，当时当网络条件好时，依旧会等待，导致整个项目的测试时间没有必要的延长。只是在脚本调试是推荐使用。</p>
+</li>
+<li><p>implicitly_wait 隐式等待</p>
+<p>设置了一个最长等待时间，如果在规定时间内网页加载完成，则执行下一步，否则一直会等待时间结束，然后执行下一步。这样的隐式等待会有问题，页面上的元素加载完毕后再加载 body 后面的 JavaScript，导致一直在等待页面加载结束。</p>
+<p>隐式等待对整个 driver 周期都起作用，在最开始设置一次就可以。不要当做笃定等待使用、到哪都使用。</p>
+</li>
+<li><p>WebDriverWait 显式等待</p>
+<p>WebDriverWait 是 selenium 提供得到显示等待的模块，引入路径：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> selenium.webdriver.support.wait <span class="keyword">import</span> WebDriverWait</span><br></pre></td></tr></table></figure>
+
+<p>WebDriverWait 参数：</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>参数</th>
+<th>参数说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>driver</td>
+<td>传入 WebDriver 实例</td>
+</tr>
+<tr>
+<td>2</td>
+<td>timeout</td>
+<td>超时时间，等待的最长时间</td>
+</tr>
+<tr>
+<td>3</td>
+<td>poll_frequency</td>
+<td>调用until或until_not中的方法的间隔时间，默认是0.5秒</td>
+</tr>
+<tr>
+<td>4</td>
+<td>ignored_exceptions</td>
+<td>忽略的异常</td>
+</tr>
+</tbody></table>
+<p>该模块中一共只要两种方法：until 和 until_not</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>参数</th>
+<th>参数说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>method</td>
+<td>在等待时间，每隔一段时间调用这个传入的方法，直到返回值不是False</td>
+</tr>
+<tr>
+<td>2</td>
+<td>message</td>
+<td>如果超时，抛出TimeoutException异常，将message传入异常</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<p>实例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">TestCase</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.driver = webdriver.Chrome()</span><br><span class="line">        <span class="variable language_">self</span>.driver.get(<span class="string">&#x27;https://www.baidu.com&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_sleep</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.driver.find_element_by_id(<span class="string">&#x27;kw&#x27;</span>).send_keys(<span class="string">&#x27;selenium&#x27;</span>)</span><br><span class="line">        sleep(<span class="number">3</span>)  <span class="comment"># 线程阻塞 blocking wait</span></span><br><span class="line">        <span class="variable language_">self</span>.driver.find_element_by_id(<span class="string">&#x27;su&#x27;</span>).click()</span><br><span class="line">        sleep(<span class="number">3</span>)</span><br><span class="line">        <span class="variable language_">self</span>.driver.quit()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_implicitly</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.driver.implicitly_wait(<span class="number">10</span>)</span><br><span class="line">        <span class="variable language_">self</span>.driver.find_element_by_id(<span class="string">&#x27;kw&#x27;</span>).send_keys(<span class="string">&#x27;selenium&#x27;</span>)</span><br><span class="line">        <span class="variable language_">self</span>.driver.find_element_by_id(<span class="string">&#x27;su&#x27;</span>).click()</span><br><span class="line">        <span class="variable language_">self</span>.driver.quit()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_wait</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="comment"># self, driver, timeout, poll_frequency=POLL_FREQUENCY, ignored_exceptions=None</span></span><br><span class="line">        wait = WebDriverWait(<span class="variable language_">self</span>.driver, <span class="number">5</span>, <span class="number">0.5</span>)</span><br><span class="line">        wait.until(EC.title_is(<span class="string">&#x27;百度一下，你就知道&#x27;</span>))</span><br><span class="line">        <span class="variable language_">self</span>.driver.find_element_by_id(<span class="string">&#x27;kw&#x27;</span>).send_keys(<span class="string">&#x27;selenium&#x27;</span>)</span><br><span class="line">        <span class="variable language_">self</span>.driver.find_element_by_id(<span class="string">&#x27;su&#x27;</span>).click()</span><br><span class="line">        <span class="variable language_">self</span>.driver.quit()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="keyword">case</span> = TestCase()</span><br><span class="line">    <span class="comment"># case.test_sleep()</span></span><br><span class="line">    <span class="comment"># case.test_implicitly()</span></span><br><span class="line">    <span class="keyword">case</span>.test_wait()</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="Selenium-等待条件"><a href="#Selenium-等待条件" class="headerlink" title="Selenium 等待条件"></a>Selenium 等待条件</h2><table>
+<thead>
+<tr>
+<th>#</th>
+<th>条件</th>
+<th>判断</th>
+<th>返回值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>title_is</td>
+<td>title，是否出现</td>
+<td>布尔</td>
+</tr>
+<tr>
+<td>2</td>
+<td>title_contains</td>
+<td>title，是否包含某些子字符串</td>
+<td>布尔</td>
+</tr>
+<tr>
+<td>3</td>
+<td>presence_of_element_located</td>
+<td>某个元素是否被在dom树里，并不代表该元素一定可见</td>
+<td>WebElement</td>
+</tr>
+<tr>
+<td>4</td>
+<td>url_contains</td>
+<td>当前url中包含子字符串</td>
+<td>布尔</td>
+</tr>
+<tr>
+<td>5</td>
+<td>url_matches</td>
+<td>当前url匹配某表达式</td>
+<td>布尔</td>
+</tr>
+<tr>
+<td>6</td>
+<td>url_to_be</td>
+<td>url是否相同</td>
+<td>布尔</td>
+</tr>
+<tr>
+<td>7</td>
+<td>url_changes</td>
+<td>url不能准确匹配</td>
+<td>布尔</td>
+</tr>
+<tr>
+<td>8</td>
+<td>visibility_of_element_located</td>
+<td>某个元素是否被在dom里并且可见，宽和高都大于0</td>
+<td>WebElement</td>
+</tr>
+<tr>
+<td>9</td>
+<td>visibility_of</td>
+<td>元素是否可见，若可见就返回这个元素</td>
+<td>WebElement</td>
+</tr>
+<tr>
+<td>10</td>
+<td>presence_of_all_elements_located</td>
+<td>是否至少有1个元素存在dom树中</td>
+<td>列表</td>
+</tr>
+<tr>
+<td>11</td>
+<td>visibility_of_any_elements_located</td>
+<td>至少有1个元素在页面中可见</td>
+<td>列表</td>
+</tr>
+<tr>
+<td>12</td>
+<td>text_to_be_present_in_element</td>
+<td>指定元素中是否包含了预期的文本</td>
+<td>布尔</td>
+</tr>
+<tr>
+<td>13</td>
+<td>text_to_be_present_in_element_value</td>
+<td>指定元素的属性值中是否包含了预期的文本</td>
+<td>布尔</td>
+</tr>
+<tr>
+<td>14</td>
+<td>frame_to_be_available_and_switch_to_it</td>
+<td>该frame是否可以switch进去，若是则切进去</td>
+<td>布尔</td>
+</tr>
+<tr>
+<td>15</td>
+<td>invisibility_of_element_located</td>
+<td>某个元素是否存在于dom或不可见</td>
+<td>布尔</td>
+</tr>
+<tr>
+<td>16</td>
+<td>element_to_be_clickable</td>
+<td>某个元素是否可见并且是enabled的，代表可点击</td>
+<td>布尔</td>
+</tr>
+<tr>
+<td>17</td>
+<td>staleness_of</td>
+<td>等待某个元素从dom树中移除</td>
+<td>布尔</td>
+</tr>
+<tr>
+<td>18</td>
+<td>element_to_be_selected</td>
+<td>某个元素是否被选中了，一般用在下拉列表</td>
+<td>布尔</td>
+</tr>
+<tr>
+<td>19</td>
+<td>element_located_to_be_selected</td>
+<td>某个定位元素是否被选中了</td>
+<td>布尔</td>
+</tr>
+<tr>
+<td>20</td>
+<td>element_selection_state_to_be</td>
+<td>某个元素的选中状态是否符合预期</td>
+<td>布尔</td>
+</tr>
+<tr>
+<td>21</td>
+<td>element_located_selection_state_to_be</td>
+<td>某个元素的选中状态是否符合预期</td>
+<td>布尔</td>
+</tr>
+<tr>
+<td>22</td>
+<td>alert_is_present</td>
+<td>页面上是否存在alert</td>
+<td>alert</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="Selenium-鼠标和键盘操作"><a href="#Selenium-鼠标和键盘操作" class="headerlink" title="Selenium 鼠标和键盘操作"></a>Selenium 鼠标和键盘操作</h2><p>Selenium 中的鼠标和键盘时间被封装在 <code>ActionChains</code> 类中，正确的使用方法是：<code>ActionChains(driver).click(btn).perform()</code> ，下面是常用方法。</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>perform</td>
+<td>执行链中的所有动作</td>
+</tr>
+<tr>
+<td>2</td>
+<td>reset_actions</td>
+<td>清空链中已经存储的所有动作</td>
+</tr>
+<tr>
+<td>3</td>
+<td>click</td>
+<td>点击一个元素</td>
+</tr>
+<tr>
+<td>4</td>
+<td>click_and_hold</td>
+<td>在一个元素上单击并保持</td>
+</tr>
+<tr>
+<td>5</td>
+<td>context_click</td>
+<td>在一个元素上右击</td>
+</tr>
+<tr>
+<td>6</td>
+<td>double_click</td>
+<td>双击一个元素</td>
+</tr>
+<tr>
+<td>7</td>
+<td>drag_and_drop</td>
+<td>在一个元素上单击并拖动到另一个元素上再释放（拖拽）</td>
+</tr>
+<tr>
+<td>8</td>
+<td>drag_and_drop_by_offset</td>
+<td>在一个元素上单击并拖动固定距离到另一个坐标点</td>
+</tr>
+<tr>
+<td>9</td>
+<td>key_down</td>
+<td>键盘上按下某个键</td>
+</tr>
+<tr>
+<td>10</td>
+<td>key_up</td>
+<td>键盘上释放某个键</td>
+</tr>
+<tr>
+<td>11</td>
+<td>move_by_offset</td>
+<td>鼠标从当前位置移动到某个坐标</td>
+</tr>
+<tr>
+<td>12</td>
+<td>move_to_element</td>
+<td>鼠标移动到某个元素</td>
+</tr>
+<tr>
+<td>13</td>
+<td>move_to_element_with_offset</td>
+<td>移动到距某个元素（左上角坐标）多少距离的位置</td>
+</tr>
+<tr>
+<td>14</td>
+<td>pause</td>
+<td>在一定时间内，暂停所有的输入</td>
+</tr>
+<tr>
+<td>15</td>
+<td>release</td>
+<td>在一个元素上释放鼠标左键</td>
+</tr>
+<tr>
+<td>16</td>
+<td>send_keys</td>
+<td>发送数据到当前焦点的元素</td>
+</tr>
+<tr>
+<td>17</td>
+<td>send_keys_to_element</td>
+<td>发送某个键到指定元素</td>
+</tr>
+</tbody></table>
+<p>实例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> time <span class="keyword">import</span> sleep</span><br><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"><span class="keyword">from</span> selenium.webdriver <span class="keyword">import</span> ActionChains</span><br><span class="line"><span class="keyword">from</span> selenium.webdriver.common.keys <span class="keyword">import</span> Keys</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TestCase</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.driver = webdriver.Chrome()</span><br><span class="line">        <span class="variable language_">self</span>.driver.maximize_window()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_mouse</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.driver.get(<span class="string">&#x27;http://sahitest.com/demo/clicks.htm&#x27;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># actionchains = ActionChains(self.driver)</span></span><br><span class="line">        <span class="comment"># 不能使用一个实例化的ActionChains去执行多个操作，否则会下一次会执行前面累积的操作，需要reset</span></span><br><span class="line">        doubleclick_ele = <span class="variable language_">self</span>.driver.find_element_by_xpath(<span class="string">&#x27;/html/body/form/input[2]&#x27;</span>)</span><br><span class="line">        ActionChains(<span class="variable language_">self</span>.driver).double_click(doubleclick_ele).perform()</span><br><span class="line"></span><br><span class="line">        click_ele = <span class="variable language_">self</span>.driver.find_element_by_xpath(<span class="string">&#x27;/html/body/form/input[3]&#x27;</span>)</span><br><span class="line">        ActionChains(<span class="variable language_">self</span>.driver).click(click_ele).perform()</span><br><span class="line"></span><br><span class="line">        rightclick_ele = <span class="variable language_">self</span>.driver.find_element_by_xpath(<span class="string">&#x27;/html/body/form/input[4]&#x27;</span>)</span><br><span class="line">        ActionChains(<span class="variable language_">self</span>.driver).context_click(rightclick_ele).perform()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_mouse_reset</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.driver.get(<span class="string">&#x27;http://sahitest.com/demo/clicks.htm&#x27;</span>)</span><br><span class="line">        actionchains = ActionChains(<span class="variable language_">self</span>.driver)</span><br><span class="line"></span><br><span class="line">        doubleclick_ele = <span class="variable language_">self</span>.driver.find_element_by_xpath(<span class="string">&#x27;/html/body/form/input[2]&#x27;</span>)</span><br><span class="line">        actionchains.double_click(doubleclick_ele).perform()</span><br><span class="line">        actionchains.reset_actions()</span><br><span class="line"></span><br><span class="line">        click_ele = <span class="variable language_">self</span>.driver.find_element_by_xpath(<span class="string">&#x27;/html/body/form/input[3]&#x27;</span>)</span><br><span class="line">        actionchains.click(click_ele).perform()</span><br><span class="line">        actionchains.reset_actions()</span><br><span class="line"></span><br><span class="line">        rightclick_ele = <span class="variable language_">self</span>.driver.find_element_by_xpath(<span class="string">&#x27;/html/body/form/input[4]&#x27;</span>)</span><br><span class="line">        actionchains.context_click(rightclick_ele).perform()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_keys</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.driver.get(<span class="string">&#x27;http://www.baidu.com&#x27;</span>)</span><br><span class="line">        kw_ele = <span class="variable language_">self</span>.driver.find_element_by_id(<span class="string">&#x27;kw&#x27;</span>)</span><br><span class="line">        kw_ele.send_keys(<span class="string">&#x27;selenium&#x27;</span>)</span><br><span class="line">        kw_ele.send_keys(Keys.CONTROL, <span class="string">&#x27;a&#x27;</span>)</span><br><span class="line">        sleep(<span class="number">1</span>)</span><br><span class="line">        kw_ele.send_keys(Keys.CONTROL, <span class="string">&#x27;x&#x27;</span>)</span><br><span class="line">        sleep(<span class="number">1</span>)</span><br><span class="line">        kw_ele.send_keys(Keys.CONTROL, <span class="string">&#x27;v&#x27;</span>)</span><br><span class="line"></span><br><span class="line">        config_ele = <span class="variable language_">self</span>.driver.find_element_by_name(<span class="string">&#x27;tj_settingicon&#x27;</span>)</span><br><span class="line">        ActionChains(<span class="variable language_">self</span>.driver).move_to_element(config_ele).perform()</span><br><span class="line">        forcast_ele = <span class="variable language_">self</span>.driver.find_element_by_link_text(<span class="string">&#x27;关闭预测&#x27;</span>)</span><br><span class="line">        ActionChains(<span class="variable language_">self</span>.driver).click(forcast_ele).perform()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="keyword">case</span> = TestCase()</span><br><span class="line">    <span class="comment"># case.test_mouse()</span></span><br><span class="line">    <span class="comment"># case.test_mouse_reset()</span></span><br><span class="line">    <span class="keyword">case</span>.test_keys()</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="Selenium-执行-JavaScript-脚本"><a href="#Selenium-执行-JavaScript-脚本" class="headerlink" title="Selenium 执行 JavaScript 脚本"></a>Selenium 执行 JavaScript 脚本</h2><p>WebDriver 有两个方法来执行 JavaScript，分别是：</p>
+<ul>
+<li>execute_script 同步执行</li>
+<li>execute_async_script 异步执行</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> time <span class="keyword">import</span> sleep</span><br><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TestCase</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.driver = webdriver.Chrome()</span><br><span class="line">        <span class="variable language_">self</span>.driver.get(<span class="string">&quot;http://www.baidu.com&quot;</span>)</span><br><span class="line">        <span class="variable language_">self</span>.driver.maximize_window()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_js1</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="comment"># 通过js创建alert弹框</span></span><br><span class="line">        <span class="variable language_">self</span>.driver.execute_script(<span class="string">&#x27;alert(&quot;test_javascript&quot;)&#x27;</span>)</span><br><span class="line">        sleep(<span class="number">1</span>)</span><br><span class="line">        <span class="variable language_">self</span>.driver.switch_to.alert.accept()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_js2</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="comment"># 通过js获取页面标题</span></span><br><span class="line">        js_sentence = <span class="string">&#x27;return document.title&#x27;</span></span><br><span class="line">        title = <span class="variable language_">self</span>.driver.execute_script(js_sentence)</span><br><span class="line">        <span class="keyword">return</span> title</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_js3</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="comment"># 通过js修改样式</span></span><br><span class="line">        js_sentencce = <span class="string">&quot;var q = document.getElementById(&#x27;kw&#x27;); q.style.border=&#x27;2px solid red&#x27;&quot;</span></span><br><span class="line">        <span class="variable language_">self</span>.driver.execute_script(js_sentencce)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_js4</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="comment"># 通过js来拖动滚动条</span></span><br><span class="line">        <span class="variable language_">self</span>.driver.implicitly_wait(<span class="number">5</span>)</span><br><span class="line">        <span class="variable language_">self</span>.driver.find_element_by_id(<span class="string">&#x27;kw&#x27;</span>).send_keys(<span class="string">&#x27;python&#x27;</span>)</span><br><span class="line">        <span class="variable language_">self</span>.driver.find_element_by_id(<span class="string">&#x27;su&#x27;</span>).click()</span><br><span class="line">        sleep(<span class="number">1</span>)</span><br><span class="line">        js_sentence = <span class="string">&quot;window.scrollTo(0, document.body.scrollHeight)&quot;</span></span><br><span class="line">        <span class="variable language_">self</span>.driver.execute_script(js_sentence)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="keyword">case</span> = TestCase()</span><br><span class="line">    <span class="comment"># case.test_js1()</span></span><br><span class="line">    <span class="comment"># print(case.test_js2())</span></span><br><span class="line">    <span class="comment"># case.test_js3()</span></span><br><span class="line">    <span class="keyword">case</span>.test_js4()</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="Selenium-屏幕截图"><a href="#Selenium-屏幕截图" class="headerlink" title="Selenium 屏幕截图"></a>Selenium 屏幕截图</h2><p>WebDriver 内置了一些在测试中捕获并保存的方法：</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>save_screenshot(filename)</td>
+<td>获取当前屏幕截图并保存为文件，filename为指定保存的路径或图片的文件名</td>
+</tr>
+<tr>
+<td>2</td>
+<td>get_screenshot_as_base64()</td>
+<td>获取当前屏幕截图base64编码字符串</td>
+</tr>
+<tr>
+<td>3</td>
+<td>get_screenshot_as_file(filename)</td>
+<td>获取当前的屏幕截图，使用完整的路径</td>
+</tr>
+<tr>
+<td>4</td>
+<td>get_screenshot_as_png()</td>
+<td>获取当前屏幕截图的二进制文件数据</td>
+</tr>
+</tbody></table>
+<p>实例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> time <span class="keyword">import</span> sleep, strftime, localtime, time</span><br><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> utils.util <span class="keyword">import</span> PROJECT_PATH</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TestCase</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.path = PROJECT_PATH</span><br><span class="line">        <span class="variable language_">self</span>.driver = webdriver.Chrome()</span><br><span class="line">        <span class="variable language_">self</span>.driver.get(<span class="string">&quot;http://www.baidu.com&quot;</span>)</span><br><span class="line">        <span class="variable language_">self</span>.driver.maximize_window()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test1</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.driver.find_element_by_id(<span class="string">&#x27;kw&#x27;</span>).send_keys(<span class="string">&#x27;截屏&#x27;</span>)</span><br><span class="line">        <span class="variable language_">self</span>.driver.find_element_by_id(<span class="string">&#x27;su&#x27;</span>).click()</span><br><span class="line">        sleep(<span class="number">1</span>)</span><br><span class="line">        <span class="comment"># self.driver.save_screenshot(&#x27;screenshot_baidu&#x27;)</span></span><br><span class="line"></span><br><span class="line">        str_time = strftime(<span class="string">&quot;%Y-%m-%d-%H-%M-%S&quot;</span>, localtime(time()))</span><br><span class="line">        <span class="comment"># file_name = str_time + &#x27;.png&#x27;</span></span><br><span class="line">        <span class="comment"># self.driver.save_screenshot(file_name)</span></span><br><span class="line"></span><br><span class="line">        screenshot_dir = os.path.join(<span class="variable language_">self</span>.path, <span class="string">&#x27;screenshot&#x27;</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(screenshot_dir):</span><br><span class="line">            os.mkdir(screenshot_dir)</span><br><span class="line">        file_name = os.path.join(screenshot_dir, str_time + <span class="string">&#x27;.png&#x27;</span>)</span><br><span class="line">        <span class="variable language_">self</span>.driver.save_screenshot(file_name)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="keyword">case</span> = TestCase()</span><br><span class="line">    <span class="keyword">case</span>.test1()</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="Selenium-定位-frame-iframe"><a href="#Selenium-定位-frame-iframe" class="headerlink" title="Selenium 定位 frame iframe"></a>Selenium 定位 frame iframe</h2><p>frame 标签有 <code>frameset</code>、<code>frame</code>、<code>iframe</code> 三种，frameset 跟其他普通标签没有区别，不会影响到正常的定位，而 frame 与 iframe 对 Selenium 定位而言是一样的，Selenium 有一组方法对 frame 进行操作。</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>switch_to.frame(reference)</td>
+<td>切换frame，reference是传入的参数，用来定位frame，可以传入id，name，index以及selenium的WebElement对象</td>
+</tr>
+<tr>
+<td>2</td>
+<td>switch_to.default_content()</td>
+<td>返回主文档</td>
+</tr>
+<tr>
+<td>3</td>
+<td>switch_to.parent_frame()</td>
+<td>返回父文档</td>
+</tr>
+</tbody></table>
+<p>实例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> time <span class="keyword">import</span> sleep</span><br><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TestCase</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.driver = webdriver.Chrome()</span><br><span class="line">        <span class="variable language_">self</span>.driver.get(<span class="string">&quot;http://sahitest.com/demo/framesTest.htm&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_frame</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.driver.implicitly_wait(<span class="number">10</span>)</span><br><span class="line">        frame1_ele = <span class="variable language_">self</span>.driver.find_element_by_name(<span class="string">&#x27;top&#x27;</span>)</span><br><span class="line">        <span class="variable language_">self</span>.driver.switch_to.frame(frame1_ele)</span><br><span class="line">        Link_Test = <span class="variable language_">self</span>.driver.find_element_by_xpath(<span class="string">&quot;/html/body/table/tbody/tr/td[1]/a[1]&quot;</span>)</span><br><span class="line">        Link_Test.click()</span><br><span class="line">        <span class="variable language_">self</span>.driver.switch_to.default_content()</span><br><span class="line"></span><br><span class="line">        sleep(<span class="number">3</span>)</span><br><span class="line">        frame2_ele = <span class="variable language_">self</span>.driver.find_element_by_xpath(<span class="string">&quot;/html/frameset/frame[2]&quot;</span>)</span><br><span class="line">        <span class="variable language_">self</span>.driver.switch_to.frame(frame2_ele)</span><br><span class="line">        Link_Test2 = <span class="variable language_">self</span>.driver.find_element_by_xpath(<span class="string">&quot;/html/body/table/tbody/tr/td[1]/a[1]&quot;</span>)</span><br><span class="line">        Link_Test2.click()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="keyword">case</span> = TestCase()</span><br><span class="line">    <span class="keyword">case</span>.test_frame()</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/Selenium/" rel="tag"># Selenium</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2020/07/05/15577/" rel="prev" title="不恰当的import导致的问题">
+                  <i class="fa fa-angle-left"></i> 不恰当的import导致的问题
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2020/08/02/47242/" rel="next" title="Selenium 通识">
+                  Selenium 通识 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">691k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:28</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

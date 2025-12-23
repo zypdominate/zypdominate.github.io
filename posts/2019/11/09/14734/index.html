@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="集合的本质是唯一对象的聚集，有去重、数学运算等功能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="流畅的Python：集合">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2019/11/09/14734/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="集合的本质是唯一对象的聚集，有去重、数学运算等功能">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-11-09T06:29:57.000Z">
+<meta property="article:modified_time" content="2025-12-23T14:07:49.132Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2019/11/09/14734/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2019/11/09/14734/","path":"posts/2019/11/09/14734/","title":"流畅的Python：集合"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>流畅的Python：集合 | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2019/11/09/14734/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="流畅的Python：集合 | Magnolia's Blog">
+      <meta itemprop="description" content="集合的本质是唯一对象的聚集，有去重、数学运算等功能">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          流畅的Python：集合
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-11-09 14:29:57" itemprop="dateCreated datePublished" datetime="2019-11-09T14:29:57+08:00">2019-11-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>4.1k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>4 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">集合的本质是唯一对象的聚集，有去重、数学运算等功能</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>集合的本质是许多<strong>唯一对象</strong>的聚集。因此，集合可以用于去重。</p>
+<p>列表、字典、集合等不可散列的对象是不能用来作为集合的元素的，不可变的对象如字符串、元组等可散列才可以。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span>([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,[<span class="number">4</span>,<span class="number">5</span>]])</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">&quot;D:\Python3.6.0\lib\site-packages\IPython\core\interactiveshell.py&quot;</span>, line <span class="number">2961</span>, <span class="keyword">in</span> run_code</span><br><span class="line">    <span class="built_in">exec</span>(code_obj, <span class="variable language_">self</span>.user_global_ns, <span class="variable language_">self</span>.user_ns)</span><br><span class="line">  File <span class="string">&quot;&lt;ipython-input-3-97f17f7a499c&gt;&quot;</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    <span class="built_in">set</span>([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,[<span class="number">4</span>,<span class="number">5</span>]])</span><br><span class="line">TypeError: unhashable <span class="built_in">type</span>: <span class="string">&#x27;list&#x27;</span></span><br><span class="line">    </span><br><span class="line"><span class="built_in">set</span>([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,&#123;<span class="string">&#x27;4&#x27;</span>:<span class="number">5</span>&#125;])</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">&quot;D:\Python3.6.0\lib\site-packages\IPython\core\interactiveshell.py&quot;</span>, line <span class="number">2961</span>, <span class="keyword">in</span> run_code</span><br><span class="line">    <span class="built_in">exec</span>(code_obj, <span class="variable language_">self</span>.user_global_ns, <span class="variable language_">self</span>.user_ns)</span><br><span class="line">  File <span class="string">&quot;&lt;ipython-input-5-eae42bf28a0e&gt;&quot;</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    <span class="built_in">set</span>([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,&#123;<span class="string">&#x27;4&#x27;</span>:<span class="number">5</span>&#125;])</span><br><span class="line">TypeError: unhashable <span class="built_in">type</span>: <span class="string">&#x27;dict&#x27;</span></span><br><span class="line">    </span><br><span class="line"><span class="built_in">set</span>([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;])</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">&quot;D:\Python3.6.0\lib\site-packages\IPython\core\interactiveshell.py&quot;</span>, line <span class="number">2961</span>, <span class="keyword">in</span> run_code</span><br><span class="line">    <span class="built_in">exec</span>(code_obj, <span class="variable language_">self</span>.user_global_ns, <span class="variable language_">self</span>.user_ns)</span><br><span class="line">  File <span class="string">&quot;&lt;ipython-input-12-435ddc9ed94f&gt;&quot;</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    <span class="built_in">set</span>([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;])</span><br><span class="line">TypeError: unhashable <span class="built_in">type</span>: <span class="string">&#x27;set&#x27;</span></span><br><span class="line">    </span><br><span class="line"><span class="built_in">set</span>([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,(<span class="number">4</span>,<span class="number">5</span>)])</span><br><span class="line">Out[<span class="number">4</span>]: &#123;(<span class="number">4</span>, <span class="number">5</span>), <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;</span><br><span class="line">  </span><br><span class="line"><span class="built_in">set</span>([<span class="number">1</span>,<span class="number">2</span>,<span class="string">&quot;123&quot;</span>])</span><br><span class="line">Out[<span class="number">5</span>]: &#123;<span class="number">1</span>, <span class="string">&#x27;123&#x27;</span>, <span class="number">2</span>&#125;</span><br><span class="line">  </span><br><span class="line">item = <span class="built_in">frozenset</span>([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>])</span><br><span class="line"><span class="built_in">set</span>([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,item])</span><br><span class="line">Out[<span class="number">11</span>]: &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="built_in">frozenset</span>(&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;)&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">li = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">4</span>]</span><br><span class="line"><span class="built_in">set</span>(li)</span><br><span class="line">Out[<span class="number">6</span>]: &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>集合中的元素必须是可散列的，set 类型本身是不可散列的</strong>，但是 frozenset 可以。因此可以创建一个包含不同 frozenset 的 set。 </p>
+<p>除了保证唯一性，集合还实现了很多基础的中缀运算符 。给定两个集合 a 和 b，a | b 返回的是它们的合集，a &amp; b 得到的是交集，而 a - b 得到的是差集。合理地利用这些操作，不仅能够让代码的行数变少，还能减少 Python 程序的运行时间。这样做同时也是为了让代码更易读，从而更容易判断程序的正确性，因为利用这些运算符可以省去不必要的循环和逻辑操作。</p>
+<p>集合字面量：</p>
+<p>除空集之外，集合的字面量——{1}、{1, 2}，等等——看起来跟它的数学形式一模一样。如果是空集，那么必须写成 set() 的形式。如果要创建一个空集，你必须用不带任何参数的构造方法 set()。如果只是写成 {} 的形式，跟以前一样，你创建的其实是个空字典。</p>
+<p>集合的推导：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> unicodedata <span class="keyword">import</span> name</span><br><span class="line">s = &#123;<span class="built_in">chr</span>(i) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">32</span>, <span class="number">256</span>) <span class="keyword">if</span> <span class="string">&#x27;SIGN&#x27;</span> <span class="keyword">in</span> name(<span class="built_in">chr</span>(i), <span class="string">&#x27;&#x27;</span>)&#125;</span><br><span class="line">s</span><br><span class="line">&#123;<span class="string">&#x27;#&#x27;</span>, <span class="string">&#x27;$&#x27;</span>, <span class="string">&#x27;%&#x27;</span>, <span class="string">&#x27;+&#x27;</span>, <span class="string">&#x27;&lt;&#x27;</span>, <span class="string">&#x27;=&#x27;</span>, <span class="string">&#x27;&gt;&#x27;</span>, <span class="string">&#x27;¢&#x27;</span>, <span class="string">&#x27;£&#x27;</span>, <span class="string">&#x27;¤&#x27;</span>, <span class="string">&#x27;¥&#x27;</span>, <span class="string">&#x27;§&#x27;</span>, <span class="string">&#x27;©&#x27;</span>, <span class="string">&#x27;¬&#x27;</span>, <span class="string">&#x27;®&#x27;</span>, <span class="string">&#x27;°&#x27;</span>, <span class="string">&#x27;±&#x27;</span>, <span class="string">&#x27;µ&#x27;</span>, <span class="string">&#x27;¶&#x27;</span>, <span class="string">&#x27;×&#x27;</span>, <span class="string">&#x27;÷&#x27;</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>集合的数学运算：</p>
+<table>
+<thead>
+<tr>
+<th>数学符号</th>
+<th>运算符</th>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>S ∩ Z</td>
+<td>s &amp; z</td>
+<td><code>s.__and__(z) </code></td>
+<td>s和z的交集</td>
+</tr>
+<tr>
+<td></td>
+<td>z &amp; s</td>
+<td><code>s.__rand__(z) </code></td>
+<td>反向 &amp; 操作</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>s.intersection(it, …)</td>
+<td>把可迭代的 it 和其他所有参数转化为集合，然后求它们与 s 的交集</td>
+</tr>
+<tr>
+<td></td>
+<td>s &amp;&#x3D; z</td>
+<td><code>s.__iand__(z)</code></td>
+<td>把 s 更新为 s 和 z 的交集</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>s.intersection_update(it, …)</td>
+<td>把可迭代的 it 和其他所有参数转化为集合，然后求得它们与 s 的交集，然后把 s 更新成这个交集</td>
+</tr>
+<tr>
+<td>S ∪ Z</td>
+<td>&#96;s</td>
+<td>z&#96;</td>
+<td><code>s.__or__(z) </code></td>
+</tr>
+<tr>
+<td></td>
+<td>&#96;z</td>
+<td>s&#96;</td>
+<td><code>s.__ror__(z) </code></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>s.union(it, …)</td>
+<td>把可迭代的 it 和其他所有参数转化为集合，然后求它们和 s 的并集</td>
+</tr>
+<tr>
+<td></td>
+<td>&#96;s</td>
+<td>&#x3D; z&#96;</td>
+<td><code>s.__ior__(z)</code></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>s.update(it, …)</td>
+<td>把可迭代的 it 和其他所有参数转化为集合，然后求它们和 s 的并集，并把 s 更新成这个并集</td>
+</tr>
+<tr>
+<td>S \ Z</td>
+<td>s - z</td>
+<td><code>s.__sub__(z)</code></td>
+<td>s 和 z 的差集，或者叫作相对补集</td>
+</tr>
+<tr>
+<td></td>
+<td>z - s</td>
+<td><code>s.__rsub__(z)</code></td>
+<td>- 的反向操作</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>s.difference(it, …)</td>
+<td>把可迭代的 it 和其他所有参数转化为集合，然后求它们和 s 的差集</td>
+</tr>
+<tr>
+<td></td>
+<td>s -&#x3D; z</td>
+<td><code>s.__isub__(z)</code></td>
+<td>把 s 更新为它与 z 的差集</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>s.difference_update(it, …)</td>
+<td>把可迭代的 it 和其他所有参数转化为集合，求它们和 s 的差集，然后把 s 更新成这个差集</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>s.symmetric_difference(it)</td>
+<td>求 s 和 set(it) 的对称差集</td>
+</tr>
+<tr>
+<td>S ∆ Z</td>
+<td>s ^ z</td>
+<td><code>s.__xor__(z)</code></td>
+<td>求 s 和 z 的对称差集</td>
+</tr>
+<tr>
+<td></td>
+<td>z ^ s</td>
+<td><code>s.__rxor__(z)</code></td>
+<td>^ 的反向操作</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>s.symmetric_difference_update(it, …)</td>
+<td>把可迭代的 it 和其他所有参数转化为集合，然后求它们和 s 的对称差集，最后把 s 更新成该结果</td>
+</tr>
+<tr>
+<td></td>
+<td>z ^&#x3D; s</td>
+<td><code>s.__ixor__(z)</code></td>
+<td>把 s 更新成它与 z 的对称差集</td>
+</tr>
+</tbody></table>
+<hr>
+<p>集合的比较运算：</p>
+<table>
+<thead>
+<tr>
+<th>数学符号</th>
+<th>运算符</th>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+<td>s.isdisjoint(z)</td>
+<td>查看 s 和 z 是否不相交（没有共同元素）</td>
+</tr>
+<tr>
+<td>e ∈ S</td>
+<td>e in s</td>
+<td><code>s.__contains__(e)</code></td>
+<td>元素 e 是否属于 s</td>
+</tr>
+<tr>
+<td>S ⊆ Z</td>
+<td>s &lt;&#x3D; z</td>
+<td><code>s.__le__(z)</code></td>
+<td>s 是否为 z 的子集</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>s.issubset(it)</td>
+<td>把可迭代的 it 转化为集合，然后查看 s 是否为它的子集</td>
+</tr>
+<tr>
+<td>S ⊂ Z</td>
+<td>s &lt; z</td>
+<td><code>s.__lt__(z)</code></td>
+<td>s 是否为 z 的真子集</td>
+</tr>
+<tr>
+<td>S ⊇ Z</td>
+<td>s &gt;&#x3D; z</td>
+<td><code>s.__ge__(z)</code></td>
+<td>s 是否为 z 的父集</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>s.issuperset(it)</td>
+<td>把可迭代的 it 转化为集合，然后查看 s 是否为它的父集，然后查看 s 是否为它的父集</td>
+</tr>
+<tr>
+<td>S ⊃ Z</td>
+<td>s &gt; z</td>
+<td><code>s.__gt__(z)</code></td>
+<td>s 是否为 z 的真父集</td>
+</tr>
+</tbody></table>
+<hr>
+<p><strong>散列表</strong>其实是一个<strong>稀疏数组</strong>（总是有空白元素的数组称为稀疏数组）。在一般的数据结构教材中，散列表里的单元通常叫作<strong>表元</strong>（bucket）。在 dict 的散列表当中，每个键值对都占用一个表元，每个表元都有两个部分，一个是对键的引用，另一个是对值的引用。因为所有表元的大小一致，所以可以通过偏移量来读取某个表元。</p>
+<p>因为 Python 会设法保证大概还有三分之一的表元是空的，所以在快要达到这个阈值的时候，原有的散列表会被复制到一个更大的空间里面。 如果要把一个对象放入散列表，那么首先要计算这个元素键的散列值。Python 中可以用hash() 方法来做这件事情。</p>
+<p>由于<strong>字典使用了散列表</strong>，而散列表又必须是稀疏的，这导致它在空间上的效率低下。如果需要存放数量巨大的记录，那么放在由元组或是具名元组构成的列表中会是比较好的选择；最好不要根据 JSON 的风格，用由字典组成的列表来存放这些记录。<strong>用元组取代字典就能节省空间</strong>的原因有两个：其一是避免了散列表所耗费的空间，其二是无需把记录中字段的名字在每个元素里都存一遍。</p>
+<p>set的实现以及导致的结果：</p>
+<p>set 和 frozenset 的实现也依赖散列表，但在它们的散列表里存放的只有元素的引用（就像在字典里只存放键而没有相应的值）。在 set 加入到 Python 之前，都是把字典加上无意义的值当作集合来用的。</p>
+<hr>
+<p>字典和散列表的几个特点，对集合来说几乎都是适用的：</p>
+<ul>
+<li><p>集合里的元素必须是可散列的。 </p>
+</li>
+<li><p>集合很消耗内存。 </p>
+</li>
+<li><p>可以很高效地判断元素是否存在于某个集合。 </p>
+</li>
+<li><p>元素的次序取决于被添加到集合里的次序。 </p>
+</li>
+<li><p>往集合里添加元素，可能会改变集合里已有元素的次序。</p>
+</li>
+</ul>
+<p>dict 和 set 背后的散列表效率很高，对它的了解越深入，就越能理解为什么被保存的元素会呈现出不同的顺序，以及已有的元素顺序会发生变化的原因。同时，速度是以牺牲空间为代价而换来的。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2019/11/03/18765/" rel="prev" title="流畅的Python：字典">
+                  <i class="fa fa-angle-left"></i> 流畅的Python：字典
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2019/11/24/21030/" rel="next" title="流畅的Python：把函数视作对象之一等函数">
+                  流畅的Python：把函数视作对象之一等函数 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">691k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:28</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

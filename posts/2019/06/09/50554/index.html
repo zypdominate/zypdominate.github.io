@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="一个简单的Demo展示pytest，以及Assert断言和Fixture夹具">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pytest01 easy start">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2019/06/09/50554/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="一个简单的Demo展示pytest，以及Assert断言和Fixture夹具">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-06-09T15:00:45.000Z">
+<meta property="article:modified_time" content="2025-12-23T14:07:49.110Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="pytest">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2019/06/09/50554/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2019/06/09/50554/","path":"posts/2019/06/09/50554/","title":"pytest01 easy start"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>pytest01 easy start | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#easy-start"><span class="nav-text">easy start</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Assert"><span class="nav-text">Assert</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Fixture"><span class="nav-text">Fixture</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2019/06/09/50554/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="pytest01 easy start | Magnolia's Blog">
+      <meta itemprop="description" content="一个简单的Demo展示pytest，以及Assert断言和Fixture夹具">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          pytest01 easy start
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-06-09 23:00:45" itemprop="dateCreated datePublished" datetime="2019-06-09T23:00:45+08:00">2019-06-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/pytest/" itemprop="url" rel="index"><span itemprop="name">pytest</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>9.7k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>9 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">一个简单的Demo展示pytest，以及Assert断言和Fixture夹具</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="easy-start"><a href="#easy-start" class="headerlink" title="easy start"></a>easy start</h2><p><strong>直接运行pytest</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># content of test_sample.py</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">inc</span>(<span class="params">x</span>):</span><br><span class="line">    <span class="keyword">return</span> x + <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_answer</span>():</span><br><span class="line">    <span class="keyword">assert</span> inc(<span class="number">3</span>) == <span class="number">5</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">$ pytest</span><br><span class="line">========== test session starts ========</span><br><span class="line">platform linux -- Python <span class="number">3.</span>x.y, pytest-<span class="number">4.</span>x.y, py-<span class="number">1.</span>x.y, pluggy-<span class="number">0.</span>x.y</span><br><span class="line">cachedir: $PYTHON_PREFIX/.pytest_cache</span><br><span class="line">rootdir: $REGENDOC_TMPDIR</span><br><span class="line">collected <span class="number">1</span> item</span><br><span class="line"></span><br><span class="line">test_sample.py F                                                     [<span class="number">100</span>%]</span><br><span class="line"></span><br><span class="line">============= FAILURES =============</span><br><span class="line">___________ test_answer _____________</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_answer</span>():</span><br><span class="line">&gt;       <span class="keyword">assert</span> inc(<span class="number">3</span>) == <span class="number">5</span></span><br><span class="line">E       <span class="keyword">assert</span> <span class="number">4</span> == <span class="number">5</span></span><br><span class="line">E        +  where <span class="number">4</span> = inc(<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">test_sample.py:<span class="number">6</span>: AssertionError</span><br><span class="line">========== <span class="number">1</span> failed <span class="keyword">in</span> <span class="number">0.12</span> seconds ==========</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>运行多个文件</strong></p>
+<p>在<strong>没有定制的默认情况下</strong>的缺省规则</p>
+<ul>
+<li>pytest会找当前以及递查找子文件夹下面所有的<code>test_*.py</code>或<code>*_test.py</code>的文件，把其当作测试文件</li>
+<li>在这些文件里，pytest会收集下面的一些函数或方法，当作测试用例<ul>
+<li>不在类定义中的以<code>test_</code>开头的函数或方法</li>
+<li>在以<code>Test</code>开头的类中(不能包含<code>__init__</code>方法)，以<code>test_</code>开头的方法</li>
+</ul>
+</li>
+<li>pytest也支持unittest模式的用例定义</li>
+</ul>
+<h2 id="Assert"><a href="#Assert" class="headerlink" title="Assert"></a>Assert</h2><p>Assert就是断言，每个测试用例都需要断言。</p>
+<p>与unittest不同，pytest使用的是python自带的assert关键字来进行断言，大大降低了学习成本。</p>
+<p>assert关键字后面可以接一个表达式，只要表达式的最终结果为True，那么断言通过，用例执行成功，否则用例执行失败。</p>
+<h2 id="Fixture"><a href="#Fixture" class="headerlink" title="Fixture"></a>Fixture</h2><p>可以把Fixture理解为准备测试数据和初始化测试对象的阶段。</p>
+<p>一般我们对测试数据和测试对象的管理有这样的一些场景</p>
+<ul>
+<li>所有用例开始之前初始化测试数据或对象</li>
+<li>所有用例结束之后销毁测试数据或对象</li>
+<li>每个用例开始之前初始化测试数据或对象</li>
+<li>每个用例结束之后销毁测试数据或对象</li>
+<li>在每个／所有module的用例开始之前初始化数据或对象</li>
+<li>在每个／所有module的用例开始之后销毁数据或对象</li>
+<li>……</li>
+</ul>
+<p><strong>举例1</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># content of ./test_smtpsimple.py</span></span><br><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"></span><br><span class="line"><span class="meta">@pytest.fixture</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">smtp_connection</span>():</span><br><span class="line">    <span class="keyword">import</span> smtplib</span><br><span class="line">    <span class="keyword">return</span> smtplib.SMTP(<span class="string">&quot;smtp.gmail.com&quot;</span>, <span class="number">587</span>, timeout=<span class="number">5</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_ehlo</span>(<span class="params">smtp_connection</span>):</span><br><span class="line">    response, msg = smtp_connection.ehlo()</span><br><span class="line">    <span class="keyword">assert</span> response == <span class="number">250</span></span><br><span class="line">    <span class="keyword">assert</span> <span class="number">0</span> <span class="comment"># for demo purposes</span></span><br></pre></td></tr></table></figure>
+
+<p>这里test_ehlo需要smtp_connection 的fixture值，pytest将会发现并且调用<code>@pytest.fixture</code> 标志着smtp_connection fixture函数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">$ pytest test_smtpsimple.py</span><br><span class="line">============ test session starts ===============</span><br><span class="line">platform linux -- Python <span class="number">3.</span>x.y, pytest-<span class="number">4.</span>x.y, py-<span class="number">1.</span>x.y, pluggy-<span class="number">0.</span>x.y</span><br><span class="line">cachedir: $PYTHON_PREFIX/.pytest_cache</span><br><span class="line">rootdir: $REGENDOC_TMPDIR</span><br><span class="line">collected <span class="number">1</span> item</span><br><span class="line"></span><br><span class="line">test_smtpsimple.py F                                                 [<span class="number">100</span>%]</span><br><span class="line"></span><br><span class="line">=========== FAILURES =================</span><br><span class="line">___________ test_ehlo ________________</span><br><span class="line"></span><br><span class="line">smtp_connection = &lt;smtplib.SMTP <span class="built_in">object</span> at <span class="number">0xdeadbeef</span>&gt;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_ehlo</span>(<span class="params">smtp_connection</span>):</span><br><span class="line">        response, msg = smtp_connection.ehlo()</span><br><span class="line">        <span class="keyword">assert</span> response == <span class="number">250</span></span><br><span class="line">&gt;       <span class="keyword">assert</span> <span class="number">0</span> <span class="comment"># for demo purposes</span></span><br><span class="line">E       <span class="keyword">assert</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line">test_smtpsimple.py:<span class="number">11</span>: AssertionError</span><br><span class="line">======== <span class="number">1</span> failed <span class="keyword">in</span> <span class="number">0.12</span> seconds ========</span><br></pre></td></tr></table></figure>
+
+<p><strong>举例2</strong></p>
+<p>考虑一场景，需要判断用户的密码中包含简单密码，密码必须至少6位，满足6位后判断用户的密码不是password123或者password之类的弱密码。</p>
+<p>我们将用户的信息导出成名为users.dev.json的文件，该文件如下所示</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">  &#123;<span class="string">&quot;name&quot;</span>:<span class="string">&quot;jack&quot;</span>,<span class="string">&quot;password&quot;</span>:<span class="string">&quot;Iloverose&quot;</span>&#125;,</span><br><span class="line">  &#123;<span class="string">&quot;name&quot;</span>:<span class="string">&quot;rose&quot;</span>,<span class="string">&quot;password&quot;</span>:<span class="string">&quot;Ilovejack&quot;</span>&#125;,</span><br><span class="line">  &#123;<span class="string">&quot;name&quot;</span>:<span class="string">&quot;tom&quot;</span>,<span class="string">&quot;password&quot;</span>:<span class="string">&quot;password123&quot;</span>&#125;,</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># test_user_password.py</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TestUserPassword</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line"><span class="meta">    @pytest.fixture</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">users</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> json.loads(<span class="built_in">open</span>(<span class="string">&#x27;./users.dev.json&#x27;</span>, <span class="string">&#x27;r&#x27;</span>).read()) <span class="comment"># 读取当前路径下的users.dev.json文件，返回的结果一个列表，其中是一个个dict</span></span><br><span class="line"><span class="comment"># [&#123;&#x27;name&#x27;: &#x27;jack&#x27;, &#x27;password&#x27;: &#x27;Iloverose&#x27;&#125;, &#123;&#x27;name&#x27;: &#x27;rose&#x27;, &#x27;password&#x27;: &#x27;Ilovejack&#x27;&#125;, &#123;&#x27;name&#x27;: &#x27;tom&#x27;, &#x27;password&#x27;: &#x27;password123&#x27;&#125;, &#123;&#x27;name&#x27;: &#x27;mike&#x27;, &#x27;password&#x27;: &#x27;password&#x27;&#125;, &#123;&#x27;name&#x27;: &#x27;james&#x27;, &#x27;password&#x27;: &#x27;AGoodPasswordWordShouldBeLongEnough&#x27;&#125;]</span></span><br><span class="line"><span class="comment"># &lt;class &#x27;list&#x27;&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_user_password</span>(<span class="params">self, users</span>):</span><br><span class="line">        <span class="comment"># 遍历每条user数据</span></span><br><span class="line">        <span class="keyword">for</span> user <span class="keyword">in</span> users:</span><br><span class="line">            passwd = user[<span class="string">&#x27;password&#x27;</span>]</span><br><span class="line">            <span class="keyword">assert</span> <span class="built_in">len</span>(passwd) &gt;= <span class="number">6</span></span><br><span class="line">            msg = <span class="string">&quot;user %s has a weak password&quot;</span> %(user[<span class="string">&#x27;name&#x27;</span>])</span><br><span class="line">            <span class="keyword">assert</span> passwd != <span class="string">&#x27;password&#x27;</span>, msg</span><br><span class="line">            <span class="keyword">assert</span> passwd != <span class="string">&#x27;password123&#x27;</span>, msg</span><br></pre></td></tr></table></figure>
+
+<p>运行</p>
+<p>pytest可以通过指定文件名的方式运行单个用例文件，这里我们只运行test_user_password.py文件</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pytest test_user_password.py</span><br></pre></td></tr></table></figure>
+
+<p>运行结果</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">$ pytest test_user_password.py</span><br><span class="line">============= test session starts ================</span><br><span class="line">platform darwin -- Python <span class="number">2.7</span><span class="number">.12</span>, pytest-<span class="number">3.2</span><span class="number">.3</span>, py-<span class="number">1.4</span><span class="number">.34</span>, pluggy-<span class="number">0.4</span><span class="number">.0</span></span><br><span class="line">rootdir: /Users/easonhan/code/testclass.net/src/pytest, inifile:</span><br><span class="line">collected <span class="number">1</span> item</span><br><span class="line"></span><br><span class="line">test_user_password.py F</span><br><span class="line"></span><br><span class="line">================ FAILURES ================</span><br><span class="line">________________ TestUserPassword.test_user_password __________</span><br><span class="line"></span><br><span class="line"><span class="variable language_">self</span> = &lt;test_user_password.TestUserPassword <span class="built_in">object</span> at <span class="number">0x1046e3290</span>&gt;</span><br><span class="line">users = [&#123;<span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;jack&#x27;</span>, <span class="string">&#x27;password&#x27;</span>: <span class="string">&#x27;Iloverose&#x27;</span>&#125;, &#123;<span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;rose&#x27;</span>, <span class="string">&#x27;password&#x27;</span>: <span class="string">&#x27;Ilovejack&#x27;</span>&#125;, &#123;<span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;tom&#x27;</span>, <span class="string">&#x27;password&#x27;</span>: <span class="string">&#x27;password123&#x27;</span>&#125;]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_user_password</span>(<span class="params">self, users</span>):</span><br><span class="line">        <span class="keyword">for</span> user <span class="keyword">in</span> users:</span><br><span class="line">            passwd = user[<span class="string">&#x27;password&#x27;</span>]</span><br><span class="line">            <span class="keyword">assert</span> <span class="built_in">len</span>(passwd) &gt;= <span class="number">6</span></span><br><span class="line">            msg = <span class="string">&quot;user %s has a weak password&quot;</span> %(user[<span class="string">&#x27;name&#x27;</span>])</span><br><span class="line">            <span class="keyword">assert</span> passwd != <span class="string">&#x27;password&#x27;</span>, msg</span><br><span class="line">&gt;           <span class="keyword">assert</span> passwd != <span class="string">&#x27;password123&#x27;</span>, msg</span><br><span class="line">E           AssertionError: user tom has a weak password</span><br><span class="line">E           <span class="keyword">assert</span> <span class="string">&#x27;password123&#x27;</span> != <span class="string">&#x27;password123&#x27;</span></span><br><span class="line"></span><br><span class="line">test_user_password.py:<span class="number">14</span>: AssertionError</span><br><span class="line">=============== <span class="number">1</span> failed <span class="keyword">in</span> <span class="number">0.03</span> seconds ============</span><br></pre></td></tr></table></figure>
+
+<p>分析</p>
+<ul>
+<li>使用@pytest.fixture装饰器可以定义feature</li>
+<li>在用例的参数中传递fixture的名称以便直接调用fixture，拿到fixture的返回值</li>
+<li>3个assert是递进关系，前1个assert断言失败后，后面的assert是不会运行的，因此重要的assert放到前面</li>
+<li><code>E AssertionError: user tom has a weak password</code>可以很容易的判断出是哪条数据出了问题，所以定制可读性好的错误信息是很必要的</li>
+<li>任何1个断言失败以后，for循环就会退出，所以上面的用例1次只能发现1条错误数据，换句话说任何1个assert失败后，用例就终止运行了</li>
+</ul>
+<p>执行顺序</p>
+<p>pytest是这样运行上面的用例的</p>
+<ol>
+<li>pytest找到以test_开头的方法，也就是<code>test_user_password</code>方法，执行该方法时发现传入的参数里有跟fixture users名称相同的参数</li>
+<li>pytest认定users是fixture，执行该fixture，读取json文件解析成dict实例</li>
+<li>test_user_password方法真正被执行，users fixture被传入到该方法</li>
+</ol>
+<p><strong>举例3</strong></p>
+<p>例2中任何1条测试数据导致断言不通过后测试用例就会停止运行，这样每次只能检查出1条不符合规范的数据，很多时候需要一次性把所有的不符合结果都测出来。</p>
+<p>users.test.json文件：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">  &#123;<span class="string">&quot;name&quot;</span>:<span class="string">&quot;jack&quot;</span>,<span class="string">&quot;password&quot;</span>:<span class="string">&quot;Iloverose&quot;</span>&#125;,</span><br><span class="line">  &#123;<span class="string">&quot;name&quot;</span>:<span class="string">&quot;rose&quot;</span>,<span class="string">&quot;password&quot;</span>:<span class="string">&quot;Ilovejack&quot;</span>&#125;</span><br><span class="line">  &#123;<span class="string">&quot;name&quot;</span>:<span class="string">&quot;tom&quot;</span>,<span class="string">&quot;password&quot;</span>:<span class="string">&quot;password123&quot;</span>&#125;,</span><br><span class="line">  &#123;<span class="string">&quot;name&quot;</span>:<span class="string">&quot;mike&quot;</span>,<span class="string">&quot;password&quot;</span>:<span class="string">&quot;password&quot;</span>&#125;,</span><br><span class="line"> &#123;<span class="string">&quot;name&quot;</span>:<span class="string">&quot;james&quot;</span>,<span class="string">&quot;password&quot;</span>:<span class="string">&quot;AGoodPasswordWordShouldBeLongEnough&quot;</span>&#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<p><strong>参数化fixture</strong></p>
+<p>参数化fixture允许我们向fixture提供参数，参数可以是list，该list中有几条数据，fixture就会运行几次，相应的测试用例也会运行几次。</p>
+<p>参数化fixture的语法是</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@pytest.fixture(<span class="params">params=[<span class="string">&quot;smtp.gmail.com&quot;</span>, <span class="string">&quot;mail.python.org&quot;</span>]</span>)</span></span><br></pre></td></tr></table></figure>
+
+<p>其中<code>len(params)</code>的值就是用例执行的次数</p>
+<p>在fixture的定义中，可以使用<code>request.param</code>来获取每次传入的参数，如下:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@pytest.fixture(<span class="params">scope=<span class="string">&quot;module&quot;</span>,</span></span></span><br><span class="line"><span class="params"><span class="meta">                params=[<span class="string">&quot;smtp.gmail.com&quot;</span>, <span class="string">&quot;mail.python.org&quot;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">smtp</span>(<span class="params">request</span>):</span><br><span class="line">    smtp = smtplib.SMTP(request.param, <span class="number">587</span>, timeout=<span class="number">5</span>)</span><br><span class="line">    <span class="keyword">yield</span> smtp</span><br><span class="line">    <span class="built_in">print</span> (<span class="string">&quot;finalizing %s&quot;</span> % smtp)</span><br><span class="line">    smtp.close()</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>上面的代码smtp fixture会执行2次</li>
+<li>第1次<code>request.param == &#39;smtp.gmail.com&#39;</code></li>
+<li>第2次<code>request.param == &#39;mail.python.org&#39;</code></li>
+</ul>
+<p>实现用例</p>
+<p>我们现在使用参数化fixtures来实现一次性检查出弱密码的用例。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># test_user_password_with_params.py</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line">users = json.loads(<span class="built_in">open</span>(<span class="string">&#x27;./users.test.json&#x27;</span>, <span class="string">&#x27;r&#x27;</span>).read())  <span class="comment"># list</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TestUserPasswordWithParam</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line"><span class="meta">    @pytest.fixture(<span class="params">params=users</span>)</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">user</span>(<span class="params">self, request</span>):</span><br><span class="line">        <span class="keyword">return</span> request.param</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_user_password</span>(<span class="params">self, user</span>):</span><br><span class="line">        passwd = user[<span class="string">&#x27;password&#x27;</span>]</span><br><span class="line">        <span class="keyword">assert</span> <span class="built_in">len</span>(passwd) &gt;= <span class="number">6</span></span><br><span class="line">        msg = <span class="string">&quot;user %s has a weak password&quot;</span> %(user[<span class="string">&#x27;name&#x27;</span>])</span><br><span class="line">        <span class="keyword">assert</span> passwd != <span class="string">&#x27;password&#x27;</span>, msg</span><br><span class="line">        <span class="keyword">assert</span> passwd != <span class="string">&#x27;password123&#x27;</span>, msg</span><br></pre></td></tr></table></figure>
+
+<p>上面的例子里，我们先把所有用户信息读到users变量里，注意users这时候是list类型，可以直接传入到fixture的params</p>
+<p>运行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pytest test_user_password_with_params.py</span><br></pre></td></tr></table></figure>
+
+<p>结果</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">$ pytest test_user_password_with_params.py</span><br><span class="line">================== test session starts ====================</span><br><span class="line">platform darwin -- Python <span class="number">2.7</span><span class="number">.12</span>, pytest-<span class="number">3.2</span><span class="number">.3</span>, py-<span class="number">1.4</span><span class="number">.34</span>, pluggy-<span class="number">0.4</span><span class="number">.0</span></span><br><span class="line">rootdir: /Users/easonhan/code/testclass.net/src/pytest, inifile:</span><br><span class="line">collected <span class="number">5</span> items</span><br><span class="line"></span><br><span class="line">test_user_password_with_params.py ..FF.</span><br><span class="line">====================== FAILURES =========================</span><br><span class="line">______ TestUserPasswordWithParam.test_user_password[user2] ____</span><br><span class="line"></span><br><span class="line"><span class="variable language_">self</span> = &lt;test_user_password_with_params.TestUserPasswordWithParam <span class="built_in">object</span> at <span class="number">0x10de1d790</span>&gt;, user = &#123;<span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;tom&#x27;</span>, <span class="string">&#x27;password&#x27;</span>: <span class="string">&#x27;password123&#x27;</span>&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_user_password</span>(<span class="params">self, user</span>):</span><br><span class="line">        passwd = user[<span class="string">&#x27;password&#x27;</span>]</span><br><span class="line">        <span class="keyword">assert</span> <span class="built_in">len</span>(passwd) &gt;= <span class="number">6</span></span><br><span class="line">        msg = <span class="string">&quot;user %s has a weak password&quot;</span> %(user[<span class="string">&#x27;name&#x27;</span>])</span><br><span class="line">        <span class="keyword">assert</span> passwd != <span class="string">&#x27;password&#x27;</span>, msg</span><br><span class="line">&gt;       <span class="keyword">assert</span> passwd != <span class="string">&#x27;password123&#x27;</span>, msg</span><br><span class="line">E       AssertionError: user tom has a weak password</span><br><span class="line">E       <span class="keyword">assert</span> <span class="string">&#x27;password123&#x27;</span> != <span class="string">&#x27;password123&#x27;</span></span><br><span class="line"></span><br><span class="line">test_user_password_with_params.py:<span class="number">15</span>: AssertionError</span><br><span class="line">_____ TestUserPasswordWithParam.test_user_password[user3]_______</span><br><span class="line"></span><br><span class="line"><span class="variable language_">self</span> = &lt;test_user_password_with_params.TestUserPasswordWithParam <span class="built_in">object</span> at <span class="number">0x10de1df50</span>&gt;, user = &#123;<span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;mike&#x27;</span>, <span class="string">&#x27;password&#x27;</span>: <span class="string">&#x27;password&#x27;</span>&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_user_password</span>(<span class="params">self, user</span>):</span><br><span class="line">        passwd = user[<span class="string">&#x27;password&#x27;</span>]</span><br><span class="line">        <span class="keyword">assert</span> <span class="built_in">len</span>(passwd) &gt;= <span class="number">6</span></span><br><span class="line">        msg = <span class="string">&quot;user %s has a weak password&quot;</span> %(user[<span class="string">&#x27;name&#x27;</span>])</span><br><span class="line">&gt;       <span class="keyword">assert</span> passwd != <span class="string">&#x27;password&#x27;</span>, msg</span><br><span class="line">E       AssertionError: user mike has a weak password</span><br><span class="line">E       <span class="keyword">assert</span> <span class="string">&#x27;password&#x27;</span> != <span class="string">&#x27;password&#x27;</span></span><br><span class="line"></span><br><span class="line">test_user_password_with_params.py:<span class="number">14</span>: AssertionError</span><br><span class="line">======== <span class="number">2</span> failed, <span class="number">3</span> passed <span class="keyword">in</span> <span class="number">0.05</span> seconds =============</span><br></pre></td></tr></table></figure>
+
+<p>总共运行了5个用例,3个成功,2个失败。</p>
+<p><strong>举例4</strong></p>
+<p><code>@pytest.mark.parametrize</code> 装饰器可以让我们每次参数化fixture的时候传入多个项目，parametrize每次多个参数，更加灵活。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"><span class="meta">@pytest.mark.parametrize(<span class="params"><span class="string">&quot;test_input,expected&quot;</span>, [</span></span></span><br><span class="line"><span class="params"><span class="meta">  (<span class="params"><span class="string">&quot;3+5&quot;</span>, <span class="number">8</span></span>),</span></span></span><br><span class="line"><span class="params"><span class="meta">  (<span class="params"><span class="string">&quot;2+4&quot;</span>, <span class="number">6</span></span>),</span></span></span><br><span class="line"><span class="params"><span class="meta">  (<span class="params"><span class="string">&quot;6*9&quot;</span>, <span class="number">42</span></span>),</span></span></span><br><span class="line"><span class="params"><span class="meta">]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_eval</span>(<span class="params">test_input, expected</span>):</span><br><span class="line">    <span class="keyword">assert</span> <span class="built_in">eval</span>(test_input) == expected</span><br></pre></td></tr></table></figure>
+
+<p>test_eval方法中传入了2个参数，就如同<code>@pytest.mark.parametrize</code>装饰器中定义的那样，因此简单理解，我们可以把parametrize装饰器想象成是数据表格，有表头(test_input,expected)以及具体的数据。</p>
+<p>运行结果</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">$ pytest</span><br><span class="line">======= test session starts ========</span><br><span class="line">platform linux -- Python <span class="number">3.</span>x.y, pytest-<span class="number">3.</span>x.y, py-<span class="number">1.</span>x.y, pluggy-<span class="number">0.</span>x.y</span><br><span class="line">rootdir: $REGENDOC_TMPDIR, inifile:</span><br><span class="line">collected <span class="number">3</span> items</span><br><span class="line"></span><br><span class="line">test_expectation.py ..F</span><br><span class="line"></span><br><span class="line">======= FAILURES ========</span><br><span class="line">_______ test_eval[<span class="number">6</span>*<span class="number">9</span>-<span class="number">42</span>] ________</span><br><span class="line"></span><br><span class="line">test_input = <span class="string">&#x27;6*9&#x27;</span>, expected = <span class="number">42</span></span><br><span class="line"></span><br><span class="line"><span class="meta">    @pytest.mark.parametrize(<span class="params"><span class="string">&quot;test_input,expected&quot;</span>, [</span></span></span><br><span class="line"><span class="params"><span class="meta">        (<span class="params"><span class="string">&quot;3+5&quot;</span>, <span class="number">8</span></span>),</span></span></span><br><span class="line"><span class="params"><span class="meta">        (<span class="params"><span class="string">&quot;2+4&quot;</span>, <span class="number">6</span></span>),</span></span></span><br><span class="line"><span class="params"><span class="meta">        (<span class="params"><span class="string">&quot;6*9&quot;</span>, <span class="number">42</span></span>),</span></span></span><br><span class="line"><span class="params"><span class="meta">    ]</span>)</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_eval</span>(<span class="params">test_input, expected</span>):</span><br><span class="line">&gt;       <span class="keyword">assert</span> <span class="built_in">eval</span>(test_input) == expected</span><br><span class="line">E       AssertionError: <span class="keyword">assert</span> <span class="number">54</span> == <span class="number">42</span></span><br><span class="line">E        +  where <span class="number">54</span> = <span class="built_in">eval</span>(<span class="string">&#x27;6*9&#x27;</span>)</span><br><span class="line"></span><br><span class="line">test_expectation.py:<span class="number">8</span>: AssertionError</span><br><span class="line">======= <span class="number">1</span> failed, <span class="number">2</span> passed <span class="keyword">in</span> <span class="number">0.12</span> seconds ========</span><br></pre></td></tr></table></figure>
+
+<p>转载自：<a target="_blank" rel="noopener" href="http://www.testclass.net/pytest">http://www.testclass.net/pytest</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/pytest/" rel="tag"># pytest</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2019/06/09/11123/" rel="prev" title="pytest02 Installation and Getting Started">
+                  <i class="fa fa-angle-left"></i> pytest02 Installation and Getting Started
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2019/06/16/52979/" rel="next" title="pytest03 The writing and reporting of assertions in tests">
+                  pytest03 The writing and reporting of assertions in tests <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">691k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:28</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

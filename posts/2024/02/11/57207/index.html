@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="使用 gitlab-runner.exe exec 可以在本地调试 CI&#x2F;CD 配置，无需每次都提交代码到 GitLab，提高调试效率。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="gitlab-runner.exe exec 调试 ci 配置">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2024/02/11/57207/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="使用 gitlab-runner.exe exec 可以在本地调试 CI&#x2F;CD 配置，无需每次都提交代码到 GitLab，提高调试效率。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-11T15:08:18.000Z">
+<meta property="article:modified_time" content="2025-12-23T14:07:49.153Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2024/02/11/57207/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2024/02/11/57207/","path":"posts/2024/02/11/57207/","title":"gitlab-runner.exe exec 调试 ci 配置"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>gitlab-runner.exe exec 调试 ci 配置 | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E7%BD%AE%E6%9D%A1%E4%BB%B6"><span class="nav-text">前置条件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4"><span class="nav-text">基本命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%BE%91-gitlab-ci-yml-%E5%B9%B6%E8%BF%9B%E8%A1%8C%E8%B0%83%E8%AF%95"><span class="nav-text">编辑 .gitlab-ci.yml 并进行调试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B%E9%85%8D%E7%BD%AE%EF%BC%9APEP8-%E4%BB%A3%E7%A0%81%E9%A3%8E%E6%A0%BC%E6%A3%80%E6%9F%A5"><span class="nav-text">示例配置：PEP8 代码风格检查</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8%E6%9C%AC%E5%9C%B0%E8%B0%83%E8%AF%95-pep8-check"><span class="nav-text">在本地调试 pep8_check</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%85%E6%A3%80%E6%9F%A5%E6%8F%90%E4%BA%A4%E7%9A%84-Python-%E4%BB%A3%E7%A0%81"><span class="nav-text">仅检查提交的 Python 代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%87%E6%BB%A4%E6%8F%90%E4%BA%A4%E7%9A%84-Python-%E6%96%87%E4%BB%B6"><span class="nav-text">过滤提交的 Python 文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E8%B0%83%E8%AF%95%E5%91%BD%E4%BB%A4%E7%A4%BA%E4%BE%8B"><span class="nav-text">本地调试命令示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2024/02/11/57207/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="gitlab-runner.exe exec 调试 ci 配置 | Magnolia's Blog">
+      <meta itemprop="description" content="使用 gitlab-runner.exe exec 可以在本地调试 CI&#x2F;CD 配置，无需每次都提交代码到 GitLab，提高调试效率。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          gitlab-runner.exe exec 调试 ci 配置
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2024-02-11 23:08:18" itemprop="dateCreated datePublished" datetime="2024-02-11T23:08:18+08:00">2024-02-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>2.7k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">使用 gitlab-runner.exe exec 可以在本地调试 CI/CD 配置，无需每次都提交代码到 GitLab，提高调试效率。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>使用 <code>gitlab-runner.exe exec</code> 可以在本地调试 CI&#x2F;CD 配置，而<strong>无需每次都提交代码到 GitLab</strong>，从而提高调试效率。</p>
+<h2 id="前置条件"><a href="#前置条件" class="headerlink" title="前置条件"></a>前置条件</h2><p>在开始调试之前，请确保满足以下条件：</p>
+<ul>
+<li>已下载 <code>gitlab-runner.exe</code>。</li>
+<li>配置好 <code>config.toml</code> 文件，并确保 <code>gitlab-runner</code> 能成功连接 GitLab。</li>
+<li>已安装 Python 及相关依赖（如 <code>flake8</code>）。</li>
+</ul>
+<h2 id="基本命令"><a href="#基本命令" class="headerlink" title="基本命令"></a>基本命令</h2><p>在本地执行 GitLab CI&#x2F;CD 配置的基本命令如下：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitlab-runner.exe <span class="built_in">exec</span> shell &lt;job_name&gt;</span><br></pre></td></tr></table></figure>
+
+<p>例如，执行 <code>pep8_check</code> 任务：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitlab-runner.exe <span class="built_in">exec</span> shell pep8_check</span><br></pre></td></tr></table></figure>
+
+<p>此命令会调用 <code>gitlab-runner.exe</code>，并在当前目录下执行 <code>.gitlab-ci.yml</code> 文件中的 <code>pep8_check</code> 任务。</p>
+<h2 id="编辑-gitlab-ci-yml-并进行调试"><a href="#编辑-gitlab-ci-yml-并进行调试" class="headerlink" title="编辑 .gitlab-ci.yml 并进行调试"></a>编辑 <code>.gitlab-ci.yml</code> 并进行调试</h2><p>在实际调试时，需要进入 <code>.gitlab-ci.yml</code> 所在的目录，并使用 <code>exec</code> 命令执行 <code>job</code> 任务。</p>
+<h3 id="示例配置：PEP8-代码风格检查"><a href="#示例配置：PEP8-代码风格检查" class="headerlink" title="示例配置：PEP8 代码风格检查"></a>示例配置：PEP8 代码风格检查</h3><p>以下 <code>gitlab-ci.yml</code> 配置定义了 <code>pep8_check</code> 任务，使用 <code>flake8</code> 进行 Python 代码风格检查。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 定义阶段</span></span><br><span class="line"><span class="attr">stages:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">lint</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># PEP8 代码风格检查</span></span><br><span class="line"><span class="attr">test_pep8:</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">lint</span></span><br><span class="line">  <span class="attr">before_script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">where</span> <span class="string">python</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">python</span> <span class="string">--version</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">python</span> <span class="string">-c</span> <span class="string">&quot;import os, sys; print(os.path.join(os.path.dirname(sys.executable), &#x27;Scripts&#x27;, &#x27;activate.bat&#x27;))&quot;</span> <span class="string">&gt;</span> <span class="string">activate_path.txt</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">set</span> <span class="string">/p</span> <span class="string">ACTIVATE_PATH=&lt;activate_path.txt</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">call</span> <span class="string">&quot;%ACTIVATE_PATH%&quot;</span> <span class="string">envPython</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">where</span> <span class="string">python</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">python</span> <span class="string">--version</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">pip</span> <span class="string">install</span> <span class="string">flake8</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">flake8</span> <span class="string">--version</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">flake8</span> <span class="string">.</span></span><br><span class="line">  <span class="attr">only:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">branches</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="在本地调试-pep8-check"><a href="#在本地调试-pep8-check" class="headerlink" title="在本地调试 pep8_check"></a>在本地调试 <code>pep8_check</code></h3><ol>
+<li><p>进入 <code>.gitlab-ci.yml</code> 所在目录。</p>
+</li>
+<li><p>运行以下命令执行 <code>pep8_check</code> 任务：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitlab-runner.exe <span class="built_in">exec</span> shell pep8_check</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="仅检查提交的-Python-代码"><a href="#仅检查提交的-Python-代码" class="headerlink" title="仅检查提交的 Python 代码"></a>仅检查提交的 Python 代码</h2><p>由于历史原因，仓库中可能包含大量不符合 PEP8 规范的代码。为了避免检查旧代码，可以仅扫描本次提交中修改的 Python 文件。</p>
+<h3 id="过滤提交的-Python-文件"><a href="#过滤提交的-Python-文件" class="headerlink" title="过滤提交的 Python 文件"></a>过滤提交的 Python 文件</h3><p>以下 <code>gitlab-ci.yml</code> 配置只检查本次提交中变更的 <code>.py</code> 文件。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 定义阶段</span></span><br><span class="line"><span class="attr">stages:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">lint</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># PEP8 代码风格检查</span></span><br><span class="line"><span class="attr">pep8_check:</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">lint</span></span><br><span class="line">  <span class="attr">before_script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">where</span> <span class="string">python</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">python</span> <span class="string">--version</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">python</span> <span class="string">-c</span> <span class="string">&quot;import os, sys; print(os.path.join(os.path.dirname(sys.executable), &#x27;Scripts&#x27;, &#x27;activate.bat&#x27;))&quot;</span> <span class="string">&gt;</span> <span class="string">activate_path.txt</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">set</span> <span class="string">/p</span> <span class="string">ACTIVATE_PATH=&lt;activate_path.txt</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">call</span> <span class="string">&quot;%ACTIVATE_PATH%&quot;</span> <span class="string">envPython</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">where</span> <span class="string">python</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">python</span> <span class="string">--version</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="comment"># 获取当前分支与目标分支的共同祖先 commit</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">git</span> <span class="string">merge-base</span> <span class="string">HEAD</span> <span class="string">origin/master</span> <span class="string">&gt;</span> <span class="string">merge_base.txt</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">set</span> <span class="string">/p</span> <span class="string">MERGE_BASE=&lt;merge_base.txt</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">git</span> <span class="string">diff</span> <span class="string">--name-only</span> <span class="string">%MERGE_BASE%</span> <span class="string">HEAD</span> <span class="string">|</span> <span class="string">findstr</span> <span class="string">/i</span> <span class="string">/r</span> <span class="string">&quot;.py&quot;</span> <span class="string">||</span> <span class="string">(echo</span> <span class="literal">No</span> <span class="string">.py</span> <span class="string">files</span> <span class="string">changed</span> <span class="string">&amp;&amp;</span> <span class="string">exit</span> <span class="number">0</span><span class="string">)</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">pip</span> <span class="string">install</span> <span class="string">flake8</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">flake8</span> <span class="string">--version</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">for</span> <span class="string">/F</span> <span class="string">&quot;delims=&quot;</span> <span class="string">%%F</span> <span class="string">in</span> <span class="string">(&#x27;git</span> <span class="string">diff</span> <span class="string">--name-only</span> <span class="string">%MERGE_BASE%</span> <span class="string">HEAD</span> <span class="string">^|</span> <span class="string">findstr</span> <span class="string">/i</span> <span class="string">/r</span> <span class="string">&quot;.py&quot;</span><span class="string">&#x27;) do (</span></span><br><span class="line"><span class="string">      flake8 --max-line-length=120 &quot;%%F&quot; || (echo Flake8 found issues in %%F &amp;&amp; exit 0))</span></span><br><span class="line"><span class="string">  only:</span></span><br><span class="line"><span class="string">    - branches</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="本地调试命令示例"><a href="#本地调试命令示例" class="headerlink" title="本地调试命令示例"></a>本地调试命令示例</h3><ol>
+<li><p>手动获取当前分支与 <code>origin/master</code> 的共同祖先 commit：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git merge-base HEAD origin/master &gt; merge_base.txt</span><br><span class="line"><span class="built_in">set</span> /p MERGE_BASE=&lt;merge_base.txt</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>获取本次提交变更的 <code>.py</code> 文件：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff --name-only %MERGE_BASE% HEAD | findstr /i /r <span class="string">&quot;.py&quot;</span> || (<span class="built_in">echo</span> No .py files changed)</span><br></pre></td></tr></table></figure>
+
+<p>输出示例：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">utils/constant.py</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运行 <code>flake8</code> 仅检查变更的文件：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> /F <span class="string">&quot;delims=&quot;</span> %F <span class="keyword">in</span> (<span class="string">&#x27;git diff --name-only %MERGE_BASE% HEAD ^| findstr /i /r &quot;.py&quot;&#x27;</span>) <span class="keyword">do</span> (</span><br><span class="line">   flake8 --max-line-length=120 <span class="string">&quot;%F&quot;</span> || (<span class="built_in">echo</span> Flake8 found issues <span class="keyword">in</span> %F))</span><br></pre></td></tr></table></figure>
+
+<p>示例输出：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">utils/constant.py:10:1: E303 too many blank lines (4)</span><br><span class="line">Flake8 found issues <span class="keyword">in</span> utils/constant.py</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>使用 <code>gitlab-runner.exe exec shell &lt;job_name&gt;</code> 进行本地调试，可以大幅提升 GitLab CI&#x2F;CD 配置的调试效率。结合 <code>git diff</code> 过滤提交文件，可以避免对整个代码库执行不必要的检查，进一步优化 CI&#x2F;CD 任务的执行效率。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2023/12/03/39705/" rel="prev" title="Python 查看某个库的版本">
+                  <i class="fa fa-angle-left"></i> Python 查看某个库的版本
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2024/07/01/32936/" rel="next" title="iOS 平台自动化测试升级">
+                  iOS 平台自动化测试升级 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">691k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:28</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

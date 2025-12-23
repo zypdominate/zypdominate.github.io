@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="Python 对象的可变性、是否可哈希，参数传递机制，以及对象在引用传递中的表现">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python 数据类型，是否可变、可哈希">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2024/10/01/1800/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="Python 对象的可变性、是否可哈希，参数传递机制，以及对象在引用传递中的表现">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-10-01T13:06:18.000Z">
+<meta property="article:modified_time" content="2025-12-23T14:07:49.148Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2024/10/01/1800/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2024/10/01/1800/","path":"posts/2024/10/01/1800/","title":"Python 数据类型，是否可变、可哈希"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Python 数据类型，是否可变、可哈希 | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%AF%E5%8F%98%E6%80%A7"><span class="nav-text">可变性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%98%AF%E5%90%A6%E5%8F%AF%E5%93%88%E5%B8%8C"><span class="nav-text">是否可哈希</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python-%E7%9A%84%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92%E6%9C%BA%E5%88%B6"><span class="nav-text">Python 的参数传递机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%AF%E5%8F%98%E5%AF%B9%E8%B1%A1%E5%92%8C%E4%B8%8D%E5%8F%AF%E5%8F%98%E5%AF%B9%E8%B1%A1%E5%9C%A8%E5%BC%95%E7%94%A8%E4%BC%A0%E9%80%92%E4%B8%AD%E7%9A%84%E8%A1%A8%E7%8E%B0"><span class="nav-text">可变对象和不可变对象在引用传递中的表现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2024/10/01/1800/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Python 数据类型，是否可变、可哈希 | Magnolia's Blog">
+      <meta itemprop="description" content="Python 对象的可变性、是否可哈希，参数传递机制，以及对象在引用传递中的表现">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Python 数据类型，是否可变、可哈希
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2024-10-01 21:06:18" itemprop="dateCreated datePublished" datetime="2024-10-01T21:06:18+08:00">2024-10-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>2.5k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">Python 对象的可变性、是否可哈希，参数传递机制，以及对象在引用传递中的表现</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="可变性"><a href="#可变性" class="headerlink" title="可变性"></a>可变性</h2><ul>
+<li><strong>可变对象</strong>：可以在对象创建后修改其内容（值）。</li>
+<li><strong>不可变对象</strong>：对象一旦创建后，其内容不能再被修改。</li>
+</ul>
+<p>常见的可变和不可变类型：</p>
+<ul>
+<li><strong>可变对象</strong>：<ul>
+<li>列表 (<code>list</code>)</li>
+<li>字典 (<code>dict</code>)</li>
+<li>集合 (<code>set</code>)</li>
+<li>用户自定义的类实例（默认情况下）</li>
+</ul>
+</li>
+<li><strong>不可变对象</strong>：<ul>
+<li>整数 (<code>int</code>)</li>
+<li>浮点数 (<code>float</code>)</li>
+<li>字符串 (<code>str</code>)</li>
+<li>元组 (<code>tuple</code>)</li>
+<li>布尔值 (<code>bool</code>)</li>
+<li>frozenset (<code>frozenset</code>)</li>
+</ul>
+</li>
+</ul>
+<p>例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 可变对象：列表</span></span><br><span class="line">lst = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">lst[<span class="number">0</span>] = <span class="number">100</span>  <span class="comment"># 修改成功</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 不可变对象：元组</span></span><br><span class="line">tup = (<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"><span class="comment"># tup[0] = 100  # 这一行会报错，因为元组不可修改</span></span><br></pre></td></tr></table></figure>
+
+<p>与引用的关系：</p>
+<ul>
+<li><strong>可变对象</strong>通过引用传递时，如果外部函数对对象进行修改，则在原作用域中对象的内容也会改变。</li>
+<li><strong>不可变对象</strong>通过引用传递时，由于内容不能更改，传递的是一个新的对象引用。</li>
+</ul>
+<hr>
+<h2 id="是否可哈希"><a href="#是否可哈希" class="headerlink" title="是否可哈希"></a>是否可哈希</h2><ul>
+<li><strong>可哈希对象</strong>：对象具有一个固定的哈希值，可以通过调用 <code>hash()</code> 函数来获得，并且它们的内容在对象生命周期内不能改变。<ul>
+<li>不可变对象：<code>int</code>、<code>float</code>、<code>str</code>、<code>tuple</code>（如果所有元素都是可哈希的）、<code>frozenset</code>。</li>
+<li>这些对象通常可以作为 <strong>字典的键</strong> 或 <strong>集合的元素</strong>。</li>
+</ul>
+</li>
+<li><strong>不可哈希对象</strong>：没有哈希值，通常因为对象是可变的，其内容可能随时更改，从而使哈希值不再一致。<ul>
+<li>可变对象：<code>list</code>、<code>dict</code>、<code>set</code>。</li>
+<li>这些对象不能作为 <strong>字典的键</strong> 或 <strong>集合的元素</strong>。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 可哈希对象</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">hash</span>(<span class="string">&quot;hello&quot;</span>))  <span class="comment"># 字符串是不可变的，可哈希</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">hash</span>((<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)))  <span class="comment"># 元组是不可变的，可哈希</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 不可哈希对象</span></span><br><span class="line"><span class="comment"># print(hash([1, 2, 3]))  # 列表是可变的，无法哈希</span></span><br><span class="line"><span class="comment"># print(hash(&#123;&#x27;a&#x27;: 1&#125;))   # 字典是可变的，无法哈希</span></span><br><span class="line"><span class="comment"># print(hash(&#123;1, 2, 3&#125;))  # 集合是可变的，无法哈希</span></span><br></pre></td></tr></table></figure>
+
+<p>哈希性与可变性的关系：</p>
+<ul>
+<li><strong>可哈希对象</strong>通常是<strong>不可变对象</strong>，因为只有不可变对象才能保证哈希值在其生命周期内不会改变。</li>
+<li><strong>不可哈希对象</strong>往往是<strong>可变对象</strong>，因为其内容可以改变，哈希值会随之发生变化。</li>
+</ul>
+<hr>
+<h2 id="Python-的参数传递机制"><a href="#Python-的参数传递机制" class="headerlink" title="Python 的参数传递机制"></a>Python 的参数传递机制</h2><p>Python 中的参数传递既不是<strong>值传递</strong>也不是<strong>引用传递</strong>，而是<strong>对象的引用传递</strong>。这意味着函数接收到的是对象的引用，而不是对象本身的拷贝。因此，如果对象是可变的，修改它会影响到调用者范围内的对象。</p>
+<p>具体的表现可以根据对象的<strong>可变性</strong>来区分：</p>
+<ul>
+<li><strong>可变对象</strong>：当你将可变对象（如 <code>list</code>、<code>dict</code>、<code>set</code>）作为参数传递到函数时，函数内部的修改会影响到外部的变量，因为函数操作的是对象的<strong>引用</strong>，即它们指向同一个对象。</li>
+<li><strong>不可变对象</strong>：当你将不可变对象（如 <code>int</code>、<code>float</code>、<code>str</code>、<code>tuple</code>、<code>bool</code>、<code>frozenset</code>）作为参数传递到函数时，任何修改都会创建一个新的对象，函数内部的修改不会影响外部的变量。</li>
+</ul>
+<hr>
+<h2 id="可变对象和不可变对象在引用传递中的表现"><a href="#可变对象和不可变对象在引用传递中的表现" class="headerlink" title="可变对象和不可变对象在引用传递中的表现"></a>可变对象和不可变对象在引用传递中的表现</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 可变对象（列表）</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">modify_list</span>(<span class="params">lst</span>):</span><br><span class="line">    lst.append(<span class="number">4</span>)</span><br><span class="line"></span><br><span class="line">my_list = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">modify_list(my_list)</span><br><span class="line"><span class="built_in">print</span>(my_list)  <span class="comment"># 输出: [1, 2, 3, 4]</span></span><br></pre></td></tr></table></figure>
+
+<p>在这个例子中，<code>my_list</code> 是一个<strong>可变对象</strong>（列表）。当我们把它传递给 <code>modify_list</code> 函数时，函数内部对列表的修改（<code>append</code> 操作）会直接影响外部的 <code>my_list</code>，因为它们引用的是同一个对象。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 可变对象（字典）</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">modify_dict</span>(<span class="params">d</span>):</span><br><span class="line">    d[<span class="string">&#x27;new_key&#x27;</span>] = <span class="string">&#x27;new_value&#x27;</span></span><br><span class="line"></span><br><span class="line">my_dict = &#123;<span class="string">&#x27;key&#x27;</span>: <span class="string">&#x27;value&#x27;</span>&#125;</span><br><span class="line">modify_dict(my_dict)</span><br><span class="line"><span class="built_in">print</span>(my_dict)  <span class="comment"># 输出: &#123;&#x27;key&#x27;: &#x27;value&#x27;, &#x27;new_key&#x27;: &#x27;new_value&#x27;&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>这里的 <code>my_dict</code> 是一个字典（可变对象），传递到函数 <code>modify_dict</code> 后，函数内部对字典的修改直接反映在外部的 <code>my_dict</code> 上。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 不可变对象（字符串）</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">modify_string</span>(<span class="params">s</span>):</span><br><span class="line">    s = <span class="string">&quot;new string&quot;</span>  <span class="comment"># 试图修改传入的字符串</span></span><br><span class="line"></span><br><span class="line">my_str = <span class="string">&quot;old string&quot;</span></span><br><span class="line">modify_string(my_str)</span><br><span class="line"><span class="built_in">print</span>(my_str)  <span class="comment"># 输出: &quot;old string&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>这里的 <code>my_str</code> 是一个<strong>不可变对象</strong>（字符串）。当我们把它传递给 <code>modify_string</code> 函数时，函数内部的赋值操作创建了一个新的字符串对象，<code>my_str</code> 本身并没有被修改，外部的变量仍然保持原样。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 不可变对象（整数）</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">modify_number</span>(<span class="params">n</span>):</span><br><span class="line">    n += <span class="number">10</span>  <span class="comment"># 修改传入的数值</span></span><br><span class="line"></span><br><span class="line">my_num = <span class="number">5</span></span><br><span class="line">modify_number(my_num)</span><br><span class="line"><span class="built_in">print</span>(my_num)  <span class="comment"># 输出: 5</span></span><br></pre></td></tr></table></figure>
+
+<p><code>my_num</code> 是一个不可变对象（整数）。即使在 <code>modify_number</code> 函数内部对其进行了修改，这也不会影响外部的 <code>my_num</code>。在函数内部，修改操作实际上生成了一个新的整数对象，而原来的 <code>my_num</code> 仍指向原来的值。</p>
+<hr>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p><strong>可变性</strong>直接决定了对象是否可以被哈希。如果对象是可变的，它的值可以在生命周期中改变，导致哈希值也不固定，因此<strong>可变对象不可哈希</strong>。</p>
+<p><strong>可哈希对象</strong>通常是不可变的，它们具有稳定的哈希值，并且可以用作 <strong>字典的键</strong> 或 <strong>集合的元素</strong>。</p>
+<p><strong>引用</strong>使得多个变量可以指向同一个对象。对于<strong>可变对象</strong>，多个引用之间会互相影响。而对于<strong>不可变对象</strong>，修改操作实际上是在创建一个新的对象，原有的引用保持不变。</p>
+<p>实际工作中：</p>
+<p><strong>哈希性</strong>的要求决定了对象的使用场景。例如，<strong>字典的键</strong>和<strong>集合的元素</strong>必须是可哈希的对象，所以必须是不可变的。</p>
+<p><strong>可变对象</strong>可以通过引用进行修改，因此在编写代码时要小心引用的共享，避免意外的修改。如果不希望对象被意外修改，考虑使用不可变对象或创建对象副本。</p>
+<hr>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2024/07/01/32936/" rel="prev" title="iOS 平台自动化测试升级">
+                  <i class="fa fa-angle-left"></i> iOS 平台自动化测试升级
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2024/10/02/32734/" rel="next" title="hexo 博客搭建部署">
+                  hexo 博客搭建部署 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">691k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:28</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>
