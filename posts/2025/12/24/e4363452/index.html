@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="对待一个新事物，很多人开始放弃它的同类型产品，我应该如何去探索新事物？我要不要也去试试 uv 呢？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于 python 的依赖管理，为什么很多人都在提倡用 uv">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2025/12/24/e4363452/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="对待一个新事物，很多人开始放弃它的同类型产品，我应该如何去探索新事物？我要不要也去试试 uv 呢？">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-12-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-12-24T16:16:42.018Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="uv">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2025/12/24/e4363452/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2025/12/24/e4363452/","path":"posts/2025/12/24/e4363452/","title":"关于 python 的依赖管理，为什么很多人都在提倡用 uv"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>关于 python 的依赖管理，为什么很多人都在提倡用 uv | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#uv-%E4%B8%BA%E4%BB%80%E4%B9%88%E6%AF%94%E8%BE%83%E7%81%AB"><span class="nav-text">uv 为什么比较火</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-uv"><span class="nav-text">安装 uv</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83"><span class="nav-text">创建虚拟环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#uv-%E7%9A%84%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%8A%9F%E8%83%BD"><span class="nav-text">uv 的项目管理功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E9%98%B6%E5%8A%9F%E8%83%BD"><span class="nav-text">进阶功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%81%E7%A7%BB%E7%8E%B0%E6%9C%89%E9%A1%B9%E7%9B%AE"><span class="nav-text">迁移现有项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E9%80%9F%E6%9F%A5"><span class="nav-text">常用命令速查</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3"><span class="nav-text">参考文档</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">128</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2025/12/24/e4363452/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="关于 python 的依赖管理，为什么很多人都在提倡用 uv | Magnolia's Blog">
+      <meta itemprop="description" content="对待一个新事物，很多人开始放弃它的同类型产品，我应该如何去探索新事物？我要不要也去试试 uv 呢？">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          关于 python 的依赖管理，为什么很多人都在提倡用 uv
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2025-12-24 00:00:00" itemprop="dateCreated datePublished" datetime="2025-12-24T00:00:00+08:00">2025-12-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%94%9F%E4%BA%A7%E5%8A%9B/" itemprop="url" rel="index"><span itemprop="name">生产力</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%94%9F%E4%BA%A7%E5%8A%9B/%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">工具</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>5k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>5 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">对待一个新事物，很多人开始放弃它的同类型产品，我应该如何去探索新事物？我要不要也去试试 uv 呢？</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>大家都在提倡新工具、放弃旧工具时，我该如何判断？</p>
+<p><strong>1. 评估动机而非跟风</strong></p>
+<ul>
+<li>问自己：这个工具解决了我的什么痛点？</li>
+<li>如果现有工具已经够用，新工具的边际收益是什么？</li>
+</ul>
+<p><strong>2. 渐进式探索</strong></p>
+<ul>
+<li>先在个人小项目试用</li>
+<li>在非关键路径上实验</li>
+<li>观察社区成熟度和问题解决速度</li>
+</ul>
+<p><strong>3. 成本收益分析</strong></p>
+<ul>
+<li>学习成本：是否容易上手？</li>
+<li>迁移成本：替换现有方案的代价？</li>
+<li>长期维护：社区是否活跃？是否有大公司支持？</li>
+<li>是否收费：公司内使用，是否会被邮件警告</li>
+</ul>
+<p><strong>4. 保持技术多样性</strong></p>
+<ul>
+<li>不要把所有项目都切换到新技术</li>
+<li>维持一定的”技术组合”，降低风险</li>
+<li>新旧工具并存，根据场景选择</li>
+</ul>
+<p><strong>5. 关注信号而非噪音</strong></p>
+<ul>
+<li>真实用户反馈 &gt; 营销宣传</li>
+<li>生产环境案例 &gt; 玩具项目</li>
+<li>长期趋势 &gt; 短期热度</li>
+</ul>
+<hr>
+<h2 id="uv-为什么比较火"><a href="#uv-为什么比较火" class="headerlink" title="uv 为什么比较火"></a>uv 为什么比较火</h2><p>uv 的优势：</p>
+<ul>
+<li><strong>速度极快</strong> - 用 Rust 编写，比 pip&#x2F;poetry 快 10-100 倍</li>
+<li><strong>功能全面</strong> - 集成了包管理、虚拟环境、Python 版本管理等</li>
+<li><strong>兼容性好</strong> - 可以直接替代 pip，学习成本低</li>
+<li><strong>现代设计</strong> - 借鉴了其他语言生态系统的优秀实践</li>
+</ul>
+<p>是否需要使用 uv？这取决于使用场景：</p>
+<ul>
+<li>适合尝试 uv 的情况：<ul>
+<li>新项目，没有历史包袱</li>
+<li>对速度有要求（大型项目、CI&#x2F;CD）</li>
+<li>想简化工具链（替代 pip + venv + pyenv）</li>
+<li>个人项目，可以自由选择</li>
+</ul>
+</li>
+<li>可以暂缓的情况：<ul>
+<li>团队已有成熟的工作流（如 Poetry）</li>
+<li>项目依赖复杂，迁移成本高</li>
+<li>需要等待生态更成熟</li>
+</ul>
+</li>
+</ul>
+<h2 id="安装-uv"><a href="#安装-uv" class="headerlink" title="安装 uv"></a>安装 uv</h2><p>推荐安装方式：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># macOS/Linux (最简单)</span></span><br><span class="line">curl -LsSf https://astral.sh/uv/install.sh | sh</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或使用 pipx (如果已经有 Python)</span></span><br><span class="line">pipx install uv</span><br><span class="line"></span><br><span class="line"><span class="comment"># Windows (PowerShell)</span></span><br><span class="line">powershell -ExecutionPolicy ByPass -c <span class="string">&quot;irm https://astral.sh/uv/install.ps1 | iex&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>Windows：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> D:\software&gt; powershell <span class="literal">-ExecutionPolicy</span> ByPass <span class="literal">-c</span> <span class="string">&quot;irm https://astral.sh/uv/install.ps1 | iex&quot;</span></span><br><span class="line">Downloading uv <span class="number">0.9</span>.<span class="number">18</span> (x86_64<span class="literal">-pc-windows-msvc</span>)</span><br><span class="line">Installing to C:\Users\username\.local\bin</span><br><span class="line">  uv.exe</span><br><span class="line">  uvx.exe</span><br><span class="line">  uvw.exe</span><br><span class="line">everything<span class="string">&#x27;s installed!</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">To add C:\Users\username\.local\bin to your PATH, either restart your shell or run:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    set Path=C:\Users\username\.local\bin;%Path%   (cmd)</span></span><br><span class="line"><span class="string">    $env:Path = &quot;C:\Users\username\.local\bin;$env:Path&quot;   (powershell)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"># 重新打开一个窗口</span></span><br><span class="line"><span class="string">PS C:\Users\username&gt; uv --version</span></span><br><span class="line"><span class="string">uv 0.9.18 (0cee76417 2025-12-16)</span></span><br></pre></td></tr></table></figure>
+
+<p>Linux：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ curl -LsSf https://astral.sh/uv/install.sh | sh</span><br><span class="line">downloading uv 0.9.18 x86_64-unknown-linux-gnu</span><br><span class="line">no checksums to verify</span><br><span class="line">installing to /home/test/.local/bin</span><br><span class="line">  uv</span><br><span class="line">  uvx</span><br><span class="line">everything<span class="string">&#x27;s installed!</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">$ uv --version</span></span><br><span class="line"><span class="string">uv 0.9.18</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="创建虚拟环境"><a href="#创建虚拟环境" class="headerlink" title="创建虚拟环境"></a>创建虚拟环境</h2><p>uv 可以直接替代 pip 和 virtualenv 的常用命令 <a target="_blank" rel="noopener" href="https://docs.astral.sh/uv/">Astral</a>，先从熟悉的工作流开始：</p>
+<p>创建虚拟环境：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 传统方式: python -m venv .venv</span></span><br><span class="line">uv venv  <span class="comment"># 很快</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 激活虚拟环境（和以前一样）</span></span><br><span class="line"><span class="built_in">source</span> .venv/bin/activate  <span class="comment"># Linux/macOS</span></span><br><span class="line">venv\Scripts\activate     <span class="comment"># Windows，会在执行 uv </span></span><br></pre></td></tr></table></figure>
+
+<p>在 windows 上执行详情，会在当前目录下生成一个 <code>.venv</code> 的目录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&gt;uv venv</span><br><span class="line">Using CPython 3.11.14</span><br><span class="line">Creating virtual environment at: .venv</span><br><span class="line">Activate with: .venv\Scripts\activate</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或者指定目录：在当前目录生成 uvPython</span></span><br><span class="line">&gt;uv venv uvPython</span><br><span class="line">Using CPython 3.11.14</span><br><span class="line">Creating virtual environment at: uvPython</span><br><span class="line">Activate with: uvPython\Scripts\activate</span><br></pre></td></tr></table></figure>
+
+<p>Windows：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">D:\<span class="title">software</span>&gt;<span class="title">uvPython</span>\<span class="title">Scripts</span>\<span class="title">activate</span></span></span><br><span class="line"><span class="function">(<span class="title">uvPython</span>) <span class="title">D</span>:\<span class="title">software</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>Linux：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ uv venv uvPython</span><br><span class="line">Using CPython 3.12.9 interpreter at: miniforge3/bin/python3</span><br><span class="line">Creating virtual environment at: uvPython</span><br><span class="line">Activate with: <span class="built_in">source</span> uvPython/bin/activate</span><br></pre></td></tr></table></figure>
+
+<p>安装依赖：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 传统方式: pip install requests</span></span><br><span class="line">uv pip install requests</span><br><span class="line"></span><br><span class="line"><span class="comment"># 从 requirements.txt 安装</span></span><br><span class="line">uv pip install -r requirements.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装开发依赖</span></span><br><span class="line">uv pip install pytest loguru</span><br></pre></td></tr></table></figure>
+
+<h2 id="uv-的项目管理功能"><a href="#uv-的项目管理功能" class="headerlink" title="uv 的项目管理功能"></a>uv 的项目管理功能</h2><p>这是 uv 的核心优势，类似于 Poetry，但更快：</p>
+<p>初始化新项目：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建新项目</span></span><br><span class="line">uv init uv_learn</span><br><span class="line"><span class="built_in">cd</span> uv_learn</span><br><span class="line"></span><br><span class="line"><span class="comment"># 项目结构会自动生成：</span></span><br><span class="line"><span class="comment"># uv_learn/</span></span><br><span class="line"><span class="comment">#   ├── pyproject.toml  # 项目配置</span></span><br><span class="line"><span class="comment">#   ├── uv.lock        # 依赖锁定文件</span></span><br><span class="line"><span class="comment">#   ├── main.py</span></span><br><span class="line"><span class="comment">#   ├── .gitignore</span></span><br><span class="line"><span class="comment">#   ├── .python-version</span></span><br><span class="line"><span class="comment">#   └── .venv</span></span><br></pre></td></tr></table></figure>
+
+<p>添加依赖：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 添加生产依赖，这些依赖会安装到当前目录中的 .venv 中</span></span><br><span class="line">uv add requests pandas</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加开发依赖</span></span><br><span class="line">uv add --dev pytest black ruff</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加到特定依赖组</span></span><br><span class="line">uv add --group docs sphinx</span><br></pre></td></tr></table></figure>
+
+<p>uv 的核心理念：<strong>Python 版本是项目属性，不是系统属性</strong>。</p>
+<p>根据 uv 的项目隔离原则，<code>uv init</code> 创建的项目是<strong>自包含</strong>的：</p>
+<ul>
+<li>每个项目有独立的 <code>.venv</code></li>
+<li>依赖写入 <code>pyproject.toml</code> 和 <code>uv.lock</code></li>
+<li>与外部环境（包括 uvPython）<strong>完全隔离</strong></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 如果在项目外的目录中执行 add 会提示报错</span></span><br><span class="line">(uv-learn) D:\work&gt;uv add xlrd</span><br><span class="line">error: No `pyproject.toml` found <span class="keyword">in</span> current directory or any parent directory</span><br></pre></td></tr></table></figure>
+
+<p>同步环境：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 根据 uv.lock 安装所有依赖</span></span><br><span class="line">uv <span class="built_in">sync</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 生产环境只安装必需依赖</span></span><br><span class="line">uv <span class="built_in">sync</span> --no-dev</span><br><span class="line"></span><br><span class="line"><span class="comment"># --dev 区别</span></span><br><span class="line">uv add pytest           <span class="comment"># 生产依赖（代码运行必需）</span></span><br><span class="line">uv add --dev pytest     <span class="comment"># 开发依赖（仅开发/测试时需要）</span></span><br></pre></td></tr></table></figure>
+
+<p>使用场景：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 克隆项目后，首次设置环境</span></span><br><span class="line">git <span class="built_in">clone</span> project</span><br><span class="line"><span class="built_in">cd</span> project</span><br><span class="line">uv <span class="built_in">sync</span>  <span class="comment"># 一键安装所有依赖</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 切换分支后，依赖变化了</span></span><br><span class="line">git checkout feature-branch</span><br><span class="line">uv <span class="built_in">sync</span>  <span class="comment"># 自动调整环境</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 团队成员更新了 uv.lock</span></span><br><span class="line">git pull</span><br><span class="line">uv <span class="built_in">sync</span>  <span class="comment"># 同步到最新依赖</span></span><br></pre></td></tr></table></figure>
+
+<p>运行脚本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># uv 会自动确保环境同步</span></span><br><span class="line">uv run python main.py</span><br><span class="line">uv run pytest</span><br></pre></td></tr></table></figure>
+
+<h2 id="进阶功能"><a href="#进阶功能" class="headerlink" title="进阶功能"></a>进阶功能</h2><p>Python 版本管理</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装 Python 版本</span></span><br><span class="line">uv python install 3.12 3.13</span><br><span class="line"><span class="comment"># Windows 默认路径，例如：</span></span><br><span class="line"><span class="comment"># C:\Users\username\AppData\Roaming\uv\python\cpython-3.11.14-windows-x86_64-none\python.exe</span></span><br><span class="line"><span class="comment"># C:\Users\username\.local\bin\python3.12.exe</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看已安装的版本</span></span><br><span class="line">uv python list</span><br><span class="line"></span><br><span class="line"><span class="comment"># 为项目指定 Python 版本</span></span><br><span class="line">uv python pin 3.12</span><br></pre></td></tr></table></figure>
+
+<p>详情：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">(uv<span class="literal">-learn</span>) D:\work\username\uv_learn&gt;uv python install <span class="number">3.12</span></span><br><span class="line">Installed Python <span class="number">3.12</span>.<span class="number">12</span> <span class="keyword">in</span> <span class="number">3</span>m <span class="number">44</span>s</span><br><span class="line"> + cpython<span class="literal">-3</span>.<span class="number">12.12</span><span class="literal">-windows-x86_64-none</span> (python3.<span class="number">12</span>.exe)</span><br><span class="line"> </span><br><span class="line">(uv<span class="literal">-learn</span>) D:\work\username\uv_learn&gt;uv python list</span><br><span class="line">cpython<span class="literal">-3</span>.<span class="number">12.12</span><span class="literal">-windows-x86_64-none</span>                  C:\Users\username\AppData\Roaming\uv\python\cpython<span class="literal">-3</span>.<span class="number">12.12</span><span class="literal">-windows-x86_64-none</span>\python.exe</span><br><span class="line">cpython<span class="literal">-3</span>.<span class="number">12.12</span><span class="literal">-windows-x86_64-none</span>                  C:\Users\username\.local\bin\python3.<span class="number">12</span>.exe</span><br><span class="line"><span class="comment"># 解释：uv 的设计行为</span></span><br><span class="line"><span class="comment"># AppData\Roaming\uv\python\... 真正的 CPython 安装目录（真身）</span></span><br><span class="line"><span class="comment"># ~\.local\bin\python3.12.exe  uv 提供的 shim / launcher（入口、转发器）</span></span><br></pre></td></tr></table></figure>
+
+<p>运行临时脚本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 无需安装，直接运行工具</span></span><br><span class="line">uvx ruff check .</span><br><span class="line">uvx black .</span><br><span class="line">uvx pytest</span><br><span class="line"></span><br><span class="line"><span class="comment"># 运行单文件脚本（自动管理依赖）</span></span><br><span class="line">uv run script.py</span><br></pre></td></tr></table></figure>
+
+<p>管理开发工具</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 全局安装工具</span></span><br><span class="line">uv tool install ruff black pytest</span><br><span class="line"></span><br><span class="line"><span class="comment"># 运行已安装的工具</span></span><br><span class="line">ruff check .</span><br></pre></td></tr></table></figure>
+
+<h2 id="迁移现有项目"><a href="#迁移现有项目" class="headerlink" title="迁移现有项目"></a>迁移现有项目</h2><p>从 pip + virtualenv 迁移：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 在项目目录中</span></span><br><span class="line">uv init --no-readme</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 导入现有依赖</span></span><br><span class="line">uv add -r requirements.txt </span><br><span class="line"><span class="comment"># Linux</span></span><br><span class="line">uv add $(<span class="built_in">cat</span> requirements.txt | grep -v <span class="string">&#x27;^#&#x27;</span> | grep -v <span class="string">&#x27;^$&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 同步环境</span></span><br><span class="line">uv <span class="built_in">sync</span></span><br></pre></td></tr></table></figure>
+
+<p>如果有的包来自于内部服务器（需要指定 url），那么在 <code>pyproject.toml</code> 中添加以下内容：</p>
+<figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[[tool.uv.index]]</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">&quot;internal-repo&quot;</span></span><br><span class="line"><span class="attr">url</span> = <span class="string">&quot;http://172.xx.xxx.123:8899/simple/&quot;</span></span><br><span class="line"><span class="attr">explicit</span> = <span class="literal">false</span>  <span class="comment"># 如果设为 true，则只有明确指定该源的包才会从这里下载</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="常用命令速查"><a href="#常用命令速查" class="headerlink" title="常用命令速查"></a>常用命令速查</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 环境管理</span></span><br><span class="line">uv venv                    <span class="comment"># 创建虚拟环境</span></span><br><span class="line">uv python install 3.12     <span class="comment"># 安装 Python 版本</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 项目管理</span></span><br><span class="line">uv init                    <span class="comment"># 初始化项目</span></span><br><span class="line">uv add package             <span class="comment"># 添加依赖</span></span><br><span class="line">uv remove package          <span class="comment"># 移除依赖</span></span><br><span class="line">uv <span class="built_in">sync</span>                    <span class="comment"># 同步环境</span></span><br><span class="line">uv lock                    <span class="comment"># 更新锁定文件</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 运行</span></span><br><span class="line">uv run python script.py    <span class="comment"># 运行 Python</span></span><br><span class="line">uv run pytest              <span class="comment"># 运行测试</span></span><br><span class="line">uvx tool-name              <span class="comment"># 临时运行工具</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 兼容 pip</span></span><br><span class="line">uv pip install package     <span class="comment"># 安装包</span></span><br><span class="line">uv pip list                <span class="comment"># 列出包</span></span><br><span class="line">uv pip freeze              <span class="comment"># 冻结依赖</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h2><ol>
+<li>官方文档：<a target="_blank" rel="noopener" href="https://docs.astral.sh/uv/">https://docs.astral.sh/uv/</a></li>
+<li>实践指南：<ul>
+<li>Real Python 教程：<a target="_blank" rel="noopener" href="https://realpython.com/python-uv/">https://realpython.com/python-uv/</a></li>
+<li>SaaS Pegasus 深度指南：<a target="_blank" rel="noopener" href="https://www.saaspegasus.com/guides/uv-deep-dive/">https://www.saaspegasus.com/guides/uv-deep-dive/</a></li>
+</ul>
+</li>
+<li>快速参考：<ul>
+<li>GitHub 仓库：<a target="_blank" rel="noopener" href="https://github.com/astral-sh/uv">https://github.com/astral-sh/uv</a></li>
+<li>命令对照表：pip → uv 的对应关系</li>
+</ul>
+</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/uv/" rel="tag"># uv</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2025/12/21/8980/" rel="prev" title="Cursor 的 MCP 应用：playwright-mcp-server">
+                  <i class="fa fa-angle-left"></i> Cursor 的 MCP 应用：playwright-mcp-server
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">696k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:32</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>
