@@ -19,15 +19,15 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="Windows11 安装 wsl，并迁移到 D 盘">
+    <meta name="description" content="在 Windows 11 上启用 WSL，并在 WSL 中安装 Ubuntu">
 <meta property="og:type" content="article">
-<meta property="og:title" content="windows上使用wsl">
+<meta property="og:title" content="在 Windows 11 上启用 WSL">
 <meta property="og:url" content="https://zypdominate.github.io/posts/2025/03/04/5474/index.html">
 <meta property="og:site_name" content="Magnolia&#39;s Blog">
-<meta property="og:description" content="Windows11 安装 wsl，并迁移到 D 盘">
+<meta property="og:description" content="在 Windows 11 上启用 WSL，并在 WSL 中安装 Ubuntu">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2025-03-04T13:00:00.000Z">
-<meta property="article:modified_time" content="2026-01-07T13:07:10.149Z">
+<meta property="article:modified_time" content="2026-01-07T14:10:29.463Z">
 <meta property="article:author" content="Magnolia">
 <meta property="article:tag" content="tools">
 <meta name="twitter:card" content="summary">
@@ -36,10 +36,10 @@
 <link rel="canonical" href="https://zypdominate.github.io/posts/2025/03/04/5474/">
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2025/03/04/5474/","path":"posts/2025/03/04/5474/","title":"windows上使用wsl"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2025/03/04/5474/","path":"posts/2025/03/04/5474/","title":"在 Windows 11 上启用 WSL"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>windows上使用wsl | Magnolia's Blog</title>
+<title>在 Windows 11 上启用 WSL | Magnolia's Blog</title>
   
 
 
@@ -163,7 +163,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A3%80%E6%9F%A5%E7%8A%B6%E6%80%81"><span class="nav-text">检查状态</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-wsl"><span class="nav-text">安装 wsl</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4"><span class="nav-text">命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%AD%E8%A8%80%E9%85%8D%E7%BD%AE"><span class="nav-text">语言配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%81%E7%A7%BB-WSL-%E4%BD%8D%E7%BD%AE"><span class="nav-text">迁移 WSL 位置</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8-Windows-11-%E4%B8%AD%E5%90%AF%E7%94%A8-WSL"><span class="nav-text">在 Windows 11 中启用 WSL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%A3%80%E6%9F%A5-WSL-%E5%BD%93%E5%89%8D%E7%8A%B6%E6%80%81"><span class="nav-text">1. 检查 WSL 当前状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%90%AF%E7%94%A8-Windows-%E5%8A%9F%E8%83%BD"><span class="nav-text">2. 启用 Windows 功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%86%8D%E6%AC%A1%E6%A3%80%E6%9F%A5-WSL-%E7%8A%B6%E6%80%81"><span class="nav-text">3. 再次检查 WSL 状态</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8-WSL-%E5%B9%B3%E5%8F%B0%E4%B8%AD%E5%AE%89%E8%A3%85-Ubuntu"><span class="nav-text">在 WSL 平台中安装 Ubuntu</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E6%9F%A5%E7%9C%8B%E5%8F%AF%E5%AE%89%E8%A3%85%E7%9A%84-Linux-%E5%8F%91%E8%A1%8C%E7%89%88"><span class="nav-text">4. 查看可安装的 Linux 发行版</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E5%AE%89%E8%A3%85-Ubuntu"><span class="nav-text">5. 安装 Ubuntu</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E5%88%9D%E5%A7%8B%E5%8C%96-Ubuntu"><span class="nav-text">6. 初始化 Ubuntu</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%8B%E5%8A%A8%E4%B8%8B%E8%BD%BD-Linux-%E7%89%88%E6%9C%AC"><span class="nav-text">手动下载 Linux 版本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-text">常用命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E9%85%8D%E7%BD%AE"><span class="nav-text">自定义配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%AD%E8%A8%80%E9%85%8D%E7%BD%AE"><span class="nav-text">语言配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%81%E7%A7%BB-WSL-%E4%BD%8D%E7%BD%AE"><span class="nav-text">迁移 WSL 位置</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -243,12 +243,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="windows上使用wsl | Magnolia's Blog">
-      <meta itemprop="description" content="Windows11 安装 wsl，并迁移到 D 盘">
+      <meta itemprop="name" content="在 Windows 11 上启用 WSL | Magnolia's Blog">
+      <meta itemprop="description" content="在 Windows 11 上启用 WSL，并在 WSL 中安装 Ubuntu">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          windows上使用wsl
+          在 Windows 11 上启用 WSL
         </h1>
 
         <div class="post-meta-container">
@@ -289,45 +289,142 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>3.6k</span>
+      <span>4.5k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>3 mins.</span>
+      <span>4 mins.</span>
     </span>
 </div>
 
-            <div class="post-description">Windows11 安装 wsl，并迁移到 D 盘</div>
+            <div class="post-description">在 Windows 11 上启用 WSL，并在 WSL 中安装 Ubuntu</div>
         </div>
       </header>
 
     
     
     
-    <div class="post-body" itemprop="articleBody"><p>准备给 Windows11 上安装 wsl，没有安装前，搜索 wsl 后点击，弹出窗口并闪退。</p>
-<h2 id="检查状态"><a href="#检查状态" class="headerlink" title="检查状态"></a>检查状态</h2><p> <code>wsl --status</code></p>
-<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;wsl --status</span><br><span class="line">默认版本: <span class="number">2</span></span><br><span class="line">当前计算机配置不支持 WSL1。</span><br><span class="line">若要使用 WSL1，请启用“Windows Subsystem <span class="keyword">for</span> Linux”可选组件。</span><br><span class="line">当前计算机配置不支持 WSL2。</span><br><span class="line">请启用“虚拟机平台”可选组件，并确保在 BIOS 中启用虚拟化。</span><br><span class="line">通过运行以下命令启用“虚拟机平台”: wsl.exe --install --no-distribution</span><br><span class="line">有关信息，请访问 https://aka.ms/enablevirtualization</span><br></pre></td></tr></table></figure>
-
+    <div class="post-body" itemprop="articleBody"><p>首先需要了解：</p>
 <ul>
-<li>打开”控制面板” &gt; “程序” &gt; “启用或关闭 Windows 功能”</li>
-<li>勾选以下选项后重启：<ul>
-<li>“Hyper-V” （我的win11上无）</li>
-<li>“Windows 虚拟机监控程序平台”</li>
-<li>“Windows Subsystem for Linux”</li>
-</ul>
+<li><strong>WSL 是 Windows 的运行平台</strong></li>
+<li><strong>Ubuntu 是运行在 WSL 中的 Linux 系统</strong></li>
+<li>安装流程应明确分为两步：<ol>
+<li>在 Windows 中启用 WSL 平台</li>
+<li>在 WSL 中安装 Ubuntu 发行版</li>
+</ol>
 </li>
 </ul>
-<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt;wsl --status</span><br><span class="line">默认版本: <span class="number">2</span></span><br><span class="line"></span><br><span class="line">&gt;wsl --list --verbose</span><br><span class="line">适用于 Linux 的 Windows 子系统没有已安装的分发。</span><br><span class="line">可通过安装包含以下说明的分发来解决此问题：</span><br><span class="line"></span><br><span class="line">使用“wsl.exe --list --online&#x27; ”列出可用的分发</span><br><span class="line">和 “wsl.exe --install &lt;Distro&gt;” 进行安装。</span><br></pre></td></tr></table></figure>
+<p>WSL 至少有 <strong>3 个层次</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Windows 11</span><br><span class="line"> └── WSL 平台（子系统 / 虚拟化能力）</span><br><span class="line">      └── Linux 发行版（Ubuntu / Debian / Kali）</span><br><span class="line">           └── Linux 用户、软件、命令</span><br></pre></td></tr></table></figure>
 
-<h3 id="安装-wsl"><a href="#安装-wsl" class="headerlink" title="安装 wsl"></a>安装 wsl</h3><p><code>wsl --install Ubuntu</code></p>
-<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&gt;wsl --list --online</span><br><span class="line">以下是可安装的有效分发的列表。</span><br><span class="line">使用 &#x27;wsl.exe --install &lt;Distro&gt;&#x27; 安装。</span><br><span class="line"></span><br><span class="line">NAME                            FRIENDLY NAME</span><br><span class="line">Debian                          Debian GNU/Linux</span><br><span class="line">SUSE-Linux-Enterprise-<span class="number">15</span>-SP5    SUSE Linux Enterprise <span class="number">15</span> SP5</span><br><span class="line">SUSE-Linux-Enterprise-<span class="number">15</span>-SP6    SUSE Linux Enterprise <span class="number">15</span> SP6</span><br><span class="line">Ubuntu                          Ubuntu</span><br><span class="line">Ubuntu-<span class="number">24</span>.<span class="number">04</span>                    Ubuntu <span class="number">24</span>.<span class="number">04</span> LTS</span><br><span class="line">kali-linux                      Kali Linux Rolling</span><br><span class="line">openSUSE-Tumbleweed             openSUSE Tumbleweed</span><br><span class="line">openSUSE-Leap-<span class="number">15</span>.<span class="number">6</span>              openSUSE Leap <span class="number">15</span>.<span class="number">6</span></span><br><span class="line">Ubuntu-<span class="number">18</span>.<span class="number">04</span>                    Ubuntu <span class="number">18</span>.<span class="number">04</span> LTS</span><br><span class="line">Ubuntu-<span class="number">20</span>.<span class="number">04</span>                    Ubuntu <span class="number">20</span>.<span class="number">04</span> LTS</span><br><span class="line">Ubuntu-<span class="number">22</span>.<span class="number">04</span>                    Ubuntu <span class="number">22</span>.<span class="number">04</span> LTS</span><br><span class="line">OracleLinux_7_9                 Oracle Linux <span class="number">7</span>.<span class="number">9</span></span><br><span class="line">OracleLinux_8_7                 Oracle Linux <span class="number">8</span>.<span class="number">7</span></span><br><span class="line">OracleLinux_9_1                 Oracle Linux <span class="number">9</span>.<span class="number">1</span></span><br><span class="line"></span><br><span class="line">&gt;wsl --install Ubuntu</span><br><span class="line">正在下载: Ubuntu</span><br><span class="line">正在安装: Ubuntu</span><br><span class="line">已成功安装分发。它可通过 “wsl.exe -d Ubuntu” 启动</span><br></pre></td></tr></table></figure>
+<p>GitHub：<a target="_blank" rel="noopener" href="https://github.com/microsoft/WSL">[microsoft&#x2F;WSL: Windows Subsystem for Linux]</a></p>
+<hr>
+<h2 id="在-Windows-11-中启用-WSL"><a href="#在-Windows-11-中启用-WSL" class="headerlink" title="在 Windows 11 中启用 WSL"></a>在 Windows 11 中启用 WSL</h2><p>在安装任何 Linux 发行版之前，需要先确保 Windows 已正确启用 WSL 运行环境。</p>
+<h3 id="1-检查-WSL-当前状态"><a href="#1-检查-WSL-当前状态" class="headerlink" title="1. 检查 WSL 当前状态"></a>1. 检查 WSL 当前状态</h3><p>打开 <strong>命令提示符 &#x2F; PowerShell（管理员）</strong>，执行：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl --status</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">wsl: 检测到 <span class="title">localhost</span> 代理配置，但未镜像到 <span class="title">WSL</span>。<span class="title">NAT</span> 模式下的 <span class="title">WSL</span> 不支持 <span class="title">localhost</span> 代理。</span></span><br><span class="line"><span class="function"><span class="title">Provisioning</span> <span class="title">the</span> <span class="title">new</span> <span class="title">WSL</span> <span class="title">instance</span> <span class="title">Ubuntu</span></span></span><br><span class="line"><span class="function"><span class="title">This</span> <span class="title">might</span> <span class="title">take</span> <span class="title">a</span> <span class="title">while</span>...</span></span><br><span class="line"><span class="function"><span class="title">Create</span> <span class="title">a</span> <span class="title">default</span> <span class="title">Unix</span> <span class="title">user</span> <span class="title">account</span>: <span class="title">Magnolia</span></span></span><br><span class="line"><span class="function"><span class="title">Invalid</span> <span class="title">username</span>. <span class="title">A</span> <span class="title">valid</span> <span class="title">username</span> <span class="title">must</span> <span class="title">start</span> <span class="title">with</span> <span class="title">a</span> <span class="title">lowercase</span> <span class="title">letter</span> <span class="title">or</span> <span class="title">underscore</span>, <span class="title">and</span> <span class="title">can</span> <span class="title">contain</span> <span class="title">lowercase</span> <span class="title">letters</span>, <span class="title">digits</span>, <span class="title">underscores</span>, <span class="title">and</span> <span class="title">dashes</span>.</span></span><br><span class="line"><span class="function"><span class="title">Create</span> <span class="title">a</span> <span class="title">default</span> <span class="title">Unix</span> <span class="title">user</span> <span class="title">account</span>: <span class="title">magnolia</span></span></span><br><span class="line"><span class="function"><span class="title">New</span> <span class="title">password</span>:</span></span><br><span class="line"><span class="function"><span class="title">Retype</span> <span class="title">new</span> <span class="title">password</span>:</span></span><br><span class="line"><span class="function"><span class="title">passwd</span>: <span class="title">password</span> <span class="title">updated</span> <span class="title">successfully</span></span></span><br><span class="line"><span class="function"><span class="title">To</span> <span class="title">run</span> <span class="title">a</span> <span class="title">command</span> <span class="title">as</span> <span class="title">administrator</span> (<span class="title">user</span> &quot;<span class="title">root</span>&quot;), <span class="title">use</span> &quot;<span class="title">sudo</span> &lt;<span class="title">command</span>&gt;&quot;.</span></span><br><span class="line"><span class="function"><span class="title">See</span> &quot;<span class="title">man</span> <span class="title">sudo_root</span>&quot; <span class="title">for</span> <span class="title">details</span>.</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">Welcome</span> <span class="title">to</span> <span class="title">Ubuntu</span> 24.04.2 <span class="title">LTS</span> (<span class="title">GNU</span>/<span class="title">Linux</span> 5.15.167.4-<span class="title">microsoft</span>-<span class="title">standard</span>-<span class="title">WSL2</span> <span class="title">x86_64</span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"> * <span class="title">Documentation</span>:  <span class="title">https</span>://<span class="title">help.ubuntu.com</span></span></span><br><span class="line"><span class="function"> * <span class="title">Management</span>:     <span class="title">https</span>://<span class="title">landscape.canonical.com</span></span></span><br><span class="line"><span class="function"> * <span class="title">Support</span>:        <span class="title">https</span>://<span class="title">ubuntu.com</span>/<span class="title">pro</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"> <span class="title">System</span> <span class="title">information</span> <span class="title">as</span> <span class="title">of</span> <span class="title">Tue</span> <span class="title">Mar</span>  4 21:26:59 <span class="title">CST</span> 2025</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">  <span class="title">System</span> <span class="title">load</span>:  0.03                <span class="title">Processes</span>:             36</span></span><br><span class="line"><span class="function">  <span class="title">Usage</span> <span class="title">of</span> /:   0.1% <span class="title">of</span> 1006.85<span class="title">GB</span>   <span class="title">Users</span> <span class="title">logged</span> <span class="title">in</span>:       0</span></span><br><span class="line"><span class="function">  <span class="title">Memory</span> <span class="title">usage</span>: 3%                  <span class="title">IPv4</span> <span class="title">address</span> <span class="title">for</span> <span class="title">eth0</span>: 172.20.107.81</span></span><br><span class="line"><span class="function">  <span class="title">Swap</span> <span class="title">usage</span>:   0%</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">This</span> <span class="title">message</span> <span class="title">is</span> <span class="title">shown</span> <span class="title">once</span> <span class="title">a</span> <span class="title">day</span>. <span class="title">To</span> <span class="title">disable</span> <span class="title">it</span> <span class="title">please</span> <span class="title">create</span> <span class="title">the</span></span></span><br><span class="line"><span class="function">/<span class="title">home</span>/<span class="title">magnolia</span>/.<span class="title">hushlogin</span> <span class="title">file</span>.</span></span><br></pre></td></tr></table></figure>
+<p>可能出现类似输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">默认版本: 2</span><br><span class="line">当前计算机配置不支持 WSL1。</span><br><span class="line">若要使用 WSL1，请启用“Windows Subsystem for Linux”可选组件。</span><br><span class="line">当前计算机配置不支持 WSL2。</span><br><span class="line">请启用“虚拟机平台”可选组件，并确保在 BIOS 中启用虚拟化。</span><br></pre></td></tr></table></figure>
 
-<h2 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h2><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">wsl --list --verbose  # 查看可用的 WSL 发行版</span><br><span class="line">wsl --shutdown  # 重启WSL</span><br><span class="line">wsl pwd  # 可以查看当前路径，来验证 WSL 是否正常工作</span><br><span class="line">wsl ls</span><br><span class="line">wsl --update</span><br><span class="line"></span><br><span class="line"># 收集 WSL 诊断信息</span><br><span class="line">wsl --status</span><br><span class="line">wsl --systeminfo</span><br><span class="line"></span><br><span class="line"># 更新包</span><br><span class="line">sudo apt update</span><br><span class="line"></span><br><span class="line"># <span class="built_in">tree</span></span><br><span class="line">sudo apt install <span class="built_in">tree</span></span><br><span class="line"><span class="built_in">tree</span> -L <span class="number">3</span> -a -I &quot;syslog|__pycache__|*.log&quot;  # 展示筛选后的当前目录结构</span><br></pre></td></tr></table></figure>
+<p>说明：</p>
+<ul>
+<li>当前系统尚未启用完整的 WSL2 运行条件</li>
+<li>需要开启 Windows 相关功能并确保 BIOS 虚拟化已打开</li>
+</ul>
+<hr>
+<h3 id="2-启用-Windows-功能"><a href="#2-启用-Windows-功能" class="headerlink" title="2. 启用 Windows 功能"></a>2. 启用 Windows 功能</h3><p>打开：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">控制面板 → 程序 → 启用或关闭 Windows 功能</span><br></pre></td></tr></table></figure>
+
+<p>勾选以下选项：</p>
+<ul>
+<li>✅ <strong>Windows Subsystem for Linux</strong></li>
+<li>✅ <strong>Windows 虚拟机监控程序平台</strong></li>
+</ul>
+<p>说明：</p>
+<ul>
+<li>部分 Windows 11 版本（如家庭版）可能<strong>看不到 “Hyper-V”</strong>，这是正常的</li>
+<li>WSL2 并不要求你启用 Hyper-V 管理器界面，只要底层虚拟化能力可用即可</li>
+</ul>
+<p>完成后 <strong>重启系统</strong>。</p>
+<hr>
+<h3 id="3-再次检查-WSL-状态"><a href="#3-再次检查-WSL-状态" class="headerlink" title="3. 再次检查 WSL 状态"></a>3. 再次检查 WSL 状态</h3><p>重启后执行：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl --status</span><br></pre></td></tr></table></figure>
+
+<p>如果输出类似：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">默认版本: 2</span><br></pre></td></tr></table></figure>
+
+<p>说明：</p>
+<ul>
+<li>WSL 平台已经可以正常使用</li>
+<li>但此时 <strong>尚未安装任何 Linux 发行版</strong></li>
+</ul>
+<p>可以通过以下命令验证：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl --list --verbose</span><br></pre></td></tr></table></figure>
+
+<p>输出示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">适用于 Linux 的 Windows 子系统没有已安装的分发。</span><br></pre></td></tr></table></figure>
+
+<p>这表示：WSL 平台已就绪，但还没有安装 Ubuntu &#x2F; Linux。</p>
+<hr>
+<h2 id="在-WSL-平台中安装-Ubuntu"><a href="#在-WSL-平台中安装-Ubuntu" class="headerlink" title="在 WSL 平台中安装 Ubuntu"></a>在 WSL 平台中安装 Ubuntu</h2><p>完成 WSL 平台准备后，接下来才是安装真正的 Linux 系统。</p>
+<h3 id="4-查看可安装的-Linux-发行版"><a href="#4-查看可安装的-Linux-发行版" class="headerlink" title="4. 查看可安装的 Linux 发行版"></a>4. 查看可安装的 Linux 发行版</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl --list --online</span><br></pre></td></tr></table></figure>
+
+<p>示例输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">NAME            FRIENDLY NAME</span><br><span class="line">Ubuntu          Ubuntu</span><br><span class="line">Ubuntu-22.04    Ubuntu 22.04 LTS</span><br><span class="line">Ubuntu-24.04    Ubuntu 24.04 LTS</span><br><span class="line">Debian          Debian GNU/Linux</span><br><span class="line">kali-linux      Kali Linux Rolling</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="5-安装-Ubuntu"><a href="#5-安装-Ubuntu" class="headerlink" title="5. 安装 Ubuntu"></a>5. 安装 Ubuntu</h3><p>以安装 Ubuntu 为例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl --install Ubuntu</span><br></pre></td></tr></table></figure>
+
+<p>执行过程包括：</p>
+<ul>
+<li>下载 Ubuntu RootFS</li>
+<li>创建虚拟磁盘（ext4.vhdx）</li>
+<li>初始化 Linux 系统</li>
+</ul>
+<p>安装完成后会提示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">已成功安装分发。它可通过 “wsl.exe -d Ubuntu” 启动</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="6-初始化-Ubuntu"><a href="#6-初始化-Ubuntu" class="headerlink" title="6. 初始化 Ubuntu"></a>6. 初始化 Ubuntu</h3><p>也就是创建 Linux 用户。首次启动 Ubuntu 时，会进行 Linux 系统初始化：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Create a default Unix user account:</span><br></pre></td></tr></table></figure>
+
+<p>注意：</p>
+<ul>
+<li>Linux 用户名 <strong>必须小写</strong></li>
+<li>不能使用大写字母</li>
+</ul>
+<p>示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">wsl: 检测到 localhost 代理配置，但未镜像到 WSL。NAT 模式下的 WSL 不支持 localhost 代理。</span><br><span class="line">Provisioning the new WSL instance Ubuntu</span><br><span class="line">This might take a while...</span><br><span class="line">Create a default Unix user account: Magnolia</span><br><span class="line">Invalid username. A valid username must start with a lowercase letter or underscore, and can contain lowercase letters, digits, underscores, and dashes.</span><br><span class="line">Create a default Unix user account: magnolia</span><br><span class="line">New password:</span><br><span class="line">Retype new password:</span><br><span class="line">passwd: password updated successfully</span><br><span class="line">To run a command as administrator (user &quot;root&quot;), use &quot;sudo &lt;command&gt;&quot;.</span><br><span class="line">See &quot;man sudo_root&quot; for details.</span><br><span class="line"></span><br><span class="line">Welcome to Ubuntu 24.04.2 LTS (GNU/Linux 5.15.167.4-microsoft-standard-WSL2 x86_64)</span><br><span class="line"></span><br><span class="line"> * Documentation:  https://help.ubuntu.com</span><br><span class="line"> * Management:     https://landscape.canonical.com</span><br><span class="line"> * Support:        https://ubuntu.com/pro</span><br><span class="line"></span><br><span class="line"> System information as of Tue Mar  4 21:26:59 CST 2025</span><br><span class="line"></span><br><span class="line">  System load:  0.03                Processes:             36</span><br><span class="line">  Usage of /:   0.1% of 1006.85GB   Users logged in:       0</span><br><span class="line">  Memory usage: 3%                  IPv4 address for eth0: 172.20.107.81</span><br><span class="line">  Swap usage:   0%</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">This message is shown once a day. To disable it please create the</span><br><span class="line">/home/magnolia/.hushlogin file.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>完成后会看到欢迎信息：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Welcome to Ubuntu 24.04.2 LTS (GNU/Linux 5.15.x-microsoft-standard-WSL2)</span><br></pre></td></tr></table></figure>
+
+<p>说明：</p>
+<ul>
+<li>Ubuntu 已成功安装</li>
+<li>Linux 正在通过 WSL2 运行</li>
+<li>Windows 仅作为宿主系统存在</li>
+</ul>
+<hr>
+<h2 id="手动下载-Linux-版本"><a href="#手动下载-Linux-版本" class="headerlink" title="手动下载 Linux 版本"></a>手动下载 Linux 版本</h2><p>Microsoft 官方 WSL 仓库中用于描述受支持发行版及其下载地址的配置文件：<a target="_blank" rel="noopener" href="https://github.com/microsoft/WSL/blob/master/distributions/DistributionInfo.json">DistributionInfo.json</a></p>
+<p>这个文件里记录了 WSL 所支持的 Linux 发行版，挑选一个下载即可。这里比如选择了 <a target="_blank" rel="noopener" href="https://releases.ubuntu.com/24.04.3/ubuntu-24.04.3-wsl-amd64.wsl">Ubuntu-24.04</a>。将这个 wsl 文件下载到一个本地文件夹中，这可以看成一个软件安装包。其本质上是一个 WSL 发行版的 rootfs 打包文件，类似于容器镜像，用于初始化 Linux 根文件系统。</p>
+<p><strong>安装 wsl 到指定文件夹</strong></p>
+<p>通过这个命令来安装刚下载的 Linux 发行版：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl --install --from-file D:\wsl\rootfs\ubuntu-24.04.3-wsl-amd64.wsl --location D:\wsl\ubuntu --name ubuntu-24.04</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>wsl --install</code>：表示安装 wsl 的 Linux 发行版</li>
+<li><code>--from-file</code>：后面跟着 wsl 的路径，表示从本地 wsl 文件安装</li>
+<li><code>--location</code>：表示安装到的位置，这里安装到了 <code>D:\wsl\ubuntu</code> 这个位置</li>
+<li><code>--name</code>：Linux 发行版的名称</li>
+</ul>
+<p>这样，Linux 就直接安装到了 D 盘的指定文件夹，而前面下载的 wsl 文件，在安装完成之后就可以删除。</p>
+<hr>
+<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">wsl --list --verbose  # 查看可用的 WSL 发行版</span><br><span class="line">wsl --shutdown  # 重启WSL</span><br><span class="line">wsl pwd  # 可以查看当前路径，来验证 WSL 是否正常工作</span><br><span class="line">wsl ls</span><br><span class="line">wsl --update</span><br><span class="line"></span><br><span class="line"># 收集 WSL 诊断信息</span><br><span class="line">wsl --status</span><br><span class="line">wsl --systeminfo</span><br><span class="line"></span><br><span class="line"># 更新包</span><br><span class="line">sudo apt update</span><br><span class="line"></span><br><span class="line"># <span class="built_in">tree</span></span><br><span class="line">sudo apt install <span class="built_in">tree</span></span><br><span class="line"><span class="built_in">tree</span> -L <span class="number">3</span> -a -I &quot;syslog|__pycache__|*.log&quot;  # 展示筛选后的当前目录结构</span><br></pre></td></tr></table></figure>
 
 <p>在 Windows 命令行</p>
 <figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">C:\<span class="title">Users</span>\<span class="title">username</span>&gt;<span class="title">wsl</span> <span class="title">pwd</span></span></span><br><span class="line"><span class="function">/<span class="title">mnt</span>/<span class="title">c</span>/<span class="title">Users</span>/<span class="title">username</span></span></span><br></pre></td></tr></table></figure>
@@ -349,12 +446,13 @@
 </ol>
 <p>在 WSL 中遇到 <code>ls</code> 命令显示中文文件名出现 <code>??????</code> 的问题，通常是由于<strong>字符编码</strong>或<strong>语言环境（Locale）设置不正确</strong>导致的。以下是解决方法：</p>
 <hr>
-<h2 id="语言配置"><a href="#语言配置" class="headerlink" title="语言配置"></a>语言配置</h2><p>检查并设置正确的 Locale</p>
+<h2 id="自定义配置"><a href="#自定义配置" class="headerlink" title="自定义配置"></a>自定义配置</h2><h3 id="语言配置"><a href="#语言配置" class="headerlink" title="语言配置"></a>语言配置</h3><p>检查并设置正确的 Locale</p>
 <p>WSL 默认可能未配置中文语言环境，需要手动启用：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看当前 locale 设置</span></span><br><span class="line">locale</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装中文语言包（Ubuntu/Debian 示例）</span></span><br><span class="line"><span class="built_in">sudo</span> apt update &amp;&amp; <span class="built_in">sudo</span> apt install locales fonts-noto-cjk</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成并设置中文 locale（UTF-8 编码）</span></span><br><span class="line"><span class="built_in">sudo</span> locale-gen zh_CN.UTF-8</span><br><span class="line"><span class="built_in">sudo</span> update-locale LANG=zh_CN.UTF-8</span><br><span class="line"></span><br><span class="line"><span class="comment"># 临时生效（仅当前会话）</span></span><br><span class="line"><span class="built_in">export</span> LANG=zh_CN.UTF-8</span><br></pre></td></tr></table></figure>
 
 <p><strong>重启 WSL</strong> 后生效（关闭终端重新打开）。</p>
-<h2 id="迁移-WSL-位置"><a href="#迁移-WSL-位置" class="headerlink" title="迁移 WSL 位置"></a>迁移 WSL 位置</h2><p>将 WSL 从 C 盘迁移到 D 盘。</p>
+<hr>
+<h3 id="迁移-WSL-位置"><a href="#迁移-WSL-位置" class="headerlink" title="迁移 WSL 位置"></a>迁移 WSL 位置</h3><p>将 WSL 从 C 盘迁移到 D 盘。</p>
 <p>当前版本</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;wsl --list --verbose</span><br><span class="line">  NAME      STATE           VERSION</span><br><span class="line">* Ubuntu    Running         2</span><br></pre></td></tr></table></figure>
 
@@ -363,6 +461,16 @@
 
 <p>导入并启动</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wsl --import Ubuntu <span class="string">&quot;D:\software\WSL\Ubuntu&quot;</span> <span class="string">&quot;D:\software\WSL\ubuntu_backup.tar&quot;</span> --version 2</span><br><span class="line"></span><br><span class="line">wsl --list --verbose</span><br><span class="line">wsl</span><br></pre></td></tr></table></figure>
+
+
+
+<p><code>.wslconfig</code> 是<strong>用户级</strong>、<strong>可选</strong>、<strong>默认不存在</strong>、<strong>只有自己“手动创建”才会出现</strong>。</p>
+<p>如果要配置 swap 存储位置，可以手动创建 <code>C:\Users\&lt;用户名&gt;\.wslconfig</code>：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[wsl2]</span></span><br><span class="line"><span class="attr">swap</span>=D:\\software\\WSL\\swap.vhdx</span><br><span class="line"><span class="attr">swapSize</span>=<span class="number">2</span>GB</span><br></pre></td></tr></table></figure>
+
+<p>现在电脑内容基本大于 16GB，所以可以直接关闭 swap：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[wsl2]</span></span><br><span class="line"><span class="attr">swap</span>=<span class="number">0</span></span><br></pre></td></tr></table></figure>
+
 
     </div>
 
@@ -432,13 +540,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Word count total">696k</span>
+    <span title="Word count total">697k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">10:32</span>
+    <span title="Reading time total">10:33</span>
   </span>
 </div>
 <div class="busuanzi-count">
