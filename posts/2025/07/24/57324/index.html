@@ -19,15 +19,15 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="WSL迁移路径，安装docker，解决无法拉取镜像的问题。">
+    <meta name="description" content="在 WSL 中安装docker，解决无法拉取镜像的问题。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="WSL安装docker">
 <meta property="og:url" content="https://zypdominate.github.io/posts/2025/07/24/57324/index.html">
 <meta property="og:site_name" content="Magnolia&#39;s Blog">
-<meta property="og:description" content="WSL迁移路径，安装docker，解决无法拉取镜像的问题。">
+<meta property="og:description" content="在 WSL 中安装docker，解决无法拉取镜像的问题。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2025-07-24T13:22:22.000Z">
-<meta property="article:modified_time" content="2025-12-23T14:07:49.175Z">
+<meta property="article:modified_time" content="2026-01-07T13:06:49.856Z">
 <meta property="article:author" content="Magnolia">
 <meta property="article:tag" content="docker">
 <meta name="twitter:card" content="summary">
@@ -163,7 +163,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%81%E7%A7%BB-WSL-%E4%BD%8D%E7%BD%AE"><span class="nav-text">迁移 WSL 位置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Install-Docker"><span class="nav-text">Install Docker</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A0%E6%B3%95%E6%8B%89%E5%8F%96docker%E9%95%9C%E5%83%8F"><span class="nav-text">无法拉取docker镜像</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Install-Docker"><span class="nav-text">Install Docker</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A0%E6%B3%95%E6%8B%89%E5%8F%96docker%E9%95%9C%E5%83%8F"><span class="nav-text">无法拉取docker镜像</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -244,7 +244,7 @@
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
       <meta itemprop="name" content="WSL安装docker | Magnolia's Blog">
-      <meta itemprop="description" content="WSL迁移路径，安装docker，解决无法拉取镜像的问题。">
+      <meta itemprop="description" content="在 WSL 中安装docker，解决无法拉取镜像的问题。">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -289,7 +289,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>1.6k</span>
+      <span>1.3k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -300,24 +300,14 @@
     </span>
 </div>
 
-            <div class="post-description">WSL迁移路径，安装docker，解决无法拉取镜像的问题。</div>
+            <div class="post-description">在 WSL 中安装docker，解决无法拉取镜像的问题。</div>
         </div>
       </header>
 
     
     
     
-    <div class="post-body" itemprop="articleBody"><h2 id="迁移-WSL-位置"><a href="#迁移-WSL-位置" class="headerlink" title="迁移 WSL 位置"></a>迁移 WSL 位置</h2><p>将 WSL 从 C 盘迁移到 D 盘。</p>
-<p>当前版本</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;wsl --list --verbose</span><br><span class="line">  NAME      STATE           VERSION</span><br><span class="line">* Ubuntu    Running         2</span><br></pre></td></tr></table></figure>
-
-<p>关闭 wsl、注销、导出为归档文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wsl --shutdown</span><br><span class="line">wsl --<span class="built_in">export</span> Ubuntu <span class="string">&quot;D:\software\WSL\ubuntu_backup.tar&quot;</span></span><br><span class="line">wsl --unregister Ubuntu</span><br><span class="line"><span class="comment"># 注销原先在C盘的 Ubuntu WSL 实例，删除原始文件并释放 C 盘空间。</span></span><br></pre></td></tr></table></figure>
-
-<p>导入并启动</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wsl --import Ubuntu <span class="string">&quot;D:\software\WSL\Ubuntu&quot;</span> <span class="string">&quot;D:\software\WSL\ubuntu_backup.tar&quot;</span> --version 2</span><br><span class="line"></span><br><span class="line">wsl --list --verbose</span><br><span class="line">wsl</span><br></pre></td></tr></table></figure>
-
-<h2 id="Install-Docker"><a href="#Install-Docker" class="headerlink" title="Install Docker"></a>Install Docker</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt update &amp;&amp; <span class="built_in">sudo</span> apt upgrade -y</span><br><span class="line"><span class="built_in">sudo</span> apt install apt-transport-https ca-certificates curl gnupg lsb-release</span><br><span class="line">curl -fsSL https://download.docker.com/linux/ubuntu/gpg | <span class="built_in">sudo</span> gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu <span class="subst">$(lsb_release -cs)</span> stable&quot;</span> | <span class="built_in">sudo</span> <span class="built_in">tee</span> /etc/apt/sources.list.d/docker.list &gt; /dev/null</span><br><span class="line"></span><br><span class="line"><span class="built_in">sudo</span> apt update</span><br><span class="line"><span class="built_in">sudo</span> apt install docker-ce docker-ce-cli containerd.io</span><br><span class="line"><span class="built_in">sudo</span> usermod -aG docker <span class="variable">$USER</span></span><br><span class="line"><span class="built_in">sudo</span> service docker start</span><br><span class="line"></span><br><span class="line">docker --version</span><br><span class="line">docker run hello-world</span><br></pre></td></tr></table></figure>
+    <div class="post-body" itemprop="articleBody"><h2 id="Install-Docker"><a href="#Install-Docker" class="headerlink" title="Install Docker"></a>Install Docker</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt update &amp;&amp; <span class="built_in">sudo</span> apt upgrade -y</span><br><span class="line"><span class="built_in">sudo</span> apt install apt-transport-https ca-certificates curl gnupg lsb-release</span><br><span class="line">curl -fsSL https://download.docker.com/linux/ubuntu/gpg | <span class="built_in">sudo</span> gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu <span class="subst">$(lsb_release -cs)</span> stable&quot;</span> | <span class="built_in">sudo</span> <span class="built_in">tee</span> /etc/apt/sources.list.d/docker.list &gt; /dev/null</span><br><span class="line"></span><br><span class="line"><span class="built_in">sudo</span> apt update</span><br><span class="line"><span class="built_in">sudo</span> apt install docker-ce docker-ce-cli containerd.io</span><br><span class="line"><span class="built_in">sudo</span> usermod -aG docker <span class="variable">$USER</span></span><br><span class="line"><span class="built_in">sudo</span> service docker start</span><br><span class="line"></span><br><span class="line">docker --version</span><br><span class="line">docker run hello-world</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt install docker-compose</span><br><span class="line">docker-compose --version</span><br></pre></td></tr></table></figure>
 
