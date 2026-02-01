@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="review 了一年多的代码，结合自己使用 Agent 编程，写一些感受">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用 AI code agent 的感想">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2026/01/31/c5a7df21/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="review 了一年多的代码，结合自己使用 Agent 编程，写一些感受">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-01-31T05:02:00.000Z">
+<meta property="article:modified_time" content="2026-02-01T15:07:38.967Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="总结">
+<meta property="article:tag" content="AI">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2026/01/31/c5a7df21/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2026/01/31/c5a7df21/","path":"posts/2026/01/31/c5a7df21/","title":"使用 AI code agent 的感想"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>使用 AI code agent 的感想 | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%83%8C%E6%99%AF"><span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AI-%E7%BC%96%E7%A8%8B"><span class="nav-text">AI 编程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E5%9D%91"><span class="nav-text">常见的坑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AD%96%E7%95%A5"><span class="nav-text">策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%95%BF%E6%9C%9F%E8%AE%A1%E5%88%92"><span class="nav-text">长期计划</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B7%E4%BD%93%E6%94%B9%E8%BF%9B%E7%AD%96%E7%95%A5"><span class="nav-text">具体改进策略</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%A6%E4%BC%9A%E6%8F%8F%E8%BF%B0%E9%9C%80%E6%B1%82"><span class="nav-text">学会描述需求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%B6%E5%AE%9A%E2%80%9D%E9%A1%B9%E7%9B%AE%E5%AE%AA%E6%B3%95%E2%80%9D"><span class="nav-text">制定”项目宪法”</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E5%8A%A8%E5%88%86%E6%9E%90%E6%8A%A5%E9%94%99%E4%BF%A1%E6%81%AF"><span class="nav-text">主动分析报错信息</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">128</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2026/01/31/c5a7df21/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="使用 AI code agent 的感想 | Magnolia's Blog">
+      <meta itemprop="description" content="review 了一年多的代码，结合自己使用 Agent 编程，写一些感受">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          使用 AI code agent 的感想
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2026-01-31 13:02:00" itemprop="dateCreated datePublished" datetime="2026-01-31T13:02:00+08:00">2026-01-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/%E6%80%BB%E7%BB%93/" itemprop="url" rel="index"><span itemprop="name">总结</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>2.3k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">review 了一年多的代码，结合自己使用 Agent 编程，写一些感受</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>做过技术支持的人，应该有很多相似的感受：很多人在描述自己遇到的问题、需求时，往往说不清楚，难以让人理解他想表达什么。极端情况下，他可能就甩你一个小小的不完整的截图，加上一句“这为啥报错啊”，此时我就得和他聊起来：“截图更大一些，链接发我看看日志，环境配置、出现场景、版本是什么”。</p>
+<p>经过一场“酣畅淋漓”的沟通下来，终于知道对方问题的<strong>上下文</strong>了，我终于懂你了（你不说我怎么懂，说了才懂有什么意思，你根本不懂我……），此时已耗费了很多时间和精力，情绪也会上升。</p>
+<p><strong>上述场景和让 AI 写代码，其实是同一回事。</strong></p>
+<p>很多时候，自己觉得把问题说清楚了，AI 却 get 不到，生成一些有的没的，不是自己想要的效果，或者代码今天能跑，明天就报错，改了左边坏右边，整个项目越来越臃肿无序，没有全局观，永远只是聚焦于局部。</p>
+<p>问题不在 AI，而在于：AI 不是万能的，并不能替代人，本质上它只是工具。</p>
+<hr>
+<p>AI 让零基础的人也能快速产出代码，不管对错，先给你生成一堆代码，就问你：有没有自动生成代码吧？</p>
+<p>如果没有经历过大、复杂、困难的项目，只是让 AI 解决一些在自己认知里、觉得困难的问题，会让人觉得 AI 无所不能，甚至觉得 AI 能取代人。</p>
+<p>很多自媒体账号拥有大量的粉丝、同时并不具备真实 coding 的能力和开发企业真实项目的场景，他们有一些影响力，就吹捧 AI 无所不能来吸引流量。众所周知，自媒体的尽头是标题党、流量、制造焦虑和和广告变现。（换做是我，开两个号，一个无脑吹捧，一个无脑贬低，收割两拨流量，赚两拨钱，哈哈哈）</p>
+<p>站在什么立场，说什么话。以前有上市公司 CEO 在访谈时说以后不用编程了，导致一堆人激动坏了、到处宣扬，他其实是为了宣传芯片算力和拉升市值呢。在商业世界里，大佬们的每一次“预言”往往都不是单纯的技术展望，更多的是一种战略布阵，卖铲子的人希望挖矿门槛越低越好。</p>
+<p>汽车普及前，马车夫会觉得驾驭马匹是硬技术；汽车普及后，开车成了基本技能。</p>
+<hr>
+<h2 id="AI-编程"><a href="#AI-编程" class="headerlink" title="AI 编程"></a>AI 编程</h2><h3 id="常见的坑"><a href="#常见的坑" class="headerlink" title="常见的坑"></a>常见的坑</h3><ul>
+<li>语言逻辑混乱、指代不明、前后不一</li>
+<li>需求宽泛抽象，大而全，中心点分散混乱，不分优先级</li>
+<li>无法预见局部对全局、需求变更可能造成的影响</li>
+<li>每次对话当做一个独立任务，不维护工程上下文，想写哪里写哪里</li>
+<li>随意创建文件、类和函数，存在大量的重复代码，今天忘记昨天生成的内容</li>
+<li>只局限于完成当前任务，不学习吸收消化AI给的答案背后的知识</li>
+<li>知识面不够广，对于AI给出的方案，无法根据自己实际情况快速判断</li>
+<li>不知道看报错堆栈信息，不会断点调试</li>
+<li>没有任何统一的编码规范</li>
+</ul>
+<h3 id="策略"><a href="#策略" class="headerlink" title="策略"></a>策略</h3><ul>
+<li>拆解复杂任务成简单任务</li>
+<li>整理需求点，创建markdown文本记录</li>
+<li>使用 AI 先优化需求，形成 Prompt</li>
+<li>整理技术栈、代码注释风格、错误处理、边界条件等约束，形成规范文档</li>
+<li>和AI对话，让AI输出对需求的理解、提出质疑，对齐需求</li>
+<li>理解熟悉工程代码，掌握全局的能力，cover 住 AI 生成的代码</li>
+</ul>
+<h3 id="长期计划"><a href="#长期计划" class="headerlink" title="长期计划"></a>长期计划</h3><ul>
+<li>偿还技术债，主动学习编程知识技能，理解软件工程基本原则</li>
+<li>培养先设计、构思流程，再实现的习惯</li>
+<li>锻炼阅读官方文档（尤其英文）的能力，不完全依赖AI，培养独立解决问题的能力</li>
+<li>思考 AI 给的方案为什么这么做？去查官方文档理解原理，理解 AI 生成的代码</li>
+</ul>
+<hr>
+<h2 id="具体改进策略"><a href="#具体改进策略" class="headerlink" title="具体改进策略"></a>具体改进策略</h2><h3 id="学会描述需求"><a href="#学会描述需求" class="headerlink" title="学会描述需求"></a>学会描述需求</h3><p>养成习惯：<strong>先写需求文档，再让 AI 写代码</strong>；先整理思路，再动手敲代码。</p>
+<p>对于一个工程，建一个 <code>spec.md</code> 文件，每次加功能先写进去。</p>
+<ul>
+<li>用 AI 帮优化需求：”我想做某某功能，帮我梳理成清晰的功能点”，再与实际项目相互参考</li>
+<li>对齐需求：让它质疑、反问我，复述我的需求，我 reivew 一遍后，查看忽略的点、探索没想到的点</li>
+</ul>
+<hr>
+<h3 id="制定”项目宪法”"><a href="#制定”项目宪法”" class="headerlink" title="制定”项目宪法”"></a>制定”项目宪法”</h3><p>参考：<a target="_blank" rel="noopener" href="https://github.com/github/spec-kit">github&#x2F;spec-kit: 💫 Toolkit to help you get started with Spec-Driven Development</a></p>
+<p>创建一个 <code>constitution.md</code>，每次让 AI 写代码时，把这个文档当”上下文”，比如包含：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">## Tech Stack</span></span><br><span class="line"><span class="bullet">-</span> Python 3.12</span><br><span class="line"><span class="bullet">-</span> pytest + pytest-html + allure</span><br><span class="line"><span class="bullet">-</span> requests + jsonschema (接口测试)</span><br><span class="line"><span class="bullet">-</span> selenium + pytest-selenium (UI 自动化)</span><br><span class="line"></span><br><span class="line"><span class="section">## Project Structure</span></span><br><span class="line">tests/</span><br><span class="line">  ├── api/           # 接口测试用例</span><br><span class="line">  ├── ui/            # UI 自动化用例</span><br><span class="line">  ├── fixtures/      # pytest fixtures</span><br><span class="line">  ├── utils/         # 工具类(请求封装、断言等)</span><br><span class="line">  └── data/          # 测试数据</span><br><span class="line"></span><br><span class="line"><span class="section">## Coding Standards</span></span><br><span class="line"><span class="bullet">-</span> 所有用例用 pytest,不用 unittest</span><br><span class="line"><span class="bullet">-</span> 用例文件以 test_ 开头</span><br><span class="line"><span class="bullet">-</span> fixture 统一放在 conftest.py</span><br><span class="line"><span class="bullet">-</span> 接口请求统一用 utils/api<span class="emphasis">_client.py</span></span><br><span class="line"><span class="emphasis">- 断言失败必须有清晰的错误信息</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis">## Constraints</span></span><br><span class="line"><span class="emphasis">- legacy_</span>tests/ 目录的老用例别动</span><br><span class="line"><span class="bullet">-</span> 新用例必须有 allure 报告标注</span><br><span class="line"><span class="bullet">-</span> 接口测试必须做 schema 校验</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="主动分析报错信息"><a href="#主动分析报错信息" class="headerlink" title="主动分析报错信息"></a>主动分析报错信息</h3><p>习惯用 AI 后，可能会渐渐失去查看报错的耐心，不管三七二十一，直接把大段的报错给 AI，被动地坐等 AI 给答案。</p>
+<p>有时候自己仔细看一下，是可以定位排查解决的。</p>
+<p>步骤：</p>
+<ol>
+<li>看报错信息最后一行，通常是关键</li>
+<li>看堆栈跟踪，哪个文件哪一行出错</li>
+<li>开启调试模式，一行一行 Debug，查看关键的变量值等等</li>
+<li>一定时间内没搞懂，再问 AI，但把完整报错、相关代码、操作步骤都给它</li>
+<li>尝试自己搜索 Google</li>
+</ol>
+<hr>
+<p><strong>磨刀不误砍柴工。</strong> 花时间理清需求、建立规范、学习基础，看似慢，实则是最快的路。</p>
+<p>学习不是线性的增长。前期可能是漫长的积累爬坡，后期才有可能快速上升。</p>
+<p>大量有效的训练是必要的。就像学开车，一开始慢慢来、打好基础，后面才能真正”飞驰”。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/%E6%80%BB%E7%BB%93/" rel="tag"># 总结</a>
+              <a href="/tags/AI/" rel="tag"># AI</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2026/01/26/83a966ca/" rel="prev" title="2025 回顾和总结">
+                  <i class="fa fa-angle-left"></i> 2025 回顾和总结
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">708k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:43</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>
