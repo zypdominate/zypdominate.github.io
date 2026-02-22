@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="很多人使用电脑时会受到 C 盘空间不足的困扰，清理过不久后，问题又会重现，现在有一套方案能基本解决这个问题。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="清理管理C盘空间方案">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2026/02/22/35185d3e/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="很多人使用电脑时会受到 C 盘空间不足的困扰，清理过不久后，问题又会重现，现在有一套方案能基本解决这个问题。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-02-22T15:00:00.000Z">
+<meta property="article:modified_time" content="2026-02-22T16:57:41.506Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="tips">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2026/02/22/35185d3e/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2026/02/22/35185d3e/","path":"posts/2026/02/22/35185d3e/","title":"清理管理C盘空间方案"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>清理管理C盘空间方案 | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%83%8C%E6%99%AF"><span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%BA%E5%A4%A7%E7%9A%84%E2%80%9C%E8%BD%AF%E8%BF%9E%E6%8E%A5%E2%80%9D"><span class="nav-text">强大的“软连接”</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%84%9A%E6%9C%AC%E6%B8%85%E7%90%86"><span class="nav-text">脚本清理</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">130</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2026/02/22/35185d3e/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="清理管理C盘空间方案 | Magnolia's Blog">
+      <meta itemprop="description" content="很多人使用电脑时会受到 C 盘空间不足的困扰，清理过不久后，问题又会重现，现在有一套方案能基本解决这个问题。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          清理管理C盘空间方案
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2026-02-22 23:00:00" itemprop="dateCreated datePublished" datetime="2026-02-22T23:00:00+08:00">2026-02-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" itemprop="url" rel="index"><span itemprop="name">环境搭建</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>3k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>3 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">很多人使用电脑时会受到 C 盘空间不足的困扰，清理过不久后，问题又会重现，现在有一套方案能基本解决这个问题。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>起初，我的想法是定时清理删除垃圾、无效的文件，经过几次尝试发现，能直接删除的文件夹比较少，而且随着时间的增长，C 盘空间还是会越来越小。</p>
+<p>问题出在哪里呢？</p>
+<p>通过手动查看一些文件夹的“占用空间”后，发现 <code>C:\Users\username\AppData</code> 占用的空间一直在增加，因为电脑会安装一些新的软件（即使自定义安装到 D 盘）、下载新的文件。</p>
+<p>当前，电脑已经使用很长一段时间，直接操作将 D 盘空间分给 C 盘一些，有些冒险、不够简单容易上手。如果单独配置各个软件的存储路径，也是非常复杂，是一项浩大工程，耗时耗力，而且以后容易忘记配置。</p>
+<p>为了解决这个问题，目前暂时使用两个方法：</p>
+<ul>
+<li>使用 windows 中的 “软连接”，将应用软件数据转移到空间更大的 D 盘</li>
+<li>bat 脚本定时清理 C 盘中的垃圾文件</li>
+</ul>
+<hr>
+<h2 id="强大的“软连接”"><a href="#强大的“软连接”" class="headerlink" title="强大的“软连接”"></a>强大的“软连接”</h2><p>工具：Windows 的目录联接 (Junction) 功能。</p>
+<p>以 JetBrains 软件为例，对所有旗下所有软件一次性生效，比如 JetBrains 目录下有 PyCharm2025.3、IntelliJIdea2024.2、GoLand 等等。</p>
+<p>步骤一：</p>
+<p>关闭所有 JetBrains 软件，将 <code>C:\Users\username\AppData\Local\JetBrains</code> 整个文件夹剪切到 <code>D:\softwaredata\AppData\JetBrains</code>。</p>
+<p>步骤二：</p>
+<p>以<strong>管理员身份</strong>打开 CMD，输入：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mklink /j &quot;C:\Users\username\AppData\Local\JetBrains&quot; &quot;D:\softwaredata\AppData\JetBrains&quot;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到 <code>C:\Users\username\AppData\Local\</code> 目录下的 JetBrains 是一个链接的图标，双击可以看到 <code>D:\softwaredata\AppData\JetBrains</code> 中的文件。</p>
+<p>此时 C 盘的占用空间顿时小了很多。</p>
+<p>同样的，对于其他占用空间大的目录，也可以做同样的操作。</p>
+<hr>
+<h2 id="脚本清理"><a href="#脚本清理" class="headerlink" title="脚本清理"></a>脚本清理</h2><p>清理以下内容：用户临时文件 (%temp%)、系统临时文件、Prefetch 预取文件、系统日志 (.log)、SoftwareDistribution、可能占用几GB回收站。</p>
+<p>配置定时任务，使用 <strong>任务计划程序</strong> 是最简单的方式。</p>
+<p>1、 打开任务计划程序</p>
+<p><code>Win + R</code> → 输入 <code>taskschd.msc</code> → 回车</p>
+<hr>
+<p>2、创建任务</p>
+<p>右侧点击 **”创建任务”**（不是”创建基本任务”，选项更完整）</p>
+<p><strong>常规 选项卡：</strong></p>
+<ul>
+<li>名称：随便填，如 <code>MyClearC</code></li>
+<li>勾选 <strong>“使用最高权限运行”</strong></li>
+<li>配置：选 <code>Windows 10</code> 或对应系统版本</li>
+</ul>
+<hr>
+<p>3、触发器（定时）</p>
+<p>点 <strong>新建</strong>，按需选择：</p>
+<ul>
+<li>每周执行一次 → 选 <code>每周</code>，勾选某天，设置时间</li>
+<li>每月执行一次 → 选 <code>每月</code></li>
+</ul>
+<p>建议选一个电脑常开但自己不在用的时间，比如每周日凌晨 3:00。</p>
+<hr>
+<p>4、操作</p>
+<p>点 <strong>新建</strong>：</p>
+<ul>
+<li>操作：<code>启动程序</code></li>
+<li>程序或脚本：填脚本的完整路径，例如：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\Scripts\clean.bat</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>5、条件 &amp; 设置（可选优化）</p>
+<p><strong>条件 选项卡：</strong></p>
+<ul>
+<li>取消勾选 **”只在计算机使用交流电源时才启动此任务”**（笔记本用户建议保留）</li>
+</ul>
+<p><strong>设置 选项卡：</strong></p>
+<ul>
+<li>勾选 <strong>“如果任务失败，按以下频率重新启动”</strong> → 1分钟，重试 3 次</li>
+</ul>
+<hr>
+<p>6、保存</p>
+<p>点确定，会提示输入当前账户密码，输入后即保存成功。</p>
+<p>之后可以在任务列表里右键 → <strong>“运行”</strong> 手动触发一次，确认脚本能正常以管理员权限执行。</p>
+<p>清理脚本：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">@<span class="built_in">echo</span> off</span><br><span class="line"><span class="built_in">title</span> Windows 清理脚本</span><br><span class="line"><span class="built_in">color</span> <span class="number">0</span>A</span><br><span class="line"></span><br><span class="line">:: 检查管理员权限</span><br><span class="line"><span class="built_in">net</span> session &gt;<span class="built_in">nul</span> <span class="number">2</span>&gt;&amp;<span class="number">1</span></span><br><span class="line"><span class="keyword">if</span> <span class="variable">%errorlevel%</span> <span class="keyword">neq</span> <span class="number">0</span> (</span><br><span class="line">    <span class="built_in">echo</span> 请以管理员身份运行此脚本！</span><br><span class="line">    <span class="built_in">pause</span></span><br><span class="line">    <span class="keyword">exit</span> /b</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> ============================================</span><br><span class="line"><span class="built_in">echo</span>      正在进行深度清理，请稍候...</span><br><span class="line"><span class="built_in">echo</span> ============================================</span><br><span class="line"></span><br><span class="line">:: <span class="number">1</span>. 清理用户临时文件</span><br><span class="line"><span class="built_in">echo</span> 正在清理用户临时文件...</span><br><span class="line"><span class="built_in">del</span> /f /s /q &quot;<span class="variable">%temp%</span>\*.*&quot; &gt;<span class="built_in">nul</span> <span class="number">2</span>&gt;&amp;<span class="number">1</span></span><br><span class="line"><span class="keyword">for</span> /d <span class="variable">%%i</span> <span class="keyword">in</span> (&quot;<span class="variable">%temp%</span>\*&quot;) <span class="keyword">do</span> <span class="built_in">rd</span> /s /q &quot;<span class="variable">%%i</span>&quot; &gt;<span class="built_in">nul</span> <span class="number">2</span>&gt;&amp;<span class="number">1</span></span><br><span class="line"></span><br><span class="line">:: <span class="number">2</span>. 清理系统临时文件（Temp 和 temp 是同一目录，只需清理一次）</span><br><span class="line"><span class="built_in">echo</span> 正在清理系统临时文件...</span><br><span class="line"><span class="built_in">del</span> /f /s /q &quot;<span class="variable">%systemroot%</span>\Temp\*.*&quot; &gt;<span class="built_in">nul</span> <span class="number">2</span>&gt;&amp;<span class="number">1</span></span><br><span class="line"><span class="keyword">for</span> /d <span class="variable">%%i</span> <span class="keyword">in</span> (&quot;<span class="variable">%systemroot%</span>\Temp\*&quot;) <span class="keyword">do</span> <span class="built_in">rd</span> /s /q &quot;<span class="variable">%%i</span>&quot; &gt;<span class="built_in">nul</span> <span class="number">2</span>&gt;&amp;<span class="number">1</span></span><br><span class="line"></span><br><span class="line">:: <span class="number">3</span>. 清理预取文件</span><br><span class="line"><span class="built_in">echo</span> 正在清理预取文件...</span><br><span class="line"><span class="built_in">del</span> /f /s /q &quot;<span class="variable">%systemroot%</span>\Prefetch\*.*&quot; &gt;<span class="built_in">nul</span> <span class="number">2</span>&gt;&amp;<span class="number">1</span></span><br><span class="line"></span><br><span class="line">:: <span class="number">4</span>. 清理系统日志文件</span><br><span class="line"><span class="built_in">echo</span> 正在清理系统日志...</span><br><span class="line"><span class="built_in">del</span> /f /s /q &quot;<span class="variable">%systemroot%</span>\*.log&quot; &gt;<span class="built_in">nul</span> <span class="number">2</span>&gt;&amp;<span class="number">1</span></span><br><span class="line"></span><br><span class="line">:: <span class="number">5</span>. 停止 Windows 更新服务，清理下载缓存，并禁用服务</span><br><span class="line"><span class="built_in">echo</span> 正在处理 Windows 更新相关文件...</span><br><span class="line"><span class="built_in">net</span> stop wuauserv &gt;<span class="built_in">nul</span> <span class="number">2</span>&gt;&amp;<span class="number">1</span></span><br><span class="line"><span class="built_in">net</span> stop bits &gt;<span class="built_in">nul</span> <span class="number">2</span>&gt;&amp;<span class="number">1</span></span><br><span class="line"><span class="built_in">del</span> /f /s /q &quot;<span class="variable">%systemroot%</span>\SoftwareDistribution\Download\*.*&quot; &gt;<span class="built_in">nul</span> <span class="number">2</span>&gt;&amp;<span class="number">1</span></span><br><span class="line"><span class="keyword">for</span> /d <span class="variable">%%i</span> <span class="keyword">in</span> (&quot;<span class="variable">%systemroot%</span>\SoftwareDistribution\Download\*&quot;) <span class="keyword">do</span> <span class="built_in">rd</span> /s /q &quot;<span class="variable">%%i</span>&quot; &gt;<span class="built_in">nul</span> <span class="number">2</span>&gt;&amp;<span class="number">1</span></span><br><span class="line">sc config wuauserv <span class="built_in">start</span>= disabled &gt;<span class="built_in">nul</span> <span class="number">2</span>&gt;&amp;<span class="number">1</span></span><br><span class="line">sc config bits <span class="built_in">start</span>= disabled &gt;<span class="built_in">nul</span> <span class="number">2</span>&gt;&amp;<span class="number">1</span></span><br><span class="line"><span class="built_in">echo</span> Windows 更新服务已清理并设为禁用状态。</span><br><span class="line"></span><br><span class="line">:: <span class="number">6</span>. 清理回收站（只删除内容，不删除目录本身）</span><br><span class="line"><span class="built_in">echo</span> 正在清空回收站...</span><br><span class="line"><span class="keyword">for</span> /d <span class="variable">%%i</span> <span class="keyword">in</span> (&quot;<span class="variable">%systemdrive%</span>\$Recycle.Bin\*&quot;) <span class="keyword">do</span> <span class="built_in">rd</span> /s /q &quot;<span class="variable">%%i</span>&quot; &gt;<span class="built_in">nul</span> <span class="number">2</span>&gt;&amp;<span class="number">1</span></span><br><span class="line"><span class="built_in">del</span> /f /s /q &quot;<span class="variable">%systemdrive%</span>\$Recycle.Bin\*.*&quot; &gt;<span class="built_in">nul</span> <span class="number">2</span>&gt;&amp;<span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> ============================================</span><br><span class="line"><span class="built_in">echo</span>      清理完成！</span><br><span class="line"><span class="built_in">echo</span> ============================================</span><br><span class="line"><span class="built_in">pause</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/tips/" rel="tag"># tips</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2026/02/08/83a966ca/" rel="prev" title="2025 读完的书籍">
+                  <i class="fa fa-angle-left"></i> 2025 读完的书籍
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">711k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:46</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>
