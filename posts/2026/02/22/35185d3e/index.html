@@ -21,13 +21,13 @@
 
     <meta name="description" content="很多人使用电脑时会受到 C 盘空间不足的困扰，清理过不久后，问题又会重现，现在有一套方案能基本解决这个问题。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="清理管理C盘空间方案">
+<meta property="og:title" content="C 盘满了怎么办？BAT 一键清理 + 目录软链接就搞定">
 <meta property="og:url" content="https://zypdominate.github.io/posts/2026/02/22/35185d3e/index.html">
 <meta property="og:site_name" content="Magnolia&#39;s Blog">
 <meta property="og:description" content="很多人使用电脑时会受到 C 盘空间不足的困扰，清理过不久后，问题又会重现，现在有一套方案能基本解决这个问题。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2026-02-22T15:00:00.000Z">
-<meta property="article:modified_time" content="2026-02-22T16:57:41.506Z">
+<meta property="article:modified_time" content="2026-02-22T17:05:26.249Z">
 <meta property="article:author" content="Magnolia">
 <meta property="article:tag" content="tips">
 <meta name="twitter:card" content="summary">
@@ -36,10 +36,10 @@
 <link rel="canonical" href="https://zypdominate.github.io/posts/2026/02/22/35185d3e/">
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2026/02/22/35185d3e/","path":"posts/2026/02/22/35185d3e/","title":"清理管理C盘空间方案"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2026/02/22/35185d3e/","path":"posts/2026/02/22/35185d3e/","title":"C 盘满了怎么办？BAT 一键清理 + 目录软链接就搞定"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>清理管理C盘空间方案 | Magnolia's Blog</title>
+<title>C 盘满了怎么办？BAT 一键清理 + 目录软链接就搞定 | Magnolia's Blog</title>
   
 
 
@@ -243,12 +243,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="清理管理C盘空间方案 | Magnolia's Blog">
+      <meta itemprop="name" content="C 盘满了怎么办？BAT 一键清理 + 目录软链接就搞定 | Magnolia's Blog">
       <meta itemprop="description" content="很多人使用电脑时会受到 C 盘空间不足的困扰，清理过不久后，问题又会重现，现在有一套方案能基本解决这个问题。">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          清理管理C盘空间方案
+          C 盘满了怎么办？BAT 一键清理 + 目录软链接就搞定
         </h1>
 
         <div class="post-meta-container">
@@ -307,9 +307,10 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>起初，我的想法是定时清理删除垃圾、无效的文件，经过几次尝试发现，能直接删除的文件夹比较少，而且随着时间的增长，C 盘空间还是会越来越小。</p>
+    <div class="post-body" itemprop="articleBody"><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>使用 windows 电脑，C 盘空间不足是大部分人经常会遇到的一个问题。</p>
 <p>问题出在哪里呢？</p>
 <p>通过手动查看一些文件夹的“占用空间”后，发现 <code>C:\Users\username\AppData</code> 占用的空间一直在增加，因为电脑会安装一些新的软件（即使自定义安装到 D 盘）、下载新的文件。</p>
+<p>起初，我的想法是定时清理删除垃圾、无效的文件，经过几次尝试发现，能直接删除的文件夹比较少，而且随着时间的增长，C 盘空间还是会越来越小。如果能将 D 盘空闲的空间分给 C 盘一些就好了。</p>
 <p>当前，电脑已经使用很长一段时间，直接操作将 D 盘空间分给 C 盘一些，有些冒险、不够简单容易上手。如果单独配置各个软件的存储路径，也是非常复杂，是一项浩大工程，耗时耗力，而且以后容易忘记配置。</p>
 <p>为了解决这个问题，目前暂时使用两个方法：</p>
 <ul>
