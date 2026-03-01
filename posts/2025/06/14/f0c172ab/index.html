@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="基于 Flask 框架开发，用于收集和分析测试用例的埋点数据。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flask 埋点测试系统操作">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2025/06/14/f0c172ab/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="基于 Flask 框架开发，用于收集和分析测试用例的埋点数据。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-06-14T11:30:18.000Z">
+<meta property="article:modified_time" content="2026-03-01T08:17:34.336Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="Flask">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2025/06/14/f0c172ab/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2025/06/14/f0c172ab/","path":"posts/2025/06/14/f0c172ab/","title":"Flask 埋点测试系统操作"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Flask 埋点测试系统操作 | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0"><span class="nav-text">1. 系统概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%95%B0%E6%8D%AE%E5%BA%93%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="nav-text">2. 数据库环境搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E4%BD%BF%E7%94%A8-Docker-Compose-%E9%83%A8%E7%BD%B2-MySQL"><span class="nav-text">2.1 使用 Docker Compose 部署 MySQL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E5%90%AF%E5%8A%A8-MySQL-%E6%9C%8D%E5%8A%A1"><span class="nav-text">2.2 启动 MySQL 服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E5%AE%89%E8%A3%85-MySQL-%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="nav-text">2.3 安装 MySQL 客户端</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E6%95%B0%E6%8D%AE%E5%BA%93%E6%93%8D%E4%BD%9C"><span class="nav-text">3. 数据库操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E8%BF%9E%E6%8E%A5%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-text">3.1 连接数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E5%BA%93%E6%93%8D%E4%BD%9C"><span class="nav-text">3.2 基本数据库操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A1%A8%E7%BB%93%E6%9E%84%E7%AE%A1%E7%90%86"><span class="nav-text">3.3 数据库表结构管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BB%BA%E8%A1%A8"><span class="nav-text">建表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%BC%E5%87%BA%E8%A1%A8%E7%BB%93%E6%9E%84"><span class="nav-text">导出表结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%BC%E5%85%A5%E8%A1%A8%E7%BB%93%E6%9E%84"><span class="nav-text">导入表结构</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-%E8%A1%A8%E7%BB%93%E6%9E%84%E4%BF%AE%E6%94%B9"><span class="nav-text">3.4 表结构修改</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#MySQL-8-0-%E5%8F%8A%E4%BB%A5%E4%B8%8A%E7%89%88%E6%9C%AC"><span class="nav-text">MySQL 8.0 及以上版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MySQL-5-7-%E5%8F%8A%E4%BB%A5%E4%B8%8B%E7%89%88%E6%9C%AC"><span class="nav-text">MySQL 5.7 及以下版本</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-%E6%9F%A5%E7%9C%8B%E8%A1%A8%E7%BB%93%E6%9E%84%E5%92%8C%E5%85%B3%E7%B3%BB"><span class="nav-text">3.5 查看表结构和关系</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Flask-%E6%9C%8D%E5%8A%A1%E9%83%A8%E7%BD%B2"><span class="nav-text">4. Flask 服务部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-%E5%88%9B%E5%BB%BA%E9%83%A8%E7%BD%B2%E8%84%9A%E6%9C%AC"><span class="nav-text">4.1 创建部署脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-%E5%90%AF%E5%8A%A8%E6%9C%8D%E5%8A%A1"><span class="nav-text">4.2 启动服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="nav-text">4.3 环境配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5"><span class="nav-text">5. 常见问题排查</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-Docker-%E7%BD%91%E7%BB%9C%E9%97%AE%E9%A2%98"><span class="nav-text">5.1 Docker 网络问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-MySQL-%E8%BF%9E%E6%8E%A5%E9%97%AE%E9%A2%98"><span class="nav-text">5.2 MySQL 连接问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-%E6%95%B0%E6%8D%AE%E5%8D%B7%E7%AE%A1%E7%90%86"><span class="nav-text">5.3 数据卷管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-4-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C"><span class="nav-text">5.4 命令执行</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E7%B3%BB%E7%BB%9F%E7%BB%B4%E6%8A%A4"><span class="nav-text">6. 系统维护</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-%E6%97%A5%E5%BF%97%E7%AE%A1%E7%90%86"><span class="nav-text">6.1 日志管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-2-%E6%95%B0%E6%8D%AE%E5%A4%87%E4%BB%BD"><span class="nav-text">6.2 数据备份</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-%E6%80%A7%E8%83%BD%E7%9B%91%E6%8E%A7"><span class="nav-text">6.3 性能监控</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-API-%E6%8E%A5%E5%8F%A3%E4%BD%BF%E7%94%A8"><span class="nav-text">7. API 接口使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-1-%E5%9F%8B%E7%82%B9%E6%95%B0%E6%8D%AE%E4%B8%8A%E4%BC%A0"><span class="nav-text">7.1 埋点数据上传</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-2-%E6%95%B0%E6%8D%AE%E6%9F%A5%E8%AF%A2"><span class="nav-text">7.2 数据查询</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-%E6%80%BB%E7%BB%93"><span class="nav-text">8. 总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">131</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">45</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2025/06/14/f0c172ab/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Flask 埋点测试系统操作 | Magnolia's Blog">
+      <meta itemprop="description" content="基于 Flask 框架开发，用于收集和分析测试用例的埋点数据。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Flask 埋点测试系统操作
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2025-06-14 19:30:18" itemprop="dateCreated datePublished" datetime="2025-06-14T19:30:18+08:00">2025-06-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/Flask/" itemprop="url" rel="index"><span itemprop="name">Flask</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>8.4k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>8 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">基于 Flask 框架开发，用于收集和分析测试用例的埋点数据。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="1-系统概述"><a href="#1-系统概述" class="headerlink" title="1. 系统概述"></a>1. 系统概述</h2><p>本系统基于 Flask 框架开发，用于收集和分析测试用例的埋点数据。系统架构包括：</p>
+<ul>
+<li>Flask 服务端：接收和处理测试用例的 JSON 数据</li>
+<li>MySQL 数据库：存储埋点数据和错误记录</li>
+<li>Docker 容器化部署：便于环境管理和部署</li>
+</ul>
+<p>项目代码：<a target="_blank" rel="noopener" href="https://gitee.com/zypdominate/api-track">ApiTrack: 测试埋点服务，python+flask+mysql</a></p>
+<h2 id="2-数据库环境搭建"><a href="#2-数据库环境搭建" class="headerlink" title="2. 数据库环境搭建"></a>2. 数据库环境搭建</h2><h3 id="2-1-使用-Docker-Compose-部署-MySQL"><a href="#2-1-使用-Docker-Compose-部署-MySQL" class="headerlink" title="2.1 使用 Docker Compose 部署 MySQL"></a>2.1 使用 Docker Compose 部署 MySQL</h3><p>创建 <code>docker-compose.yml</code> 文件：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">db:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">mysql:8.0</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">test-mysql-db</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">MYSQL_ROOT_PASSWORD:</span> <span class="string">root密码</span></span><br><span class="line">      <span class="attr">MYSQL_USER:</span> <span class="string">账号</span></span><br><span class="line">      <span class="attr">MYSQL_PASSWORD:</span> <span class="string">密码</span></span><br><span class="line">      <span class="attr">MYSQL_DATABASE:</span> <span class="string">test_track</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;3306:3306&quot;</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">mysql_data:/var/lib/mysql</span> <span class="comment"># 将数据卷挂载到 MySQL 数据目录</span></span><br><span class="line">    <span class="attr">command:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">--default-authentication-plugin=mysql_native_password</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">--authentication-policy=mysql_native_password</span></span><br><span class="line">    <span class="attr">networks:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">mysql-network</span></span><br><span class="line"></span><br><span class="line"><span class="attr">volumes:</span></span><br><span class="line">  <span class="attr">mysql_data:</span> <span class="comment"># 定义一个命名数据卷，用于持久化 MySQL 数据</span></span><br><span class="line"></span><br><span class="line"><span class="attr">networks:</span></span><br><span class="line">  <span class="attr">mysql-network:</span></span><br><span class="line">    <span class="attr">driver:</span> <span class="string">bridge</span></span><br></pre></td></tr></table></figure>
+
+<p><code>/var/lib/mysql</code> 是 <strong>容器内的路径</strong>，宿主机上对应的路径可能是 <code>/var/lib/docker/volumes/mysql-docker_mysql_data/_data</code>。</p>
+<ul>
+<li>通过 <code>docker exec</code> 确认了容器内该目录存在且包含数据，说明挂载成功。</li>
+<li>宿主机上无需直接操作 <code>/var/lib/mysql</code>（这是容器内部路径）。</li>
+</ul>
+<h3 id="2-2-启动-MySQL-服务"><a href="#2-2-启动-MySQL-服务" class="headerlink" title="2.2 启动 MySQL 服务"></a>2.2 启动 MySQL 服务</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 启动服务</span></span><br><span class="line">docker-compose up -d</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看容器状态</span></span><br><span class="line">docker-compose ps</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看启动日志</span></span><br><span class="line">docker-compose logs test-mysql-db</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重启服务</span></span><br><span class="line">docker-compose down &amp;&amp; docker-compose up -d</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-安装-MySQL-客户端"><a href="#2-3-安装-MySQL-客户端" class="headerlink" title="2.3 安装 MySQL 客户端"></a>2.3 安装 MySQL 客户端</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># CentOS/RHEL</span></span><br><span class="line"><span class="built_in">sudo</span> yum install mysql</span><br><span class="line"><span class="comment"># ubuntu</span></span><br><span class="line"><span class="built_in">sudo</span> apt install mysql-client</span><br><span class="line"></span><br><span class="line"><span class="comment"># Ubuntu/Debian</span></span><br><span class="line"><span class="built_in">sudo</span> apt-get install mysql-client</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-数据库操作"><a href="#3-数据库操作" class="headerlink" title="3. 数据库操作"></a>3. 数据库操作</h2><h3 id="3-1-连接数据库"><a href="#3-1-连接数据库" class="headerlink" title="3.1 连接数据库"></a>3.1 连接数据库</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -h 127.0.0.1 -P 3306 -u autotest -p</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-基本数据库操作"><a href="#3-2-基本数据库操作" class="headerlink" title="3.2 基本数据库操作"></a>3.2 基本数据库操作</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># 查看数据库</span><br><span class="line">SHOW DATABASES;</span><br><span class="line"></span><br><span class="line"># 使用数据库</span><br><span class="line">USE test_track;</span><br><span class="line"></span><br><span class="line"># 查看表</span><br><span class="line">SHOW TABLES;</span><br><span class="line"></span><br><span class="line"># 查询数据</span><br><span class="line">SELECT * FROM aw_info;</span><br><span class="line">SELECT * FROM aw_error_record;</span><br><span class="line">SHOW FULL COLUMNS FROM aw_statistics;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-数据库表结构管理"><a href="#3-3-数据库表结构管理" class="headerlink" title="3.3 数据库表结构管理"></a>3.3 数据库表结构管理</h3><h4 id="建表"><a href="#建表" class="headerlink" title="建表"></a>建表</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE aw_info (</span><br><span class="line">    aw_id INT(11) NOT NULL AUTO_INCREMENT,</span><br><span class="line">    method_name VARCHAR(255) NOT NULL,</span><br><span class="line">    class_name VARCHAR(255) NOT NULL,</span><br><span class="line">    model_name VARCHAR(255) NULL,</span><br><span class="line">    framework VARCHAR(45) NOT NULL,</span><br><span class="line">    call_count INT(11) NOT NULL DEFAULT 0,</span><br><span class="line">    last_call_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,</span><br><span class="line">    PRIMARY KEY (aw_id),</span><br><span class="line">    UNIQUE KEY (method_name)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">CREATE TABLE aw_error_record (</span><br><span class="line">    id INT(11) NOT NULL AUTO_INCREMENT,</span><br><span class="line">    aw_id INT(11) NULL,</span><br><span class="line">    aw_error_track LONGTEXT NULL,</span><br><span class="line">    time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,</span><br><span class="line">    result TINYINT(1) NULL,</span><br><span class="line">    sn VARCHAR(45) NULL,</span><br><span class="line">    isfixed TINYINT(1) NULL,</span><br><span class="line">    case_name VARCHAR(255) NULL,</span><br><span class="line">    PRIMARY KEY (id),</span><br><span class="line">    KEY (aw_id),</span><br><span class="line">    FOREIGN KEY (aw_id) REFERENCES aw_info(aw_id)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE aw_statistics (</span><br><span class="line">  id INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT &#x27;主键ID&#x27;,</span><br><span class="line">  aw_count INT UNSIGNED DEFAULT NULL COMMENT &#x27;总用例数&#x27;,</span><br><span class="line">  aw_executed_count INT UNSIGNED DEFAULT NULL COMMENT &#x27;执行的用例数&#x27;,</span><br><span class="line">  aw_avg_executed_count DOUBLE DEFAULT NULL COMMENT &#x27;平均执行次数&#x27;,</span><br><span class="line">  aw_executed_rate DOUBLE DEFAULT NULL COMMENT &#x27;执行率&#x27;,</span><br><span class="line">  aw_module_count INT UNSIGNED DEFAULT NULL COMMENT &#x27;模块数量&#x27;,</span><br><span class="line">  aw_error_rate DOUBLE DEFAULT NULL COMMENT &#x27;错误率&#x27;,</span><br><span class="line">  stat_time TIMESTAMP NULL DEFAULT NULL COMMENT &#x27;统计时间&#x27;,</span><br><span class="line">  PRIMARY KEY (id),</span><br><span class="line">  KEY idx_time (stat_time)</span><br><span class="line">) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT=&#x27;自动化统计表&#x27;;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="导出表结构"><a href="#导出表结构" class="headerlink" title="导出表结构"></a>导出表结构</h4><p>如果有现成的数据表，那么可以拿过来参考。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 导出指定表的结构（不包含数据）</span></span><br><span class="line">mysqldump -h 127.0.0.1 -u root -p --no-data test_track aw_error_record aw_info &gt; tables_structure.sql</span><br><span class="line"></span><br><span class="line"><span class="comment"># 传输到其他服务器</span></span><br><span class="line">scp tables_structure.sql autotest@10.xx.xxx.58:/home/autotest/work/test_track</span><br></pre></td></tr></table></figure>
+
+<h4 id="导入表结构"><a href="#导入表结构" class="headerlink" title="导入表结构"></a>导入表结构</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -h 127.0.0.1 -u autotest -p test_track &lt; tables_structure.sql</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-4-表结构修改"><a href="#3-4-表结构修改" class="headerlink" title="3.4 表结构修改"></a>3.4 表结构修改</h3><p>根据不同的 MySQL 版本选择合适的语法：</p>
+<h4 id="MySQL-8-0-及以上版本"><a href="#MySQL-8-0-及以上版本" class="headerlink" title="MySQL 8.0 及以上版本"></a>MySQL 8.0 及以上版本</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-- 重命名列</span><br><span class="line">ALTER TABLE aw_info RENAME COLUMN execute_times TO call_count;</span><br><span class="line">ALTER TABLE aw_info RENAME COLUMN last_execute_time TO last_call_time;</span><br><span class="line"></span><br><span class="line">-- 添加新列</span><br><span class="line">ALTER TABLE aw_error_record ADD COLUMN case_name VARCHAR(255) NULL COMMENT &#x27;testcase name&#x27;;</span><br><span class="line"></span><br><span class="line">-- 修改类型</span><br><span class="line">ALTER TABLE aw_statistics MODIFY COLUMN aw_avg_executed_count DOUBLE DEFAULT NULL;</span><br></pre></td></tr></table></figure>
+
+<h4 id="MySQL-5-7-及以下版本"><a href="#MySQL-5-7-及以下版本" class="headerlink" title="MySQL 5.7 及以下版本"></a>MySQL 5.7 及以下版本</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">-- 重命名列（需要重新指定完整定义）</span><br><span class="line">ALTER TABLE aw_info </span><br><span class="line">CHANGE COLUMN last_execute_time last_call_time TIMESTAMP NOT NULL </span><br><span class="line">DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;</span><br><span class="line"></span><br><span class="line">ALTER TABLE aw_info </span><br><span class="line">CHANGE COLUMN execute_times call_count INT(11) NOT NULL DEFAULT 0;</span><br><span class="line"></span><br><span class="line">-- 添加新列</span><br><span class="line">ALTER TABLE aw_error_record ADD COLUMN case_name VARCHAR(255) NULL COMMENT &#x27;testcase name&#x27;;</span><br><span class="line">ALTER TABLE aw_statistics ADD COLUMN framework ENUM(&#x27;all&#x27;, &#x27;pytest&#x27;, &#x27;androidtest&#x27;) DEFAULT &#x27;all&#x27; COMMENT &#x27;测试框架类型&#x27;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-5-查看表结构和关系"><a href="#3-5-查看表结构和关系" class="headerlink" title="3.5 查看表结构和关系"></a>3.5 查看表结构和关系</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 查看表结构</span></span><br><span class="line"><span class="keyword">DESC</span> aw_info;</span><br><span class="line"><span class="keyword">DESC</span> aw_error_record;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查看建表语句（仅提供 `DESC` 信息，没法完全判断这两张表存在外键关系，只有查看建表语句，才能确定。）</span></span><br><span class="line"><span class="keyword">SHOW</span> <span class="keyword">CREATE</span> <span class="keyword">TABLE</span> aw_error_record;</span><br><span class="line"><span class="keyword">SHOW</span> <span class="keyword">CREATE</span> <span class="keyword">TABLE</span> aw_info;</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-Flask-服务部署"><a href="#4-Flask-服务部署" class="headerlink" title="4. Flask 服务部署"></a>4. Flask 服务部署</h2><p>项目代码：<a target="_blank" rel="noopener" href="https://gitee.com/zypdominate/api-track">ApiTrack: 测试埋点服务，python+flask+mysql</a></p>
+<h3 id="4-1-创建部署脚本"><a href="#4-1-创建部署脚本" class="headerlink" title="4.1 创建部署脚本"></a>4.1 创建部署脚本</h3><p>创建 <code>start.sh</code> 脚本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># shellcheck disable=SC1090</span></span><br><span class="line"><span class="built_in">source</span> ~/tools/miniforge3/etc/profile.d/conda.sh</span><br><span class="line">conda activate testenvLinux</span><br><span class="line"><span class="built_in">which</span> python</span><br><span class="line">python --version</span><br><span class="line">flask --version</span><br><span class="line">gunicorn --version</span><br><span class="line">gunicorn -w 4 -b 0.0.0.0:5000 app:app --access-logfile gunicorn_access.log --error-logfile gunicorn_error.log</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-启动服务"><a href="#4-2-启动服务" class="headerlink" title="4.2 启动服务"></a>4.2 启动服务</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 给脚本添加执行权限</span></span><br><span class="line"><span class="built_in">chmod</span> +x start.sh</span><br><span class="line"></span><br><span class="line"><span class="comment"># 后台启动服务</span></span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">nohup</span> ./start.sh &gt;nohup.log 2&gt;&amp;1 &amp;</span><br></pre></td></tr></table></figure>
+
+<p>未来采用 systemd 用服务的方式管理：<a href="https://zypdominate.github.io/posts/2025/10/19/57786/">systemd 管理 Flask 服务实践 | Magnolia’s Blog</a>。</p>
+<h3 id="4-3-环境配置"><a href="#4-3-环境配置" class="headerlink" title="4.3 环境配置"></a>4.3 环境配置</h3><p>创建 <code>.env</code> 文件配置数据库连接：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">MYSQL_HOST=127.0.0.1</span><br><span class="line">MYSQL_PORT=3306</span><br><span class="line">MYSQL_USER=autotest</span><br><span class="line">MYSQL_PASSWORD=密码</span><br><span class="line">MYSQL_DATABASE=test_track</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong> 如果 <code>.env</code> 文件在 Windows 系统中编辑，传输到 Linux 后可能包含隐藏的回车符，需要清理：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed -i <span class="string">&#x27;s/\r$//&#x27;</span> .<span class="built_in">env</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="5-常见问题排查"><a href="#5-常见问题排查" class="headerlink" title="5. 常见问题排查"></a>5. 常见问题排查</h2><h3 id="5-1-Docker-网络问题"><a href="#5-1-Docker-网络问题" class="headerlink" title="5.1 Docker 网络问题"></a>5.1 Docker 网络问题</h3><p><strong>错误信息：</strong> <code>network not found</code></p>
+<p><strong>解决方案：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 清理残留容器和网络</span></span><br><span class="line">docker-compose down -v</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重新启动</span></span><br><span class="line">docker-compose up -d</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-2-MySQL-连接问题"><a href="#5-2-MySQL-连接问题" class="headerlink" title="5.2 MySQL 连接问题"></a>5.2 MySQL 连接问题</h3><p><strong>错误信息：</strong> <code>Can&#39;t connect to MySQL server</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;error&quot;: &quot;(pymysql.err.OperationalError) (2003, \&quot;Can&#x27;t connect to MySQL server on &#x27;127.0.0.1\\\\r&#x27; ([Errno -2] Name or service not known)\&quot;)\n(Background on this error at: https://sqlalche.me/e/20/e3q8)&quot;&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>原因和解决方案：</strong></p>
+<p><code>.env</code> 文件中的配置包含隐藏的 <code>\r</code> 字符</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed -i <span class="string">&#x27;s/\r$//&#x27;</span> .<span class="built_in">env</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="5-3-数据卷管理"><a href="#5-3-数据卷管理" class="headerlink" title="5.3 数据卷管理"></a>5.3 数据卷管理</h3><p><strong>查看数据卷信息：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看卷列表</span></span><br><span class="line">docker volume <span class="built_in">ls</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查卷详情</span></span><br><span class="line">docker volume inspect test_track_mysql_data</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查容器内数据目录</span></span><br><span class="line">docker <span class="built_in">exec</span> -it test-mysql-db <span class="built_in">ls</span> /var/lib/mysql</span><br></pre></td></tr></table></figure>
+
+<p><strong>说明：</strong> Docker Compose 使用 <code>&lt;项目名&gt;_&lt;卷名&gt;</code> 格式创建卷，实际卷名为 <code>test_track_mysql_data</code>。</p>
+<h3 id="5-4-命令执行"><a href="#5-4-命令执行" class="headerlink" title="5.4 命令执行"></a>5.4 命令执行</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看容器状态</span></span><br><span class="line">docker-compose ps</span><br><span class="line">NAME           IMAGE       COMMAND                   SERVICE   CREATED          STATUS          PORTS</span><br><span class="line">test-mysql-db   mysql:8.0   <span class="string">&quot;docker-entrypoint.s…&quot;</span>   db        42 minutes ago   Up 42 minutes   0.0.0.0:3306-&gt;3306/tcp, 33060/tcp</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看容器 MySQL 启动日志</span></span><br><span class="line">docker-compose logs test-mysql-db</span><br><span class="line"><span class="comment"># 重启</span></span><br><span class="line">docker-compose down &amp;&amp; docker-compose up -d</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查用户认证插件</span></span><br><span class="line">docker-compose <span class="built_in">exec</span> db mysql -u root -p -e <span class="string">&quot;SELECT user, host, plugin FROM mysql.user WHERE user=&#x27;autotest&#x27;;&quot;</span></span><br><span class="line">Enter password:</span><br><span class="line">+----------+------+-----------------------+</span><br><span class="line">| user     | host | plugin                |</span><br><span class="line">+----------+------+-----------------------+</span><br><span class="line">| autotest | %    | mysql_native_password |</span><br><span class="line">+----------+------+-----------------------+</span><br><span class="line"><span class="comment"># 检查认证插件设置是否生效</span></span><br><span class="line">docker-compose <span class="built_in">exec</span> db mysql -u autotest -p -e <span class="string">&quot;SHOW VARIABLES LIKE &#x27;default_authentication_plugin&#x27;;&quot;</span></span><br><span class="line">Enter password:</span><br><span class="line">+-------------------------------+-----------------------+</span><br><span class="line">| Variable_name                 | Value                 |</span><br><span class="line">+-------------------------------+-----------------------+</span><br><span class="line">| default_authentication_plugin | mysql_native_password |</span><br><span class="line">+-------------------------------+-----------------------+</span><br><span class="line"></span><br><span class="line"><span class="comment"># 容器内数据目录正常</span></span><br><span class="line">docker <span class="built_in">exec</span> -it test-mysql-db <span class="built_in">ls</span> /var/lib/mysql</span><br><span class="line"><span class="comment"># 查看卷列表</span></span><br><span class="line">docker volume <span class="built_in">ls</span></span><br><span class="line">DRIVER    VOLUME NAME</span><br><span class="line"><span class="built_in">local</span>     mysql-docker_mysql_data</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查卷详情（包括存储路径）</span></span><br><span class="line">docker volume inspect  mysql-docker_mysql_data</span><br><span class="line">[</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">&quot;CreatedAt&quot;</span>: <span class="string">&quot;2025-07-20T15:02:01+08:00&quot;</span>,</span><br><span class="line">        <span class="string">&quot;Driver&quot;</span>: <span class="string">&quot;local&quot;</span>,</span><br><span class="line">        <span class="string">&quot;Labels&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;com.docker.compose.project&quot;</span>: <span class="string">&quot;mysql-docker&quot;</span>,</span><br><span class="line">            <span class="string">&quot;com.docker.compose.version&quot;</span>: <span class="string">&quot;1.29.2&quot;</span>,</span><br><span class="line">            <span class="string">&quot;com.docker.compose.volume&quot;</span>: <span class="string">&quot;mysql_data&quot;</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="string">&quot;Mountpoint&quot;</span>: <span class="string">&quot;/var/lib/docker/volumes/mysql-docker_mysql_data/_data&quot;</span>,</span><br><span class="line">        <span class="string">&quot;Name&quot;</span>: <span class="string">&quot;mysql-docker_mysql_data&quot;</span>,</span><br><span class="line">        <span class="string">&quot;Options&quot;</span>: null,</span><br><span class="line">        <span class="string">&quot;Scope&quot;</span>: <span class="string">&quot;local&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">]</span><br><span class="line"><span class="comment"># Docker Compose 默认会使用 &lt;项目名&gt;_&lt;卷名&gt; 的格式创建卷。</span></span><br><span class="line"><span class="comment"># 这里项目名是 mysql-docker，所以实际创建的卷名是 mysql-docker_mysql_data，而不是 mysql_data。</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="6-系统维护"><a href="#6-系统维护" class="headerlink" title="6. 系统维护"></a>6. 系统维护</h2><h3 id="6-1-日志管理"><a href="#6-1-日志管理" class="headerlink" title="6.1 日志管理"></a>6.1 日志管理</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看 Flask 服务日志</span></span><br><span class="line"><span class="built_in">tail</span> -f nohup.log</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看 Gunicorn 访问日志</span></span><br><span class="line"><span class="built_in">tail</span> -f gunicorn_access.log</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看 Gunicorn 错误日志</span></span><br><span class="line"><span class="built_in">tail</span> -f gunicorn_error.log</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看 MySQL 容器日志</span></span><br><span class="line">docker-compose logs -f test-mysql-db</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-2-数据备份"><a href="#6-2-数据备份" class="headerlink" title="6.2 数据备份"></a>6.2 数据备份</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 备份整个数据库</span></span><br><span class="line">mysqldump -h 127.0.0.1 -u root -p test_track &gt; test_track_backup.sql</span><br><span class="line"></span><br><span class="line"><span class="comment"># 备份指定表</span></span><br><span class="line">mysqldump -h 127.0.0.1 -u root -p test_track aw_info aw_error_record &gt; tables_backup.sql</span><br><span class="line"></span><br><span class="line"><span class="comment"># 恢复数据库</span></span><br><span class="line">mysql -h 127.0.0.1 -u root -p test_track &lt; test_track_backup.sql</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-3-性能监控"><a href="#6-3-性能监控" class="headerlink" title="6.3 性能监控"></a>6.3 性能监控</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看 MySQL 进程</span></span><br><span class="line">docker-compose <span class="built_in">exec</span> db mysql -u root -p -e <span class="string">&quot;SHOW PROCESSLIST;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看表状态</span></span><br><span class="line">docker-compose <span class="built_in">exec</span> db mysql -u root -p -e <span class="string">&quot;SHOW TABLE STATUS FROM test_track;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看系统资源使用情况</span></span><br><span class="line">docker stats test-mysql-db</span><br></pre></td></tr></table></figure>
+
+<h2 id="7-API-接口使用"><a href="#7-API-接口使用" class="headerlink" title="7. API 接口使用"></a>7. API 接口使用</h2><h3 id="7-1-埋点数据上传"><a href="#7-1-埋点数据上传" class="headerlink" title="7.1 埋点数据上传"></a>7.1 埋点数据上传</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 示例：上传测试用例结果</span></span><br><span class="line">curl -X POST http://localhost:5000/api/upload \</span><br><span class="line">  -H <span class="string">&quot;Content-Type: application/json&quot;</span> \</span><br><span class="line">  -d <span class="string">&#x27;&#123;&quot;test_case&quot;: &quot;example_test&quot;, &quot;result&quot;: &quot;success&quot;, &quot;timestamp&quot;: &quot;2025-06-13T10:00:00&quot;&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="7-2-数据查询"><a href="#7-2-数据查询" class="headerlink" title="7.2 数据查询"></a>7.2 数据查询</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查询埋点统计信息</span></span><br><span class="line">curl -X GET http://localhost:5000/api/stats</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查询错误记录</span></span><br><span class="line">curl -X GET http://localhost:5000/api/errors</span><br></pre></td></tr></table></figure>
+
+<h2 id="8-总结"><a href="#8-总结" class="headerlink" title="8. 总结"></a>8. 总结</h2><p>本系统通过 Docker 容器化部署，提供了稳定的 MySQL 数据库环境，配合 Flask 服务实现了完整的埋点数据收集和分析功能。在使用过程中需要注意：</p>
+<ol>
+<li>根据 MySQL 版本选择合适的 SQL 语法</li>
+<li>注意文件编码问题，避免隐藏字符影响配置</li>
+<li>定期备份数据，监控系统运行状态</li>
+<li>合理配置日志级别，便于问题排查</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/Flask/" rel="tag"># Flask</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2025/05/31/34484/" rel="prev" title="pytest中fixture与类继承交互导致的问题">
+                  <i class="fa fa-angle-left"></i> pytest中fixture与类继承交互导致的问题
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2025/06/22/22150/" rel="next" title="AI辅助生成mermaid流程图">
+                  AI辅助生成mermaid流程图 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">720k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:54</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>
