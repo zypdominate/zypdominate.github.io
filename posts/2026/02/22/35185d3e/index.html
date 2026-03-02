@@ -27,7 +27,7 @@
 <meta property="og:description" content="使用电脑时会受到 C 盘空间不足的困扰，清理过不久后，问题又会重现，现在BAT 一键清理 + 目录软链接就搞定。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2026-02-22T15:00:00.000Z">
-<meta property="article:modified_time" content="2026-02-22T17:09:15.592Z">
+<meta property="article:modified_time" content="2026-03-02T16:12:18.112Z">
 <meta property="article:author" content="Magnolia">
 <meta property="article:tag" content="tips">
 <meta name="twitter:card" content="summary">
@@ -289,7 +289,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>3k</span>
+      <span>3.1k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -329,21 +329,20 @@
 <p>可以看到 <code>C:\Users\username\AppData\Local\</code> 目录下的 JetBrains 是一个链接的图标，双击可以看到 <code>D:\softwaredata\AppData\JetBrains</code> 中的文件。</p>
 <p>此时 C 盘的占用空间顿时小了很多。</p>
 <p>同样的，对于其他占用空间大的目录，也可以做同样的操作。</p>
+<p><strong>注意</strong>：有些文件夹是系统生成的，或者绑定了当前运行的很多后台程序，无法停止，所以最好不要使用此方法，不用管此类文件夹。</p>
 <hr>
 <h2 id="脚本清理"><a href="#脚本清理" class="headerlink" title="脚本清理"></a>脚本清理</h2><p>清理以下内容：用户临时文件 (%temp%)、系统临时文件、Prefetch 预取文件、系统日志 (.log)、SoftwareDistribution、可能占用几GB回收站。</p>
 <p>配置定时任务，使用 <strong>任务计划程序</strong> 是最简单的方式。</p>
 <p>1、 打开任务计划程序</p>
 <p><code>Win + R</code> → 输入 <code>taskschd.msc</code> → 回车</p>
-<hr>
 <p>2、创建任务</p>
-<p>右侧点击 **”创建任务”**（不是”创建基本任务”，选项更完整）</p>
+<p>右侧点击 <strong>“创建任务”</strong> （不是”创建基本任务”，选项更完整）</p>
 <p><strong>常规 选项卡：</strong></p>
 <ul>
 <li>名称：随便填，如 <code>MyClearC</code></li>
 <li>勾选 <strong>“使用最高权限运行”</strong></li>
 <li>配置：选 <code>Windows 10</code> 或对应系统版本</li>
 </ul>
-<hr>
 <p>3、触发器（定时）</p>
 <p>点 <strong>新建</strong>，按需选择：</p>
 <ul>
@@ -351,7 +350,6 @@
 <li>每月执行一次 → 选 <code>每月</code></li>
 </ul>
 <p>建议选一个电脑常开但自己不在用的时间，比如每周日凌晨 3:00。</p>
-<hr>
 <p>4、操作</p>
 <p>点 <strong>新建</strong>：</p>
 <ul>
@@ -360,20 +358,19 @@
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\Scripts\clean.bat</span><br></pre></td></tr></table></figure>
 
-<hr>
 <p>5、条件 &amp; 设置（可选优化）</p>
 <p><strong>条件 选项卡：</strong></p>
 <ul>
-<li>取消勾选 **”只在计算机使用交流电源时才启动此任务”**（笔记本用户建议保留）</li>
+<li>取消勾选 <strong>“只在计算机使用交流电源时才启动此任务”</strong> （笔记本用户建议保留）</li>
 </ul>
 <p><strong>设置 选项卡：</strong></p>
 <ul>
 <li>勾选 <strong>“如果任务失败，按以下频率重新启动”</strong> → 1分钟，重试 3 次</li>
 </ul>
-<hr>
 <p>6、保存</p>
 <p>点确定，会提示输入当前账户密码，输入后即保存成功。</p>
 <p>之后可以在任务列表里右键 → <strong>“运行”</strong> 手动触发一次，确认脚本能正常以管理员权限执行。</p>
+<hr>
 <p>清理脚本：</p>
 <figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">@<span class="built_in">echo</span> off</span><br><span class="line"><span class="built_in">title</span> Windows 清理脚本</span><br><span class="line"><span class="built_in">color</span> <span class="number">0</span>A</span><br><span class="line"></span><br><span class="line">:: 检查管理员权限</span><br><span class="line"><span class="built_in">net</span> session &gt;<span class="built_in">nul</span> <span class="number">2</span>&gt;&amp;<span class="number">1</span></span><br><span class="line"><span class="keyword">if</span> <span class="variable">%errorlevel%</span> <span class="keyword">neq</span> <span class="number">0</span> (</span><br><span class="line">    <span class="built_in">echo</span> 请以管理员身份运行此脚本！</span><br><span class="line">    <span class="built_in">pause</span></span><br><span class="line">    <span class="keyword">exit</span> /b</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> ============================================</span><br><span class="line"><span class="built_in">echo</span>      正在进行深度清理，请稍候...</span><br><span class="line"><span class="built_in">echo</span> ============================================</span><br><span class="line"></span><br><span class="line">:: <span class="number">1</span>. 清理用户临时文件</span><br><span class="line"><span class="built_in">echo</span> 正在清理用户临时文件...</span><br><span class="line"><span class="built_in">del</span> /f /s /q &quot;<span class="variable">%temp%</span>\*.*&quot; &gt;<span class="built_in">nul</span> <span class="number">2</span>&gt;&amp;<span class="number">1</span></span><br><span class="line"><span class="keyword">for</span> /d <span class="variable">%%i</span> <span class="keyword">in</span> (&quot;<span class="variable">%temp%</span>\*&quot;) <span class="keyword">do</span> <span class="built_in">rd</span> /s /q &quot;<span class="variable">%%i</span>&quot; &gt;<span class="built_in">nul</span> <span class="number">2</span>&gt;&amp;<span class="number">1</span></span><br><span class="line"></span><br><span class="line">:: <span class="number">2</span>. 清理系统临时文件（Temp 和 temp 是同一目录，只需清理一次）</span><br><span class="line"><span class="built_in">echo</span> 正在清理系统临时文件...</span><br><span class="line"><span class="built_in">del</span> /f /s /q &quot;<span class="variable">%systemroot%</span>\Temp\*.*&quot; &gt;<span class="built_in">nul</span> <span class="number">2</span>&gt;&amp;<span class="number">1</span></span><br><span class="line"><span class="keyword">for</span> /d <span class="variable">%%i</span> <span class="keyword">in</span> (&quot;<span class="variable">%systemroot%</span>\Temp\*&quot;) <span class="keyword">do</span> <span class="built_in">rd</span> /s /q &quot;<span class="variable">%%i</span>&quot; &gt;<span class="built_in">nul</span> <span class="number">2</span>&gt;&amp;<span class="number">1</span></span><br><span class="line"></span><br><span class="line">:: <span class="number">3</span>. 清理预取文件</span><br><span class="line"><span class="built_in">echo</span> 正在清理预取文件...</span><br><span class="line"><span class="built_in">del</span> /f /s /q &quot;<span class="variable">%systemroot%</span>\Prefetch\*.*&quot; &gt;<span class="built_in">nul</span> <span class="number">2</span>&gt;&amp;<span class="number">1</span></span><br><span class="line"></span><br><span class="line">:: <span class="number">4</span>. 清理系统日志文件</span><br><span class="line"><span class="built_in">echo</span> 正在清理系统日志...</span><br><span class="line"><span class="built_in">del</span> /f /s /q &quot;<span class="variable">%systemroot%</span>\*.log&quot; &gt;<span class="built_in">nul</span> <span class="number">2</span>&gt;&amp;<span class="number">1</span></span><br><span class="line"></span><br><span class="line">:: <span class="number">5</span>. 停止 Windows 更新服务，清理下载缓存，并禁用服务</span><br><span class="line"><span class="built_in">echo</span> 正在处理 Windows 更新相关文件...</span><br><span class="line"><span class="built_in">net</span> stop wuauserv &gt;<span class="built_in">nul</span> <span class="number">2</span>&gt;&amp;<span class="number">1</span></span><br><span class="line"><span class="built_in">net</span> stop bits &gt;<span class="built_in">nul</span> <span class="number">2</span>&gt;&amp;<span class="number">1</span></span><br><span class="line"><span class="built_in">del</span> /f /s /q &quot;<span class="variable">%systemroot%</span>\SoftwareDistribution\Download\*.*&quot; &gt;<span class="built_in">nul</span> <span class="number">2</span>&gt;&amp;<span class="number">1</span></span><br><span class="line"><span class="keyword">for</span> /d <span class="variable">%%i</span> <span class="keyword">in</span> (&quot;<span class="variable">%systemroot%</span>\SoftwareDistribution\Download\*&quot;) <span class="keyword">do</span> <span class="built_in">rd</span> /s /q &quot;<span class="variable">%%i</span>&quot; &gt;<span class="built_in">nul</span> <span class="number">2</span>&gt;&amp;<span class="number">1</span></span><br><span class="line">sc config wuauserv <span class="built_in">start</span>= disabled &gt;<span class="built_in">nul</span> <span class="number">2</span>&gt;&amp;<span class="number">1</span></span><br><span class="line">sc config bits <span class="built_in">start</span>= disabled &gt;<span class="built_in">nul</span> <span class="number">2</span>&gt;&amp;<span class="number">1</span></span><br><span class="line"><span class="built_in">echo</span> Windows 更新服务已清理并设为禁用状态。</span><br><span class="line"></span><br><span class="line">:: <span class="number">6</span>. 清理回收站（只删除内容，不删除目录本身）</span><br><span class="line"><span class="built_in">echo</span> 正在清空回收站...</span><br><span class="line"><span class="keyword">for</span> /d <span class="variable">%%i</span> <span class="keyword">in</span> (&quot;<span class="variable">%systemdrive%</span>\$Recycle.Bin\*&quot;) <span class="keyword">do</span> <span class="built_in">rd</span> /s /q &quot;<span class="variable">%%i</span>&quot; &gt;<span class="built_in">nul</span> <span class="number">2</span>&gt;&amp;<span class="number">1</span></span><br><span class="line"><span class="built_in">del</span> /f /s /q &quot;<span class="variable">%systemdrive%</span>\$Recycle.Bin\*.*&quot; &gt;<span class="built_in">nul</span> <span class="number">2</span>&gt;&amp;<span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> ============================================</span><br><span class="line"><span class="built_in">echo</span>      清理完成！</span><br><span class="line"><span class="built_in">echo</span> ============================================</span><br><span class="line"><span class="built_in">pause</span></span><br></pre></td></tr></table></figure>
 
