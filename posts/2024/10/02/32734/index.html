@@ -27,7 +27,7 @@
 <meta property="og:description" content="使用 Github Page 来搭建部署自己的博客，踩坑并解决一些bug">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2024-10-02T04:22:28.000Z">
-<meta property="article:modified_time" content="2026-03-02T16:44:51.964Z">
+<meta property="article:modified_time" content="2026-03-02T16:59:30.707Z">
 <meta property="article:author" content="Magnolia">
 <meta property="article:tag" content="github">
 <meta property="article:tag" content="hexo">
@@ -180,7 +180,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">131</span>
+          <span class="site-state-item-count">132</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -191,7 +191,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">45</span>
+        <span class="site-state-item-count">44</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -291,7 +291,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>8.1k</span>
+      <span>8k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -389,15 +389,16 @@
 
 
 
-<h4 id="RSS-订阅"><a href="#RSS-订阅" class="headerlink" title="RSS 订阅"></a>RSS 订阅</h4><p>安装 RSS 生成插件（你当前项目里还没有）</p>
-<p>  npm install hexo-generator-feed –save</p>
+<h4 id="RSS-订阅"><a href="#RSS-订阅" class="headerlink" title="RSS 订阅"></a>RSS 订阅</h4><p>安装 RSS 生成插件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-generator-feed --save</span><br></pre></td></tr></table></figure>
+
 <p>在项目根目录的 _config.yml 增加（或合并）feed 配置</p>
-<p>  feed:<br>    type: atom<br>    path: atom.xml<br>    limit: 20</p>
-<p>在 _config.next.yml 的 social: 下加一行 RSS（会显示在侧边栏社交链接）</p>
-<p>  social:<br>    RSS: &#x2F;atom.xml || fa fa-rss</p>
-<p>重新生成验证</p>
-<p>  npm run clean<br>  npm run build<br>  npm run server</p>
-<p>然后访问 <a target="_blank" rel="noopener" href="http://localhost:4000/atom.xml%EF%BC%8C%E8%83%BD%E6%89%93%E5%BC%80%E5%B0%B1%E8%AF%B4%E6%98%8E">http://localhost:4000/atom.xml，能打开就说明</a> RSS 正常，侧边栏也会出现订阅入口。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">feed:</span><br><span class="line">  type: atom</span><br><span class="line">  path: atom.xml</span><br><span class="line">  limit: 20</span><br></pre></td></tr></table></figure>
+
+<p>在 _config.next.yml 的 social 或者 menu 下加一行 RSS（会显示在侧边栏社交链接）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">social:</span><br><span class="line">  RSS: /atom.xml || fa fa-rss</span><br><span class="line"></span><br><span class="line">menu:</span><br><span class="line">  RSS: /atom.xml || fa fa-rss</span><br></pre></td></tr></table></figure>
+
+<p>重新生成验证，侧边栏会出现订阅入口。</p>
 <hr>
 <h3 id="遇到的报错问题并解决"><a href="#遇到的报错问题并解决" class="headerlink" title="遇到的报错问题并解决"></a>遇到的报错问题并解决</h3><h4 id="文章摘要显示数字"><a href="#文章摘要显示数字" class="headerlink" title="文章摘要显示数字"></a>文章摘要显示数字</h4><p>解决：</p>
 <p>在文章的 <code>front-matter</code> 中添加 <code>description: xxx</code>，description 的内容就是被显示在首页上，其他的不显示。</p>
@@ -515,13 +516,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Word count total">720k</span>
+    <span title="Word count total">729k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">10:54</span>
+    <span title="Reading time total">11:03</span>
   </span>
 </div>
 <div class="busuanzi-count">
