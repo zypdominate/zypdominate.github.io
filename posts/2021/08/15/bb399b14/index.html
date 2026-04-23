@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="本文详细介绍了Python编程规范，包括PEP8和Google风格指南，强调了统一规范的重要性，如命名规则、导入规范和代码简洁性。还讨论了如何使用自动化工具整合进开发流程，如linter和代码评审。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python 代码规范">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2021/08/15/bb399b14/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="本文详细介绍了Python编程规范，包括PEP8和Google风格指南，强调了统一规范的重要性，如命名规则、导入规范和代码简洁性。还讨论了如何使用自动化工具整合进开发流程，如linter和代码评审。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-08-15T08:42:46.000Z">
+<meta property="article:modified_time" content="2026-04-23T15:38:56.478Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2021/08/15/bb399b14/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2021/08/15/bb399b14/","path":"posts/2021/08/15/bb399b14/","title":"Python 代码规范"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Python 代码规范 | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="Magnolia's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-rss"><a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>RSS</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%84%E8%8C%83%E5%8F%82%E8%80%83"><span class="nav-text">规范参考</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%9F%E4%B8%80%E7%9A%84%E7%BC%96%E7%A8%8B%E8%A7%84%E8%8C%83%E7%9A%84%E9%87%8D%E8%A6%81%E6%80%A7"><span class="nav-text">统一的编程规范的重要性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%BE%E4%BE%8B%E8%AF%B4%E6%98%8E"><span class="nav-text">举例说明</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B4%E5%90%88%E8%BF%9B%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B%E7%9A%84%E8%87%AA%E5%8A%A8%E5%8C%96%E5%B7%A5%E5%85%B7"><span class="nav-text">整合进开发流程的自动化工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%88%E7%90%86%E5%88%86%E8%A7%A3%E4%BB%A3%E7%A0%81"><span class="nav-text">合理分解代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%88%E7%90%86%E5%88%A9%E7%94%A8-assert"><span class="nav-text">合理利用 assert</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B7%A7%E7%94%A8%E4%B8%8A%E4%B8%8B%E6%96%87%E7%AE%A1%E7%90%86%E5%99%A8%E5%92%8Cwith%E7%B2%BE%E7%AE%80%E4%BB%A3%E7%A0%81"><span class="nav-text">巧用上下文管理器和with精简代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95"><span class="nav-text">单元测试</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#mock"><span class="nav-text">mock</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Mock-Side-Effect"><span class="nav-text">Mock Side Effect</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#patch"><span class="nav-text">patch</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B0%83%E8%AF%95%E4%BB%A3%E7%A0%81"><span class="nav-text">调试代码</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8-pdb"><span class="nav-text">如何使用 pdb</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%94%A8-cProfile-%E8%BF%9B%E8%A1%8C%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90"><span class="nav-text">用 cProfile 进行性能分析</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="nav-text">常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86"><span class="nav-text">异常处理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96%E6%97%B6%E9%97%B4"><span class="nav-text">代码优化时间</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E4%B8%AD%E5%86%99%E5%A4%9A%E5%B0%91%E6%B3%A8%E9%87%8A%E5%90%88%E9%80%82"><span class="nav-text">代码中写多少注释合适</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">136</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2021/08/15/bb399b14/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Python 代码规范 | Magnolia's Blog">
+      <meta itemprop="description" content="本文详细介绍了Python编程规范，包括PEP8和Google风格指南，强调了统一规范的重要性，如命名规则、导入规范和代码简洁性。还讨论了如何使用自动化工具整合进开发流程，如linter和代码评审。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Python 代码规范
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-08-15 16:42:46" itemprop="dateCreated datePublished" datetime="2021-08-15T16:42:46+08:00">2021-08-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>11k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>10 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">本文详细介绍了Python编程规范，包括PEP8和Google风格指南，强调了统一规范的重要性，如命名规则、导入规范和代码简洁性。还讨论了如何使用自动化工具整合进开发流程，如linter和代码评审。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h4 id="规范参考"><a href="#规范参考" class="headerlink" title="规范参考"></a>规范参考</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://peps.python.org/pep-0008/">PEP 8 – Style Guide for Python Code | peps.python.org</a></li>
+<li><a target="_blank" rel="noopener" href="https://wangmeng-python.readthedocs.io/en/latest/readability/PEP8.html">PEP 8 – the Style Guide for Python Code — wangmeng-python documentation</a></li>
+<li><a target="_blank" rel="noopener" href="http://google.github.io/styleguide/pyguide.html">《Google Python 风格规范》</a>，源自 Google 内部的风格规范。</li>
+</ul>
+<hr>
+<h4 id="统一的编程规范的重要性"><a href="#统一的编程规范的重要性" class="headerlink" title="统一的编程规范的重要性"></a>统一的编程规范的重要性</h4><p>统一的编程规范能提高开发效率。而开发效率，关乎三类对象，也就是阅读者、编程者和机器。</p>
+<p>他们的优先级是 <code>阅读者的体验 &gt;&gt; 编程者的体验 &gt;&gt; 机器的体验</code>。</p>
+<p>实际工作中，真正在打字的时间，远比阅读或者 debug 的时间要少。研究表明，软件工程中 80% 的时间都在阅读代码。 所以，为了提高效率，我们要优化的，不是你的打字时间，而是团队阅读的体验。</p>
+<hr>
+<h4 id="举例说明"><a href="#举例说明" class="headerlink" title="举例说明"></a>举例说明</h4><p><strong>命名规范</strong></p>
+<p>命名必须有意义，不能是无意义的单字母。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 错误示例</span></span><br><span class="line"><span class="keyword">if</span> (a &lt;= <span class="number">0</span>):</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line"><span class="keyword">elif</span> (a &gt; b):</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    b -= a</span><br><span class="line"></span><br><span class="line"><span class="comment"># 正确示例</span></span><br><span class="line"><span class="keyword">if</span> (transfer_amount &lt;= <span class="number">0</span>):</span><br><span class="line">    <span class="keyword">raise</span> Exception(<span class="string">&#x27;...&#x27;</span>)</span><br><span class="line"><span class="keyword">elif</span> (transfer_amount &gt; balance):</span><br><span class="line">    <span class="keyword">raise</span> Exception(<span class="string">&#x27;...&#x27;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    balance -= transfer_amount</span><br></pre></td></tr></table></figure>
+
+<p><strong>导包</strong></p>
+<p>Google Style 中规定，Python 代码中的 import 对象，只能是 package 或者 module 。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 错误示例</span></span><br><span class="line"><span class="keyword">from</span> mypkg <span class="keyword">import</span> Obj</span><br><span class="line"><span class="keyword">from</span> mypkg <span class="keyword">import</span> my_func</span><br><span class="line">my_func([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 正确示例</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> mypkg</span><br><span class="line">np.array([<span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>])</span><br><span class="line">mypkg.my_func([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br></pre></td></tr></table></figure>
+
+<p>因为 my_func 这样的名字，如果没有一个 package name 提供上下文语境，读者很难单独通过 my_func 这个名字来推测它的可能功能，也很难在 debug 时根据 package name 找到可能的问题。</p>
+<p><strong>勿过度简化代码</strong></p>
+<p>代码应该写起来让人看着简洁明了，而非看着很累。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 错误示范</span></span><br><span class="line">result = [(x, y) <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>) <span class="keyword">for</span> y <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>) <span class="keyword">if</span> x * y &gt; <span class="number">20</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 正确示范</span></span><br><span class="line">result = []</span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>):</span><br><span class="line">    <span class="keyword">for</span> y <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>):</span><br><span class="line">        <span class="keyword">if</span> x * y &gt; <span class="number">20</span>:</span><br><span class="line">            result.append((x, y))</span><br></pre></td></tr></table></figure>
+
+<p><strong>机器体验</strong></p>
+<p>避免去用 is 比较两个 Python 整数的地址。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 错误示例</span></span><br><span class="line">x = <span class="number">27</span></span><br><span class="line">y = <span class="number">27</span></span><br><span class="line"><span class="built_in">print</span>(x <span class="keyword">is</span> y)</span><br><span class="line">x = <span class="number">721</span></span><br><span class="line">y = <span class="number">721</span></span><br><span class="line"><span class="built_in">print</span>(x <span class="keyword">is</span> y)</span><br></pre></td></tr></table></figure>
+
+<p>在 CPython 的实现中，把 -5 到 256 的整数做成了 singleton，也就是说，这个区间里的数字都会引用同一块内存区域，所以上面的 27 和下面的 27 会指向同一个地址，运行结果为 True。但是 -5 到 256 之外的数字，会因为你的重新定义而被重新分配内存，所以两个 721 会指向不同的内存地址，结果也就是 False 了。  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 正确示例</span></span><br><span class="line">x = <span class="number">27</span></span><br><span class="line">y = <span class="number">27</span></span><br><span class="line"><span class="built_in">print</span>(x == y)</span><br><span class="line">x = <span class="number">721</span></span><br><span class="line">y = <span class="number">721</span></span><br><span class="line"><span class="built_in">print</span>(x == y)</span><br></pre></td></tr></table></figure>
+
+<p>和 None 比较时候永远使用 is 。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 错误示范</span></span><br><span class="line">x = MyObject()</span><br><span class="line"><span class="built_in">print</span>(x == <span class="literal">None</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 正确示例</span></span><br><span class="line">x = MyObject()</span><br><span class="line"><span class="built_in">print</span>(x <span class="keyword">is</span> <span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+
+<p>Python 中的隐式布尔转换</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 错误示范</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">pay</span>(<span class="params">salary=<span class="literal">None</span></span>):</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> salary:</span><br><span class="line">        salary = <span class="number">1</span></span><br><span class="line">    <span class="built_in">print</span>(salary)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 正确示范</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">pay</span>(<span class="params">salary=<span class="literal">None</span></span>):</span><br><span class="line">    <span class="keyword">if</span> salary <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">        salary = <span class="number">1</span></span><br><span class="line">    <span class="built_in">print</span>(salary)</span><br></pre></td></tr></table></figure>
+
+<p>不规范的编程习惯也会导致程序效率问题  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 错误示例</span></span><br><span class="line">adict = &#123;i: i * <span class="number">2</span> <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">100</span>)&#125;</span><br><span class="line"><span class="keyword">for</span> key <span class="keyword">in</span> adict.keys():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;key&#125;</span>:<span class="subst">&#123;adict[key]&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 正确示范</span></span><br><span class="line"><span class="keyword">for</span> key <span class="keyword">in</span> adict:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;key&#125;</span>:<span class="subst">&#123;adict[key]&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>keys() 方法会在遍历前生成一个临时的列表，导致上面的代码消耗大量内存并且运行缓慢。正确的方式，是使用默认的 iterator。默认的 iterator 不会分配新内存，也就不会造成上面的性能问题。</p>
+<hr>
+<h4 id="整合进开发流程的自动化工具"><a href="#整合进开发流程的自动化工具" class="headerlink" title="整合进开发流程的自动化工具"></a>整合进开发流程的自动化工具</h4><p>强制代码评审和强制静态或者动态 linter  。</p>
+<p>在代码评审工具里，添加必须的编程规范环节；把团队确定的代码规范写进 Pylint 里（<a target="_blank" rel="noopener" href="https://www.pylint.org/%EF%BC%89%EF%BC%8C%E8%83%BD%E5%A4%9F%E5%9C%A8%E6%AF%8F%E4%BB%BD%E4%BB%A3%E7%A0%81%E6%8F%90%E4%BA%A4%E5%89%8D%E8%87%AA%E5%8A%A8%E6%A3%80%E6%9F%A5%EF%BC%8C%E4%B8%8D%E9%80%9A%E8%BF%87%E7%9A%84%E4%BB%A3%E7%A0%81%E6%97%A0%E6%B3%95%E6%8F%90%E4%BA%A4%E3%80%82">https://www.pylint.org/），能够在每份代码提交前自动检查，不通过的代码无法提交。</a>  </p>
+<hr>
+<h4 id="合理分解代码"><a href="#合理分解代码" class="headerlink" title="合理分解代码"></a>合理分解代码</h4><p>编程中一个核心思想是，不写重复代码。重复代码大概率可以通过使用条件、循环、构造函数和类来解决。</p>
+<p>另一个核心思想则是，减少迭代层数，尽可能让 Python 代码扁平化，毕竟，人的大脑无法处理过多的栈操作。  </p>
+<p>一个函数的粒度应该尽可能细，不要让一个函数做太多的事情。所以，对待一个复杂的函数，我们需要尽可能地把它拆分成几个功能简单的函数，然后合并起来。  </p>
+<hr>
+<h4 id="合理利用-assert"><a href="#合理利用-assert" class="headerlink" title="合理利用 assert"></a>合理利用 assert</h4><p>Python 的 assert 语句，可以说是一个 debug 的好工具，主要用于测试一个条件是否满足。如果测试的条件满足，则什么也不做，相当于执行了 pass 语句；如果测试条件不满足，便会抛出异常 AssertionError，并返回具体的错误信息（optional）。  </p>
+<p>assert 的合理使用，可以增加代码的健壮度，同时也方便了程序出错后的定位排查。  </p>
+<p>但是，也不能滥用 assert。很多情况下，程序中出现的不同情况都是意料之中的，需要用不同的方案去处理，这时候用条件语句进行判断更为合适。而对于程序中的一些 run-time error，最好使用异常处理。  </p>
+<hr>
+<h4 id="巧用上下文管理器和with精简代码"><a href="#巧用上下文管理器和with精简代码" class="headerlink" title="巧用上下文管理器和with精简代码"></a>巧用上下文管理器和with精简代码</h4><p>上下文管理器，能够自动分配并且释放资源，其中最典型的应用便是 with 语句。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;test.txt&#x27;</span>, <span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.write(<span class="string">&#x27;hello&#x27;</span>)</span><br><span class="line">    </span><br><span class="line"><span class="comment"># 相当于</span></span><br><span class="line">f = <span class="built_in">open</span>(<span class="string">&#x27;test.txt&#x27;</span>, <span class="string">&#x27;w&#x27;</span>)</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    f.write(<span class="string">&#x27;hello&#x27;</span>)</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    f.close()</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">some_lock = threading.Lock()</span><br><span class="line"><span class="keyword">with</span> somelock:</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line"><span class="comment"># 相当于</span></span><br><span class="line">some_lock = threading.Lock()</span><br><span class="line">some_lock.acquire()</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    ...</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    some_lock.release()</span><br></pre></td></tr></table></figure>
+
+<p>上下文管理器的例子</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">FileManager</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, file_name, open_mode</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;__init__&quot;</span>)</span><br><span class="line">        <span class="variable language_">self</span>.file_name = file_name</span><br><span class="line">        <span class="variable language_">self</span>.open_mode = open_mode</span><br><span class="line">        <span class="variable language_">self</span>.file = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__enter__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;__enter__&quot;</span>)</span><br><span class="line">        <span class="variable language_">self</span>.file = <span class="built_in">open</span>(<span class="variable language_">self</span>.file_name, mode=<span class="variable language_">self</span>.open_mode)</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.file</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__exit__</span>(<span class="params">self, exc_type, exc_val, exc_tb</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;__exit__&quot;</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="variable language_">self</span>.file:</span><br><span class="line">            <span class="variable language_">self</span>.file.close()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="keyword">with</span> FileManager(<span class="string">&#x27;test.txt&#x27;</span>, <span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        f.write(<span class="string">&#x27;aaa&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>基于生成器的上下文管理器</strong></p>
+<p>使用装饰器 <code>contextlib.contextmanager</code>，来定义自己所需的基于生成器的上下文管理器，用以支持 with 语句。  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> contextlib <span class="keyword">import</span> contextmanager</span><br><span class="line"></span><br><span class="line"><span class="meta">@contextmanager</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">file_manager</span>(<span class="params">file_name, open_mode</span>):</span><br><span class="line">    f = <span class="literal">None</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        f = <span class="built_in">open</span>(file_name, mode=open_mode)</span><br><span class="line">        <span class="keyword">yield</span> f</span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        <span class="keyword">if</span> f:</span><br><span class="line">            f.close()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="keyword">with</span> file_manager(<span class="string">&#x27;test.txt&#x27;</span>, <span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        f.write(<span class="string">&quot;file_manager&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>函数 file_manager() 是一个生成器，当执行 with 语句时，便会打开文件，并返回文件对象 f；当 with 语句执行完后，finally block 中的关闭文件操作便会执行。</p>
+<p>基于类的上下文管理器更加灵活，适用于大型的系统开发；而基于生成器的上下文管理器更加方便、简洁，适用于中小型程序。  </p>
+<hr>
+<h4 id="单元测试"><a href="#单元测试" class="headerlink" title="单元测试"></a>单元测试</h4><p>编写测试来验证某一个模块的功能正确性，一般会指定输入，验证输出是否符合预期。  </p>
+<p>实际生产环境中，会对每一个模块的所有可能输入值进行测试。这样虽然显得繁琐，增加了额外的工作量，但是能够大大提高代码质量，减小 bug 发生的可能性，也更方便系统的维护。  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> unittest</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将要被测试的排序函数</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">sort</span>(<span class="params">arr</span>):</span><br><span class="line">    l = <span class="built_in">len</span>(arr)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, l):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(i + <span class="number">1</span>, l):</span><br><span class="line">            <span class="keyword">if</span> arr[i] &gt;= arr[j]:</span><br><span class="line">                tmp = arr[i]</span><br><span class="line">                arr[i] = arr[j]</span><br><span class="line">                arr[j] = tmp</span><br><span class="line"></span><br><span class="line"><span class="comment"># 编写子类继承 unittest.TestCase</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TestSort</span>(unittest.TestCase):</span><br><span class="line">    <span class="comment"># 以 test 开头的函数将会被测试</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_sort</span>(<span class="params">self</span>):</span><br><span class="line">        arr = [<span class="number">3</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">5</span>, <span class="number">6</span>]</span><br><span class="line">        sort(arr)</span><br><span class="line">        <span class="comment"># assert 结果和期待的一样</span></span><br><span class="line">        <span class="variable language_">self</span>.assertEqual(arr, [<span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>])</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    unittest.main()</span><br></pre></td></tr></table></figure>
+
+<h5 id="mock"><a href="#mock" class="headerlink" title="mock"></a>mock</h5><p>mock 是单元测试中最核心重要的一环。mock 的意思，便是通过一个虚假对象，来代替被测试函数或模块需要的对象。  </p>
+<p>比如要测一个后端 API 逻辑的功能性，但一般后端 API 都依赖于数据库、文件系统、网络等。这样，就需要通过 mock，来创建一些虚假的数据库层、文件系统层、网络层对象，以便可以简单地对核心后端逻辑单元进行测试。  </p>
+<p>Python mock 则主要使用 mock 或者 MagicMock 对象 ，举例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> unittest</span><br><span class="line"><span class="keyword">from</span> unittest.mock <span class="keyword">import</span> MagicMock</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">A</span>(unittest.TestCase):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">m1</span>(<span class="params">self</span>):</span><br><span class="line">        val = <span class="variable language_">self</span>.m2()</span><br><span class="line">        <span class="variable language_">self</span>.m3(val)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">m2</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;m2&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">m3</span>(<span class="params">self, val</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;m3&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_m1</span>(<span class="params">self</span>):</span><br><span class="line">        a = A()</span><br><span class="line">        a.m2 = MagicMock(return_value=<span class="string">&quot;custom_val&quot;</span>)</span><br><span class="line">        a.m3 = MagicMock()</span><br><span class="line">        a.m1()</span><br><span class="line">        <span class="variable language_">self</span>.assertTrue(a.m2.called)  <span class="comment"># 验证 m2 被 call 过</span></span><br><span class="line">        a.m3.assert_called_with(<span class="string">&quot;custom_val&quot;</span>)  <span class="comment"># 验证 m3 被指定参数 call 过</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="comment"># unittest.main(argv=[&#x27;first-arg-is-ignored&#x27;], exit=False)</span></span><br><span class="line">    <span class="comment"># unittest.main()</span></span><br><span class="line">    a = A()</span><br><span class="line">    a.test_m1()</span><br></pre></td></tr></table></figure>
+
+<p>这段代码中，定义了一个类的三个方法 m1()、m2()、m3()。需要对 m1() 进行单元测试，但是 m1() 取决于 m2() 和 m3()。如果 m2() 和 m3() 的内部比较复杂，就不能只是简单地调用 m1() 函数来进行测试，可能需要解决很多依赖项的问题。</p>
+<p>但是，有了 mock 其实就很好办了。我们可以把 m2() 替换为一个返回具体数值的 value，把 m3() 替换为另一个 mock（空函数）。这样，测试 m1() 就很容易了，我们可以测试 m1() 调用 m2()，并且用 m2() 的返回值调用 m3()。  </p>
+<p>真正工业化的代码，都是很多层模块相互逻辑调用的一个树形结构。单元测试需要测的是某个节点的逻辑功能，mock 掉相关的依赖项是非常重要的。</p>
+<h5 id="Mock-Side-Effect"><a href="#Mock-Side-Effect" class="headerlink" title="Mock Side Effect"></a>Mock Side Effect</h5><p>含义：mock 的函数，属性是可以根据不同的输入，返回不同的数值，而不只是一个 return_value 。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> unittest <span class="keyword">import</span> mock</span><br><span class="line"></span><br><span class="line">mock_obj = mock.Mock(side_effect=[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line"><span class="built_in">print</span>(mock_obj())</span><br><span class="line"><span class="built_in">print</span>(mock_obj())</span><br><span class="line"><span class="built_in">print</span>(mock_obj())</span><br><span class="line"><span class="comment"># print(mock_obj())  # StopIteration</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> unittest</span><br><span class="line"><span class="keyword">from</span> unittest <span class="keyword">import</span> mock</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">AddClass</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">add</span>(<span class="params">self, a, b</span>):</span><br><span class="line">        s = a + b</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;s is <span class="subst">&#123;s&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> s</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TestAdd</span>(unittest.TestCase):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_add1</span>(<span class="params">self</span>):</span><br><span class="line">        sub = AddClass()</span><br><span class="line">        sub.add = mock.Mock(return_value=<span class="number">10</span>)</span><br><span class="line">        result = sub.add(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line">        <span class="variable language_">self</span>.assertEqual(result, <span class="number">10</span>)  <span class="comment"># 断言实际结果和预期结果</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_add2</span>(<span class="params">self</span>):</span><br><span class="line">        sub = AddClass()  <span class="comment"># 初始化被测函数类实例</span></span><br><span class="line">        sub.add = mock.Mock(return_value=<span class="number">10</span>,</span><br><span class="line">                            side_effect=[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])  <span class="comment"># 传递side_effect关键字参数, 会覆盖return_value参数值</span></span><br><span class="line">        result1 = sub.add(<span class="number">1</span>, <span class="number">10</span>)</span><br><span class="line">        <span class="variable language_">self</span>.assertEqual(result1, <span class="number">1</span>)  <span class="comment"># test passed</span></span><br><span class="line">        result2 = sub.add(<span class="number">2</span>, <span class="number">10</span>)</span><br><span class="line">        <span class="variable language_">self</span>.assertEqual(result2, <span class="number">2</span>)  <span class="comment"># test passed</span></span><br><span class="line">        result3 = sub.add(<span class="number">3</span>, <span class="number">10</span>)</span><br><span class="line">        <span class="variable language_">self</span>.assertEqual(result3, <span class="number">2</span>)  <span class="comment"># test failed</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_add3</span>(<span class="params">self</span>):</span><br><span class="line">        sub = AddClass()</span><br><span class="line">        sub.add = mock.Mock(return_value=<span class="number">10</span>, side_effect=sub.add)  <span class="comment"># 使用真实的add方法测试</span></span><br><span class="line">        result1 = sub.add(<span class="number">1</span>, <span class="number">10</span>)</span><br><span class="line">        <span class="variable language_">self</span>.assertEqual(result1, <span class="number">11</span>)</span><br><span class="line">        result2 = sub.add(<span class="number">2</span>, <span class="number">10</span>)</span><br><span class="line">        <span class="variable language_">self</span>.assertEqual(result2, <span class="number">12</span>)</span><br><span class="line">        result3 = sub.add(<span class="number">3</span>, <span class="number">10</span>)</span><br><span class="line">        <span class="variable language_">self</span>.assertEqual(result3, <span class="number">13</span>)</span><br><span class="line">        </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    unittest.main()</span><br></pre></td></tr></table></figure>
+
+<h5 id="patch"><a href="#patch" class="headerlink" title="patch"></a>patch</h5><p>patch 可以应用 Python 的 decoration 模式或是 context manager 概念，快速自然地 mock 所需的函数。  </p>
+<hr>
+<h4 id="调试代码"><a href="#调试代码" class="headerlink" title="调试代码"></a>调试代码</h4><h5 id="如何使用-pdb"><a href="#如何使用-pdb" class="headerlink" title="如何使用 pdb"></a>如何使用 pdb</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pdb</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">func</span>(<span class="params">a, b</span>):</span><br><span class="line">    s = a + b</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;enter func()&#x27;</span>)</span><br><span class="line">    <span class="keyword">return</span> s</span><br><span class="line"></span><br><span class="line">a, b = <span class="number">1</span>, <span class="number">2</span></span><br><span class="line"></span><br><span class="line">pdb.set_trace()</span><br><span class="line">ret = func(a, b)</span><br><span class="line">c = <span class="number">3</span></span><br><span class="line"><span class="built_in">print</span>(ret + c)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">D:\<span class="title">Python_basis</span>&gt;<span class="title">python</span> <span class="title">test_data.py</span></span></span><br><span class="line"><span class="function">&gt; <span class="title">d</span>:\<span class="title">python_basis</span>\<span class="title">test_data.py</span>(13)&lt;<span class="title">module</span>&gt;()</span></span><br><span class="line"><span class="function">-&gt; <span class="title">ret</span> = <span class="title">func</span>(<span class="title">a</span>, <span class="title">b</span>)</span></span><br><span class="line"><span class="function">(<span class="title">Pdb</span>) <span class="title">s</span></span></span><br><span class="line"><span class="function">--<span class="title">Call</span>--</span></span><br><span class="line"><span class="function">&gt; <span class="title">d</span>:\<span class="title">python_basis</span>\<span class="title">test_data.py</span>(4)<span class="title">func</span>()</span></span><br><span class="line"><span class="function">-&gt; <span class="title">def</span> <span class="title">func</span>(<span class="title">a</span>, <span class="title">b</span>):</span></span><br><span class="line"><span class="function">(<span class="title">Pdb</span>) <span class="title">l</span></span></span><br><span class="line"><span class="function">  1     <span class="title">import</span> <span class="title">pdb</span></span></span><br><span class="line"><span class="function">  2</span></span><br><span class="line"><span class="function">  3</span></span><br><span class="line"><span class="function">  4  -&gt; <span class="title">def</span> <span class="title">func</span>(<span class="title">a</span>, <span class="title">b</span>):</span></span><br><span class="line"><span class="function">  5         <span class="title">s</span> = <span class="title">a</span> + <span class="title">b</span></span></span><br><span class="line"><span class="function">  6         <span class="title">print</span>(&#x27;<span class="title">enter</span> <span class="title">func</span>()&#x27;)</span></span><br><span class="line"><span class="function">  7         <span class="title">return</span> <span class="title">s</span></span></span><br><span class="line"><span class="function">  8</span></span><br><span class="line"><span class="function">  9</span></span><br><span class="line"><span class="function"> 10     <span class="title">a</span>, <span class="title">b</span> = 1, 2</span></span><br><span class="line"><span class="function"> 11</span></span><br><span class="line"><span class="function">(<span class="title">Pdb</span>) <span class="title">n</span></span></span><br><span class="line"><span class="function">&gt; <span class="title">d</span>:\<span class="title">python_basis</span>\<span class="title">test_data.py</span>(5)<span class="title">func</span>()</span></span><br><span class="line"><span class="function">-&gt; <span class="title">s</span> = <span class="title">a</span> + <span class="title">b</span></span></span><br><span class="line"><span class="function">(<span class="title">Pdb</span>) <span class="title">p</span> <span class="title">a</span></span></span><br><span class="line"><span class="function">1</span></span><br><span class="line"><span class="function">(<span class="title">Pdb</span>) <span class="title">p</span> <span class="title">b</span></span></span><br><span class="line"><span class="function">2</span></span><br><span class="line"><span class="function">(<span class="title">Pdb</span>) <span class="title">n</span></span></span><br><span class="line"><span class="function">&gt; <span class="title">d</span>:\<span class="title">python_basis</span>\<span class="title">test_data.py</span>(6)<span class="title">func</span>()</span></span><br><span class="line"><span class="function">-&gt; <span class="title">print</span>(&#x27;<span class="title">enter</span> <span class="title">func</span>()&#x27;)</span></span><br><span class="line"><span class="function">(<span class="title">Pdb</span>) <span class="title">p</span> <span class="title">s</span></span></span><br><span class="line"><span class="function">3</span></span><br><span class="line"><span class="function">(<span class="title">Pdb</span>) <span class="title">n</span></span></span><br><span class="line"><span class="function"><span class="title">enter</span> <span class="title">func</span>()</span></span><br><span class="line"><span class="function">&gt; <span class="title">d</span>:\<span class="title">python_basis</span>\<span class="title">test_data.py</span>(7)<span class="title">func</span>()</span></span><br><span class="line"><span class="function">-&gt; <span class="title">return</span> <span class="title">s</span></span></span><br><span class="line"><span class="function">(<span class="title">Pdb</span>) <span class="title">n</span></span></span><br><span class="line"><span class="function">--<span class="title">Return</span>--</span></span><br><span class="line"><span class="function">&gt; <span class="title">d</span>:\<span class="title">python_basis</span>\<span class="title">test_data.py</span>(7)<span class="title">func</span>()-&gt;3</span></span><br><span class="line"><span class="function">-&gt; <span class="title">return</span> <span class="title">s</span></span></span><br><span class="line"><span class="function">(<span class="title">Pdb</span>) <span class="title">n</span></span></span><br><span class="line"><span class="function">&gt; <span class="title">d</span>:\<span class="title">python_basis</span>\<span class="title">test_data.py</span>(14)&lt;<span class="title">module</span>&gt;()</span></span><br><span class="line"><span class="function">-&gt; <span class="title">c</span> = 3</span></span><br><span class="line"><span class="function">(<span class="title">Pdb</span>) <span class="title">p</span> <span class="title">ret</span></span></span><br><span class="line"><span class="function">3</span></span><br><span class="line"><span class="function">(<span class="title">Pdb</span>) <span class="title">n</span></span></span><br><span class="line"><span class="function">&gt; <span class="title">d</span>:\<span class="title">python_basis</span>\<span class="title">test_data.py</span>(15)&lt;<span class="title">module</span>&gt;()</span></span><br><span class="line"><span class="function">-&gt; <span class="title">print</span>(<span class="title">ret</span> + <span class="title">c</span>)</span></span><br><span class="line"><span class="function">(<span class="title">Pdb</span>) <span class="title">n</span></span></span><br><span class="line"><span class="function">6</span></span><br><span class="line"><span class="function">--<span class="title">Return</span>--</span></span><br><span class="line"><span class="function">&gt; <span class="title">d</span>:\<span class="title">python_basis</span>\<span class="title">test_data.py</span>(15)&lt;<span class="title">module</span>&gt;()-&gt;<span class="title">None</span></span></span><br><span class="line"><span class="function">-&gt; <span class="title">print</span>(<span class="title">ret</span> + <span class="title">c</span>)</span></span><br></pre></td></tr></table></figure>
+
+<p>pdf 官方文档：<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/pdb.html#modulepdb">https://docs.python.org/3/library/pdb.html#modulepdb</a></p>
+<hr>
+<h5 id="用-cProfile-进行性能分析"><a href="#用-cProfile-进行性能分析" class="headerlink" title="用 cProfile 进行性能分析"></a>用 cProfile 进行性能分析</h5><p>profile，是指对代码的每个部分进行动态的分析，比如准确计算出每个模块消耗的时间等。这样你就可以知道程序的瓶颈所在，从而对其进行修正或优化 。</p>
+<p>方式一：在代码中加入 <code>import cProfile</code>，并将执行语句放入 <code>cProfile.run()</code>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cProfile</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">fib</span>(<span class="params">n</span>):</span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">elif</span> n == <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> fib(n - <span class="number">1</span>) + fib(n - <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">fib_seq</span>(<span class="params">n</span>):</span><br><span class="line">    res = []</span><br><span class="line">    <span class="keyword">if</span> n &gt; <span class="number">0</span>:</span><br><span class="line">        res.extend(fib_seq(n - <span class="number">1</span>))</span><br><span class="line">        res.append(fib(n))</span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line"></span><br><span class="line">cProfile.run(<span class="string">&#x27;fib_seq(30)&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">D:\<span class="title">compile</span>\<span class="title">Python3</span>.6.0\<span class="title">python.exe</span> <span class="title">D</span>:/<span class="title">Python_basis</span>/<span class="title">test_data.py</span></span></span><br><span class="line"><span class="function">         7049216 <span class="title">function</span> <span class="title">calls</span> (94 <span class="title">primitive</span> <span class="title">calls</span>) <span class="title">in</span> 6.177 <span class="title">seconds</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">   <span class="title">Ordered</span> <span class="title">by</span>: <span class="title">standard</span> <span class="title">name</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">   <span class="title">ncalls</span>  <span class="title">tottime</span>  <span class="title">percall</span>  <span class="title">cumtime</span>  <span class="title">percall</span> <span class="title">filename:lineno</span>(<span class="title">function</span>)</span></span><br><span class="line"><span class="function">        1    0.000    0.000    6.177    6.177 &lt;<span class="title">string</span>&gt;:1(&lt;<span class="title">module</span>&gt;)</span></span><br><span class="line"><span class="function">     31/1    0.000    0.000    6.177    6.177 <span class="title">test_data.py</span>:13(<span class="title">fib_seq</span>)</span></span><br><span class="line"><span class="function">7049122/30    6.177    0.000    6.177    0.206 <span class="title">test_data.py</span>:4(<span class="title">fib</span>)</span></span><br><span class="line"><span class="function">        1    0.000    0.000    6.177    6.177 &#123;<span class="title">built</span>-<span class="title">in</span> <span class="title">method</span> <span class="title">builtins.exec</span>&#125;</span></span><br><span class="line"><span class="function">       30    0.000    0.000    0.000    0.000 &#123;<span class="title">method</span> &#x27;<span class="title">append</span>&#x27; <span class="title">of</span> &#x27;<span class="title">list</span>&#x27; <span class="title">objects</span>&#125;</span></span><br><span class="line"><span class="function">        1    0.000    0.000    0.000    0.000 &#123;<span class="title">method</span> &#x27;<span class="title">disable</span>&#x27; <span class="title">of</span> &#x27;<span class="title">_lsprof.Profiler</span>&#x27; <span class="title">objects</span>&#125;</span></span><br><span class="line"><span class="function">       30    0.000    0.000    0.000    0.000 &#123;<span class="title">method</span> &#x27;<span class="title">extend</span>&#x27; <span class="title">of</span> &#x27;<span class="title">list</span>&#x27; <span class="title">objects</span>&#125;</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">Process</span> <span class="title">finished</span> <span class="title">with</span> <span class="title">exit</span> <span class="title">code</span> 0</span></span><br></pre></td></tr></table></figure>
+
+<p>方式二：直接在运行脚本的命令中，加入选项 <code>-m cProfile</code> 。不用在脚本中加入 <code>import CProfile</code>  等了。</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 -m cProfile test_data.py</span><br></pre></td></tr></table></figure>
+
+<p>方式三：直接使用 Pycharm 中的 <code>Run-Profile</code> 执行脚本。</p>
+<p>参数解析</p>
+<ul>
+<li>ncalls，是指相应代码 &#x2F; 函数被调用的次数；</li>
+<li>tottime，是指对应代码 &#x2F; 函数总共执行所需要的时间（注意，并不包括它调用的其他代码 &#x2F; 函数的执行时间）；</li>
+<li>tottime percall，就是上述两者相除的结果，也就是 tottime &#x2F; ncalls；</li>
+<li>cumtime，则是指对应代码 &#x2F; 函数总共执行所需要的时间，这里包括了它调用的其他代码 &#x2F; 函数的执行时间；</li>
+<li>cumtime percall，则是 cumtime 和 ncalls 相除的平均结果。</li>
+</ul>
+<p>通过解析发现，fib 函数被调用次数太多，7049122次，需要改进。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 改进版</span></span><br><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> lru_cache</span><br><span class="line"></span><br><span class="line"><span class="meta">@lru_cache()</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">fib</span>(<span class="params">n</span>):</span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">elif</span> n == <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> fib(n - <span class="number">1</span>) + fib(n - <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">fib_seq</span>(<span class="params">n</span>):</span><br><span class="line">    res = []</span><br><span class="line">    <span class="keyword">if</span> n &gt; <span class="number">0</span>:</span><br><span class="line">        res.extend(fib_seq(n - <span class="number">1</span>))</span><br><span class="line">        res.append(fib(n))</span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line"></span><br><span class="line">fib_seq(<span class="number">30</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">D:\<span class="title">Python_basis</span>&gt;<span class="title">python</span> -<span class="title">m</span> <span class="title">cProfile</span> <span class="title">test_data.py</span></span></span><br><span class="line"><span class="function">         144 <span class="title">function</span> <span class="title">calls</span> (113 <span class="title">primitive</span> <span class="title">calls</span>) <span class="title">in</span> 0.000 <span class="title">seconds</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">   <span class="title">Ordered</span> <span class="title">by</span>: <span class="title">standard</span> <span class="title">name</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">   <span class="title">ncalls</span>  <span class="title">tottime</span>  <span class="title">percall</span>  <span class="title">cumtime</span>  <span class="title">percall</span> <span class="title">filename:lineno</span>(<span class="title">function</span>)</span></span><br><span class="line"><span class="function">        1    0.000    0.000    0.000    0.000 &lt;<span class="title">frozen</span> <span class="title">importlib._bootstrap</span>&gt;:989(<span class="title">_handle_fromlist</span>)</span></span><br><span class="line"><span class="function">        1    0.000    0.000    0.000    0.000 <span class="title">functools.py</span>:44(<span class="title">update_wrapper</span>)</span></span><br><span class="line"><span class="function">        1    0.000    0.000    0.000    0.000 <span class="title">functools.py</span>:449(<span class="title">lru_cache</span>)</span></span><br><span class="line"><span class="function">        1    0.000    0.000    0.000    0.000 <span class="title">functools.py</span>:480(<span class="title">decorating_function</span>)</span></span><br><span class="line"><span class="function">        1    0.000    0.000    0.000    0.000 <span class="title">test_data.py</span>:1(&lt;<span class="title">module</span>&gt;)</span></span><br><span class="line"><span class="function">     31/1    0.000    0.000    0.000    0.000 <span class="title">test_data.py</span>:14(<span class="title">fib_seq</span>)</span></span><br><span class="line"><span class="function">    31/30    0.000    0.000    0.000    0.000 <span class="title">test_data.py</span>:4(<span class="title">fib</span>)</span></span><br><span class="line"><span class="function">        1    0.000    0.000    0.000    0.000 &#123;<span class="title">built</span>-<span class="title">in</span> <span class="title">method</span> <span class="title">builtins.exec</span>&#125;</span></span><br><span class="line"><span class="function">        7    0.000    0.000    0.000    0.000 &#123;<span class="title">built</span>-<span class="title">in</span> <span class="title">method</span> <span class="title">builtins.getattr</span>&#125;</span></span><br><span class="line"><span class="function">        1    0.000    0.000    0.000    0.000 &#123;<span class="title">built</span>-<span class="title">in</span> <span class="title">method</span> <span class="title">builtins.hasattr</span>&#125;</span></span><br><span class="line"><span class="function">        1    0.000    0.000    0.000    0.000 &#123;<span class="title">built</span>-<span class="title">in</span> <span class="title">method</span> <span class="title">builtins.isinstance</span>&#125;</span></span><br><span class="line"><span class="function">        5    0.000    0.000    0.000    0.000 &#123;<span class="title">built</span>-<span class="title">in</span> <span class="title">method</span> <span class="title">builtins.setattr</span>&#125;</span></span><br><span class="line"><span class="function">       30    0.000    0.000    0.000    0.000 &#123;<span class="title">method</span> &#x27;<span class="title">append</span>&#x27; <span class="title">of</span> &#x27;<span class="title">list</span>&#x27; <span class="title">objects</span>&#125;</span></span><br><span class="line"><span class="function">        1    0.000    0.000    0.000    0.000 &#123;<span class="title">method</span> &#x27;<span class="title">disable</span>&#x27; <span class="title">of</span> &#x27;<span class="title">_lsprof.Profiler</span>&#x27; <span class="title">objects</span>&#125;</span></span><br><span class="line"><span class="function">       30    0.000    0.000    0.000    0.000 &#123;<span class="title">method</span> &#x27;<span class="title">extend</span>&#x27; <span class="title">of</span> &#x27;<span class="title">list</span>&#x27; <span class="title">objects</span>&#125;</span></span><br><span class="line"><span class="function">        1    0.000    0.000    0.000    0.000 &#123;<span class="title">method</span> &#x27;<span class="title">update</span>&#x27; <span class="title">of</span> &#x27;<span class="title">dict</span>&#x27; <span class="title">objects</span>&#125;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h4><h5 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h5><ul>
+<li><p>在代码中对数据进行检测，并直接处理与抛出异常。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> [condition1]:</span><br><span class="line">    <span class="keyword">raise</span> Exception1(<span class="string">&#x27;exception 1&#x27;</span>)</span><br><span class="line"><span class="keyword">elif</span> [condition2]:</span><br><span class="line">    <span class="keyword">raise</span> Exception2(<span class="string">&#x27;exception 2&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>一旦抛出异常，那么程序就会终止。</p>
+</li>
+<li><p>在异常处理代码中进行处理。  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">   do something</span><br><span class="line"><span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">   other</span><br></pre></td></tr></table></figure>
+
+<p>如果抛出异常，会被程序捕获（catch），程序还会继续运行。</p>
+</li>
+</ul>
+<hr>
+<h5 id="代码优化时间"><a href="#代码优化时间" class="headerlink" title="代码优化时间"></a>代码优化时间</h5><p>先写出能跑起来的代码，后期再优化。很明显，这种认知是错误的。</p>
+<p>从一开始写代码时，就必须对功能和规范这两者双管齐下。</p>
+<p>代码功能完整和规范完整的优先级是不分先后的，应该是同时进行的。如果你一开始只注重代码的功能完整，而不关注其质量、规范，那么规范问题很容易越积越多。这样就会导致产品的 bug 越来越多，相应的代码库越发难以维护，到最后不得已只能推倒重来。  </p>
+<hr>
+<h5 id="代码中写多少注释合适"><a href="#代码中写多少注释合适" class="headerlink" title="代码中写多少注释合适"></a>代码中写多少注释合适</h5><p>通常来说，会在类、函数的开头或者是某一个功能块的开头加上一段描述性的注释，来说明这段代码的功能，并指明所有的输入和输出。</p>
+<p>除此之外，也要求在一些比较复杂、可能有歧义的代码上方加上注释，帮助阅读者理解代码的含义。  </p>
+<p>在写好之后修改了代码，代码对应的注释一定也要做出相应的修改，不然很容易造成“文不对题”的现象，给别人也给你自己带来困扰。 </p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2020/10/15/6122/" rel="prev" title="Docker 中安装 Elasticsearch + Kibana + Filebeat">
+                  <i class="fa fa-angle-left"></i> Docker 中安装 Elasticsearch + Kibana + Filebeat
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2023/12/03/39705/" rel="next" title="Python 查看某个库的版本">
+                  Python 查看某个库的版本 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">752k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">11:24</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>
