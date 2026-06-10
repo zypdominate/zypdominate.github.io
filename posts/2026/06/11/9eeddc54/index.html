@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="作为一个经常写 Python 工具的开发者，把包发布到 PyPI 是必不可少的技能。这篇文章记录了我总结的完整发布流程，包含可直接复制的脚本代码，方便自己回顾，也希望能帮到其他开发者。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PyPI 发布指南：从 0 到 1 发布 Python 包">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2026/06/11/9eeddc54/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="作为一个经常写 Python 工具的开发者，把包发布到 PyPI 是必不可少的技能。这篇文章记录了我总结的完整发布流程，包含可直接复制的脚本代码，方便自己回顾，也希望能帮到其他开发者。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-06-11T14:22:18.000Z">
+<meta property="article:modified_time" content="2026-06-10T16:26:14.882Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="PyPI">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2026/06/11/9eeddc54/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2026/06/11/9eeddc54/","path":"posts/2026/06/11/9eeddc54/","title":"PyPI 发布指南：从 0 到 1 发布 Python 包"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>PyPI 发布指南：从 0 到 1 发布 Python 包 | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="Magnolia's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-rss"><a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>RSS</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="nav-text">一、准备工作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%B3%A8%E5%86%8C-PyPI-%E8%B4%A6%E5%8F%B7"><span class="nav-text">1. 注册 PyPI 账号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%94%9F%E6%88%90-API-Token"><span class="nav-text">2. 生成 API Token</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%85%8D%E7%BD%AE%E8%AE%A4%E8%AF%81%EF%BC%88%E6%8E%A8%E8%8D%90%EF%BC%89"><span class="nav-text">3. 配置认证（推荐）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E9%A1%B9%E7%9B%AE%E9%85%8D%E7%BD%AE"><span class="nav-text">二、项目配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-pyproject-toml%EF%BC%88%E5%BF%85%E9%A1%BB%EF%BC%89"><span class="nav-text">1. pyproject.toml（必须）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-MANIFEST-in%EF%BC%88%E5%8F%AF%E9%80%89%E4%BD%86%E6%8E%A8%E8%8D%90%EF%BC%89"><span class="nav-text">2. MANIFEST.in（可选但推荐）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E6%9E%84%E5%BB%BA%E8%84%9A%E6%9C%AC"><span class="nav-text">三、构建脚本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E5%8F%91%E5%B8%83%E6%B5%81%E7%A8%8B"><span class="nav-text">四、发布流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%AE%89%E8%A3%85%E4%B8%8A%E4%BC%A0%E5%B7%A5%E5%85%B7"><span class="nav-text">1. 安装上传工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%9E%84%E5%BB%BA%E5%8C%85"><span class="nav-text">2. 构建包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E4%B8%8A%E4%BC%A0%E5%88%B0-PyPI"><span class="nav-text">3. 上传到 PyPI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E9%AA%8C%E8%AF%81%E5%8F%91%E5%B8%83"><span class="nav-text">4. 验证发布</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E5%A4%9A%E5%B9%B3%E5%8F%B0%E6%9E%84%E5%BB%BA"><span class="nav-text">五、多平台构建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-pyproject-toml"><span class="nav-text">配置 pyproject.toml</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%84%E5%BB%BA%E6%89%80%E6%9C%89%E5%B9%B3%E5%8F%B0"><span class="nav-text">构建所有平台</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8A%E4%BC%A0%E5%A4%9A%E5%B9%B3%E5%8F%B0-wheel"><span class="nav-text">上传多平台 wheel</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E5%AE%8C%E6%95%B4%E5%8F%91%E5%B8%83%E6%B8%85%E5%8D%95"><span class="nav-text">六、完整发布清单</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%83%E3%80%81FAQ"><span class="nav-text">七、FAQ</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">138</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">47</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2026/06/11/9eeddc54/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="PyPI 发布指南：从 0 到 1 发布 Python 包 | Magnolia's Blog">
+      <meta itemprop="description" content="作为一个经常写 Python 工具的开发者，把包发布到 PyPI 是必不可少的技能。这篇文章记录了我总结的完整发布流程，包含可直接复制的脚本代码，方便自己回顾，也希望能帮到其他开发者。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          PyPI 发布指南：从 0 到 1 发布 Python 包
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2026-06-11 22:22:18" itemprop="dateCreated datePublished" datetime="2026-06-11T22:22:18+08:00">2026-06-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/PyPI/" itemprop="url" rel="index"><span itemprop="name">PyPI</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>4.7k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>4 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">作为一个经常写 Python 工具的开发者，把包发布到 PyPI 是必不可少的技能。这篇文章记录了我总结的完整发布流程，包含可直接复制的脚本代码，方便自己回顾，也希望能帮到其他开发者。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="一、准备工作"><a href="#一、准备工作" class="headerlink" title="一、准备工作"></a>一、准备工作</h2><h3 id="1-注册-PyPI-账号"><a href="#1-注册-PyPI-账号" class="headerlink" title="1. 注册 PyPI 账号"></a>1. 注册 PyPI 账号</h3><p>这是最基础的步骤：</p>
+<ul>
+<li>访问 <a target="_blank" rel="noopener" href="https://pypi.org/account/register/">PyPI 注册页面</a></li>
+<li><strong>务必完成邮箱验证</strong>（不验证无法上传）</li>
+</ul>
+<h3 id="2-生成-API-Token"><a href="#2-生成-API-Token" class="headerlink" title="2. 生成 API Token"></a>2. 生成 API Token</h3><p>登录后进入 <a target="_blank" rel="noopener" href="https://pypi.org/manage/account/token/">API Token 管理页面</a>：</p>
+<ul>
+<li>点击 “Create API token”，填一个 Token name</li>
+<li>Scope 选择 “Entire account”（或指定项目）</li>
+<li>复制生成的 Token（格式：<code>pypi-AgEIcHlwaS5vcmc...</code>）</li>
+</ul>
+<h3 id="3-配置认证（推荐）"><a href="#3-配置认证（推荐）" class="headerlink" title="3. 配置认证（推荐）"></a>3. 配置认证（推荐）</h3><p>创建 <code>~/.pypirc</code> 文件（Windows 为 <code>%USERPROFILE%\.pypirc</code>）：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[pypi]</span></span><br><span class="line"><span class="attr">repository</span> = https://upload.pypi.org/legacy/</span><br><span class="line"><span class="attr">username</span> = __token__</span><br><span class="line"><span class="attr">password</span> = pypi-你的完整Token</span><br><span class="line"></span><br><span class="line"><span class="section">[testpypi]</span></span><br><span class="line"><span class="attr">repository</span> = https://test.pypi.org/legacy/</span><br><span class="line"><span class="attr">username</span> = __token__</span><br><span class="line"><span class="attr">password</span> = testpypi-你的Token</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="二、项目配置"><a href="#二、项目配置" class="headerlink" title="二、项目配置"></a>二、项目配置</h2><h3 id="1-pyproject-toml（必须）"><a href="#1-pyproject-toml（必须）" class="headerlink" title="1. pyproject.toml（必须）"></a>1. pyproject.toml（必须）</h3><p>创建或修改 <code>pyproject.toml</code>：</p>
+<figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[build-system]</span></span><br><span class="line"><span class="attr">requires</span> = [<span class="string">&quot;setuptools&gt;=61.0&quot;</span>, <span class="string">&quot;wheel&quot;</span>]</span><br><span class="line"><span class="attr">build-backend</span> = <span class="string">&quot;setuptools.build_meta&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="section">[project]</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">&quot;your-package-name&quot;</span></span><br><span class="line"><span class="attr">version</span> = <span class="string">&quot;0.1.0&quot;</span></span><br><span class="line"><span class="attr">description</span> = <span class="string">&quot;你的包描述&quot;</span></span><br><span class="line"><span class="attr">authors</span> = [</span><br><span class="line">  &#123; name=<span class="string">&quot;Your Name&quot;</span>, email=<span class="string">&quot;your@email.com&quot;</span> &#125;</span><br><span class="line">]</span><br><span class="line"><span class="attr">readme</span> = <span class="string">&quot;README.md&quot;</span></span><br><span class="line"><span class="attr">license</span> = <span class="string">&quot;MIT&quot;</span></span><br><span class="line"><span class="attr">classifiers</span> = [</span><br><span class="line">  <span class="string">&quot;Programming Language :: Python :: 3&quot;</span>,</span><br><span class="line">  <span class="string">&quot;License :: OSI Approved :: MIT License&quot;</span>,</span><br><span class="line">  <span class="string">&quot;Operating System :: OS Independent&quot;</span>,</span><br><span class="line">]</span><br><span class="line"><span class="attr">requires-python</span> = <span class="string">&quot;&gt;=3.9&quot;</span></span><br><span class="line"><span class="attr">dependencies</span> = [</span><br><span class="line">  <span class="comment"># 你的依赖，如 &quot;requests&gt;=2.28.0&quot;</span></span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="section">[project.urls]</span></span><br><span class="line"><span class="attr">&quot;Homepage&quot;</span> = <span class="string">&quot;https://github.com/your-username/your-repo&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-MANIFEST-in（可选但推荐）"><a href="#2-MANIFEST-in（可选但推荐）" class="headerlink" title="2. MANIFEST.in（可选但推荐）"></a>2. MANIFEST.in（可选但推荐）</h3><p>创建 <code>MANIFEST.in</code> 控制 sdist 包含的文件：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 包含的文件</span></span><br><span class="line">include README.md</span><br><span class="line">include LICENSE</span><br><span class="line">include pyproject.toml</span><br><span class="line"></span><br><span class="line"><span class="comment"># 包含源码目录</span></span><br><span class="line">recursive-include your_package_name *.py</span><br><span class="line"></span><br><span class="line"><span class="comment"># 排除大文件（如二进制）</span></span><br><span class="line">exclude *.whl</span><br><span class="line">exclude node_modules/</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="三、构建脚本"><a href="#三、构建脚本" class="headerlink" title="三、构建脚本"></a>三、构建脚本</h2><p>我写了一个通用的 <code>build_wheel.py</code> 脚本，可以直接复制使用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">通用 Python 包构建脚本</span></span><br><span class="line"><span class="string">支持清理、构建 wheel 和 sdist</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> shutil</span><br><span class="line"><span class="keyword">import</span> subprocess</span><br><span class="line"><span class="keyword">import</span> argparse</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">clean_dist</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;清理 dist 目录&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">if</span> os.path.exists(<span class="string">&quot;dist&quot;</span>):</span><br><span class="line">        shutil.rmtree(<span class="string">&quot;dist&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;已清理 dist/ 目录&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">build_wheel</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;构建 wheel&quot;&quot;&quot;</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;开始构建 wheel...&quot;</span>)</span><br><span class="line">    result = subprocess.run(</span><br><span class="line">        [<span class="string">&quot;python&quot;</span>, <span class="string">&quot;-m&quot;</span>, <span class="string">&quot;build&quot;</span>, <span class="string">&quot;--wheel&quot;</span>],</span><br><span class="line">        capture_output=<span class="literal">True</span>,</span><br><span class="line">        text=<span class="literal">True</span></span><br><span class="line">    )</span><br><span class="line">    <span class="keyword">if</span> result.returncode != <span class="number">0</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;构建失败:\n<span class="subst">&#123;result.stderr&#125;</span>&quot;</span>)</span><br><span class="line">        exit(<span class="number">1</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;wheel 构建成功&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">build_sdist</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;构建 sdist&quot;&quot;&quot;</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;开始构建 sdist...&quot;</span>)</span><br><span class="line">    result = subprocess.run(</span><br><span class="line">        [<span class="string">&quot;python&quot;</span>, <span class="string">&quot;-m&quot;</span>, <span class="string">&quot;build&quot;</span>, <span class="string">&quot;--sdist&quot;</span>],</span><br><span class="line">        capture_output=<span class="literal">True</span>,</span><br><span class="line">        text=<span class="literal">True</span></span><br><span class="line">    )</span><br><span class="line">    <span class="keyword">if</span> result.returncode != <span class="number">0</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;sdist 构建失败:\n<span class="subst">&#123;result.stderr&#125;</span>&quot;</span>)</span><br><span class="line">        exit(<span class="number">1</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;sdist 构建成功&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">show_dist</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;显示构建产物&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">if</span> os.path.exists(<span class="string">&quot;dist&quot;</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;\n构建产物:&quot;</span>)</span><br><span class="line">        <span class="keyword">for</span> f <span class="keyword">in</span> os.listdir(<span class="string">&quot;dist&quot;</span>):</span><br><span class="line">            fpath = os.path.join(<span class="string">&quot;dist&quot;</span>, f)</span><br><span class="line">            size = os.path.getsize(fpath) / (<span class="number">1024</span> * <span class="number">1024</span>)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;  - <span class="subst">&#123;f&#125;</span> (<span class="subst">&#123;size:<span class="number">.1</span>f&#125;</span> MB)&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    parser = argparse.ArgumentParser(description=<span class="string">&quot;构建 Python 包&quot;</span>)</span><br><span class="line">    parser.add_argument(</span><br><span class="line">        <span class="string">&quot;--clean&quot;</span>, action=<span class="string">&quot;store_true&quot;</span>, <span class="built_in">help</span>=<span class="string">&quot;先清理 dist 目录&quot;</span></span><br><span class="line">    )</span><br><span class="line">    parser.add_argument(</span><br><span class="line">        <span class="string">&quot;--wheel-only&quot;</span>, action=<span class="string">&quot;store_true&quot;</span>, <span class="built_in">help</span>=<span class="string">&quot;只构建 wheel&quot;</span></span><br><span class="line">    )</span><br><span class="line">    args = parser.parse_args()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 检查 build 是否安装</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">import</span> build</span><br><span class="line">    <span class="keyword">except</span> ImportError:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;安装 build 工具...&quot;</span>)</span><br><span class="line">        subprocess.run([<span class="string">&quot;pip&quot;</span>, <span class="string">&quot;install&quot;</span>, <span class="string">&quot;build&quot;</span>], check=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> args.clean:</span><br><span class="line">        clean_dist()</span><br><span class="line"></span><br><span class="line">    build_wheel()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> args.wheel_only:</span><br><span class="line">        build_sdist()</span><br><span class="line">    </span><br><span class="line">    show_dist()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+<p>保存为 <code>tools/build_wheel.py</code>，使用方式：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 清理并构建</span></span><br><span class="line">python tools/build_wheel.py --clean</span><br><span class="line"></span><br><span class="line"><span class="comment"># 只构建 wheel（避免 sdist 过大问题）</span></span><br><span class="line">python tools/build_wheel.py --clean --wheel-only</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="四、发布流程"><a href="#四、发布流程" class="headerlink" title="四、发布流程"></a>四、发布流程</h2><h3 id="1-安装上传工具"><a href="#1-安装上传工具" class="headerlink" title="1. 安装上传工具"></a>1. 安装上传工具</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install twine</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-构建包"><a href="#2-构建包" class="headerlink" title="2. 构建包"></a>2. 构建包</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python tools/build_wheel.py --clean --wheel-only</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-上传到-PyPI"><a href="#3-上传到-PyPI" class="headerlink" title="3. 上传到 PyPI"></a>3. 上传到 PyPI</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用 .pypirc 配置（推荐）</span></span><br><span class="line">twine upload dist/*</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或命令行指定 Token</span></span><br><span class="line">twine upload dist/* -u __token__ -p pypi-你的Token</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-验证发布"><a href="#4-验证发布" class="headerlink" title="4. 验证发布"></a>4. 验证发布</h3><p>访问 <code>https://pypi.org/project/your-package-name/</code> 查看结果。</p>
+<hr>
+<h2 id="五、多平台构建"><a href="#五、多平台构建" class="headerlink" title="五、多平台构建"></a>五、多平台构建</h2><p>如果需要支持多个平台，可以使用 <code>cibuildwheel</code>：</p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install cibuildwheel</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置-pyproject-toml"><a href="#配置-pyproject-toml" class="headerlink" title="配置 pyproject.toml"></a>配置 pyproject.toml</h3><figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[tool.cibuildwheel]</span></span><br><span class="line"><span class="attr">build</span> = <span class="string">&quot;cp39-* cp310-* cp311-*&quot;</span></span><br><span class="line"><span class="attr">skip</span> = [<span class="string">&quot;*-musllinux_*&quot;</span>]</span><br></pre></td></tr></table></figure>
+
+<h3 id="构建所有平台"><a href="#构建所有平台" class="headerlink" title="构建所有平台"></a>构建所有平台</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cibuildwheel --output-dir wheelhouse</span><br></pre></td></tr></table></figure>
+
+<h3 id="上传多平台-wheel"><a href="#上传多平台-wheel" class="headerlink" title="上传多平台 wheel"></a>上传多平台 wheel</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">twine upload wheelhouse/*.whl</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="六、完整发布清单"><a href="#六、完整发布清单" class="headerlink" title="六、完整发布清单"></a>六、完整发布清单</h2><p>每次发布新版本时按这个顺序来：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 更新版本号（pyproject.toml）</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 更新 CHANGELOG.md（推荐）</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 提交代码</span></span><br><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">&quot;Release v0.1.0&quot;</span></span><br><span class="line">git tag v0.1.0</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4. 构建</span></span><br><span class="line">python tools/build_wheel.py --clean --wheel-only</span><br><span class="line"></span><br><span class="line"><span class="comment"># 5. 上传</span></span><br><span class="line">twine upload dist/*.whl</span><br><span class="line"></span><br><span class="line"><span class="comment"># 6. 推送到 GitHub</span></span><br><span class="line">git push origin main</span><br><span class="line">git push origin v0.1.0</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="七、FAQ"><a href="#七、FAQ" class="headerlink" title="七、FAQ"></a>七、FAQ</h2><p><strong>Q: 上传时报错 403 Forbidden？</strong></p>
+<ol>
+<li>邮箱未验证 → 登录 PyPI 验证邮箱</li>
+<li>Token 错误 → 重新生成 Token</li>
+<li>用户名错误 → 必须是 <code>__token__</code>，不是账号名</li>
+</ol>
+<p><strong>Q: 上传时报错 400 File too large？</strong></p>
+<ul>
+<li>默认单文件限制 100 MB</li>
+<li>解决方案：只上传 wheel（sdist 通常不需要）</li>
+</ul>
+<p><strong>Q: 如何测试发布？</strong></p>
+<p>使用 TestPyPI：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">twine upload --repository testpypi dist/*.whl</span><br><span class="line">pip install your-package --index-url https://test.pypi.org/simple/</span><br></pre></td></tr></table></figure>
+
+<p><strong>Q: wheel 和 sdist 的区别？</strong></p>
+<ul>
+<li><strong>wheel</strong>：预编译二进制包，安装快，跨平台（带平台标记）</li>
+<li><strong>sdist</strong>：源码包，用户安装时需要编译，通常较小</li>
+</ul>
+<hr>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>发布 Python 包并不复杂，关键步骤：</p>
+<ol>
+<li>配置好 <code>pyproject.toml</code></li>
+<li>写个构建脚本方便复用</li>
+<li>使用 <code>twine</code> 上传</li>
+<li>遇到问题优先查 PyPI 官方文档</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/PyPI/" rel="tag"># PyPI</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2026/05/25/a6f09865/" rel="prev" title="GitLab 代码仓库迁移与同步最佳实践">
+                  <i class="fa fa-angle-left"></i> GitLab 代码仓库迁移与同步最佳实践
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">759k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">11:30</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>
