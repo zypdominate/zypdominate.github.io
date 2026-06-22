@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="这一年多下来，有很多感受，其中有一点：AI 写的代码越来越多，但人对代码的理解并没有同步跟上。一直想写点什么，但是又忙东忙西，终于觉得要挤点时间，把几个印象深刻的案例整理出来，也顺便说说自己的看法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI 趋势下的 review 代码想法">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2026/06/11/a1e45952/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="这一年多下来，有很多感受，其中有一点：AI 写的代码越来越多，但人对代码的理解并没有同步跟上。一直想写点什么，但是又忙东忙西，终于觉得要挤点时间，把几个印象深刻的案例整理出来，也顺便说说自己的看法。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-06-11T14:22:18.000Z">
+<meta property="article:modified_time" content="2026-06-22T13:21:16.659Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="AI">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2026/06/11/a1e45952/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2026/06/11/a1e45952/","path":"posts/2026/06/11/a1e45952/","title":"AI 趋势下的 review 代码想法"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>AI 趋势下的 review 代码想法 | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="Magnolia's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-rss"><a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>RSS</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%83%8C%E6%99%AF"><span class="nav-text">背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5%E4%B8%AA%E6%88%91%E7%BB%8F%E5%8E%86%E7%9A%84%E6%A1%88%E4%BE%8B"><span class="nav-text">5个我经历的案例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A1%88%E4%BE%8B%E4%B8%80%EF%BC%9A%E4%B8%8D%E7%9F%A5%E9%81%93%E8%87%AA%E5%B7%B1%E5%BC%95%E5%85%A5%E4%BA%86%E4%BB%80%E4%B9%88"><span class="nav-text">案例一：不知道自己引入了什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A1%88%E4%BE%8B%E4%BA%8C%EF%BC%9A%E4%BB%A3%E7%A0%81%E6%98%AF-AI-%E7%9A%84%EF%BC%8C%E4%B8%8D%E6%98%AF%E6%88%91%E7%9A%84"><span class="nav-text">案例二：代码是 AI 的，不是我的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A1%88%E4%BE%8B%E4%B8%89%EF%BC%9AAI-%E5%96%9C%E6%AC%A2%E6%8A%8A%E7%AE%80%E5%8D%95%E4%BA%8B%E6%83%85%E6%90%9E%E5%A4%8D%E6%9D%82"><span class="nav-text">案例三：AI 喜欢把简单事情搞复杂</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A1%88%E4%BE%8B%E5%9B%9B%EF%BC%9AAI-%E7%BB%99%E7%9A%84%E6%96%B9%E6%A1%88%EF%BC%8C%E4%B8%8D%E4%B8%80%E5%AE%9A%E6%98%AF%E6%9C%80%E5%A5%BD%E7%9A%84"><span class="nav-text">案例四：AI 给的方案，不一定是最好的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A1%88%E4%BE%8B%E4%BA%94%EF%BC%9Areview-%E7%9A%84%E4%BA%BA%E4%B9%9F%E5%BC%80%E5%A7%8B%E8%B7%9F%E4%B8%8D%E4%B8%8A%E4%BA%86"><span class="nav-text">案例五：review 的人也开始跟不上了</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%88%91%E7%9A%84%E6%83%B3%E6%B3%95"><span class="nav-text">我的想法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BA%94%E5%AF%B9%E6%8E%AA%E6%96%BD"><span class="nav-text">应对措施</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-text">小结</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">140</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">47</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2026/06/11/a1e45952/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="AI 趋势下的 review 代码想法 | Magnolia's Blog">
+      <meta itemprop="description" content="这一年多下来，有很多感受，其中有一点：AI 写的代码越来越多，但人对代码的理解并没有同步跟上。一直想写点什么，但是又忙东忙西，终于觉得要挤点时间，把几个印象深刻的案例整理出来，也顺便说说自己的看法。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          AI 趋势下的 review 代码想法
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2026-06-11 22:22:18" itemprop="dateCreated datePublished" datetime="2026-06-11T22:22:18+08:00">2026-06-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/%E6%80%BB%E7%BB%93/" itemprop="url" rel="index"><span itemprop="name">总结</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>2.7k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">这一年多下来，有很多感受，其中有一点：AI 写的代码越来越多，但人对代码的理解并没有同步跟上。一直想写点什么，但是又忙东忙西，终于觉得要挤点时间，把几个印象深刻的案例整理出来，也顺便说说自己的看法。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>过去一年半，我断断续续在做 Python 代码的 review，被 review 的对象背景各不相同：</p>
+<ul>
+<li>没有任何编程经验、入行不到一年的新人</li>
+<li>有五年以上其他语言经验，但从没写过 Python 的工程师</li>
+<li>有一到三年编程经验、刚开始接触 Python 初级选手</li>
+</ul>
+<p>这一年多下来，有很多感受，其中有一点：AI 写的代码越来越多，但人对代码的理解并没有同步跟上。一直想写点什么，但是又忙东忙西，终于觉得要挤点时间，把几个印象深刻的案例整理出来，也顺便说说自己的看法。</p>
+<hr>
+<h3 id="5个我经历的案例"><a href="#5个我经历的案例" class="headerlink" title="5个我经历的案例"></a>5个我经历的案例</h3><h4 id="案例一：不知道自己引入了什么"><a href="#案例一：不知道自己引入了什么" class="headerlink" title="案例一：不知道自己引入了什么"></a>案例一：不知道自己引入了什么</h4><blockquote>
+<p>技术债：引入新的技术，需要去学习，减少因为不懂原理、功能放手 AI 实现而导致埋雷的可能</p>
+</blockquote>
+<p>在”Python + pytest + 其他（省略）”的测试框架里，A 新增了两个 pytest 内置钩子函数 <code>pytest_runtest_report</code>，两个函数实现一模一样，分别放在不同的目录下。结果不仅导致用例在内部平台上执行报错，还大面积影响了其他业务团队的测试任务分发和执行。</p>
+<p>A 有至少一年的编程经验，代码是让 AI 直接生成的。周五下班前发起合并请求，由另一名有合并权限、但不太熟悉 Python 和当前框架的 B 通过了。小小的一个错误，影响面却出奇地大，平台侧的同事在周末排查了将近半天。</p>
+<p>事后跟 A 聊，他坦言根本不知道 <code>pytest_runtest_report</code> 是干什么的，也没想到会有这么大的影响。事实上，pytest 根本不支持 pytest_runtest_report，实际 pytest 支持的、相似的是 <code>pytest_runtest_makereport</code>。</p>
+<hr>
+<h4 id="案例二：代码是-AI-的，不是我的"><a href="#案例二：代码是-AI-的，不是我的" class="headerlink" title="案例二：代码是 AI 的，不是我的"></a>案例二：代码是 AI 的，不是我的</h4><blockquote>
+<p>AI 不可能知道用户的所有上下文，大部分 agent 的上下文都是有限的。</p>
+</blockquote>
+<p>同一个部门里，A 和 B 经常有相似的功能需求。在 AI 辅助下，两个人各写各的，互相不关心对方实现了什么，就连公共函数也是分别让 AI 生成一份。慢慢地，代码库里开始出现大量重复逻辑，有些相似度超过 90%。</p>
+<p>更麻烦的是，时间一长，连他们自己都不记得当初 AI 生成了什么。出了问题，根本没有人能说清楚那段代码的来龙去脉。</p>
+<p>AI 生成的风格也比较杂，一会儿这个语言的习惯，一会儿那个语言的写法，前后不一致。比如用 <code>_xx</code> 表示保护成员，但在另一处又把这些属性直接导出给外部模块用——自己打自己脸，但 AI 不在意这些，它只是在”完成任务”。</p>
+<p>随着业务扩张、代码量越来越大，AI 能掌控的全局视野越来越有限，最终还是得靠人来收拾局面。</p>
+<hr>
+<h4 id="案例三：AI-喜欢把简单事情搞复杂"><a href="#案例三：AI-喜欢把简单事情搞复杂" class="headerlink" title="案例三：AI 喜欢把简单事情搞复杂"></a>案例三：AI 喜欢把简单事情搞复杂</h4><blockquote>
+<p>AI 喜欢过度设计、复杂化。</p>
+</blockquote>
+<p>刚入行的新人提交的代码里，时常能看到一堆明显是 AI 生成的冗余内容。</p>
+<p>明明两三行能搞定的逻辑，非要包一大段异常捕获，看起来很严谨，实际上有些分支永远不会走到。AI 不懂什么叫简洁，它只是在机械地拼接自己见过的代码片段。</p>
+<p>另一个常见现象是 AI 下意识地追求”可扩展性”——哪怕这个功能以后根本不可能扩展。代码里时常出现 <code>from __future__ import annotations</code>，或者新建一堆自定义异常类，看起来很”高级”，但大部分场景下完全没有必要。</p>
+<hr>
+<h4 id="案例四：AI-给的方案，不一定是最好的"><a href="#案例四：AI-给的方案，不一定是最好的" class="headerlink" title="案例四：AI 给的方案，不一定是最好的"></a>案例四：AI 给的方案，不一定是最好的</h4><blockquote>
+<p>AI 输出的工具库、代码风格写法过时，已经有更好更优的主流方案，需要人主动提示 AI 才能生成。</p>
+</blockquote>
+<p>同一个需求，问不同的 AI，可能会得到差距很大的答案。这不是 AI 在”判断哪个更好”，只是因为训练数据不同，输出的倾向性也不同。旧版本的资料在训练集里占比更高，AI 生成它的概率自然也更大。</p>
+<p>举个实际工作里的例子：有两个 GitLab 服务器，一个新的，一个旧的（落后十多年的免费版）。需求是把旧服务上的项目迁移过来，同时保留提交记录，并且以后每次提交都要同步一份到旧服务器。</p>
+<p>有些 AI 的答案是写个脚本来同步。但更强的 AI 告诉我可以直接用 GitLab 自带的 Mirroring Repositories 功能，一行脚本都不用写，完全解决问题。</p>
+<p>这两个答案的差距，不在于谁”更聪明”，在于谁见过更多相关的资料。所以不能闭眼信 AI，还是得自己有判断。</p>
+<hr>
+<h4 id="案例五：review-的人也开始跟不上了"><a href="#案例五：review-的人也开始跟不上了" class="headerlink" title="案例五：review 的人也开始跟不上了"></a>案例五：review 的人也开始跟不上了</h4><blockquote>
+<p>对 review 代码者的要求突增，可能面临看不懂、没见过的设计方式和代码写法的情况</p>
+</blockquote>
+<p>AI 让提交代码的门槛降低了，但 review 代码的门槛反而提高了——因为你不知道对方用 AI 生成了什么风格、什么方式的实现。</p>
+<p>举个常见例子：某次 review 时，看到有人用 <code>dataclass</code> 组织配置类，里面用到了 <code>__post_init__</code>。以前几乎没接触过这个，只知道 <code>__init__</code>，一时不知道 <code>__post_init__</code> 是什么时候触发的，也就没法给提交者任何有效的反馈。</p>
+<p>打个不太恰当的比方：就像一个领导没有相关专业背景，可能根本看不出下属做的东西究竟有没有问题、难度在哪、值不值得这么搞。</p>
+<hr>
+<h3 id="我的想法"><a href="#我的想法" class="headerlink" title="我的想法"></a>我的想法</h3><h4 id="应对措施"><a href="#应对措施" class="headerlink" title="应对措施"></a>应对措施</h4><p><strong>让 AI 反过来质疑我。</strong> 和 AI 交互时，不要只让它”给答案”，先让它质疑我的需求，说说它的困惑在哪。两边对齐了，再让它动手。必要的时候可以让它先复述一遍我的需求，确认理解没跑偏。这一步看着多余，实际上能省掉很多来回返工。</p>
+<p>很多 Agent 有 Plan 和 Build 模式，在 Plan 模式下，和 AI 交互，对齐需求、确定目标和准备计划，在 Build 模式下一一实现具体需求。</p>
+<p><strong>不理解的东西，先弄懂再用。</strong> 特别是大型项目里，一处改动可能牵一发动全身。AI 给我生成了什么，我得知道它是干什么的、会影响什么。就好比 AK47 很好用，但也不能交给一个完全不懂枪的人随便扫射。</p>
+<p>现在智驾虽然听着好，即使以后有一天高级到让不会开车人也能开。但如果要用智驾车接送某位重要人物，我肯定还是想找有实际开车经验的人掌控。</p>
+<p><strong>不要把控制权全交出去。</strong> 我见过有人说：反正当初 AI 写的，出了问题让 AI 改就行，管它影响怎样。这话听着像在开玩笑，但真有人是这么想的。一个产品如果全靠 AI 生成代码、没有人真正审查，出问题只是时间问题。代码合入前的 review，不能省。</p>
+<hr>
+<h4 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h4><p>有了 LLMs 之后，我有时候会想，如果我是某个项目的负责人，底下人都在大量用 AI 生成代码，让人担心的不是代码质量本身，而是：</p>
+<ol>
+<li>连自己提交了什么都说不清楚。生产出了问题，没人能定位，因为那段代码根本没人仔细看过。</li>
+<li>明明有更简单的方案，结果用 AI 搞出一堆脆弱的脚本，看似高级、做了很多东西，维护成本反而更高。</li>
+<li>整个团队渐渐失去对代码的掌控感。代码是跑起来了，但没人知道它为什么能跑，也没人知道它哪天会出什么问题。</li>
+</ol>
+<p>AI 是很好的工具，确实提升了不少效率。但工具终归是工具，用的人得清楚自己在做什么。否则出了事，AI 不会负责，锅还是得人来背。</p>
+<p>每次开会、线下交流时，领导问自己一个问题，大家都不想每次这样吧：我来问问 AI、等我马上搜一下。</p>
+<p>最大的体会：有了 AI，更加需要学习了。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/AI/" rel="tag"># AI</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2026/06/11/9eeddc54/" rel="prev" title="PyPI 发布指南：从 0 到 1 发布 Python 包">
+                  <i class="fa fa-angle-left"></i> PyPI 发布指南：从 0 到 1 发布 Python 包
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2026/06/21/abd967c/" rel="next" title="midscene-android：Python 接入 Android AI 自动化">
+                  midscene-android：Python 接入 Android AI 自动化 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">765k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">11:35</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

@@ -27,7 +27,7 @@
 <meta property="og:description" content="midscene-android 是一个 Python 工具包，将开源的 Midscene 的 Android AI 自动化能力桥接到Python测试体系。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2026-06-21T02:22:18.000Z">
-<meta property="article:modified_time" content="2026-06-21T15:37:16.253Z">
+<meta property="article:modified_time" content="2026-06-22T12:55:48.664Z">
 <meta property="article:author" content="Magnolia">
 <meta property="article:tag" content="Android">
 <meta property="article:tag" content="AI">
@@ -166,7 +166,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E6%97%B6-Node-Bootstrap-%E8%AE%BE%E8%AE%A1"><span class="nav-text">运行时 Node Bootstrap 设计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E8%83%8C%E6%99%AF%E4%B8%8E%E7%BA%A6%E6%9D%9F"><span class="nav-text">1) 背景与约束</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%BD%93%E5%89%8D%E8%BF%90%E8%A1%8C%E6%97%B6%E6%9E%B6%E6%9E%84"><span class="nav-text">2) 当前运行时架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%90%AF%E5%8A%A8%E9%93%BE%E8%B7%AF"><span class="nav-text">3) 启动链路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%8F%91%E5%B8%83%E4%B8%8E%E8%BF%90%E7%BB%B4%E5%BD%B1%E5%93%8D"><span class="nav-text">4) 发布与运维影响</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="nav-text">一、准备工作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-PyPI-%E8%B4%A6%E5%8F%B7%E4%B8%8E-Token"><span class="nav-text">1. PyPI 账号与 Token</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E9%85%8D%E7%BD%AE%E8%AE%A4%E8%AF%81%EF%BC%88%E6%8E%A8%E8%8D%90%EF%BC%89"><span class="nav-text">2. 配置认证（推荐）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%AE%89%E8%A3%85%E5%BC%80%E5%8F%91%E4%BE%9D%E8%B5%96"><span class="nav-text">3. 安装开发依赖</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%8F%91%E5%B8%83%E5%89%8D%E6%A3%80%E6%9F%A5"><span class="nav-text">二、发布前检查</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E6%9E%84%E5%BB%BA%E5%8F%91%E8%A1%8C%E5%8C%85"><span class="nav-text">三、构建发行包</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#dist-%E9%A2%84%E6%9C%9F%E4%BA%A7%E7%89%A9%EF%BC%88%E4%BB%A5-v0-0-3-%E4%B8%BA%E4%BE%8B%EF%BC%89"><span class="nav-text">dist&#x2F; 预期产物（以 v0.0.3 为例）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E4%B8%8A%E4%BC%A0%E5%88%B0-PyPI"><span class="nav-text">四、上传到 PyPI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E5%8F%91%E5%B8%83%E5%90%8E%E9%AA%8C%E8%AF%81"><span class="nav-text">五、发布后验证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E5%AE%8C%E6%95%B4%E5%8F%91%E5%B8%83%E6%B8%85%E5%8D%95"><span class="nav-text">六、完整发布清单</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%83%E3%80%81FAQ"><span class="nav-text">七、FAQ</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#midscene-android-%E5%B7%A5%E7%A8%8B%E8%AF%B4%E6%98%8E"><span class="nav-text">midscene-android 工程说明</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%83%8C%E6%99%AF%E4%B8%8E%E7%9B%AE%E6%A0%87"><span class="nav-text">背景与目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%B6%E6%9E%84"><span class="nav-text">架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#API-%E8%AE%BE%E8%AE%A1"><span class="nav-text">API 设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E6%97%B6-Node-Bootstrap"><span class="nav-text">运行时 Node Bootstrap</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%AF%E9%9D%A0%E6%80%A7"><span class="nav-text">可靠性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E5%88%86%E5%B1%82"><span class="nav-text">测试分层</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84%EF%BC%88%E6%A0%B8%E5%BF%83%E6%A8%A1%E5%9D%97%EF%BC%89"><span class="nav-text">项目结构（核心模块）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -292,7 +292,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>3.3k</span>
+      <span>3.1k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -310,118 +310,172 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><p>本文档描述 <strong>本项目</strong> 从构建到上传 PyPI 的完整流程。</p>
-<blockquote>
-<p>PyPI 包<strong>不含</strong> Node 二进制与 npm（避免 100MB 限制）。用户 <code>pip install</code> 后，<strong>首次运行</strong>会自动从 nodejs.org 下载到 <code>~/.midscene_android/node_runtime/</code>。</p>
-</blockquote>
-<hr>
-<h2 id="运行时-Node-Bootstrap-设计"><a href="#运行时-Node-Bootstrap-设计" class="headerlink" title="运行时 Node Bootstrap 设计"></a>运行时 Node Bootstrap 设计</h2><p>解释“为什么发布流程与普通 Python 包不同”。</p>
-<h3 id="1-背景与约束"><a href="#1-背景与约束" class="headerlink" title="1) 背景与约束"></a>1) 背景与约束</h3><ul>
-<li>PyPI 单文件默认上限为 <strong>100 MB</strong></li>
-<li>Node 可执行文件（单平台约 80MB）+ npm 会导致 wheel&#x2F;sdist 超限</li>
-<li>因此改为：<strong>包内仅放 Python 代码 + Node service 源码</strong>，Node&#x2F;npm 在运行时首次下载</li>
-</ul>
-<h3 id="2-当前运行时架构"><a href="#2-当前运行时架构" class="headerlink" title="2) 当前运行时架构"></a>2) 当前运行时架构</h3><ul>
-<li>pip 包内仅保留：<ul>
-<li><code>src/midscene_android/_node_driver/service/package.json</code></li>
-<li><code>src/midscene_android/_node_driver/service/service.js</code></li>
-</ul>
-</li>
-<li>首次运行自动准备：<ul>
-<li><code>~/.midscene_android/node_runtime/</code>：Node + npm</li>
-<li><code>~/.midscene_android/node_service/</code>：<code>npm install @midscene/android</code> 的缓存结果</li>
-</ul>
-</li>
-</ul>
-<h3 id="3-启动链路"><a href="#3-启动链路" class="headerlink" title="3) 启动链路"></a>3) 启动链路</h3><ol>
-<li><code>pip install midscene-android</code></li>
-<li>首次调用 <code>MidsceneAgent</code> &#x2F; <code>ensure_node_service()</code></li>
-<li><code>node_bootstrap.ensure_node_runtime()</code>：<ul>
-<li>若缓存存在：直接复用</li>
-<li>若本地开发目录已预填 <code>_node_driver</code>：优先 seed 到缓存</li>
-<li>否则从 nodejs.org 下载并解压</li>
-</ul>
-</li>
-<li>执行 <code>npm install --omit=dev</code>，启动 Node RPC 服务</li>
-</ol>
-<h3 id="4-发布与运维影响"><a href="#4-发布与运维影响" class="headerlink" title="4) 发布与运维影响"></a>4) 发布与运维影响</h3><ul>
-<li>发布产物固定为：<strong>1 个 <code>py3-none-any.whl</code> + 1 个 <code>sdist</code></strong></li>
-<li><code>tools/upload_pypi.py --require-all</code> 会校验该组合和 100MB 限制</li>
-<li>首次运行要求网络可达：<ul>
-<li>nodejs.org（下载 Node）</li>
-<li>registry.npmjs.org（安装 <code>@midscene/android</code> 依赖）</li>
-</ul>
-</li>
-<li>离线场景可预热：<ul>
-<li>先在联网环境准备 <code>~/.midscene_android/node_runtime/</code> 与 <code>~/.midscene_android/node_service/</code></li>
-<li>或使用 <code>tools/fetch_node_binaries.py</code> 预填开发目录，再 seed 到缓存</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h2 id="一、准备工作"><a href="#一、准备工作" class="headerlink" title="一、准备工作"></a>一、准备工作</h2><h3 id="1-PyPI-账号与-Token"><a href="#1-PyPI-账号与-Token" class="headerlink" title="1. PyPI 账号与 Token"></a>1. PyPI 账号与 Token</h3><ul>
-<li>注册 <a target="_blank" rel="noopener" href="https://pypi.org/account/register/">PyPI</a> 并完成邮箱验证</li>
-<li>在 <a target="_blank" rel="noopener" href="https://pypi.org/manage/account/token/">API Token 管理页</a> 创建 Token（格式 <code>pypi-AgE...</code>）</li>
-</ul>
-<h3 id="2-配置认证（推荐）"><a href="#2-配置认证（推荐）" class="headerlink" title="2. 配置认证（推荐）"></a>2. 配置认证（推荐）</h3><p>创建 <code>~/.pypirc</code>（Windows: <code>%USERPROFILE%\.pypirc</code>）：</p>
-<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[pypi]</span></span><br><span class="line"><span class="attr">repository</span> = https://upload.pypi.org/legacy/</span><br><span class="line"><span class="attr">username</span> = __token__</span><br><span class="line"><span class="attr">password</span> = pypi-你的完整Token</span><br><span class="line"></span><br><span class="line"><span class="section">[testpypi]</span></span><br><span class="line"><span class="attr">repository</span> = https://test.pypi.org/legacy/</span><br><span class="line"><span class="attr">username</span> = __token__</span><br><span class="line"><span class="attr">password</span> = pypi-你的TestPyPIToken</span><br></pre></td></tr></table></figure>
-
-<p>也可用环境变量：<code>TWINE_USERNAME=__token__</code>、<code>TWINE_PASSWORD=pypi-...</code></p>
-<h3 id="3-安装开发依赖"><a href="#3-安装开发依赖" class="headerlink" title="3. 安装开发依赖"></a>3. 安装开发依赖</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">uv <span class="built_in">sync</span> --extra dev</span><br><span class="line"><span class="comment"># 或</span></span><br><span class="line">pip install -e <span class="string">&quot;.[dev]&quot;</span></span><br></pre></td></tr></table></figure>
-
-<hr>
-<h2 id="二、发布前检查"><a href="#二、发布前检查" class="headerlink" title="二、发布前检查"></a>二、发布前检查</h2><p>每次发布新版本：</p>
-<ol>
-<li><p><strong>更新版本号</strong> — <code>pyproject.toml</code> 的 <code>[project].version</code></p>
-</li>
-<li><p><strong>同步 Node 服务版本</strong>（如有变更）— <code>src/midscene_android/_node_driver/service/package.json</code></p>
-</li>
-<li><p><strong>运行测试</strong>（无需设备，首次需联网下载 Node）：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pytest tests/ -m <span class="string">&quot;not device&quot;</span> -v</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>提交并打 tag</strong>（可选但推荐）：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">&quot;Release v0.0.3&quot;</span></span><br><span class="line">git tag v0.0.3</span><br></pre></td></tr></table></figure></li>
-</ol>
-<hr>
-<h2 id="三、构建发行包"><a href="#三、构建发行包" class="headerlink" title="三、构建发行包"></a>三、构建发行包</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python tools/build_wheel.py --clean</span><br></pre></td></tr></table></figure>
-
-<p>产物为 <strong>1 个 py3-none-any wheel + sdist</strong>，体积通常各 &lt; 5 MB。</p>
-<h3 id="dist-预期产物（以-v0-0-3-为例）"><a href="#dist-预期产物（以-v0-0-3-为例）" class="headerlink" title="dist&#x2F; 预期产物（以 v0.0.3 为例）"></a>dist&#x2F; 预期产物（以 v0.0.3 为例）</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dist/</span><br><span class="line">├── midscene_android-0.0.3-py3-none-any.whl   # 全平台通用</span><br><span class="line">└── midscene_android-0.0.3.tar.gz             # 源码包</span><br></pre></td></tr></table></figure>
-
-<p><code>upload_pypi.py</code> 会在上传前检查单文件不超过 100 MB。</p>
-<hr>
-<h2 id="四、上传到-PyPI"><a href="#四、上传到-PyPI" class="headerlink" title="四、上传到 PyPI"></a>四、上传到 PyPI</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. dry-run</span></span><br><span class="line">python tools/upload_pypi.py --dry-run</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 正式发布（要求 sdist + 1 个 py3-none-any wheel）</span></span><br><span class="line">python tools/upload_pypi.py --require-all --<span class="built_in">yes</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. TestPyPI</span></span><br><span class="line">python tools/upload_pypi.py --require-all --repository testpypi --token pypi-...</span><br></pre></td></tr></table></figure>
-
-<p>认证未配置时脚本会提前报错并说明如何设置 <code>.pypirc</code> 或 <code>--token</code>。</p>
-<hr>
-<h2 id="五、发布后验证"><a href="#五、发布后验证" class="headerlink" title="五、发布后验证"></a>五、发布后验证</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">python -m venv .venv-release-test</span><br><span class="line"><span class="comment"># Linux/macOS:</span></span><br><span class="line"><span class="built_in">source</span> .venv-release-test/bin/activate</span><br><span class="line"><span class="comment"># Windows:</span></span><br><span class="line"><span class="comment"># .\.venv-release-test\Scripts\activate</span></span><br><span class="line"></span><br><span class="line">pip install midscene-android</span><br><span class="line">pytest tests/ -m <span class="string">&quot;not device&quot;</span> -v</span><br></pre></td></tr></table></figure>
-
-<p>首次运行测试或 import 会下载 Node（~80MB，需访问 nodejs.org）。</p>
+    <div class="post-body" itemprop="articleBody"><h1 id="midscene-android-工程说明"><a href="#midscene-android-工程说明" class="headerlink" title="midscene-android 工程说明"></a>midscene-android 工程说明</h1><p><code>midscene-android</code> 是一个 Python 包，将 <a target="_blank" rel="noopener" href="https://github.com/web-infra-dev/midscene">Midscene.js</a> 的 Android AI 自动化能力桥接到 Python 测试体系。用户通过 <code>MidsceneAgent</code> 调用能力，无需自行安装 Node.js，也无需维护 UI 选择器。</p>
 <p>PyPI：<a target="_blank" rel="noopener" href="https://pypi.org/project/midscene-android/">https://pypi.org/project/midscene-android/</a></p>
+<p>下载安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install midscene-android</span><br></pre></td></tr></table></figure>
+
+<p>源码：<a target="_blank" rel="noopener" href="https://github.com/zypdominate/midscene-python">github.com midscene-python</a> 或者 <a target="_blank" rel="noopener" href="https://gitee.com/zypdominate/midscene-python">gitee.com midscene-python</a></p>
 <hr>
-<h2 id="六、完整发布清单"><a href="#六、完整发布清单" class="headerlink" title="六、完整发布清单"></a>六、完整发布清单</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 更新 pyproject.toml 版本号</span></span><br><span class="line"><span class="comment"># 2. pytest tests/ -m &quot;not device&quot; -v</span></span><br><span class="line"><span class="comment"># 3. python tools/build_wheel.py --clean</span></span><br><span class="line"><span class="comment"># 4. python tools/upload_pypi.py --dry-run</span></span><br><span class="line"><span class="comment"># 5. python tools/upload_pypi.py --require-all --yes</span></span><br><span class="line"><span class="comment"># 6. git push origin main &amp;&amp; git push origin v0.0.3</span></span><br></pre></td></tr></table></figure>
+<h2 id="背景与目标"><a href="#背景与目标" class="headerlink" title="背景与目标"></a>背景与目标</h2><p>Android UI 自动化通常依赖 resource-id、xpath 等固定选择器，页面变更后脚本维护成本较高。Midscene 提供基于视觉模型和自然语言的自动化能力，但核心实现位于 Node 生态。</p>
+<p>本项目的目标：</p>
+<ul>
+<li>在 Python &#x2F; pytest 测试体系中接入 Midscene Android 能力，无需迁移技术栈</li>
+<li>提供同步 Python API，贴近测试代码写法</li>
+<li>用户无需预装 Node.js；首次运行时自动准备运行时环境</li>
+<li>覆盖安装、缓存、异常处理、测试与发布等工程环节</li>
+</ul>
+<hr>
+<h2 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h2><pre class="mermaid">flowchart TD
+    PyTest[PyTest Python Script] --> Agent[MidsceneAgent]
+    Agent --> Rpc[JsonRpc Local Loopback]
+    Rpc --> NodeSvc[NodeServiceManager]
+    NodeSvc --> ServiceJs[service.js]
+    ServiceJs --> MidsceneJs["@midscene/android"]
+    ServiceJs --> Adb[ADB]
+    Adb --> Device[AndroidDevice]
+    MidsceneJs --> VisionModel[VisionModelAPI]</pre>
+
+<p><strong>组件职责：</strong></p>
+<table>
+<thead>
+<tr>
+<th>组件</th>
+<th>职责</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MidsceneAgent</code></td>
+<td>Python 侧入口，提供 AI 操作与设备控制 API</td>
+</tr>
+<tr>
+<td><code>NodeServiceManager</code></td>
+<td>Node 子进程单例管理，JSON-RPC 通信</td>
+</tr>
+<tr>
+<td><code>service.js</code></td>
+<td>Node 微服务，代理 Midscene Android 与 ADB</td>
+</tr>
+<tr>
+<td><code>node_bootstrap</code></td>
+<td>首次运行时下载 Node&#x2F;npm 并写入本地缓存</td>
+</tr>
+</tbody></table>
+<p><strong>设计选择：</strong></p>
+<ul>
+<li>Python 不重写 Midscene 能力，通过本地 JSON-RPC 桥接 Node 服务</li>
+<li>多个 <code>MidsceneAgent</code> 共享同一 Node 进程，通过 <code>sessionId</code> 隔离</li>
+<li>Python 进程退出时，Node 子进程由 <code>atexit</code> 自动清理</li>
+</ul>
+<hr>
+<h2 id="API-设计"><a href="#API-设计" class="headerlink" title="API 设计"></a>API 设计</h2><p>API 按测试场景分层，而非直接暴露底层 RPC 方法：</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>方法</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>复合操作</td>
+<td><code>ai_action()</code></td>
+<td>描述多步业务目标</td>
+</tr>
+<tr>
+<td>单步操作</td>
+<td><code>ai_tap()</code>、<code>ai_input()</code>、<code>ai_scroll()</code></td>
+<td>关键路径的稳定步骤</td>
+</tr>
+<tr>
+<td>断言与查询</td>
+<td><code>ai_assert()</code>、<code>ai_query()</code>、<code>ai_boolean()</code></td>
+<td>基于 UI 语义的验证</td>
+</tr>
+<tr>
+<td>设备控制</td>
+<td><code>launch_app()</code>、<code>get_screenshot()</code>、<code>run_adb_shell()</code> 等</td>
+<td>应用管理与调试</td>
+</tr>
+</tbody></table>
+<p><strong>基本用法：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> midscene_android <span class="keyword">import</span> MidsceneAgent</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> MidsceneAgent(<span class="string">&quot;emulator-5556&quot;</span>) <span class="keyword">as</span> agent:</span><br><span class="line">    agent.ai_tap(<span class="string">&quot;登录按钮&quot;</span>)</span><br><span class="line">    agent.ai_input(<span class="string">&quot;用户名输入框&quot;</span>, <span class="string">&quot;testuser&quot;</span>)</span><br><span class="line">    agent.ai_assert(<span class="string">&quot;当前页面是用户首页&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>pytest 集成：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"><span class="keyword">from</span> midscene_android <span class="keyword">import</span> MidsceneAgent</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@pytest.fixture</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">agent</span>():</span><br><span class="line">    ag = MidsceneAgent(<span class="string">&quot;emulator-5556&quot;</span>)</span><br><span class="line">    <span class="keyword">yield</span> ag</span><br><span class="line">    ag.destroy()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_login</span>(<span class="params">agent: MidsceneAgent</span>):</span><br><span class="line">    agent.ai_input(<span class="string">&quot;用户名输入框&quot;</span>, <span class="string">&quot;testuser&quot;</span>)</span><br><span class="line">    agent.ai_tap(<span class="string">&quot;登录按钮&quot;</span>)</span><br><span class="line">    agent.ai_assert(<span class="string">&quot;登录成功，显示用户首页&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>配置通过环境变量或 <code>.env</code> 提供（<code>MIDSCENE_MODEL_BASE_URL</code>、<code>MIDSCENE_MODEL_API_KEY</code>、<code>MIDSCENE_MODEL_NAME</code> 等），由 <code>MidsceneConfig</code> 统一加载与校验。</p>
+<hr>
+<h2 id="运行时-Node-Bootstrap"><a href="#运行时-Node-Bootstrap" class="headerlink" title="运行时 Node Bootstrap"></a>运行时 Node Bootstrap</h2><p>早期方案将 Node 二进制与 npm 打入 wheel，但受 PyPI 单文件 100MB 限制及多平台体积影响，改为运行时自举：</p>
+<ol>
+<li><code>pip install midscene-android</code> — 包内仅含 Python 代码与 <code>service.js</code> 源码</li>
+<li>首次调用 <code>MidsceneAgent</code> — 触发 <code>node_bootstrap.ensure_node_runtime()</code></li>
+<li>检查 <code>~/.midscene_android/node_runtime/</code> 缓存，缺失则从 nodejs.org 下载</li>
+<li>执行 <code>npm install @midscene/android</code> 到 <code>~/.midscene_android/node_service/</code></li>
+<li>启动 Node RPC 服务；后续运行复用缓存</li>
+</ol>
+<p>版本变更时通过缓存元数据（<code>VERSION_FILE</code>、<code>NPM_DONE_FLAG</code>）触发依赖重装。</p>
+<hr>
+<h2 id="可靠性"><a href="#可靠性" class="headerlink" title="可靠性"></a>可靠性</h2><table>
+<thead>
+<tr>
+<th>问题</th>
+<th>处理方式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>配置缺失</td>
+<td><code>MidsceneConfigError</code>，明确提示缺少的环境变量</td>
+</tr>
+<tr>
+<td>RPC 传输错误</td>
+<td>统一包装为 <code>MidsceneNodeServiceError</code>，不裸抛 <code>requests</code> 异常</td>
+</tr>
+<tr>
+<td>Node 进程崩溃</td>
+<td>自动重启一次并重试</td>
+</tr>
+<tr>
+<td>stdout 管道阻塞</td>
+<td>独立线程持续消费 Node 子进程 stdout，避免长会话卡死</td>
+</tr>
+<tr>
+<td>日志文件膨胀</td>
+<td>Node 服务日志 5MB 上限并自动轮转</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="测试分层"><a href="#测试分层" class="headerlink" title="测试分层"></a>测试分层</h2><p>测试按依赖程度分为三层，避免全部用例依赖真实设备：</p>
+<table>
+<thead>
+<tr>
+<th>层级</th>
+<th>内容</th>
+<th>是否需要设备</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Level 1</td>
+<td>缓存、版本管理、bootstrap 逻辑</td>
+<td>否</td>
+</tr>
+<tr>
+<td>Level 2</td>
+<td>Node 服务启动、Agent 初始化、RPC 链路</td>
+<td>否</td>
+</tr>
+<tr>
+<td>Level 3</td>
+<td>完整 AI 操作</td>
+<td>是（<code>pytest.mark.device</code>）</td>
+</tr>
+</tbody></table>
+<p>CI 默认执行 <code>-m &quot;not device&quot;</code>，仅跑 Level 1 和 Level 2。</p>
+<hr>
+<h2 id="项目结构（核心模块）"><a href="#项目结构（核心模块）" class="headerlink" title="项目结构（核心模块）"></a>项目结构（核心模块）</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">src/midscene_android/</span><br><span class="line">├── midscene_agent.py    # Python 侧 API 入口</span><br><span class="line">├── node_service.py      # Node 子进程管理与 JSON-RPC</span><br><span class="line">├── node_bootstrap.py    # 运行时 Node/npm 下载与缓存</span><br><span class="line">├── runtime.py           # 缓存路径与版本管理</span><br><span class="line">├── config.py            # 配置加载与校验</span><br><span class="line">└── _node_driver/service/</span><br><span class="line">    ├── service.js       # Node 微服务</span><br><span class="line">    └── package.json</span><br></pre></td></tr></table></figure>
 
 <hr>
-<h2 id="七、FAQ"><a href="#七、FAQ" class="headerlink" title="七、FAQ"></a>七、FAQ</h2><p><strong>Q: 400 File too large？</strong></p>
-<ul>
-<li>旧版 wheel 打包了 Node&#x2F;npm。确认 <code>pyproject.toml</code> 的 <code>package-data</code> 仅含 <code>_node_driver/service/*</code>，重新 <code>build_wheel.py --clean</code>。</li>
-</ul>
-<p><strong>Q: 403 Forbidden？</strong></p>
-<ul>
-<li>邮箱未验证、Token 错误，或用户名不是 <code>__token__</code>。</li>
-</ul>
-<p><strong>Q: 用户离线环境怎么办？</strong></p>
-<ul>
-<li>手动预填 <code>~/.midscene_android/node_runtime/</code> 与 <code>~/.midscene_android/node_service/</code>，或在内网镜像 nodejs.org &#x2F; npm registry。</li>
-</ul>
-<p><strong>Q: 本地 git 开发还要 fetch_node_binaries 吗？</strong></p>
-<ul>
-<li>可选。正常运行会通过 <code>node_bootstrap</code> 自动下载到缓存；<code>tools/fetch_node_binaries.py</code> 仅用于预填 <code>src/.../_node_driver/</code> 方便离线开发。</li>
-</ul>
-<p><strong>Q: 首次下载经常中断（IncompleteRead）怎么办？</strong></p>
-<ul>
-<li>属于网络稳定性问题，重试即可；若在公司网络，优先配置可访问 nodejs.org &#x2F; npm registry 的网络策略。</li>
-</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p><code>midscene-android</code> 是一个 Python&#x2F;Node 混合桥接工程：Python 侧提供测试友好的同步 API，Node 侧复用 Midscene.js 能力，运行时 bootstrap 解决 Node 环境分发问题。主要工程工作集中在 RPC 通信、缓存管理、异常语义、测试分层与 PyPI 发布链路。</p>
 
     </div>
 
@@ -455,7 +509,7 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/posts/2026/06/11/9eeddc54/" rel="prev" title="AI 趋势下的 review 代码想法">
+                <a href="/posts/2026/06/11/a1e45952/" rel="prev" title="AI 趋势下的 review 代码想法">
                   <i class="fa fa-angle-left"></i> AI 趋势下的 review 代码想法
                 </a>
             </div>
