@@ -19,15 +19,15 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="这一年多下来，有很多感受，其中有一点：AI 写的代码越来越多，但人对代码的理解并没有同步跟上。一直想写点什么，但是又忙东忙西，终于觉得要挤点时间，把几个印象深刻的案例整理出来，也顺便说说自己的看法。">
+    <meta name="description" content="这一年多的代码 review，有很多感受，一直想写点什么，但又忙东忙西，终于觉得要挤点时间，把几个印象深刻的案例整理出来，也顺便说说自己的看法。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="AI 趋势下的 review 代码想法">
 <meta property="og:url" content="https://zypdominate.github.io/posts/2026/06/11/a1e45952/index.html">
 <meta property="og:site_name" content="Magnolia&#39;s Blog">
-<meta property="og:description" content="这一年多下来，有很多感受，其中有一点：AI 写的代码越来越多，但人对代码的理解并没有同步跟上。一直想写点什么，但是又忙东忙西，终于觉得要挤点时间，把几个印象深刻的案例整理出来，也顺便说说自己的看法。">
+<meta property="og:description" content="这一年多的代码 review，有很多感受，一直想写点什么，但又忙东忙西，终于觉得要挤点时间，把几个印象深刻的案例整理出来，也顺便说说自己的看法。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2026-06-11T14:22:18.000Z">
-<meta property="article:modified_time" content="2026-06-22T13:21:16.659Z">
+<meta property="article:modified_time" content="2026-07-01T16:38:50.274Z">
 <meta property="article:author" content="Magnolia">
 <meta property="article:tag" content="AI">
 <meta name="twitter:card" content="summary">
@@ -164,7 +164,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%83%8C%E6%99%AF"><span class="nav-text">背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5%E4%B8%AA%E6%88%91%E7%BB%8F%E5%8E%86%E7%9A%84%E6%A1%88%E4%BE%8B"><span class="nav-text">5个我经历的案例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A1%88%E4%BE%8B%E4%B8%80%EF%BC%9A%E4%B8%8D%E7%9F%A5%E9%81%93%E8%87%AA%E5%B7%B1%E5%BC%95%E5%85%A5%E4%BA%86%E4%BB%80%E4%B9%88"><span class="nav-text">案例一：不知道自己引入了什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A1%88%E4%BE%8B%E4%BA%8C%EF%BC%9A%E4%BB%A3%E7%A0%81%E6%98%AF-AI-%E7%9A%84%EF%BC%8C%E4%B8%8D%E6%98%AF%E6%88%91%E7%9A%84"><span class="nav-text">案例二：代码是 AI 的，不是我的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A1%88%E4%BE%8B%E4%B8%89%EF%BC%9AAI-%E5%96%9C%E6%AC%A2%E6%8A%8A%E7%AE%80%E5%8D%95%E4%BA%8B%E6%83%85%E6%90%9E%E5%A4%8D%E6%9D%82"><span class="nav-text">案例三：AI 喜欢把简单事情搞复杂</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A1%88%E4%BE%8B%E5%9B%9B%EF%BC%9AAI-%E7%BB%99%E7%9A%84%E6%96%B9%E6%A1%88%EF%BC%8C%E4%B8%8D%E4%B8%80%E5%AE%9A%E6%98%AF%E6%9C%80%E5%A5%BD%E7%9A%84"><span class="nav-text">案例四：AI 给的方案，不一定是最好的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A1%88%E4%BE%8B%E4%BA%94%EF%BC%9Areview-%E7%9A%84%E4%BA%BA%E4%B9%9F%E5%BC%80%E5%A7%8B%E8%B7%9F%E4%B8%8D%E4%B8%8A%E4%BA%86"><span class="nav-text">案例五：review 的人也开始跟不上了</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%88%91%E7%9A%84%E6%83%B3%E6%B3%95"><span class="nav-text">我的想法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BA%94%E5%AF%B9%E6%8E%AA%E6%96%BD"><span class="nav-text">应对措施</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-text">小结</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%83%8C%E6%99%AF"><span class="nav-text">背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5%E4%B8%AA%E6%88%91%E7%BB%8F%E5%8E%86%E7%9A%84%E6%A1%88%E4%BE%8B"><span class="nav-text">5个我经历的案例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A1%88%E4%BE%8B%E4%B8%80%EF%BC%9A%E4%B8%8D%E7%9F%A5%E9%81%93%E8%87%AA%E5%B7%B1%E5%BC%95%E5%85%A5%E4%BA%86%E4%BB%80%E4%B9%88"><span class="nav-text">案例一：不知道自己引入了什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A1%88%E4%BE%8B%E4%BA%8C%EF%BC%9A%E4%BB%A3%E7%A0%81%E6%98%AF-AI-%E7%9A%84%EF%BC%8C%E4%B8%8D%E6%98%AF%E8%87%AA%E5%B7%B1%E7%9A%84"><span class="nav-text">案例二：代码是 AI 的，不是自己的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A1%88%E4%BE%8B%E4%B8%89%EF%BC%9AAI-%E5%96%9C%E6%AC%A2%E6%8A%8A%E7%AE%80%E5%8D%95%E4%BA%8B%E6%83%85%E6%90%9E%E5%A4%8D%E6%9D%82"><span class="nav-text">案例三：AI 喜欢把简单事情搞复杂</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A1%88%E4%BE%8B%E5%9B%9B%EF%BC%9AAI-%E7%BB%99%E7%9A%84%E6%96%B9%E6%A1%88%EF%BC%8C%E4%B8%8D%E4%B8%80%E5%AE%9A%E6%98%AF%E6%9C%80%E5%A5%BD%E7%9A%84"><span class="nav-text">案例四：AI 给的方案，不一定是最好的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A1%88%E4%BE%8B%E4%BA%94%EF%BC%9Areview-%E7%9A%84%E4%BA%BA%E4%B9%9F%E5%BC%80%E5%A7%8B%E8%B7%9F%E4%B8%8D%E4%B8%8A%E4%BA%86"><span class="nav-text">案例五：review 的人也开始跟不上了</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%88%91%E7%9A%84%E6%83%B3%E6%B3%95"><span class="nav-text">我的想法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BA%94%E5%AF%B9%E6%8E%AA%E6%96%BD"><span class="nav-text">应对措施</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-text">小结</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -245,7 +245,7 @@
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
       <meta itemprop="name" content="AI 趋势下的 review 代码想法 | Magnolia's Blog">
-      <meta itemprop="description" content="这一年多下来，有很多感受，其中有一点：AI 写的代码越来越多，但人对代码的理解并没有同步跟上。一直想写点什么，但是又忙东忙西，终于觉得要挤点时间，把几个印象深刻的案例整理出来，也顺便说说自己的看法。">
+      <meta itemprop="description" content="这一年多的代码 review，有很多感受，一直想写点什么，但又忙东忙西，终于觉得要挤点时间，把几个印象深刻的案例整理出来，也顺便说说自己的看法。">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -290,61 +290,63 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>2.7k</span>
+      <span>2.8k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
+      <span>3 mins.</span>
     </span>
 </div>
 
-            <div class="post-description">这一年多下来，有很多感受，其中有一点：AI 写的代码越来越多，但人对代码的理解并没有同步跟上。一直想写点什么，但是又忙东忙西，终于觉得要挤点时间，把几个印象深刻的案例整理出来，也顺便说说自己的看法。</div>
+            <div class="post-description">这一年多的代码 review，有很多感受，一直想写点什么，但又忙东忙西，终于觉得要挤点时间，把几个印象深刻的案例整理出来，也顺便说说自己的看法。</div>
         </div>
       </header>
 
     
     
     
-    <div class="post-body" itemprop="articleBody"><h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>过去一年半，我断断续续在做 Python 代码的 review，被 review 的对象背景各不相同：</p>
+    <div class="post-body" itemprop="articleBody"><h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>过去一年半，断断续续有负责 review 同事的 Python 代码，被 review 的对象背景各不相同：</p>
 <ul>
 <li>没有任何编程经验、入行不到一年的新人</li>
 <li>有五年以上其他语言经验，但从没写过 Python 的工程师</li>
 <li>有一到三年编程经验、刚开始接触 Python 初级选手</li>
 </ul>
-<p>这一年多下来，有很多感受，其中有一点：AI 写的代码越来越多，但人对代码的理解并没有同步跟上。一直想写点什么，但是又忙东忙西，终于觉得要挤点时间，把几个印象深刻的案例整理出来，也顺便说说自己的看法。</p>
+<p>这一年多下来，有很多感受，一直想写点什么，但又忙东忙西，终于觉得要挤点时间，把几个印象深刻的案例整理出来，也顺便说说自己的看法，常见的：AI 写的代码越来越多，但人对代码的理解并没有同步跟上。</p>
 <hr>
 <h3 id="5个我经历的案例"><a href="#5个我经历的案例" class="headerlink" title="5个我经历的案例"></a>5个我经历的案例</h3><h4 id="案例一：不知道自己引入了什么"><a href="#案例一：不知道自己引入了什么" class="headerlink" title="案例一：不知道自己引入了什么"></a>案例一：不知道自己引入了什么</h4><blockquote>
 <p>技术债：引入新的技术，需要去学习，减少因为不懂原理、功能放手 AI 实现而导致埋雷的可能</p>
 </blockquote>
-<p>在”Python + pytest + 其他（省略）”的测试框架里，A 新增了两个 pytest 内置钩子函数 <code>pytest_runtest_report</code>，两个函数实现一模一样，分别放在不同的目录下。结果不仅导致用例在内部平台上执行报错，还大面积影响了其他业务团队的测试任务分发和执行。</p>
+<p>在”Python + pytest + 其他（省略）”的测试框架里，A 新增了两个像是 pytest 内置钩子的函数 <code>pytest_runtest_report</code>，两个函数实现一模一样，分别放在不同的目录下。结果不仅导致用例在内部平台上执行报错，还大面积影响了其他业务团队的测试任务分发和执行。</p>
 <p>A 有至少一年的编程经验，代码是让 AI 直接生成的。周五下班前发起合并请求，由另一名有合并权限、但不太熟悉 Python 和当前框架的 B 通过了。小小的一个错误，影响面却出奇地大，平台侧的同事在周末排查了将近半天。</p>
-<p>事后跟 A 聊，他坦言根本不知道 <code>pytest_runtest_report</code> 是干什么的，也没想到会有这么大的影响。事实上，pytest 根本不支持 pytest_runtest_report，实际 pytest 支持的、相似的是 <code>pytest_runtest_makereport</code>。</p>
+<p>事后发现，他表示根本不知道 <code>pytest_runtest_report</code> 是干什么的，也没想到会有这么大的影响。事实上，现在 pytest 根本不支持 pytest_runtest_report，实际 pytest 支持的、相似的是 <code>pytest_runtest_makereport</code>。</p>
 <hr>
-<h4 id="案例二：代码是-AI-的，不是我的"><a href="#案例二：代码是-AI-的，不是我的" class="headerlink" title="案例二：代码是 AI 的，不是我的"></a>案例二：代码是 AI 的，不是我的</h4><blockquote>
+<h4 id="案例二：代码是-AI-的，不是自己的"><a href="#案例二：代码是-AI-的，不是自己的" class="headerlink" title="案例二：代码是 AI 的，不是自己的"></a>案例二：代码是 AI 的，不是自己的</h4><blockquote>
 <p>AI 不可能知道用户的所有上下文，大部分 agent 的上下文都是有限的。</p>
 </blockquote>
 <p>同一个部门里，A 和 B 经常有相似的功能需求。在 AI 辅助下，两个人各写各的，互相不关心对方实现了什么，就连公共函数也是分别让 AI 生成一份。慢慢地，代码库里开始出现大量重复逻辑，有些相似度超过 90%。</p>
-<p>更麻烦的是，时间一长，连他们自己都不记得当初 AI 生成了什么。出了问题，根本没有人能说清楚那段代码的来龙去脉。</p>
-<p>AI 生成的风格也比较杂，一会儿这个语言的习惯，一会儿那个语言的写法，前后不一致。比如用 <code>_xx</code> 表示保护成员，但在另一处又把这些属性直接导出给外部模块用——自己打自己脸，但 AI 不在意这些，它只是在”完成任务”。</p>
+<p>继续这样下去，时间一长，他们自己也将不记得当初 AI 生成了什么。以后出了问题，基本没有人能说清楚那段代码当初为什么要这样写。</p>
+<p>AI 生成的风格也比较杂，一会儿这个语言的习惯，一会儿那个语言的写法，前后不一致。比如用 <code>_xx</code> 表示保护成员，但在另一处又把这些属性直接导出给外部模块用。其实，这种自己打自己脸的问题很常见，AI 不是真智能，它只是大模型在”完成任务”。</p>
 <p>随着业务扩张、代码量越来越大，AI 能掌控的全局视野越来越有限，最终还是得靠人来收拾局面。</p>
 <hr>
 <h4 id="案例三：AI-喜欢把简单事情搞复杂"><a href="#案例三：AI-喜欢把简单事情搞复杂" class="headerlink" title="案例三：AI 喜欢把简单事情搞复杂"></a>案例三：AI 喜欢把简单事情搞复杂</h4><blockquote>
 <p>AI 喜欢过度设计、复杂化。</p>
 </blockquote>
 <p>刚入行的新人提交的代码里，时常能看到一堆明显是 AI 生成的冗余内容。</p>
-<p>明明两三行能搞定的逻辑，非要包一大段异常捕获，看起来很严谨，实际上有些分支永远不会走到。AI 不懂什么叫简洁，它只是在机械地拼接自己见过的代码片段。</p>
+<p>明明两三行能搞定的逻辑，非要包一大段异常捕获，看起来很严谨，实际上有些分支永远不会走到。</p>
+<p>因为 AI 不懂什么叫简洁，它只是在机械地拼接自己见过的代码片段，预测代码。</p>
 <p>另一个常见现象是 AI 下意识地追求”可扩展性”——哪怕这个功能以后根本不可能扩展。代码里时常出现 <code>from __future__ import annotations</code>，或者新建一堆自定义异常类，看起来很”高级”，但大部分场景下完全没有必要。</p>
 <hr>
 <h4 id="案例四：AI-给的方案，不一定是最好的"><a href="#案例四：AI-给的方案，不一定是最好的" class="headerlink" title="案例四：AI 给的方案，不一定是最好的"></a>案例四：AI 给的方案，不一定是最好的</h4><blockquote>
 <p>AI 输出的工具库、代码风格写法过时，已经有更好更优的主流方案，需要人主动提示 AI 才能生成。</p>
 </blockquote>
-<p>同一个需求，问不同的 AI，可能会得到差距很大的答案。这不是 AI 在”判断哪个更好”，只是因为训练数据不同，输出的倾向性也不同。旧版本的资料在训练集里占比更高，AI 生成它的概率自然也更大。</p>
+<p>同一个需求，问不同的 AI，可能会得到差距很大的答案。AI 不会”判断哪个更好”，只是因为训练数据不同，输出的倾向性也不同。旧版本的资料在训练集里占比更高，AI 生成它的概率自然也更大。</p>
+<p>所以在网络上，经常讨论大家用的什么大模型、哪家的 agent，今天“这个逆天、爆炸”，明天“再见xxx模型、再见xxx agent”，实在让人感到无语。</p>
 <p>举个实际工作里的例子：有两个 GitLab 服务器，一个新的，一个旧的（落后十多年的免费版）。需求是把旧服务上的项目迁移过来，同时保留提交记录，并且以后每次提交都要同步一份到旧服务器。</p>
-<p>有些 AI 的答案是写个脚本来同步。但更强的 AI 告诉我可以直接用 GitLab 自带的 Mirroring Repositories 功能，一行脚本都不用写，完全解决问题。</p>
-<p>这两个答案的差距，不在于谁”更聪明”，在于谁见过更多相关的资料。所以不能闭眼信 AI，还是得自己有判断。</p>
+<p>有些 AI 的答案是写个脚本来同步。但有的 AI 告诉我可以直接用 GitLab 自带的 Mirroring Repositories 功能，一行脚本都不用写，不消耗额外的资源，也能完全解决问题。</p>
+<p>这两个答案的差距本质是谁见过、训练过更多相关的资料。所以不能闭眼信 AI，自己得有判断力。</p>
 <hr>
 <h4 id="案例五：review-的人也开始跟不上了"><a href="#案例五：review-的人也开始跟不上了" class="headerlink" title="案例五：review 的人也开始跟不上了"></a>案例五：review 的人也开始跟不上了</h4><blockquote>
 <p>对 review 代码者的要求突增，可能面临看不懂、没见过的设计方式和代码写法的情况</p>
@@ -359,7 +361,7 @@
 <p>现在智驾虽然听着好，即使以后有一天高级到让不会开车人也能开。但如果要用智驾车接送某位重要人物，我肯定还是想找有实际开车经验的人掌控。</p>
 <p><strong>不要把控制权全交出去。</strong> 我见过有人说：反正当初 AI 写的，出了问题让 AI 改就行，管它影响怎样。这话听着像在开玩笑，但真有人是这么想的。一个产品如果全靠 AI 生成代码、没有人真正审查，出问题只是时间问题。代码合入前的 review，不能省。</p>
 <hr>
-<h4 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h4><p>有了 LLMs 之后，我有时候会想，如果我是某个项目的负责人，底下人都在大量用 AI 生成代码，让人担心的不是代码质量本身，而是：</p>
+<h4 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h4><p>有了 LLMs 之后，我有时候会想，如果我是某个项目的负责人，底下人都在大量用 AI 生成代码，让人担心的不只是代码质量本身，还有：</p>
 <ol>
 <li>连自己提交了什么都说不清楚。生产出了问题，没人能定位，因为那段代码根本没人仔细看过。</li>
 <li>明明有更简单的方案，结果用 AI 搞出一堆脆弱的脚本，看似高级、做了很多东西，维护成本反而更高。</li>
@@ -367,7 +369,7 @@
 </ol>
 <p>AI 是很好的工具，确实提升了不少效率。但工具终归是工具，用的人得清楚自己在做什么。否则出了事，AI 不会负责，锅还是得人来背。</p>
 <p>每次开会、线下交流时，领导问自己一个问题，大家都不想每次这样吧：我来问问 AI、等我马上搜一下。</p>
-<p>最大的体会：有了 AI，更加需要学习了。</p>
+<p>最大的体会：有了 AI，更加需要学习了，更加需要扩展知识面了。</p>
 
     </div>
 
