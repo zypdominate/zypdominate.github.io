@@ -6,7 +6,7 @@
   <link href="https://zypdominate.github.io/atom.xml" rel="self"/>
   
   <link href="https://zypdominate.github.io/"/>
-  <updated>2026-06-22T12:55:48.664Z</updated>
+  <updated>2026-07-12T15:55:58.908Z</updated>
   <id>https://zypdominate.github.io/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>AI Agent Token 用量追踪方案备忘</title>
+    <link href="https://zypdominate.github.io/posts/2026/07/12/d17c7c09/"/>
+    <id>https://zypdominate.github.io/posts/2026/07/12/d17c7c09/</id>
+    <published>2026-07-12T15:10:18.000Z</published>
+    <updated>2026-07-12T15:55:58.908Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>当前某个工程使用了 Midscene 的开源库，AI Agent 架构：业务逻辑在 Python 端，但 AI Agent 的核心服务是一个 Node.js 进程（负责设备连接、截图、LLM 调用等），Python 通过 HTTP 接口调用它。Token Proxy 也自然用 Node.js 实现，和 Agent 服务同技术栈，部署时作为独立进程启动，随 Agent 服务一起管理。</p><p>每次用户操作（如 ai_tap、ai_action）背后会触发多次 LLM 调用。最初的实现只记录了最后一次 LLM 调用的 token 数，导致数据严重失真。比如 ai_action(“打开设置”) 实际触发了 2-3 次 LLM 调用，但只统计了最后一次，前几次的 prompt_tokens（每次上万）全丢了。</p><p>需要做一套精确的 per-operation token 追踪，方案尽量通用，以后类似场景能直接复用。</p><h2 id="为什么选-HTTP-Proxy"><a href="#为什么选-HTTP-Proxy" class="headerlink" title="为什么选 HTTP Proxy"></a>为什么选 HTTP Proxy</h2><p>一开始也想过在代码层直接 hook LLM 调用，但很快发现行不通：OpenAI SDK v4.x 内部用的是 undici，不是 globalThis.fetch，代码层 hook 根本拦不到。而且用的是开源项目，改起来也不方便，动不动就要跟着 SDK 升级重新适配。</p><p>API Gateway 那套企业级方案倒是能力全，但对这个场景来说太重了，杀鸡用牛刀。</p><p>最后定下 HTTP Proxy：业务代码完全无感知，把 LLM_BASE_URL 指向 Proxy，Proxy 原样转发到真实 API，旁路记录响应里的 usage 字段就行。不侵入业务代码，也不受 SDK 版本影响，一个轻量 Node 进程就搞定。</p><h2 id="整体架构"><a href="#整体架构" class="headerlink" title="整体架构"></a>整体架构</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">业务代码 → Token Proxy → 真实 LLM API</span><br><span class="line">              ↓</span><br><span class="line">         累加器（数据聚合）</span><br><span class="line">              ↓</span><br><span class="line">         批量上报（数据投递）</span><br></pre></td></tr></table></figure><p>三个模块，各自都能单独拿出去复用。</p><h2 id="模块一：Proxy-拦截"><a href="#模块一：Proxy-拦截" class="headerlink" title="模块一：Proxy 拦截"></a>模块一：Proxy 拦截</h2><p>核心原则是透传——Proxy 只旁路记录，不修改请求&#x2F;响应内容。</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> server = http.<span class="title function_">createServer</span>(<span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> proxyReq = https.<span class="title function_">request</span>(&#123; <span class="attr">hostname</span>: <span class="variable constant_">REAL_API_HOST</span>, ... &#125;, <span class="function">(<span class="params">proxyRes</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> chunks = [];</span><br><span class="line">    proxyRes.<span class="title function_">on</span>(<span class="string">&quot;data&quot;</span>, <span class="function">(<span class="params">chunk</span>) =&gt;</span> &#123;</span><br><span class="line">      chunks.<span class="title function_">push</span>(chunk);</span><br><span class="line">      res.<span class="title function_">write</span>(chunk); <span class="comment">// 原样透传</span></span><br><span class="line">    &#125;);</span><br><span class="line">    proxyRes.<span class="title function_">on</span>(<span class="string">&quot;end&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">const</span> usage = <span class="title function_">extractUsage</span>(<span class="title class_">Buffer</span>.<span class="title function_">concat</span>(chunks).<span class="title function_">toString</span>());</span><br><span class="line">      <span class="keyword">if</span> (usage) accumulator.<span class="title function_">add</span>(usage);</span><br><span class="line">      res.<span class="title function_">end</span>();</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">  req.<span class="title function_">pipe</span>(proxyReq);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure><p>麻烦的地方在于要同时处理两种响应格式：普通 JSON 响应里 usage 直接在 body 里，一次性拿到；SSE 流式响应就没这么简单了，usage 在最后一个 chunk 里，得把所有 chunk 缓存下来，逐行解析 SSE 事件才能找到。</p><p>为什么 LLM 场景普遍用 SSE：一是用户体验，不用干等几十秒才看到结果；二是生成过程中模型自己也不知道最终会消耗多少 token，只有生成完才能给出确切的 usage，这就决定了它只能出现在最后一个 chunk。</p><p>这里有个容易踩的坑：不是所有 provider 默认就会在流式响应里带上 usage。像 OpenAI 就得显式传 <code>stream_options: &#123; include_usage: true &#125;</code> 才会在最后一个 chunk 里给你 usage，不然它压根不出现。如果以后换 provider 或者这套 proxy 被别人拿去复用，第一反应大概率是”usage 一直是 undefined”，得留意这个前提没配对。</p><p>备注：普通响应，指的是等模型生成完所有内容后，一次性返回完整 JSON；<strong>SSE 流式响应（Server-Sent Events），指的是模型每生成一小段文本就立刻推送给客户端，像打字机一样逐字输出。</strong></p><h2 id="模块二：累加器"><a href="#模块二：累加器" class="headerlink" title="模块二：累加器"></a>模块二：累加器</h2><p>这是整个方案里最值得复用的部分，也是踩坑最多的地方。</p><p>用了两个计数器：<code>pendingUsage</code> 管单次操作，会被 reset 清零；<code>totalUsage</code> 管全生命周期累计，永远不清零。每次 LLM 调用两边同时加。</p><p>一开始图省事，把 read 和 reset 合在一起写（读了就顺手清零），结果调试的时候打印一下数据就没了，等上报模块再去读，已经是空的。后来才想明白，读和写必须分开：<code>read()</code> 只返回快照，不能有副作用；要清零就单独调 <code>reset()</code>，意图写清楚，谁调用谁负责。</p><p>对外暴露三个接口：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">GET /accumulator/reset   → 清零 pendingUsage</span><br><span class="line">GET /accumulator/latest  → 读取 pendingUsage 快照（不清零）</span><br><span class="line">GET /accumulator/total   → 读取全生命周期累计</span><br></pre></td></tr></table></figure><p>（这里其实用 GET 不太严谨，reset 明明改变了服务端状态，语义上该用 POST。当时图省事直接沿用了 GET，内部工具影响不大，但如果这套模式被抄去别的地方用，最好把这个坏习惯改掉。）</p><p>这套”reset → accumulate → read”的模式不限于 token 统计，任何”按操作粒度统计资源消耗”的场景都能直接套：API 调用次数、数据库查询耗时、文件 I&#x2F;O 字节数都行。</p><p>不过这里有个前提没有细究：目前的假设是同一时刻只有一个 operation 在跑。如果以后要支持并发操作——比如多设备并行、或者一个 operation 还没读完就被下一个 reset 了——单一的 <code>pendingUsage</code> 会被并发的 reset&#x2F;read 互相污染，不是线程竞态，而是业务逻辑上的时序交错。真要支持并发，得把 <code>pendingUsage</code> 换成按 operation_id 隔离的 Map，而不是全局单例。当前场景暂时不需要，但这是个需要记住的边界。</p><h2 id="模块三：批量上报"><a href="#模块三：批量上报" class="headerlink" title="模块三：批量上报"></a>模块三：批量上报</h2><p>上报到后端做成本核算，不能阻塞业务逻辑，所以做成批量缓冲：batch_size&#x3D;50，满 50 条或每 10 秒 flush 一次；失败重试最多 3 次，指数退避；本地持久化失败记录，下次启动时恢复。</p><p>上报的维度：</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">&quot;user_id&quot;</span>: <span class="string">&quot;zhangsan&quot;</span>,          <span class="comment"># 谁在用</span></span><br><span class="line">    <span class="string">&quot;scene_key&quot;</span>: <span class="string">&quot;ai_tap&quot;</span>,          <span class="comment"># 什么场景（按操作类型区分）</span></span><br><span class="line">    <span class="string">&quot;prompt_tokens&quot;</span>: <span class="number">15000</span>,         <span class="comment"># 输入 token</span></span><br><span class="line">    <span class="string">&quot;completion_tokens&quot;</span>: <span class="number">200</span>,       <span class="comment"># 输出 token</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>scene_key 按操作类型区分，后续能分析出各操作的 token 消耗差异。程序关闭时必须 flush + close，确保缓冲区里的数据不丢。</p><h2 id="验证策略"><a href="#验证策略" class="headerlink" title="验证策略"></a>验证策略</h2><p>三层测试基本够用：</p><ol><li>单操作验证：每次 AI 操作后，per-operation 的 prompt_tokens、completion_tokens、call_count 都要 &gt; 0</li><li>累计一致性：reset 后连续执行两次操作，total 要等于 usage1 + usage2</li><li>首次操作：reset 后第一次操作，latest 应该等于 total（因为是从零开始的）</li></ol><h2 id="还留了个尾巴"><a href="#还留了个尾巴" class="headerlink" title="还留了个尾巴"></a>还留了个尾巴</h2><p>Proxy 转发失败、超时，或者真实 API 返回非 200 的时候，usage 该怎么处理——是直接不计入，还是记一条 error 事件——这块目前还没细化，先记在这，后面再补。</p>]]></content>
+    
+    
+    <summary type="html">记录一次收集某个工程使用 ai agent 时的 token 量。</summary>
+    
+    
+    
+    <category term="技术" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+    <category term="AI" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/AI/"/>
+    
+    
+    <category term="AI" scheme="https://zypdominate.github.io/tags/AI/"/>
+    
+  </entry>
   
   <entry>
     <title>midscene-android：Python 接入 Android AI 自动化</title>
@@ -35,9 +58,9 @@
     <category term="Python" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Python/"/>
     
     
-    <category term="Android" scheme="https://zypdominate.github.io/tags/Android/"/>
-    
     <category term="AI" scheme="https://zypdominate.github.io/tags/AI/"/>
+    
+    <category term="Android" scheme="https://zypdominate.github.io/tags/Android/"/>
     
     <category term="PyPI" scheme="https://zypdominate.github.io/tags/PyPI/"/>
     
@@ -603,9 +626,9 @@
     <category term="Jenkins" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Jenkins/"/>
     
     
-    <category term="Jenkins" scheme="https://zypdominate.github.io/tags/Jenkins/"/>
-    
     <category term="AI" scheme="https://zypdominate.github.io/tags/AI/"/>
+    
+    <category term="Jenkins" scheme="https://zypdominate.github.io/tags/Jenkins/"/>
     
   </entry>
   
@@ -651,9 +674,9 @@
     <category term="tool" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/tool/"/>
     
     
-    <category term="tools" scheme="https://zypdominate.github.io/tags/tools/"/>
-    
     <category term="AI" scheme="https://zypdominate.github.io/tags/AI/"/>
+    
+    <category term="tools" scheme="https://zypdominate.github.io/tags/tools/"/>
     
   </entry>
   
@@ -2358,31 +2381,6 @@
     
     
     <category term="Git" scheme="https://zypdominate.github.io/tags/Git/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>RuntimeError dictionary changed size during iteration 遍历字典时报错</title>
-    <link href="https://zypdominate.github.io/posts/2019/11/27/7873/"/>
-    <id>https://zypdominate.github.io/posts/2019/11/27/7873/</id>
-    <published>2019-11-26T16:09:50.000Z</published>
-    <updated>2025-12-23T14:07:49.108Z</updated>
-    
-    <content type="html"><![CDATA[<p>RuntimeError: dictionary changed size during iteration</p><p>在字典遍历过程中修改字典长度时会报错；这里是遍历时修改了字典长度，导致了字典中有字典，一直在查找，直到RuntimError。</p><hr><p>我是在用 globals 函数时，发现的问题：</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">g_dict = <span class="built_in">globals</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> key <span class="keyword">in</span> (g_dict.keys()):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;key&#125;</span>:<span class="subst">&#123;g_dict[key]&#125;</span>&#x27;</span>)</span><br></pre></td></tr></table></figure><p>应该使用 list 将 dict 变为列表，才能遍历。</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> key <span class="keyword">in</span> <span class="built_in">list</span>(g_dict.keys()):  </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;key&#125;</span>:<span class="subst">&#123;g_dict[key]&#125;</span>&#x27;</span>)</span><br></pre></td></tr></table></figure><p>仔细一想，我在遍历时好像没有改变字典元素呀，原因在哪里？看了打印结果才感觉发现是 <code>globals()</code> 这个函数的原因：</p><p>打印结果：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">__name__:__main__</span><br><span class="line">__doc__:None</span><br><span class="line">__package__:None</span><br><span class="line">__loader__:&lt;_frozen_importlib_external.SourceFileLoader object at 0x000001ED473AC240&gt;</span><br><span class="line">__spec__:None</span><br><span class="line">__annotations__:&#123;&#125;</span><br><span class="line">__builtins__:&lt;module &#x27;builtins&#x27; (built-in)&gt;</span><br><span class="line">__file__:D:/keeplearning/myLearning/python/book2/test.py</span><br><span class="line">__cached__:None</span><br><span class="line">test1:&lt;function test1 at 0x000001ED472A3E18&gt;</span><br><span class="line">Test2:&lt;class &#x27;__main__.Test2&#x27;&gt;</span><br><span class="line">g_dict:&#123;&#x27;__name__&#x27;: &#x27;__main__&#x27;, &#x27;__doc__&#x27;: None, &#x27;__package__&#x27;: None, &#x27;__loader__&#x27;: &lt;_frozen_importlib_external.SourceFileLoader object at 0x000001ED473AC240&gt;, &#x27;__spec__&#x27;: None, &#x27;__annotations__&#x27;: &#123;&#125;, &#x27;__builtins__&#x27;: &lt;module &#x27;builtins&#x27; (built-in)&gt;, &#x27;__file__&#x27;: &#x27;D:/keeplearning/myLearning/python/book2/test.py&#x27;, &#x27;__cached__&#x27;: None, &#x27;test1&#x27;: &lt;function test1 at 0x000001ED472A3E18&gt;, &#x27;Test2&#x27;: &lt;class &#x27;__main__.Test2&#x27;&gt;, &#x27;g_dict&#x27;: &#123;...&#125;, &#x27;key&#x27;: &#x27;g_dict&#x27;&#125;</span><br></pre></td></tr></table></figure><p>发现g_dict键的值中有递归了，g_dict的值中出现了’g_dict’: {…} 。</p><p>修改如下：</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> key <span class="keyword">in</span> <span class="built_in">list</span>(g_dict.keys()):</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">isinstance</span>(g_dict[key],<span class="built_in">dict</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;key&#125;</span>:<span class="subst">&#123;g_dict[key]&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure><p>结果：</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">__name__:__main__</span><br><span class="line">__doc__:<span class="literal">None</span></span><br><span class="line">__package__:<span class="literal">None</span></span><br><span class="line">__loader__:&lt;_frozen_importlib_external.SourceFileLoader <span class="built_in">object</span> at <span class="number">0x00000217DCB3C240</span>&gt;</span><br><span class="line">__spec__:<span class="literal">None</span></span><br><span class="line">__builtins__:&lt;module <span class="string">&#x27;builtins&#x27;</span> (built-<span class="keyword">in</span>)&gt;</span><br><span class="line">__file__:D:/keeplearning/myLearning/python/book2/test.py</span><br><span class="line">__cached__:<span class="literal">None</span></span><br><span class="line">test1:&lt;function test1 at <span class="number">0x00000217DCA33E18</span>&gt;</span><br><span class="line">Test2:&lt;<span class="keyword">class</span> <span class="string">&#x27;__main__.Test2&#x27;</span>&gt;</span><br></pre></td></tr></table></figure><p><strong>globals() 返回一个字典，表示当前的全局符号表。这个符号表始终针对当前模块（对函数或方法来说，是指定义它们的模块，而不是调用它们的模块）。</strong></p>]]></content>
-    
-    
-    <summary type="html">使用 globals 函数进行遍历，造成 RuntimeError</summary>
-    
-    
-    
-    <category term="技术" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-    <category term="Python" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Python/"/>
-    
-    
-    <category term="Python" scheme="https://zypdominate.github.io/tags/Python/"/>
-    
-    <category term="FixBug" scheme="https://zypdominate.github.io/tags/FixBug/"/>
     
   </entry>
   
