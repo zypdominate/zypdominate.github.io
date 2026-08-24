@@ -27,7 +27,7 @@
 <meta property="og:description" content="记录 AI 编程日常化之后的一些观察，以及遇到的具体的问题，夹杂着对行业浮躁风气的吐槽。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2026-07-19T09:30:30.000Z">
-<meta property="article:modified_time" content="2026-07-19T12:45:02.799Z">
+<meta property="article:modified_time" content="2026-07-19T15:23:37.671Z">
 <meta property="article:author" content="Magnolia">
 <meta property="article:tag" content="AI">
 <meta name="twitter:card" content="summary">
@@ -179,13 +179,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">142</span>
+          <span class="site-state-item-count">141</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-count">27</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -332,7 +332,7 @@
 <li><strong>安全意识缺失</strong>。权限校验、输入校验、敏感信息处理，AI 不会主动加，除非你明说。功能测试也测不出来，等出问题往往已经是线上事故了。</li>
 <li><strong>不管成本，只管跑通</strong>。AI 给的方案经常是”正确但费”——全表扫描、重复请求、内存占用大，反正能跑就行。这块得靠自己有意识去判断，不然一堆”能用但很贵、用不到还有副作用”的代码会悄悄溜进生产环境。</li>
 </ul>
-<p>这类问题的共同点：**AI 优化的目标是”跑通”，不是”写好”**。这个判断力，还是得靠人。</p>
+<p>这类问题的共同点：<strong>AI 优化的目标是“跑通“，不是“写好”</strong>。这个判断力，还是得靠人。</p>
 <h2 id="第二类：系统协作和环境适应"><a href="#第二类：系统协作和环境适应" class="headerlink" title="第二类：系统协作和环境适应"></a>第二类：系统协作和环境适应</h2><p>这是我觉得最难被 AI 替代的一类能力。原因很简单：跨系统联调、环境迁移这些事，靠的是对<strong>具体环境</strong>的了解——网络配置、权限设置、版本差异、公司内部平台那些没写进文档的隐性规则。这些东西 AI 压根不知道，它的训练数据里没有，你的上下文里也很难塞得下。</p>
 <p>有时候自己也无法提前想到，只有出了问题才恍然大悟。我自己都不知道的具体细节，AI 怎么可能替我想到？如果它偶尔能想到，说明这个问题是必要的，很多人犯过。AI 替人想到细节也不是一件好事，每次都这样做，就会让人烦躁：总是考虑一些对我来说无关紧要的细节（浪费token，浪费我时间去纠正），统计下来就几次能让我满意。</p>
 <p>具体体现在三个地方：</p>
@@ -344,7 +344,7 @@
 <p>表现是：能用 AI 完成基本任务，但代码怎么跑起来的、原理是什么，心里没数。一旦报错，排查起来完全没头绪，因为压根没建立过对这段代码的心智模型，只是”验收”了 AI 给的结果。这跟以前”抄网上代码但不懂原理”是一个性质，只不过现在被 AI 放大了很多倍，规模更大、频率更高。</p>
 <p>跟这个连着的还有两个问题：</p>
 <ul>
-<li>**分不清”能跑”和”对”**。以前初级和高级的差距主要在”写不写得出来”，现在这个差距正在往”能不能一眼看出这段代码写得对不对”迁移。这是一种新的能力——自己不用动手，但得能审、能挑错、能判断这方案合不合适。很多人分不清 AI 给的方案”能跑”和”合适”是两码事。</li>
+<li><strong>分不清“能跑“和“对“</strong>。以前初级和高级的差距主要在”写不写得出来”，现在这个差距正在往”能不能一眼看出这段代码写得对不对”迁移。这是一种新的能力——自己不用动手，但得能审、能挑错、能判断这方案合不合适。很多人分不清 AI 给的方案”能跑”和”合适”是两码事。</li>
 <li><strong>对 AI 的确定语气太信任</strong>。AI 回答问题时语气通常很自信，哪怕是错的。排查问题的时候尤其容易踩这个坑——AI 可能给一个听着很合理、实际是编出来的原因，你要是没有”多问一句为什么”、”回去查查原始文档”的习惯，很容易就被带偏了。</li>
 </ul>
 <p>这类的核心是：<strong>AI 能干活，但替不了你理解思考</strong>。理解这件事，只能自己一点点消化吸收。</p>
@@ -387,8 +387,8 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/posts/2026/07/12/d17c7c09/" rel="prev" title="AI Agent Token 用量追踪方案备忘">
-                  <i class="fa fa-angle-left"></i> AI Agent Token 用量追踪方案备忘
+                <a href="/posts/2026/06/21/abd967c/" rel="prev" title="midscene-android：Python 接入 Android AI 自动化">
+                  <i class="fa fa-angle-left"></i> midscene-android：Python 接入 Android AI 自动化
                 </a>
             </div>
             <div class="post-nav-item">
@@ -422,13 +422,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Word count total">772k</span>
+    <span title="Word count total">769k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">11:42</span>
+    <span title="Reading time total">11:39</span>
   </span>
 </div>
 <div class="busuanzi-count">
