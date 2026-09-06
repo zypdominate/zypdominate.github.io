@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="记录将 Python 项目迁移到 uv 时的关键配置、依赖管理和常见问题，整理一套可复用的迁移工作流。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python 项目迁移到 uv：经验小结与可复用工作流">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2026/09/06/d7c4a9e2/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="记录将 Python 项目迁移到 uv 时的关键配置、依赖管理和常见问题，整理一套可复用的迁移工作流。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-09-06T14:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-06T16:05:34.778Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="uv">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2026/09/06/d7c4a9e2/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zypdominate.github.io/posts/2026/09/06/d7c4a9e2/","path":"posts/2026/09/06/d7c4a9e2/","title":"Python 项目迁移到 uv：经验小结与可复用工作流"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Python 项目迁移到 uv：经验小结与可复用工作流 | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="Magnolia's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-rss"><a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>RSS</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="Searching..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Python-%E9%A1%B9%E7%9B%AE%E8%BF%81%E7%A7%BB%E5%88%B0-uv%EF%BC%9A%E7%BB%8F%E9%AA%8C%E5%B0%8F%E7%BB%93%E4%B8%8E%E5%8F%AF%E5%A4%8D%E7%94%A8%E5%B7%A5%E4%BD%9C%E6%B5%81"><span class="nav-text">Python 项目迁移到 uv：经验小结与可复用工作流</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%A0%B8%E5%BF%83%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="nav-text">一、核心知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Python-%E7%89%88%E6%9C%AC%EF%BC%9Arequires-python-%E4%B8%8E-python-version-%E6%98%AF%E4%B8%A4%E4%BB%B6%E4%B8%8D%E5%90%8C%E7%9A%84%E4%BA%8B"><span class="nav-text">1. Python 版本：requires-python 与 .python-version 是两件不同的事</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-URL-%E4%BE%9D%E8%B5%96%E5%BF%85%E9%A1%BB%E5%A3%B0%E6%98%8E%E4%B8%BA%E7%9B%B4%E6%8E%A5%E4%BE%9D%E8%B5%96"><span class="nav-text">2. URL 依赖必须声明为直接依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-uv-sync-%E4%B8%8E-uv-add-%E7%9A%84%E8%81%8C%E8%B4%A3%E4%B8%8D%E5%90%8C"><span class="nav-text">3. uv sync 与 uv add 的职责不同</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E7%AC%AC%E4%B8%89%E6%96%B9%E5%8C%85%E7%9A%84%E5%86%85%E9%83%A8-URL-%E4%BE%9D%E8%B5%96%E5%AF%BC%E8%87%B4%E5%86%B2%E7%AA%81"><span class="nav-text">4. 第三方包的内部 URL 依赖导致冲突</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E7%89%88%E6%9C%AC%E4%B8%8D%E9%94%81%E5%AE%9A%E5%AF%BC%E8%87%B4%E8%A7%A3%E6%9E%90%E4%B8%8D%E7%A8%B3%E5%AE%9A"><span class="nav-text">5. 版本不锁定导致解析不稳定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-uv-lock-%E6%98%AF%E8%B7%A8%E5%B9%B3%E5%8F%B0%E9%94%81%E6%96%87%E4%BB%B6%EF%BC%8C%E7%89%88%E6%9C%AC%E8%8C%83%E5%9B%B4%E8%BF%87%E5%AE%BD%E5%8F%AF%E8%83%BD%E5%AF%BC%E8%87%B4%E6%96%87%E4%BB%B6%E5%8F%98%E5%A4%A7"><span class="nav-text">6. uv.lock 是跨平台锁文件，版本范围过宽可能导致文件变大</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-%E5%AE%9E%E7%94%A8%E9%99%8D%E7%BA%A7%E6%96%B9%E6%A1%88%EF%BC%88%E4%BB%85%E7%94%A8%E4%BA%8E%E8%BF%87%E6%B8%A1%E6%9C%9F%EF%BC%89"><span class="nav-text">7. 实用降级方案（仅用于过渡期）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-%E5%A4%9A%E4%B8%AA-%E2%80%93index-url-%E2%80%93extra-index-url-%E2%80%93trusted-host-%E7%9A%84%E8%BF%81%E7%A7%BB"><span class="nav-text">8. 多个 –index-url &#x2F; –extra-index-url &#x2F; –trusted-host 的迁移</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-%E5%AE%9E%E9%99%85%E6%A1%88%E4%BE%8B%EF%BC%9A%E7%B2%BE%E7%A1%AE%E7%89%88%E6%9C%AC%E5%9C%A8%E4%BC%98%E5%85%88%E7%B4%A2%E5%BC%95%E9%87%8C%E4%B8%8D%E5%AD%98%E5%9C%A8"><span class="nav-text">9. 实际案例：精确版本在优先索引里不存在</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%B8%B8%E8%A7%81%E6%8A%A5%E9%94%99-%E2%86%92-%E5%A4%84%E7%90%86%E6%96%B9%E5%BC%8F%E5%AF%B9%E7%85%A7%E8%A1%A8"><span class="nav-text">二、常见报错 → 处理方式对照表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%8F%AF%E5%A4%8D%E7%94%A8%E8%BF%81%E7%A7%BB%E5%B7%A5%E4%BD%9C%E6%B5%81"><span class="nav-text">三、可复用迁移工作流</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%98%B6%E6%AE%B5%E4%B8%80%EF%BC%9A%E8%BF%81%E7%A7%BB%E5%89%8D%E6%91%B8%E5%BA%95%EF%BC%88%E4%B8%8D%E5%8A%A8%E6%89%8B%E6%94%B9%E4%BB%BB%E4%BD%95%E6%96%87%E4%BB%B6%EF%BC%89"><span class="nav-text">阶段一：迁移前摸底（不动手改任何文件）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%98%B6%E6%AE%B5%E4%BA%8C%EF%BC%9A%E6%90%AD%E9%AA%A8%E6%9E%B6"><span class="nav-text">阶段二：搭骨架</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%98%B6%E6%AE%B5%E4%B8%89%EF%BC%9A%E8%BF%81%E7%A7%BB%E4%BE%9D%E8%B5%96"><span class="nav-text">阶段三：迁移依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%98%B6%E6%AE%B5%E5%9B%9B%EF%BC%9A%E9%AA%8C%E8%AF%81%E4%B8%8E%E5%9B%BA%E5%8C%96%E5%85%B3%E9%94%AE%E5%8C%85"><span class="nav-text">阶段四：验证与固化关键包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%98%B6%E6%AE%B5%E4%BA%94%EF%BC%9A%E5%85%9C%E5%BA%95%E6%96%B9%E6%A1%88%EF%BC%88%E4%BB%85%E7%94%A8%E4%BA%8E%E8%BF%87%E6%B8%A1%E6%9C%9F%EF%BC%8C%E4%B8%8D%E4%BD%9C%E4%B8%BA%E7%BB%88%E6%80%81%EF%BC%89"><span class="nav-text">阶段五：兜底方案（仅用于过渡期，不作为终态）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%98%B6%E6%AE%B5%E5%85%AD%EF%BC%9A%E6%94%B6%E5%B0%BE%E9%AA%8C%E8%AF%81"><span class="nav-text">阶段六：收尾验证</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">142</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">47</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2026/09/06/d7c4a9e2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Python 项目迁移到 uv：经验小结与可复用工作流 | Magnolia's Blog">
+      <meta itemprop="description" content="记录将 Python 项目迁移到 uv 时的关键配置、依赖管理和常见问题，整理一套可复用的迁移工作流。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Python 项目迁移到 uv：经验小结与可复用工作流
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2026-09-06 22:00:00" itemprop="dateCreated datePublished" datetime="2026-09-06T22:00:00+08:00">2026-09-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>7.5k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>7 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">记录将 Python 项目迁移到 uv 时的关键配置、依赖管理和常见问题，整理一套可复用的迁移工作流。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="Python-项目迁移到-uv：经验小结与可复用工作流"><a href="#Python-项目迁移到-uv：经验小结与可复用工作流" class="headerlink" title="Python 项目迁移到 uv：经验小结与可复用工作流"></a>Python 项目迁移到 uv：经验小结与可复用工作流</h1><h2 id="一、核心知识点"><a href="#一、核心知识点" class="headerlink" title="一、核心知识点"></a>一、核心知识点</h2><h3 id="1-Python-版本：requires-python-与-python-version-是两件不同的事"><a href="#1-Python-版本：requires-python-与-python-version-是两件不同的事" class="headerlink" title="1. Python 版本：requires-python 与 .python-version 是两件不同的事"></a>1. Python 版本：requires-python 与 .python-version 是两件不同的事</h3><figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[project]</span></span><br><span class="line"><span class="attr">requires-python</span> = <span class="string">&quot;&gt;=3.12,&lt;3.13&quot;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uv python pin 3.12   # 生成 .python-version 并建议提交进仓库</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>requires-python</strong>：声明项目支持的版本范围，同时决定 <code>uv lock</code> 做通用解析（universal resolution）时覆盖的版本区间——区间越窄，锁文件里为不同 Python 版本保留的 wheel 记录就越少。</li>
+<li><strong>.python-version</strong>：决定 <code>uv run</code>、<code>uv sync</code> 等命令创建 <code>.venv</code> 时用哪个本地解释器，<strong>不影响</strong> <code>uv.lock</code> 的解析范围。</li>
+</ul>
+<p>uv 没有 <code>[tool.uv] python-version</code> 这个配置项，不要混用。</p>
+<p><strong>不同命令对 Python 版本的选择规则不同：</strong></p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>是否读取 requires-python</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>uv add</code> &#x2F; <code>uv sync</code> &#x2F; <code>uv run</code></td>
+<td>会。没有 <code>.python-version</code> 时，在满足 <code>requires-python</code> 的本机&#x2F;uv 管理的解释器中选第一个匹配的，找不到会自动下载</td>
+</tr>
+<tr>
+<td><code>uv pip install</code></td>
+<td><strong>不会</strong>。走 pip 兼容路径：用当前激活的虚拟环境，或当前&#x2F;父目录下的 <code>.venv</code>（不管是否满足 requires-python），都没有则报错，需 <code>--python</code> &#x2F; <code>--system</code> 显式指定</td>
+</tr>
+</tbody></table>
+<p>结论：只用 <code>uv add</code>&#x2F;<code>uv sync</code> 时，只写 <code>requires-python</code> 够用；混用 <code>uv pip install</code>（比如下面第 7 点的兜底方案）时，建议先跑 <code>uv sync</code>&#x2F;<code>uv venv</code> 建好 <code>.venv</code>，或者把 <code>.python-version</code> 也提交进仓库，避免命令之间用到不同解释器。</p>
+<h3 id="2-URL-依赖必须声明为直接依赖"><a href="#2-URL-依赖必须声明为直接依赖" class="headerlink" title="2. URL 依赖必须声明为直接依赖"></a>2. URL 依赖必须声明为直接依赖</h3><p>uv 不允许 URL 依赖仅作为传递依赖存在。如果包 A 间接依赖了一个 URL 包 B，必须在 <code>pyproject.toml</code> 中：</p>
+<ul>
+<li>在 <code>dependencies</code> 列表里显式声明 B</li>
+<li>在 <code>[tool.uv.sources]</code> 中配置 B 的 URL</li>
+</ul>
+<figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[project]</span></span><br><span class="line"><span class="attr">dependencies</span> = [<span class="string">&quot;atc-engine-alarm&quot;</span>]</span><br><span class="line"></span><br><span class="line"><span class="section">[tool.uv.sources]</span></span><br><span class="line"><span class="attr">atc-engine-alarm</span> = &#123; url = <span class="string">&quot;http://.../atc_engine_alarm-0.0.3-py3-none-any.whl&quot;</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意：<code>[tool.uv.sources]</code> 只对已经出现在 <code>dependencies</code>（或 dev 依赖组）里的包名生效，先声明依赖、再配置来源，顺序不能反。</p>
+<h3 id="3-uv-sync-与-uv-add-的职责不同"><a href="#3-uv-sync-与-uv-add-的职责不同" class="headerlink" title="3. uv sync 与 uv add 的职责不同"></a>3. uv sync 与 uv add 的职责不同</h3><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>行为</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>uv sync</code></td>
+<td>根据 <code>pyproject.toml</code> 检查或更新 <code>uv.lock</code>，再让项目环境与锁文件一致；使用 <code>--frozen</code> 时不检查或更新锁文件</td>
+</tr>
+<tr>
+<td><code>uv add -r</code></td>
+<td>把 requirements 文件中的依赖写入 <code>pyproject.toml</code>，并重新解析锁文件；导入过程中会暴露依赖声明、来源和版本冲突</td>
+</tr>
+</tbody></table>
+<p>如果项目已有一个旧的 <code>uv.lock</code>，一次普通的 <code>sync</code> 可能只是沿用或更新现有锁文件；迁移 <code>requirements.txt</code> 时仍应通过 <code>uv add -r</code>（必要时配合约束文件）重新导入并验证依赖声明。</p>
+<h3 id="4-第三方包的内部-URL-依赖导致冲突"><a href="#4-第三方包的内部-URL-依赖导致冲突" class="headerlink" title="4. 第三方包的内部 URL 依赖导致冲突"></a>4. 第三方包的内部 URL 依赖导致冲突</h3><p>当依赖的第三方包在其自身元数据里通过 URL 声明了某个依赖，而你在 <code>pyproject.toml</code> 里也为同一个包声明了 URL 或版本，只要两边不完全一致（版本号、URL、hash 不同），uv 就会认为同一个包有两个不同来源，报 URL 冲突。若两边完全一致，通常只需按第 2 点显式声明即可。</p>
+<p>这类冲突根源在第三方包内部，无法修改其元数据。解决思路：</p>
+<ul>
+<li>确保声明的版本&#x2F;URL 与第三方包内部要求的完全一致</li>
+<li>若仍无法解决，先修复或重新发布上游包；短期内可用 <code>uv pip install -r requirements.txt</code> 绕过项目解析直接安装（见第 7 点）</li>
+</ul>
+<h3 id="5-版本不锁定导致解析不稳定"><a href="#5-版本不锁定导致解析不稳定" class="headerlink" title="5. 版本不锁定导致解析不稳定"></a>5. 版本不锁定导致解析不稳定</h3><p>requirements.txt 中的关键包（尤其是内部私有包）务必锁定精确版本：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 不推荐</span><br><span class="line">vlt-python-aws</span><br><span class="line"></span><br><span class="line"># 推荐</span><br><span class="line">vlt-python-aws==0.1.53</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-uv-lock-是跨平台锁文件，版本范围过宽可能导致文件变大"><a href="#6-uv-lock-是跨平台锁文件，版本范围过宽可能导致文件变大" class="headerlink" title="6. uv.lock 是跨平台锁文件，版本范围过宽可能导致文件变大"></a>6. uv.lock 是跨平台锁文件，版本范围过宽可能导致文件变大</h3><p><code>uv.lock</code> 默认是跨平台、跨 Python 版本的通用锁文件，会记录不同环境标记下可能使用的候选分发包。<code>requires-python</code> 区间越宽，通常需要保留的版本和 wheel 记录越多，体积也可能越大。</p>
+<p>修复：先根据项目实际支持范围收窄 <code>requires-python</code>（见第 1 点），然后重新生成锁文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uv lock</span><br></pre></td></tr></table></figure>
+
+<p><code>--python 3.12</code> 只指定本次命令使用的 Python 解释器，不等于把锁文件限制为 3.12；真正决定项目支持范围的是 <code>requires-python</code>。如果项目只支持 Python 3.12，可使用 <code>requires-python = &quot;&gt;=3.12,&lt;3.13&quot;</code>。</p>
+<h3 id="7-实用降级方案（仅用于过渡期）"><a href="#7-实用降级方案（仅用于过渡期）" class="headerlink" title="7. 实用降级方案（仅用于过渡期）"></a>7. 实用降级方案（仅用于过渡期）</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">uv add -r requirements.txt --frozen      # 跳过锁文件更新；仅用于临时导入依赖声明</span><br><span class="line"># 或</span><br><span class="line">uv pip install -r requirements.txt       # 完全绕开项目解析，走 pip 兼容路径</span><br></pre></td></tr></table></figure>
+
+<p><code>uv add -r requirements.txt --frozen</code> 的含义是跳过锁文件更新，不是生成一个可信的 <code>uv.lock</code>；如果项目没有现成锁文件，不能把它当作正常迁移方案。<code>uv pip install -r requirements.txt</code> 则完全绕过项目锁文件，适合临时安装或继续维护 requirements 工作流。两者都只适合过渡期，不建议作为项目终态。用 <code>uv pip install</code> 前确认 <code>.venv</code> 已按 <code>requires-python</code> 建好（见第 1 点表格）。</p>
+<h3 id="8-多个-–index-url-–extra-index-url-–trusted-host-的迁移"><a href="#8-多个-–index-url-–extra-index-url-–trusted-host-的迁移" class="headerlink" title="8. 多个 –index-url &#x2F; –extra-index-url &#x2F; –trusted-host 的迁移"></a>8. 多个 –index-url &#x2F; –extra-index-url &#x2F; –trusted-host 的迁移</h3><p>原 requirements.txt：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">--index-url http://xxo-private-pip.vivo.lan:9090</span><br><span class="line">--extra-index-url http://172.xx.xxx.229:8899/simple/</span><br><span class="line">--extra-index-url http://xxp-pip.xx.lan/simple</span><br><span class="line">--trusted-host xxx-private-pip.vivo.lan</span><br><span class="line">--trusted-host 172.xx.22.xxx</span><br><span class="line">--trusted-host xxx-pip.vivo.lan</span><br></pre></td></tr></table></figure>
+
+<p>转换为 <code>pyproject.toml</code>：</p>
+<figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[[tool.uv.index]]</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">&quot;vivo-private&quot;</span></span><br><span class="line"><span class="attr">url</span> = <span class="string">&quot;http://xxo-private-pip.vivo.lan:9090/simple&quot;</span></span><br><span class="line"><span class="attr">default</span> = <span class="literal">true</span>       <span class="comment"># 禁用 PyPI 默认索引，并将该索引作为默认索引</span></span><br><span class="line"></span><br><span class="line"><span class="section">[[tool.uv.index]]</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">&quot;internal-wheels&quot;</span></span><br><span class="line"><span class="attr">url</span> = <span class="string">&quot;http://172.xx.xxx.229:8899/simple/&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="section">[[tool.uv.index]]</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">&quot;vivo-p-pip&quot;</span></span><br><span class="line"><span class="attr">url</span> = <span class="string">&quot;http://xxp-pip.xx.lan/simple&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>--trusted-host</code> 不是 <code>[[tool.uv.index]]</code> 中的 <code>trusted = true</code>。对于 HTTP 或证书不受信任的内部源，应在项目配置中显式允许对应主机：</p>
+<figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[tool.uv]</span></span><br><span class="line"><span class="attr">allow-insecure-host</span> = [</span><br><span class="line">  <span class="string">&quot;xxo-private-pip.vivo.lan&quot;</span>,</span><br><span class="line">  <span class="string">&quot;172.xx.xxx.229&quot;</span>,</span><br><span class="line">  <span class="string">&quot;xxp-pip.xx.lan&quot;</span>,</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<p>能为内部源配置有效 TLS 证书时，应优先修复证书，而不是长期依赖 <code>allow-insecure-host</code>。</p>
+<p>注意：<code>default = true</code> 有特殊语义——它会禁用 PyPI 默认索引，并把该索引放到已配置索引的最低优先级；它不是“保持 requirements.txt 中 <code>--index-url</code> 的原始顺序”。如果需要严格控制某个包的来源，应使用 <code>explicit = true</code> 配合 <code>[tool.uv.sources]</code>。</p>
+<p>**关键机制：uv 默认 <code>index-strategy = &quot;first-index&quot;</code>**（不同于 pip）——按索引定义顺序查找，包名一旦在某个索引找到，就只从这个索引解析该包的候选版本，不跨索引合并同名包版本。这是为了防止依赖混淆攻击，但迁移时容易踩坑：索引顺序会影响实际生效优先级，如果内部关键包在排序靠前的索引里版本滞后，可能导致解析失败（见第 9 点的实际案例）。</p>
+<p><strong>加固建议</strong>：给必须来自内部源的关键包用 <code>explicit + tool.uv.sources</code> 显式 pin，不完全依赖顺序：</p>
+<figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[tool.uv.sources]</span></span><br><span class="line"><span class="attr">atc-engine-alarm</span> = &#123; index = <span class="string">&quot;internal-wheels&quot;</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="section">[[tool.uv.index]]</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">&quot;internal-wheels&quot;</span></span><br><span class="line"><span class="attr">url</span> = <span class="string">&quot;http://172.xx.xxx.229:8899/simple/&quot;</span></span><br><span class="line"><span class="attr">explicit</span> = <span class="literal">true</span>   <span class="comment"># 只有被 tool.uv.sources 显式指定的包才能从这里装</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>requirements.txt 里保留这些行的注意事项</strong>：<code>uv add -r</code> 可以临时读取 <code>--index-url</code>&#x2F;<code>--extra-index-url</code>，但这只是本次命令的参数，不会自动写进 <code>pyproject.toml</code>；<code>uv sync</code>&#x2F;<code>uv lock</code>&#x2F;<code>uv run</code> 也不会从 requirements.txt 继承这些配置。<code>--trusted-host</code> 应改为 <code>[tool.uv] allow-insecure-host</code>，而不是写成索引字段。正确做法是把索引配置迁移进 <code>pyproject.toml</code> 的 <code>[[tool.uv.index]]</code>；<code>[tool.uv.pip]</code> 只影响 <code>uv pip</code> 系列子命令，不影响项目接口的 <code>uv add</code>&#x2F;<code>uv sync</code>&#x2F;<code>uv lock</code>。迁移完成后，requirements.txt 只保留纯依赖列表，或直接删除并以 <code>uv.lock</code> 作为项目锁文件。</p>
+<h3 id="9-实际案例：精确版本在优先索引里不存在"><a href="#9-实际案例：精确版本在优先索引里不存在" class="headerlink" title="9. 实际案例：精确版本在优先索引里不存在"></a>9. 实际案例：精确版本在优先索引里不存在</h3><p>报错：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">x No solution found when resolving dependencies:</span><br><span class="line">  `-&gt; Because there is no version of psutil==6.1.0 and your project depends on psutil==6.1.0, ...</span><br><span class="line">      hint: `psutil` was found on http://vivo-pip.vivo.lan/simple, but not at the requested version (psutil==6.1.0).</span><br><span class="line">      A compatible version may be available on a subsequent index (e.g. http://vivo-private-pip.vivo.lan:9090/).</span><br><span class="line">      By default, uv will only consider versions that are published on the first index that contains a given package,</span><br><span class="line">      to avoid dependency confusion attacks.</span><br></pre></td></tr></table></figure>
+
+<p><strong>原因</strong>：requirements.txt 把 <code>psutil</code> 锁死成精确版本 <code>psutil==6.1.0</code>。排序靠前的索引（很可能是内部 PyPI 镜像&#x2F;代理）也代理了 <code>psutil</code> 这个包名，但同步不及时、没有 6.1.0 这个具体版本。按 first-index 策略，uv 在这个索引找到包名后就不再去后面的索引找其他版本，即使后面的索引真的有 6.1.0。</p>
+<p><strong>方案一（简单粗暴，有代价）</strong>：全局关闭 first-index 防护</p>
+<figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[tool.uv]</span></span><br><span class="line"><span class="attr">index-strategy</span> = <span class="string">&quot;unsafe-best-match&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>会跨所有索引找最高版本，解决问题，但对<strong>所有包、所有索引</strong>生效，如果索引里混了不完全可信的公网镜像，存在依赖混淆风险。适合”几个索引本来就是同一批人维护、互相信任”的场景。</p>
+<p><strong>方案二（推荐，更精确）</strong>：只 pin 这一个包的来源，不动全局策略</p>
+<figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[tool.uv.sources]</span></span><br><span class="line"><span class="attr">psutil</span> = &#123; index = <span class="string">&quot;vivo-private&quot;</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="section">[[tool.uv.index]]</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">&quot;vivo-private&quot;</span></span><br><span class="line"><span class="attr">url</span> = <span class="string">&quot;http://vivo-private-pip.vivo.lan:9090/simple&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>只有 <code>psutil</code> 从指定索引解析，其余包仍受 first-index 防护。后续再遇到同类”某包在镜像源版本滞后”的问题，可以用同样的模式逐个 pin。</p>
+<h2 id="二、常见报错-→-处理方式对照表"><a href="#二、常见报错-→-处理方式对照表" class="headerlink" title="二、常见报错 → 处理方式对照表"></a>二、常见报错 → 处理方式对照表</h2><table>
+<thead>
+<tr>
+<th>报错特征</th>
+<th>根因</th>
+<th>处理方式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Ignoring unsupported option ... --trusted-host</code></td>
+<td>项目接口不会把 requirements.txt 中的 <code>--trusted-host</code> 持久化为项目配置</td>
+<td>改为 <code>[tool.uv] allow-insecure-host = [&quot;host&quot;]</code>；优先修复 HTTPS 证书</td>
+</tr>
+<tr>
+<td><code>URL dependencies must be expressed as direct requirements</code></td>
+<td>某包的传递依赖是裸 URL</td>
+<td>把该 URL 提升为直接依赖 + <code>[tool.uv.sources]</code></td>
+</tr>
+<tr>
+<td>同一个包报”两个不同来源”冲突</td>
+<td>你声明的版本&#x2F;URL 和第三方包内部要求的不完全一致</td>
+<td>核对版本号&#x2F;hash，改到完全一致；改不了就走 <code>--frozen</code> 或 <code>uv pip install</code> 兜底</td>
+</tr>
+<tr>
+<td><code>uv add</code> 报错但 <code>uv sync</code> 能跑</td>
+<td>项目可能沿用了已有锁文件，迁移导入时则触发了新的依赖解析</td>
+<td>重新检查 <code>pyproject.toml</code>、依赖来源和约束；不要把 <code>sync</code> 成功当作迁移完成</td>
+</tr>
+<tr>
+<td><code>uv.lock</code> 体积异常大</td>
+<td><code>requires-python</code> 区间过宽，通用解析需要覆盖更多环境</td>
+<td>收窄 <code>requires-python</code> 后执行 <code>uv lock</code> 重新生成</td>
+</tr>
+<tr>
+<td>Python 版本没有如预期被选中</td>
+<td>没有 <code>.python-version</code>，或 <code>uv pip</code> 使用了另一个解释器&#x2F;虚拟环境</td>
+<td><code>uv python pin</code>；对 <code>uv pip</code> 使用 <code>--python</code>，或改用项目接口的 <code>uv add</code>&#x2F;<code>uv sync</code></td>
+</tr>
+<tr>
+<td><code>No solution found</code>，提示某包”found on X, but not at requested version”</td>
+<td>精确锁定的版本不在 first-index 命中的索引上，后面索引虽有但被跳过</td>
+<td>全局 <code>index-strategy = &quot;unsafe-best-match&quot;</code>（图省事），或 <code>tool.uv.sources</code> 精确 pin 该包索引（更安全）</td>
+</tr>
+</tbody></table>
+<h2 id="三、可复用迁移工作流"><a href="#三、可复用迁移工作流" class="headerlink" title="三、可复用迁移工作流"></a>三、可复用迁移工作流</h2><h3 id="阶段一：迁移前摸底（不动手改任何文件）"><a href="#阶段一：迁移前摸底（不动手改任何文件）" class="headerlink" title="阶段一：迁移前摸底（不动手改任何文件）"></a>阶段一：迁移前摸底（不动手改任何文件）</h3><ol>
+<li>跑一遍现有安装命令，记录所有非默认 PyPI 来源：私有源地址、<code>--trusted-host</code>、<code>--extra-index-url</code>、裸 wheel URL 依赖。</li>
+<li>导出当前环境精确版本快照做迁移后比对：<code>pip freeze &gt; baseline-freeze.txt</code>（不进版本库）。</li>
+<li>确定目标 Python 版本区间——是项目实际验证过能跑的版本，不是”最新版”。</li>
+</ol>
+<h3 id="阶段二：搭骨架"><a href="#阶段二：搭骨架" class="headerlink" title="阶段二：搭骨架"></a>阶段二：搭骨架</h3><ol start="4">
+<li>初始化项目文件：<code>uv init --no-readme</code>（已有 pyproject.toml 则手动补 <code>[project]</code> 表）。</li>
+<li>写 <code>requires-python</code>，收窄成单一版本区间。</li>
+<li><code>uv python pin 3.12</code> 固定本地解释器，生成 <code>.python-version</code> 并提交仓库。</li>
+<li>按第一部分第 8 点，把 <code>--index-url</code>&#x2F;<code>--extra-index-url</code> 转成 <code>[[tool.uv.index]]</code>，把 <code>--trusted-host</code> 转成 <code>[tool.uv] allow-insecure-host</code>。</li>
+</ol>
+<h3 id="阶段三：迁移依赖"><a href="#阶段三：迁移依赖" class="headerlink" title="阶段三：迁移依赖"></a>阶段三：迁移依赖</h3><ol start="8">
+<li>如果只有一个已经锁定精确版本的 requirements.txt，直接执行 <code>uv add -r requirements.txt</code>；如果同时有未锁定的 requirements.in 和旧的 requirements.txt 快照，则执行 <code>uv add -r requirements.in -c requirements.txt</code>，尽量避免迁移时发生无意升级。</li>
+<li>按报错类型对照表逐类修复，不要零散地一条条改。</li>
+<li>重复第 8 步，直到能跑通，或收敛到”仅剩内部包 URL&#x2F;版本冲突”——这类问题不要死磕，转阶段五兜底。</li>
+</ol>
+<h3 id="阶段四：验证与固化关键包"><a href="#阶段四：验证与固化关键包" class="headerlink" title="阶段四：验证与固化关键包"></a>阶段四：验证与固化关键包</h3><p>对已知会反复出问题的内部包（元数据带 URL 依赖的、多个索引都有同名包的），用 <code>explicit + tool.uv.sources</code> 显式 pin，不完全依赖索引顺序。</p>
+<h3 id="阶段五：兜底方案（仅用于过渡期，不作为终态）"><a href="#阶段五：兜底方案（仅用于过渡期，不作为终态）" class="headerlink" title="阶段五：兜底方案（仅用于过渡期，不作为终态）"></a>阶段五：兜底方案（仅用于过渡期，不作为终态）</h3><p><code>uv add -r requirements.txt --frozen</code> 或 <code>uv pip install -r requirements.txt</code>，见第一部分第 7 点。</p>
+<h3 id="阶段六：收尾验证"><a href="#阶段六：收尾验证" class="headerlink" title="阶段六：收尾验证"></a>阶段六：收尾验证</h3><ol start="11">
+<li>生成精简锁文件并提交：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">uv lock</span><br><span class="line">git add pyproject.toml uv.lock .python-version</span><br></pre></td></tr></table></figure></li>
+<li>用干净环境复现：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># Unix/macOS：rm -rf .venv；Windows PowerShell：Remove-Item -Recurse -Force .venv</span><br><span class="line">uv sync</span><br><span class="line">uv run python -c &quot;import sys; print(sys.version)&quot;</span><br></pre></td></tr></table></figure>
+对照 <code>baseline-freeze.txt</code> 抽查关键包版本，确认没有静默升级&#x2F;降级。</li>
+<li>在 CI 或另一台干净机器上跑一遍同样的 <code>uv sync</code>，确认不依赖本机缓存或已存在的 <code>.venv</code>——这是判断迁移是否真正可复用的关键测试。</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+              <a href="/tags/uv/" rel="tag"># uv</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2026/07/19/6d3a1f72/" rel="prev" title="有了 AI 之后，基础编程之上是什么">
+                  <i class="fa fa-angle-left"></i> 有了 AI 之后，基础编程之上是什么
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">777k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">11:46</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>
