@@ -27,7 +27,7 @@
 <meta property="og:description" content="记录将 Python 项目迁移到 uv 时的关键配置、依赖管理和常见问题，整理一套可复用的迁移工作流。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2026-09-06T14:00:00.000Z">
-<meta property="article:modified_time" content="2026-09-07T15:42:57.537Z">
+<meta property="article:modified_time" content="2026-09-07T16:05:43.322Z">
 <meta property="article:author" content="Magnolia">
 <meta property="article:tag" content="Python">
 <meta property="article:tag" content="uv">
@@ -165,7 +165,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Python-%E9%A1%B9%E7%9B%AE%E4%BB%8E-requirements-txt-%E8%BF%81%E7%A7%BB%E5%88%B0-uv"><span class="nav-text">Python 项目从 requirements.txt 迁移到 uv</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%81%E7%A7%BB%E5%89%8D%E8%A6%81%E7%A1%AE%E5%AE%9A%E7%9A%84%E4%BA%8B"><span class="nav-text">迁移前要确定的事</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96-uv-%E9%A1%B9%E7%9B%AE"><span class="nav-text">初始化 uv 项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%BC%E5%85%A5-requirements-txt"><span class="nav-text">导入 requirements.txt</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A7%81%E6%9C%89%E6%BA%90%E8%B8%A9%E8%BF%87%E7%9A%84%E5%9D%91"><span class="nav-text">私有源踩过的坑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#URL-%E4%BE%9D%E8%B5%96"><span class="nav-text">URL 依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%87%E6%B8%A1%E6%9C%9F%E5%85%9C%E5%BA%95"><span class="nav-text">过渡期兜底</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%B6%E5%B0%BE%E9%AA%8C%E8%AF%81"><span class="nav-text">收尾验证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E6%9E%9C%E8%A6%81%E5%9B%9E%E6%BB%9A"><span class="nav-text">如果要回滚</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#uv-lock-%E4%BD%93%E7%A7%AF%E8%BF%87%E5%A4%A7"><span class="nav-text">uv.lock 体积过大</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%81%E7%A7%BB%E5%89%8D%E8%A6%81%E7%A1%AE%E5%AE%9A%E7%9A%84%E4%BA%8B"><span class="nav-text">迁移前要确定的事</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96-uv-%E9%A1%B9%E7%9B%AE"><span class="nav-text">初始化 uv 项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%BC%E5%85%A5-requirements-txt"><span class="nav-text">导入 requirements.txt</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A7%81%E6%9C%89%E6%BA%90%E8%B8%A9%E8%BF%87%E7%9A%84%E5%9D%91"><span class="nav-text">私有源踩过的坑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#URL-%E4%BE%9D%E8%B5%96"><span class="nav-text">URL 依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%87%E6%B8%A1%E6%9C%9F%E5%85%9C%E5%BA%95"><span class="nav-text">过渡期兜底</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%B6%E5%B0%BE%E9%AA%8C%E8%AF%81"><span class="nav-text">收尾验证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E6%9E%9C%E8%A6%81%E5%9B%9E%E6%BB%9A"><span class="nav-text">如果要回滚</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#uv-lock-%E4%BD%93%E7%A7%AF%E8%BF%87%E5%A4%A7"><span class="nav-text">uv.lock 体积过大</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -309,7 +309,7 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><h1 id="Python-项目从-requirements-txt-迁移到-uv"><a href="#Python-项目从-requirements-txt-迁移到-uv" class="headerlink" title="Python 项目从 requirements.txt 迁移到 uv"></a>Python 项目从 requirements.txt 迁移到 uv</h1><h2 id="迁移前要确定的事"><a href="#迁移前要确定的事" class="headerlink" title="迁移前要确定的事"></a>迁移前要确定的事</h2><ol>
+    <div class="post-body" itemprop="articleBody"><h2 id="迁移前要确定的事"><a href="#迁移前要确定的事" class="headerlink" title="迁移前要确定的事"></a>迁移前要确定的事</h2><ol>
 <li><strong>Python 版本区间</strong>:项目实际验证过的版本</li>
 <li><strong>非默认来源</strong>:私有源地址、<code>--extra-index-url</code>、<code>--trusted-host</code>、裸 wheel URL</li>
 <li><strong>当前版本快照</strong>:<code>pip freeze &gt; baseline-freeze.txt</code>,迁移后拿它做对照，出问题时也能回滚</li>
