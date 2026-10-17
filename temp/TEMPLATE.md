@@ -3,8 +3,11 @@ title: template
 date: 2024-07-01 19:45:18
 tags: [github,tools]
 categories:
-  - [技术, tool]
+  - AI
+  - 编程
 description: 
+  - 技术
+  - 总结
 ---
 
 规范化文档：
