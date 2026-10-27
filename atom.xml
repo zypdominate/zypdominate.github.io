@@ -30,14 +30,12 @@
     
     
     
-    <category term="技术" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    <category term="感悟" scheme="https://zypdominate.github.io/categories/%E6%84%9F%E6%82%9F/"/>
     
-    <category term="总结" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/%E6%80%BB%E7%BB%93/"/>
     
+    <category term="reflection" scheme="https://zypdominate.github.io/tags/reflection/"/>
     
     <category term="AI" scheme="https://zypdominate.github.io/tags/AI/"/>
-    
-    <category term="编程" scheme="https://zypdominate.github.io/tags/%E7%BC%96%E7%A8%8B/"/>
     
   </entry>
   
@@ -60,7 +58,11 @@
     <category term="Python" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Python/"/>
     
     
-    <category term="Python" scheme="https://zypdominate.github.io/tags/Python/"/>
+    <category term="tips" scheme="https://zypdominate.github.io/tags/tips/"/>
+    
+    <category term="reflection" scheme="https://zypdominate.github.io/tags/reflection/"/>
+    
+    <category term="tooling" scheme="https://zypdominate.github.io/tags/tooling/"/>
     
     <category term="uv" scheme="https://zypdominate.github.io/tags/uv/"/>
     
@@ -80,10 +82,10 @@
     
     
     
-    <category term="技术" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    <category term="感悟" scheme="https://zypdominate.github.io/categories/%E6%84%9F%E6%82%9F/"/>
     
-    <category term="总结" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/%E6%80%BB%E7%BB%93/"/>
     
+    <category term="reflection" scheme="https://zypdominate.github.io/tags/reflection/"/>
     
     <category term="AI" scheme="https://zypdominate.github.io/tags/AI/"/>
     
@@ -105,12 +107,12 @@
     
     <category term="技术" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
-    <category term="Python" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Python/"/>
+    <category term="Android" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Android/"/>
     
+    
+    <category term="mobile" scheme="https://zypdominate.github.io/tags/mobile/"/>
     
     <category term="AI" scheme="https://zypdominate.github.io/tags/AI/"/>
-    
-    <category term="Android" scheme="https://zypdominate.github.io/tags/Android/"/>
     
     <category term="PyPI" scheme="https://zypdominate.github.io/tags/PyPI/"/>
     
@@ -130,10 +132,10 @@
     
     
     
-    <category term="技术" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    <category term="感悟" scheme="https://zypdominate.github.io/categories/%E6%84%9F%E6%82%9F/"/>
     
-    <category term="总结" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/%E6%80%BB%E7%BB%93/"/>
     
+    <category term="reflection" scheme="https://zypdominate.github.io/tags/reflection/"/>
     
     <category term="AI" scheme="https://zypdominate.github.io/tags/AI/"/>
     
@@ -155,10 +157,14 @@
     
     <category term="技术" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
-    <category term="PyPI" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/PyPI/"/>
+    <category term="Python" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Python/"/>
     
+    
+    <category term="tips" scheme="https://zypdominate.github.io/tags/tips/"/>
     
     <category term="PyPI" scheme="https://zypdominate.github.io/tags/PyPI/"/>
+    
+    <category term="packaging" scheme="https://zypdominate.github.io/tags/packaging/"/>
     
   </entry>
   
@@ -178,10 +184,10 @@
     
     <category term="技术" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
-    <category term="Gitlab" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Gitlab/"/>
+    <category term="GitLab" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/GitLab/"/>
     
     
-    <category term="gitlab" scheme="https://zypdominate.github.io/tags/gitlab/"/>
+    <category term="CI-CD" scheme="https://zypdominate.github.io/tags/CI-CD/"/>
     
   </entry>
   
@@ -201,6 +207,12 @@
     
     <category term="阅读" scheme="https://zypdominate.github.io/categories/%E9%98%85%E8%AF%BB/"/>
     
+    
+    <category term="reflection" scheme="https://zypdominate.github.io/tags/reflection/"/>
+    
+    <category term="notes" scheme="https://zypdominate.github.io/tags/notes/"/>
+    
+    <category term="reading" scheme="https://zypdominate.github.io/tags/reading/"/>
     
     <category term="AI" scheme="https://zypdominate.github.io/tags/AI/"/>
     
@@ -225,11 +237,17 @@
     <category term="Linux" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Linux/"/>
     
     
-    <category term="FixBug" scheme="https://zypdominate.github.io/tags/FixBug/"/>
+    <category term="troubleshooting" scheme="https://zypdominate.github.io/tags/troubleshooting/"/>
+    
+    <category term="CI-CD" scheme="https://zypdominate.github.io/tags/CI-CD/"/>
+    
+    <category term="AI" scheme="https://zypdominate.github.io/tags/AI/"/>
     
     <category term="Jenkins" scheme="https://zypdominate.github.io/tags/Jenkins/"/>
     
-    <category term="Linux" scheme="https://zypdominate.github.io/tags/Linux/"/>
+    <category term="systemd" scheme="https://zypdominate.github.io/tags/systemd/"/>
+    
+    <category term="ops" scheme="https://zypdominate.github.io/tags/ops/"/>
     
   </entry>
   
@@ -254,6 +272,10 @@
     
     <category term="tips" scheme="https://zypdominate.github.io/tags/tips/"/>
     
+    <category term="Windows" scheme="https://zypdominate.github.io/tags/Windows/"/>
+    
+    <category term="setup" scheme="https://zypdominate.github.io/tags/setup/"/>
+    
   </entry>
   
   <entry>
@@ -273,7 +295,9 @@
     <category term="阅读" scheme="https://zypdominate.github.io/categories/%E9%98%85%E8%AF%BB/"/>
     
     
-    <category term="阅读" scheme="https://zypdominate.github.io/tags/%E9%98%85%E8%AF%BB/"/>
+    <category term="notes" scheme="https://zypdominate.github.io/tags/notes/"/>
+    
+    <category term="reading" scheme="https://zypdominate.github.io/tags/reading/"/>
     
   </entry>
   
@@ -291,12 +315,10 @@
     
     
     
-    <category term="技术" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-    <category term="总结" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/%E6%80%BB%E7%BB%93/"/>
+    <category term="感悟" scheme="https://zypdominate.github.io/categories/%E6%84%9F%E6%82%9F/"/>
     
     
-    <category term="总结" scheme="https://zypdominate.github.io/tags/%E6%80%BB%E7%BB%93/"/>
+    <category term="reflection" scheme="https://zypdominate.github.io/tags/reflection/"/>
     
     <category term="AI" scheme="https://zypdominate.github.io/tags/AI/"/>
     
@@ -319,7 +341,11 @@
     <category term="生活" scheme="https://zypdominate.github.io/categories/%E7%94%9F%E6%B4%BB/"/>
     
     
+    <category term="reflection" scheme="https://zypdominate.github.io/tags/reflection/"/>
+    
     <category term="AI" scheme="https://zypdominate.github.io/tags/AI/"/>
+    
+    <category term="life" scheme="https://zypdominate.github.io/tags/life/"/>
     
   </entry>
   
@@ -342,7 +368,9 @@
     <category term="MySQL" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/MySQL/"/>
     
     
-    <category term="mysql" scheme="https://zypdominate.github.io/tags/mysql/"/>
+    <category term="database" scheme="https://zypdominate.github.io/tags/database/"/>
+    
+    <category term="backup" scheme="https://zypdominate.github.io/tags/backup/"/>
     
   </entry>
   
@@ -364,6 +392,10 @@
     
     <category term="工具" scheme="https://zypdominate.github.io/categories/%E7%94%9F%E4%BA%A7%E5%8A%9B/%E5%B7%A5%E5%85%B7/"/>
     
+    
+    <category term="productivity" scheme="https://zypdominate.github.io/tags/productivity/"/>
+    
+    <category term="tooling" scheme="https://zypdominate.github.io/tags/tooling/"/>
     
     <category term="AI" scheme="https://zypdominate.github.io/tags/AI/"/>
     
@@ -388,6 +420,10 @@
     <category term="工具" scheme="https://zypdominate.github.io/categories/%E7%94%9F%E4%BA%A7%E5%8A%9B/%E5%B7%A5%E5%85%B7/"/>
     
     
+    <category term="productivity" scheme="https://zypdominate.github.io/tags/productivity/"/>
+    
+    <category term="tooling" scheme="https://zypdominate.github.io/tags/tooling/"/>
+    
     <category term="uv" scheme="https://zypdominate.github.io/tags/uv/"/>
     
   </entry>
@@ -411,7 +447,15 @@
     <category term="工具" scheme="https://zypdominate.github.io/categories/%E7%94%9F%E4%BA%A7%E5%8A%9B/%E5%B7%A5%E5%85%B7/"/>
     
     
+    <category term="testing" scheme="https://zypdominate.github.io/tags/testing/"/>
+    
+    <category term="automation" scheme="https://zypdominate.github.io/tags/automation/"/>
+    
+    <category term="AI" scheme="https://zypdominate.github.io/tags/AI/"/>
+    
     <category term="Cursor" scheme="https://zypdominate.github.io/tags/Cursor/"/>
+    
+    <category term="MCP" scheme="https://zypdominate.github.io/tags/MCP/"/>
     
     <category term="Playwright" scheme="https://zypdominate.github.io/tags/Playwright/"/>
     
@@ -436,7 +480,17 @@
     <category term="工具" scheme="https://zypdominate.github.io/categories/%E7%94%9F%E4%BA%A7%E5%8A%9B/%E5%B7%A5%E5%85%B7/"/>
     
     
+    <category term="database" scheme="https://zypdominate.github.io/tags/database/"/>
+    
+    <category term="productivity" scheme="https://zypdominate.github.io/tags/productivity/"/>
+    
+    <category term="MySQL" scheme="https://zypdominate.github.io/tags/MySQL/"/>
+    
+    <category term="AI" scheme="https://zypdominate.github.io/tags/AI/"/>
+    
     <category term="Cursor" scheme="https://zypdominate.github.io/tags/Cursor/"/>
+    
+    <category term="MCP" scheme="https://zypdominate.github.io/tags/MCP/"/>
     
   </entry>
   
@@ -459,7 +513,7 @@
     <category term="Docker" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Docker/"/>
     
     
-    <category term="Docker" scheme="https://zypdominate.github.io/tags/Docker/"/>
+    <category term="containers" scheme="https://zypdominate.github.io/tags/containers/"/>
     
   </entry>
   
@@ -482,7 +536,7 @@
     <category term="Docker" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Docker/"/>
     
     
-    <category term="Docker" scheme="https://zypdominate.github.io/tags/Docker/"/>
+    <category term="containers" scheme="https://zypdominate.github.io/tags/containers/"/>
     
   </entry>
   
@@ -505,7 +559,7 @@
     <category term="Git" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Git/"/>
     
     
-    <category term="Git" scheme="https://zypdominate.github.io/tags/Git/"/>
+    <category term="VCS" scheme="https://zypdominate.github.io/tags/VCS/"/>
     
     <category term="SSH" scheme="https://zypdominate.github.io/tags/SSH/"/>
     
@@ -530,7 +584,9 @@
     <category term="Jenkins" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Jenkins/"/>
     
     
-    <category term="Jenkins" scheme="https://zypdominate.github.io/tags/Jenkins/"/>
+    <category term="automation" scheme="https://zypdominate.github.io/tags/automation/"/>
+    
+    <category term="CI-CD" scheme="https://zypdominate.github.io/tags/CI-CD/"/>
     
   </entry>
   
@@ -553,9 +609,13 @@
     <category term="Linux" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Linux/"/>
     
     
-    <category term="tools" scheme="https://zypdominate.github.io/tags/tools/"/>
+    <category term="web" scheme="https://zypdominate.github.io/tags/web/"/>
     
-    <category term="Linux" scheme="https://zypdominate.github.io/tags/Linux/"/>
+    <category term="systemd" scheme="https://zypdominate.github.io/tags/systemd/"/>
+    
+    <category term="ops" scheme="https://zypdominate.github.io/tags/ops/"/>
+    
+    <category term="Flask" scheme="https://zypdominate.github.io/tags/Flask/"/>
     
   </entry>
   
@@ -578,9 +638,13 @@
     <category term="Android" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Android/"/>
     
     
-    <category term="Android" scheme="https://zypdominate.github.io/tags/Android/"/>
+    <category term="automation" scheme="https://zypdominate.github.io/tags/automation/"/>
     
-    <category term="gitlab" scheme="https://zypdominate.github.io/tags/gitlab/"/>
+    <category term="CI-CD" scheme="https://zypdominate.github.io/tags/CI-CD/"/>
+    
+    <category term="mobile" scheme="https://zypdominate.github.io/tags/mobile/"/>
+    
+    <category term="GitLab" scheme="https://zypdominate.github.io/tags/GitLab/"/>
     
   </entry>
   
@@ -603,9 +667,9 @@
     <category term="Linux" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Linux/"/>
     
     
-    <category term="tools" scheme="https://zypdominate.github.io/tags/tools/"/>
+    <category term="systemd" scheme="https://zypdominate.github.io/tags/systemd/"/>
     
-    <category term="Linux" scheme="https://zypdominate.github.io/tags/Linux/"/>
+    <category term="ops" scheme="https://zypdominate.github.io/tags/ops/"/>
     
   </entry>
   
@@ -625,10 +689,10 @@
     
     <category term="技术" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
-    <category term="Gitlab" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Gitlab/"/>
+    <category term="GitLab" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/GitLab/"/>
     
     
-    <category term="gitlab" scheme="https://zypdominate.github.io/tags/gitlab/"/>
+    <category term="CI-CD" scheme="https://zypdominate.github.io/tags/CI-CD/"/>
     
     <category term="Linux" scheme="https://zypdominate.github.io/tags/Linux/"/>
     
@@ -648,10 +712,16 @@
     
     
     
-    <category term="技术" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    <category term="生产力" scheme="https://zypdominate.github.io/categories/%E7%94%9F%E4%BA%A7%E5%8A%9B/"/>
     
-    <category term="tool" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/tool/"/>
+    <category term="工具" scheme="https://zypdominate.github.io/categories/%E7%94%9F%E4%BA%A7%E5%8A%9B/%E5%B7%A5%E5%85%B7/"/>
     
+    
+    <category term="reflection" scheme="https://zypdominate.github.io/tags/reflection/"/>
+    
+    <category term="productivity" scheme="https://zypdominate.github.io/tags/productivity/"/>
+    
+    <category term="tooling" scheme="https://zypdominate.github.io/tags/tooling/"/>
     
     <category term="AI" scheme="https://zypdominate.github.io/tags/AI/"/>
     
@@ -676,9 +746,11 @@
     <category term="Jenkins" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Jenkins/"/>
     
     
-    <category term="AI" scheme="https://zypdominate.github.io/tags/AI/"/>
+    <category term="automation" scheme="https://zypdominate.github.io/tags/automation/"/>
     
-    <category term="Jenkins" scheme="https://zypdominate.github.io/tags/Jenkins/"/>
+    <category term="CI-CD" scheme="https://zypdominate.github.io/tags/CI-CD/"/>
+    
+    <category term="AI" scheme="https://zypdominate.github.io/tags/AI/"/>
     
   </entry>
   
@@ -701,7 +773,15 @@
     <category term="工具" scheme="https://zypdominate.github.io/categories/%E7%94%9F%E4%BA%A7%E5%8A%9B/%E5%B7%A5%E5%85%B7/"/>
     
     
-    <category term="docker" scheme="https://zypdominate.github.io/tags/docker/"/>
+    <category term="productivity" scheme="https://zypdominate.github.io/tags/productivity/"/>
+    
+    <category term="tooling" scheme="https://zypdominate.github.io/tags/tooling/"/>
+    
+    <category term="Docker" scheme="https://zypdominate.github.io/tags/Docker/"/>
+    
+    <category term="Linux" scheme="https://zypdominate.github.io/tags/Linux/"/>
+    
+    <category term="WSL" scheme="https://zypdominate.github.io/tags/WSL/"/>
     
   </entry>
   
@@ -719,14 +799,18 @@
     
     
     
-    <category term="技术" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    <category term="生产力" scheme="https://zypdominate.github.io/categories/%E7%94%9F%E4%BA%A7%E5%8A%9B/"/>
     
-    <category term="tool" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/tool/"/>
+    <category term="工具" scheme="https://zypdominate.github.io/categories/%E7%94%9F%E4%BA%A7%E5%8A%9B/%E5%B7%A5%E5%85%B7/"/>
     
+    
+    <category term="productivity" scheme="https://zypdominate.github.io/tags/productivity/"/>
+    
+    <category term="tooling" scheme="https://zypdominate.github.io/tags/tooling/"/>
+    
+    <category term="diagram" scheme="https://zypdominate.github.io/tags/diagram/"/>
     
     <category term="AI" scheme="https://zypdominate.github.io/tags/AI/"/>
-    
-    <category term="tools" scheme="https://zypdominate.github.io/tags/tools/"/>
     
   </entry>
   
@@ -749,7 +833,9 @@
     <category term="Flask" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Flask/"/>
     
     
-    <category term="Flask" scheme="https://zypdominate.github.io/tags/Flask/"/>
+    <category term="web" scheme="https://zypdominate.github.io/tags/web/"/>
+    
+    <category term="observability" scheme="https://zypdominate.github.io/tags/observability/"/>
     
   </entry>
   
@@ -772,9 +858,11 @@
     <category term="pytest" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/pytest/"/>
     
     
-    <category term="Python" scheme="https://zypdominate.github.io/tags/Python/"/>
+    <category term="OOP" scheme="https://zypdominate.github.io/tags/OOP/"/>
     
-    <category term="pytest" scheme="https://zypdominate.github.io/tags/pytest/"/>
+    <category term="testing" scheme="https://zypdominate.github.io/tags/testing/"/>
+    
+    <category term="Python" scheme="https://zypdominate.github.io/tags/Python/"/>
     
   </entry>
   
@@ -797,7 +885,11 @@
     <category term="工具" scheme="https://zypdominate.github.io/categories/%E7%94%9F%E4%BA%A7%E5%8A%9B/%E5%B7%A5%E5%85%B7/"/>
     
     
-    <category term="tools" scheme="https://zypdominate.github.io/tags/tools/"/>
+    <category term="tips" scheme="https://zypdominate.github.io/tags/tips/"/>
+    
+    <category term="productivity" scheme="https://zypdominate.github.io/tags/productivity/"/>
+    
+    <category term="tooling" scheme="https://zypdominate.github.io/tags/tooling/"/>
     
   </entry>
   
@@ -820,7 +912,7 @@
     <category term="Python" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Python/"/>
     
     
-    <category term="python" scheme="https://zypdominate.github.io/tags/python/"/>
+    <category term="tips" scheme="https://zypdominate.github.io/tags/tips/"/>
     
   </entry>
   
@@ -838,12 +930,18 @@
     
     
     
-    <category term="技术" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    <category term="生产力" scheme="https://zypdominate.github.io/categories/%E7%94%9F%E4%BA%A7%E5%8A%9B/"/>
     
-    <category term="tool" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/tool/"/>
+    <category term="工具" scheme="https://zypdominate.github.io/categories/%E7%94%9F%E4%BA%A7%E5%8A%9B/%E5%B7%A5%E5%85%B7/"/>
     
     
-    <category term="sphinx" scheme="https://zypdominate.github.io/tags/sphinx/"/>
+    <category term="productivity" scheme="https://zypdominate.github.io/tags/productivity/"/>
+    
+    <category term="tooling" scheme="https://zypdominate.github.io/tags/tooling/"/>
+    
+    <category term="docs" scheme="https://zypdominate.github.io/tags/docs/"/>
+    
+    <category term="Sphinx" scheme="https://zypdominate.github.io/tags/Sphinx/"/>
     
   </entry>
   
@@ -866,7 +964,9 @@
     <category term="工具" scheme="https://zypdominate.github.io/categories/%E7%94%9F%E4%BA%A7%E5%8A%9B/%E5%B7%A5%E5%85%B7/"/>
     
     
-    <category term="tools" scheme="https://zypdominate.github.io/tags/tools/"/>
+    <category term="productivity" scheme="https://zypdominate.github.io/tags/productivity/"/>
+    
+    <category term="tooling" scheme="https://zypdominate.github.io/tags/tooling/"/>
     
   </entry>
   
@@ -889,7 +989,11 @@
     <category term="工具" scheme="https://zypdominate.github.io/categories/%E7%94%9F%E4%BA%A7%E5%8A%9B/%E5%B7%A5%E5%85%B7/"/>
     
     
-    <category term="tools" scheme="https://zypdominate.github.io/tags/tools/"/>
+    <category term="productivity" scheme="https://zypdominate.github.io/tags/productivity/"/>
+    
+    <category term="tooling" scheme="https://zypdominate.github.io/tags/tooling/"/>
+    
+    <category term="Linux" scheme="https://zypdominate.github.io/tags/Linux/"/>
     
   </entry>
   
@@ -912,7 +1016,7 @@
     <category term="Android" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Android/"/>
     
     
-    <category term="Android" scheme="https://zypdominate.github.io/tags/Android/"/>
+    <category term="mobile" scheme="https://zypdominate.github.io/tags/mobile/"/>
     
   </entry>
   
@@ -935,7 +1039,7 @@
     <category term="pytest" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/pytest/"/>
     
     
-    <category term="pytest" scheme="https://zypdominate.github.io/tags/pytest/"/>
+    <category term="testing" scheme="https://zypdominate.github.io/tags/testing/"/>
     
   </entry>
   
@@ -958,7 +1062,13 @@
     <category term="工具" scheme="https://zypdominate.github.io/categories/%E7%94%9F%E4%BA%A7%E5%8A%9B/%E5%B7%A5%E5%85%B7/"/>
     
     
-    <category term="tools" scheme="https://zypdominate.github.io/tags/tools/"/>
+    <category term="tips" scheme="https://zypdominate.github.io/tags/tips/"/>
+    
+    <category term="productivity" scheme="https://zypdominate.github.io/tags/productivity/"/>
+    
+    <category term="tooling" scheme="https://zypdominate.github.io/tags/tooling/"/>
+    
+    <category term="Windows" scheme="https://zypdominate.github.io/tags/Windows/"/>
     
   </entry>
   
@@ -981,7 +1091,17 @@
     <category term="工具" scheme="https://zypdominate.github.io/categories/%E7%94%9F%E4%BA%A7%E5%8A%9B/%E5%B7%A5%E5%85%B7/"/>
     
     
-    <category term="tools" scheme="https://zypdominate.github.io/tags/tools/"/>
+    <category term="tips" scheme="https://zypdominate.github.io/tags/tips/"/>
+    
+    <category term="productivity" scheme="https://zypdominate.github.io/tags/productivity/"/>
+    
+    <category term="tooling" scheme="https://zypdominate.github.io/tags/tooling/"/>
+    
+    <category term="Windows" scheme="https://zypdominate.github.io/tags/Windows/"/>
+    
+    <category term="Linux" scheme="https://zypdominate.github.io/tags/Linux/"/>
+    
+    <category term="WSL" scheme="https://zypdominate.github.io/tags/WSL/"/>
     
   </entry>
   
@@ -1004,7 +1124,17 @@
     <category term="工具" scheme="https://zypdominate.github.io/categories/%E7%94%9F%E4%BA%A7%E5%8A%9B/%E5%B7%A5%E5%85%B7/"/>
     
     
-    <category term="gitlab" scheme="https://zypdominate.github.io/tags/gitlab/"/>
+    <category term="CI-CD" scheme="https://zypdominate.github.io/tags/CI-CD/"/>
+    
+    <category term="productivity" scheme="https://zypdominate.github.io/tags/productivity/"/>
+    
+    <category term="tooling" scheme="https://zypdominate.github.io/tags/tooling/"/>
+    
+    <category term="GitLab" scheme="https://zypdominate.github.io/tags/GitLab/"/>
+    
+    <category term="blogging" scheme="https://zypdominate.github.io/tags/blogging/"/>
+    
+    <category term="static-site" scheme="https://zypdominate.github.io/tags/static-site/"/>
     
   </entry>
   
@@ -1027,7 +1157,7 @@
     <category term="Git" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Git/"/>
     
     
-    <category term="Git" scheme="https://zypdominate.github.io/tags/Git/"/>
+    <category term="VCS" scheme="https://zypdominate.github.io/tags/VCS/"/>
     
   </entry>
   
@@ -1050,7 +1180,7 @@
     <category term="Python" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Python/"/>
     
     
-    <category term="Python" scheme="https://zypdominate.github.io/tags/Python/"/>
+    <category term="tips" scheme="https://zypdominate.github.io/tags/tips/"/>
     
   </entry>
   
@@ -1073,7 +1203,13 @@
     <category term="Jenkins" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Jenkins/"/>
     
     
-    <category term="Jenkins" scheme="https://zypdominate.github.io/tags/Jenkins/"/>
+    <category term="tips" scheme="https://zypdominate.github.io/tags/tips/"/>
+    
+    <category term="CI-CD" scheme="https://zypdominate.github.io/tags/CI-CD/"/>
+    
+    <category term="Windows" scheme="https://zypdominate.github.io/tags/Windows/"/>
+    
+    <category term="backup" scheme="https://zypdominate.github.io/tags/backup/"/>
     
   </entry>
   
@@ -1096,9 +1232,9 @@
     <category term="pytest" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/pytest/"/>
     
     
-    <category term="Python" scheme="https://zypdominate.github.io/tags/Python/"/>
+    <category term="testing" scheme="https://zypdominate.github.io/tags/testing/"/>
     
-    <category term="pytest" scheme="https://zypdominate.github.io/tags/pytest/"/>
+    <category term="Python" scheme="https://zypdominate.github.io/tags/Python/"/>
     
   </entry>
   
@@ -1121,7 +1257,7 @@
     <category term="Python" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Python/"/>
     
     
-    <category term="Python" scheme="https://zypdominate.github.io/tags/Python/"/>
+    <category term="tips" scheme="https://zypdominate.github.io/tags/tips/"/>
     
   </entry>
   
@@ -1144,7 +1280,9 @@
     <category term="Python" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Python/"/>
     
     
-    <category term="Python" scheme="https://zypdominate.github.io/tags/Python/"/>
+    <category term="tips" scheme="https://zypdominate.github.io/tags/tips/"/>
+    
+    <category term="reflection" scheme="https://zypdominate.github.io/tags/reflection/"/>
     
   </entry>
   
@@ -1167,7 +1305,7 @@
     <category term="Python" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Python/"/>
     
     
-    <category term="Python" scheme="https://zypdominate.github.io/tags/Python/"/>
+    <category term="tips" scheme="https://zypdominate.github.io/tags/tips/"/>
     
   </entry>
   
@@ -1192,11 +1330,17 @@
     <category term="工具" scheme="https://zypdominate.github.io/categories/%E7%94%9F%E4%BA%A7%E5%8A%9B/%E5%B7%A5%E5%85%B7/"/>
     
     
+    <category term="productivity" scheme="https://zypdominate.github.io/tags/productivity/"/>
+    
+    <category term="tooling" scheme="https://zypdominate.github.io/tags/tooling/"/>
+    
+    <category term="web" scheme="https://zypdominate.github.io/tags/web/"/>
+    
+    <category term="docs" scheme="https://zypdominate.github.io/tags/docs/"/>
+    
+    <category term="Sphinx" scheme="https://zypdominate.github.io/tags/Sphinx/"/>
+    
     <category term="Django" scheme="https://zypdominate.github.io/tags/Django/"/>
-    
-    <category term="tools" scheme="https://zypdominate.github.io/tags/tools/"/>
-    
-    <category term="sphinx" scheme="https://zypdominate.github.io/tags/sphinx/"/>
     
   </entry>
   
@@ -1219,7 +1363,9 @@
     <category term="Python" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Python/"/>
     
     
-    <category term="Python" scheme="https://zypdominate.github.io/tags/Python/"/>
+    <category term="tips" scheme="https://zypdominate.github.io/tags/tips/"/>
+    
+    <category term="OOP" scheme="https://zypdominate.github.io/tags/OOP/"/>
     
   </entry>
   
@@ -1242,7 +1388,9 @@
     <category term="Python" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Python/"/>
     
     
-    <category term="Python" scheme="https://zypdominate.github.io/tags/Python/"/>
+    <category term="tips" scheme="https://zypdominate.github.io/tags/tips/"/>
+    
+    <category term="OOP" scheme="https://zypdominate.github.io/tags/OOP/"/>
     
   </entry>
   
@@ -1266,9 +1414,13 @@
     <category term="工具" scheme="https://zypdominate.github.io/categories/%E7%94%9F%E4%BA%A7%E5%8A%9B/%E5%B7%A5%E5%85%B7/"/>
     
     
-    <category term="tools" scheme="https://zypdominate.github.io/tags/tools/"/>
+    <category term="productivity" scheme="https://zypdominate.github.io/tags/productivity/"/>
     
-    <category term="sphinx" scheme="https://zypdominate.github.io/tags/sphinx/"/>
+    <category term="tooling" scheme="https://zypdominate.github.io/tags/tooling/"/>
+    
+    <category term="docs" scheme="https://zypdominate.github.io/tags/docs/"/>
+    
+    <category term="Sphinx" scheme="https://zypdominate.github.io/tags/Sphinx/"/>
     
   </entry>
   
@@ -1293,7 +1445,11 @@
     <category term="工具" scheme="https://zypdominate.github.io/categories/%E7%94%9F%E4%BA%A7%E5%8A%9B/%E5%B7%A5%E5%85%B7/"/>
     
     
-    <category term="tools" scheme="https://zypdominate.github.io/tags/tools/"/>
+    <category term="productivity" scheme="https://zypdominate.github.io/tags/productivity/"/>
+    
+    <category term="tooling" scheme="https://zypdominate.github.io/tags/tooling/"/>
+    
+    <category term="diagram" scheme="https://zypdominate.github.io/tags/diagram/"/>
     
   </entry>
   
@@ -1316,9 +1472,7 @@
     <category term="Android" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Android/"/>
     
     
-    <category term="Android" scheme="https://zypdominate.github.io/tags/Android/"/>
-    
-    <category term="Java" scheme="https://zypdominate.github.io/tags/Java/"/>
+    <category term="mobile" scheme="https://zypdominate.github.io/tags/mobile/"/>
     
   </entry>
   
@@ -1341,9 +1495,13 @@
     <category term="工具" scheme="https://zypdominate.github.io/categories/%E7%94%9F%E4%BA%A7%E5%8A%9B/%E5%B7%A5%E5%85%B7/"/>
     
     
-    <category term="github" scheme="https://zypdominate.github.io/tags/github/"/>
+    <category term="productivity" scheme="https://zypdominate.github.io/tags/productivity/"/>
+    
+    <category term="tooling" scheme="https://zypdominate.github.io/tags/tooling/"/>
     
     <category term="hexo" scheme="https://zypdominate.github.io/tags/hexo/"/>
+    
+    <category term="blogging" scheme="https://zypdominate.github.io/tags/blogging/"/>
     
   </entry>
   
@@ -1366,7 +1524,9 @@
     <category term="Python" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Python/"/>
     
     
-    <category term="Python" scheme="https://zypdominate.github.io/tags/Python/"/>
+    <category term="tips" scheme="https://zypdominate.github.io/tags/tips/"/>
+    
+    <category term="internals" scheme="https://zypdominate.github.io/tags/internals/"/>
     
   </entry>
   
@@ -1394,9 +1554,17 @@
     <category term="环境搭建" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/"/>
     
     
-    <category term="FixBug" scheme="https://zypdominate.github.io/tags/FixBug/"/>
+    <category term="troubleshooting" scheme="https://zypdominate.github.io/tags/troubleshooting/"/>
+    
+    <category term="testing" scheme="https://zypdominate.github.io/tags/testing/"/>
+    
+    <category term="automation" scheme="https://zypdominate.github.io/tags/automation/"/>
+    
+    <category term="CI-CD" scheme="https://zypdominate.github.io/tags/CI-CD/"/>
     
     <category term="iOS" scheme="https://zypdominate.github.io/tags/iOS/"/>
+    
+    <category term="setup" scheme="https://zypdominate.github.io/tags/setup/"/>
     
   </entry>
   
@@ -1419,7 +1587,13 @@
     <category term="Python" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Python/"/>
     
     
-    <category term="Python" scheme="https://zypdominate.github.io/tags/Python/"/>
+    <category term="tips" scheme="https://zypdominate.github.io/tags/tips/"/>
+    
+    <category term="automation" scheme="https://zypdominate.github.io/tags/automation/"/>
+    
+    <category term="CI-CD" scheme="https://zypdominate.github.io/tags/CI-CD/"/>
+    
+    <category term="GitLab" scheme="https://zypdominate.github.io/tags/GitLab/"/>
     
   </entry>
   
@@ -1442,7 +1616,7 @@
     <category term="Python" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Python/"/>
     
     
-    <category term="Python" scheme="https://zypdominate.github.io/tags/Python/"/>
+    <category term="tips" scheme="https://zypdominate.github.io/tags/tips/"/>
     
   </entry>
   
@@ -1465,7 +1639,7 @@
     <category term="Python" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Python/"/>
     
     
-    <category term="Python" scheme="https://zypdominate.github.io/tags/Python/"/>
+    <category term="tips" scheme="https://zypdominate.github.io/tags/tips/"/>
     
   </entry>
   
@@ -1488,9 +1662,11 @@
     <category term="Elasticsearch" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Elasticsearch/"/>
     
     
-    <category term="elasticsearch" scheme="https://zypdominate.github.io/tags/elasticsearch/"/>
+    <category term="Docker" scheme="https://zypdominate.github.io/tags/Docker/"/>
     
-    <category term="docker" scheme="https://zypdominate.github.io/tags/docker/"/>
+    <category term="logging" scheme="https://zypdominate.github.io/tags/logging/"/>
+    
+    <category term="search" scheme="https://zypdominate.github.io/tags/search/"/>
     
   </entry>
   
@@ -1513,7 +1689,13 @@
     <category term="Elasticsearch" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Elasticsearch/"/>
     
     
-    <category term="elasticsearch" scheme="https://zypdominate.github.io/tags/elasticsearch/"/>
+    <category term="tips" scheme="https://zypdominate.github.io/tags/tips/"/>
+    
+    <category term="logging" scheme="https://zypdominate.github.io/tags/logging/"/>
+    
+    <category term="search" scheme="https://zypdominate.github.io/tags/search/"/>
+    
+    <category term="Windows" scheme="https://zypdominate.github.io/tags/Windows/"/>
     
   </entry>
   
@@ -1536,7 +1718,7 @@
     <category term="Network" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Network/"/>
     
     
-    <category term="network" scheme="https://zypdominate.github.io/tags/network/"/>
+    <category term="networking" scheme="https://zypdominate.github.io/tags/networking/"/>
     
   </entry>
   
@@ -1554,14 +1736,12 @@
     
     
     
-    <category term="技术" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-    <category term="技术书" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/%E6%8A%80%E6%9C%AF%E4%B9%A6/"/>
+    <category term="阅读" scheme="https://zypdominate.github.io/categories/%E9%98%85%E8%AF%BB/"/>
     
     
-    <category term="Book" scheme="https://zypdominate.github.io/tags/Book/"/>
+    <category term="notes" scheme="https://zypdominate.github.io/tags/notes/"/>
     
-    <category term="Algorithm" scheme="https://zypdominate.github.io/tags/Algorithm/"/>
+    <category term="reading" scheme="https://zypdominate.github.io/tags/reading/"/>
     
   </entry>
   
@@ -1584,9 +1764,11 @@
     <category term="Python" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Python/"/>
     
     
-    <category term="Python" scheme="https://zypdominate.github.io/tags/Python/"/>
+    <category term="tips" scheme="https://zypdominate.github.io/tags/tips/"/>
     
-    <category term="FixBug" scheme="https://zypdominate.github.io/tags/FixBug/"/>
+    <category term="troubleshooting" scheme="https://zypdominate.github.io/tags/troubleshooting/"/>
+    
+    <category term="OCR" scheme="https://zypdominate.github.io/tags/OCR/"/>
     
   </entry>
   
@@ -1609,7 +1791,9 @@
     <category term="Selenium" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Selenium/"/>
     
     
-    <category term="Selenium" scheme="https://zypdominate.github.io/tags/Selenium/"/>
+    <category term="testing" scheme="https://zypdominate.github.io/tags/testing/"/>
+    
+    <category term="automation" scheme="https://zypdominate.github.io/tags/automation/"/>
     
   </entry>
   
@@ -1632,7 +1816,9 @@
     <category term="Selenium" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Selenium/"/>
     
     
-    <category term="Selenium" scheme="https://zypdominate.github.io/tags/Selenium/"/>
+    <category term="testing" scheme="https://zypdominate.github.io/tags/testing/"/>
+    
+    <category term="automation" scheme="https://zypdominate.github.io/tags/automation/"/>
     
   </entry>
   
@@ -1655,7 +1841,9 @@
     <category term="Selenium" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Selenium/"/>
     
     
-    <category term="Selenium" scheme="https://zypdominate.github.io/tags/Selenium/"/>
+    <category term="testing" scheme="https://zypdominate.github.io/tags/testing/"/>
+    
+    <category term="automation" scheme="https://zypdominate.github.io/tags/automation/"/>
     
   </entry>
   
@@ -1678,7 +1866,7 @@
     <category term="Python" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Python/"/>
     
     
-    <category term="Python" scheme="https://zypdominate.github.io/tags/Python/"/>
+    <category term="tips" scheme="https://zypdominate.github.io/tags/tips/"/>
     
   </entry>
   
@@ -1696,12 +1884,14 @@
     
     
     
-    <category term="技术" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-    <category term="总结" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/%E6%80%BB%E7%BB%93/"/>
+    <category term="感悟" scheme="https://zypdominate.github.io/categories/%E6%84%9F%E6%82%9F/"/>
     
     
-    <category term="总结" scheme="https://zypdominate.github.io/tags/%E6%80%BB%E7%BB%93/"/>
+    <category term="reflection" scheme="https://zypdominate.github.io/tags/reflection/"/>
+    
+    <category term="automation" scheme="https://zypdominate.github.io/tags/automation/"/>
+    
+    <category term="CI-CD" scheme="https://zypdominate.github.io/tags/CI-CD/"/>
     
   </entry>
   
@@ -1724,11 +1914,11 @@
     <category term="Django" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Django/"/>
     
     
+    <category term="troubleshooting" scheme="https://zypdominate.github.io/tags/troubleshooting/"/>
+    
     <category term="Python" scheme="https://zypdominate.github.io/tags/Python/"/>
     
-    <category term="FixBug" scheme="https://zypdominate.github.io/tags/FixBug/"/>
-    
-    <category term="Django" scheme="https://zypdominate.github.io/tags/Django/"/>
+    <category term="web" scheme="https://zypdominate.github.io/tags/web/"/>
     
   </entry>
   
@@ -1751,11 +1941,15 @@
     <category term="Django" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Django/"/>
     
     
+    <category term="troubleshooting" scheme="https://zypdominate.github.io/tags/troubleshooting/"/>
+    
+    <category term="PyCharm" scheme="https://zypdominate.github.io/tags/PyCharm/"/>
+    
+    <category term="productivity" scheme="https://zypdominate.github.io/tags/productivity/"/>
+    
     <category term="Python" scheme="https://zypdominate.github.io/tags/Python/"/>
     
-    <category term="FixBug" scheme="https://zypdominate.github.io/tags/FixBug/"/>
-    
-    <category term="Django" scheme="https://zypdominate.github.io/tags/Django/"/>
+    <category term="web" scheme="https://zypdominate.github.io/tags/web/"/>
     
   </entry>
   
@@ -1778,9 +1972,13 @@
     <category term="Django" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Django/"/>
     
     
-    <category term="FixBug" scheme="https://zypdominate.github.io/tags/FixBug/"/>
+    <category term="troubleshooting" scheme="https://zypdominate.github.io/tags/troubleshooting/"/>
     
-    <category term="Django" scheme="https://zypdominate.github.io/tags/Django/"/>
+    <category term="database" scheme="https://zypdominate.github.io/tags/database/"/>
+    
+    <category term="web" scheme="https://zypdominate.github.io/tags/web/"/>
+    
+    <category term="MySQL" scheme="https://zypdominate.github.io/tags/MySQL/"/>
     
   </entry>
   
@@ -1803,11 +2001,11 @@
     <category term="Django" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Django/"/>
     
     
+    <category term="troubleshooting" scheme="https://zypdominate.github.io/tags/troubleshooting/"/>
+    
     <category term="Python" scheme="https://zypdominate.github.io/tags/Python/"/>
     
-    <category term="FixBug" scheme="https://zypdominate.github.io/tags/FixBug/"/>
-    
-    <category term="Django" scheme="https://zypdominate.github.io/tags/Django/"/>
+    <category term="web" scheme="https://zypdominate.github.io/tags/web/"/>
     
   </entry>
   
@@ -1830,7 +2028,7 @@
     <category term="Python" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Python/"/>
     
     
-    <category term="Python" scheme="https://zypdominate.github.io/tags/Python/"/>
+    <category term="tips" scheme="https://zypdominate.github.io/tags/tips/"/>
     
   </entry>
   
@@ -1848,12 +2046,14 @@
     
     
     
-    <category term="技术" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    <category term="感悟" scheme="https://zypdominate.github.io/categories/%E6%84%9F%E6%82%9F/"/>
     
+    
+    <category term="tips" scheme="https://zypdominate.github.io/tags/tips/"/>
+    
+    <category term="reflection" scheme="https://zypdominate.github.io/tags/reflection/"/>
     
     <category term="Python" scheme="https://zypdominate.github.io/tags/Python/"/>
-    
-    <category term="Tricks" scheme="https://zypdominate.github.io/tags/Tricks/"/>
     
   </entry>
   
@@ -1876,7 +2076,7 @@
     <category term="Network" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Network/"/>
     
     
-    <category term="network" scheme="https://zypdominate.github.io/tags/network/"/>
+    <category term="networking" scheme="https://zypdominate.github.io/tags/networking/"/>
     
   </entry>
   
@@ -1899,7 +2099,7 @@
     <category term="MySQL" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/MySQL/"/>
     
     
-    <category term="MySQL" scheme="https://zypdominate.github.io/tags/MySQL/"/>
+    <category term="database" scheme="https://zypdominate.github.io/tags/database/"/>
     
   </entry>
   
@@ -1922,7 +2122,7 @@
     <category term="MySQL" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/MySQL/"/>
     
     
-    <category term="MySQL" scheme="https://zypdominate.github.io/tags/MySQL/"/>
+    <category term="database" scheme="https://zypdominate.github.io/tags/database/"/>
     
   </entry>
   
@@ -1945,7 +2145,11 @@
     <category term="Python" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Python/"/>
     
     
-    <category term="Python" scheme="https://zypdominate.github.io/tags/Python/"/>
+    <category term="tips" scheme="https://zypdominate.github.io/tags/tips/"/>
+    
+    <category term="fluent-python" scheme="https://zypdominate.github.io/tags/fluent-python/"/>
+    
+    <category term="notes" scheme="https://zypdominate.github.io/tags/notes/"/>
     
   </entry>
   
@@ -1968,7 +2172,11 @@
     <category term="Python" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Python/"/>
     
     
-    <category term="Python" scheme="https://zypdominate.github.io/tags/Python/"/>
+    <category term="tips" scheme="https://zypdominate.github.io/tags/tips/"/>
+    
+    <category term="decorator" scheme="https://zypdominate.github.io/tags/decorator/"/>
+    
+    <category term="OOP" scheme="https://zypdominate.github.io/tags/OOP/"/>
     
   </entry>
   
@@ -1991,7 +2199,7 @@
     <category term="Python" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Python/"/>
     
     
-    <category term="Python" scheme="https://zypdominate.github.io/tags/Python/"/>
+    <category term="tips" scheme="https://zypdominate.github.io/tags/tips/"/>
     
   </entry>
   
@@ -2014,7 +2222,13 @@
     <category term="Python" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Python/"/>
     
     
-    <category term="Python" scheme="https://zypdominate.github.io/tags/Python/"/>
+    <category term="tips" scheme="https://zypdominate.github.io/tags/tips/"/>
+    
+    <category term="OOP" scheme="https://zypdominate.github.io/tags/OOP/"/>
+    
+    <category term="fluent-python" scheme="https://zypdominate.github.io/tags/fluent-python/"/>
+    
+    <category term="notes" scheme="https://zypdominate.github.io/tags/notes/"/>
     
   </entry>
   
@@ -2037,7 +2251,11 @@
     <category term="Python" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Python/"/>
     
     
-    <category term="Python" scheme="https://zypdominate.github.io/tags/Python/"/>
+    <category term="tips" scheme="https://zypdominate.github.io/tags/tips/"/>
+    
+    <category term="fluent-python" scheme="https://zypdominate.github.io/tags/fluent-python/"/>
+    
+    <category term="notes" scheme="https://zypdominate.github.io/tags/notes/"/>
     
   </entry>
   
@@ -2060,7 +2278,9 @@
     <category term="Python" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Python/"/>
     
     
-    <category term="Python" scheme="https://zypdominate.github.io/tags/Python/"/>
+    <category term="tips" scheme="https://zypdominate.github.io/tags/tips/"/>
+    
+    <category term="concurrency" scheme="https://zypdominate.github.io/tags/concurrency/"/>
     
   </entry>
   
@@ -2083,7 +2303,13 @@
     <category term="Python" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Python/"/>
     
     
-    <category term="Python" scheme="https://zypdominate.github.io/tags/Python/"/>
+    <category term="tips" scheme="https://zypdominate.github.io/tags/tips/"/>
+    
+    <category term="concurrency" scheme="https://zypdominate.github.io/tags/concurrency/"/>
+    
+    <category term="fluent-python" scheme="https://zypdominate.github.io/tags/fluent-python/"/>
+    
+    <category term="notes" scheme="https://zypdominate.github.io/tags/notes/"/>
     
   </entry>
   
@@ -2106,9 +2332,9 @@
     <category term="Python" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Python/"/>
     
     
-    <category term="Python" scheme="https://zypdominate.github.io/tags/Python/"/>
+    <category term="tips" scheme="https://zypdominate.github.io/tags/tips/"/>
     
-    <category term="FixBug" scheme="https://zypdominate.github.io/tags/FixBug/"/>
+    <category term="troubleshooting" scheme="https://zypdominate.github.io/tags/troubleshooting/"/>
     
   </entry>
   
@@ -2131,7 +2357,11 @@
     <category term="Python" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Python/"/>
     
     
-    <category term="Python" scheme="https://zypdominate.github.io/tags/Python/"/>
+    <category term="tips" scheme="https://zypdominate.github.io/tags/tips/"/>
+    
+    <category term="fluent-python" scheme="https://zypdominate.github.io/tags/fluent-python/"/>
+    
+    <category term="notes" scheme="https://zypdominate.github.io/tags/notes/"/>
     
   </entry>
   
@@ -2154,7 +2384,11 @@
     <category term="Python" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Python/"/>
     
     
-    <category term="Python" scheme="https://zypdominate.github.io/tags/Python/"/>
+    <category term="tips" scheme="https://zypdominate.github.io/tags/tips/"/>
+    
+    <category term="fluent-python" scheme="https://zypdominate.github.io/tags/fluent-python/"/>
+    
+    <category term="notes" scheme="https://zypdominate.github.io/tags/notes/"/>
     
   </entry>
   
@@ -2177,7 +2411,11 @@
     <category term="Python" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Python/"/>
     
     
-    <category term="Python" scheme="https://zypdominate.github.io/tags/Python/"/>
+    <category term="tips" scheme="https://zypdominate.github.io/tags/tips/"/>
+    
+    <category term="fluent-python" scheme="https://zypdominate.github.io/tags/fluent-python/"/>
+    
+    <category term="notes" scheme="https://zypdominate.github.io/tags/notes/"/>
     
   </entry>
   
@@ -2200,7 +2438,13 @@
     <category term="Python" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Python/"/>
     
     
-    <category term="Python" scheme="https://zypdominate.github.io/tags/Python/"/>
+    <category term="tips" scheme="https://zypdominate.github.io/tags/tips/"/>
+    
+    <category term="OOP" scheme="https://zypdominate.github.io/tags/OOP/"/>
+    
+    <category term="fluent-python" scheme="https://zypdominate.github.io/tags/fluent-python/"/>
+    
+    <category term="notes" scheme="https://zypdominate.github.io/tags/notes/"/>
     
   </entry>
   
@@ -2223,7 +2467,11 @@
     <category term="Python" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Python/"/>
     
     
-    <category term="Python" scheme="https://zypdominate.github.io/tags/Python/"/>
+    <category term="tips" scheme="https://zypdominate.github.io/tags/tips/"/>
+    
+    <category term="fluent-python" scheme="https://zypdominate.github.io/tags/fluent-python/"/>
+    
+    <category term="notes" scheme="https://zypdominate.github.io/tags/notes/"/>
     
   </entry>
   
@@ -2246,7 +2494,11 @@
     <category term="Python" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Python/"/>
     
     
-    <category term="Python" scheme="https://zypdominate.github.io/tags/Python/"/>
+    <category term="tips" scheme="https://zypdominate.github.io/tags/tips/"/>
+    
+    <category term="fluent-python" scheme="https://zypdominate.github.io/tags/fluent-python/"/>
+    
+    <category term="notes" scheme="https://zypdominate.github.io/tags/notes/"/>
     
   </entry>
   
@@ -2269,7 +2521,7 @@
     <category term="Git" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Git/"/>
     
     
-    <category term="Git" scheme="https://zypdominate.github.io/tags/Git/"/>
+    <category term="VCS" scheme="https://zypdominate.github.io/tags/VCS/"/>
     
   </entry>
   
@@ -2292,7 +2544,11 @@
     <category term="Python" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Python/"/>
     
     
-    <category term="Python" scheme="https://zypdominate.github.io/tags/Python/"/>
+    <category term="tips" scheme="https://zypdominate.github.io/tags/tips/"/>
+    
+    <category term="fluent-python" scheme="https://zypdominate.github.io/tags/fluent-python/"/>
+    
+    <category term="notes" scheme="https://zypdominate.github.io/tags/notes/"/>
     
   </entry>
   
@@ -2315,7 +2571,9 @@
     <category term="Python" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Python/"/>
     
     
-    <category term="Python" scheme="https://zypdominate.github.io/tags/Python/"/>
+    <category term="tips" scheme="https://zypdominate.github.io/tags/tips/"/>
+    
+    <category term="concurrency" scheme="https://zypdominate.github.io/tags/concurrency/"/>
     
   </entry>
   
@@ -2338,7 +2596,13 @@
     <category term="Python" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Python/"/>
     
     
-    <category term="Python" scheme="https://zypdominate.github.io/tags/Python/"/>
+    <category term="tips" scheme="https://zypdominate.github.io/tags/tips/"/>
+    
+    <category term="internals" scheme="https://zypdominate.github.io/tags/internals/"/>
+    
+    <category term="fluent-python" scheme="https://zypdominate.github.io/tags/fluent-python/"/>
+    
+    <category term="notes" scheme="https://zypdominate.github.io/tags/notes/"/>
     
   </entry>
   
@@ -2361,7 +2625,13 @@
     <category term="Python" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Python/"/>
     
     
-    <category term="Python" scheme="https://zypdominate.github.io/tags/Python/"/>
+    <category term="tips" scheme="https://zypdominate.github.io/tags/tips/"/>
+    
+    <category term="decorator" scheme="https://zypdominate.github.io/tags/decorator/"/>
+    
+    <category term="fluent-python" scheme="https://zypdominate.github.io/tags/fluent-python/"/>
+    
+    <category term="notes" scheme="https://zypdominate.github.io/tags/notes/"/>
     
   </entry>
   
@@ -2384,7 +2654,13 @@
     <category term="Python" scheme="https://zypdominate.github.io/categories/%E6%8A%80%E6%9C%AF/Python/"/>
     
     
-    <category term="Python" scheme="https://zypdominate.github.io/tags/Python/"/>
+    <category term="tips" scheme="https://zypdominate.github.io/tags/tips/"/>
+    
+    <category term="decorator" scheme="https://zypdominate.github.io/tags/decorator/"/>
+    
+    <category term="fluent-python" scheme="https://zypdominate.github.io/tags/fluent-python/"/>
+    
+    <category term="notes" scheme="https://zypdominate.github.io/tags/notes/"/>
     
   </entry>
   
