@@ -1273,7 +1273,7 @@ pre code {
     vertical-align: middle;
   }
   .links-of-author a::before {
-    background: #ffff62;
+    background: #49798a;
     display: inline-block;
     margin-right: 3px;
     transform: translateY(-2px);
@@ -2863,6 +2863,13 @@ header.header {
   .comments {
     padding: 10px 12px;
   }
+}
+#busuanzi_container_page_pv {
+  display: inline;
+}
+.busuanzi-count #busuanzi_container_site_uv,
+.busuanzi-count #busuanzi_container_site_pv {
+  display: inline;
 }
 .main-inner.index.posts-expand .post-block {
   padding: 14px 22px 12px;
