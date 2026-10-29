@@ -293,14 +293,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>5.8k</span>
+      <span>7k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>10 分钟</span>
+      <span>12 分钟</span>
     </span>
 </div>
 
@@ -343,6 +343,15 @@
 <p><strong>索引配置</strong>长这样:</p>
 <figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[[tool.uv.index]]</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">&quot;private&quot;</span></span><br><span class="line"><span class="attr">url</span> = <span class="string">&quot;http://xxo-private-pip.xxxx.lan:9090/simple&quot;</span></span><br><span class="line"><span class="attr">default</span> = <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="section">[[tool.uv.index]]</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">&quot;internal-wheels&quot;</span></span><br><span class="line"><span class="attr">url</span> = <span class="string">&quot;http://172.xx.xxx.229:8899/simple/&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="section">[[tool.uv.index]]</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">&quot;xxp&quot;</span></span><br><span class="line"><span class="attr">url</span> = <span class="string">&quot;http://xxp-pip.xx.lan/simple&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="section">[tool.uv]</span></span><br><span class="line"><span class="attr">allow-insecure-host</span> = [</span><br><span class="line">  <span class="string">&quot;xxo-private-pip.xxxx.lan&quot;</span>,</span><br><span class="line">  <span class="string">&quot;172.xx.xxx.229&quot;</span>,</span><br><span class="line">  <span class="string">&quot;xxp-pip.xx.lan&quot;</span>,</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
 
+<p>上面的配置有一个容易忽略的问题：<code>default = true</code> 会关闭 PyPI，并把这个索引放到最低优先级；如果目标是“优先使用私有源，同时保留 PyPI 作为兜底”，应改成下面这样：</p>
+<p><strong>正确的索引配置模板</strong>:</p>
+<figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[[tool.uv.index]]</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">&quot;private&quot;</span></span><br><span class="line"><span class="attr">url</span> = <span class="string">&quot;http://xxo-private-pip.xxxx.lan:9090/simple&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 只给明确指定来源的包使用，不参与普通依赖的索引搜索</span></span><br><span class="line"><span class="section">[[tool.uv.index]]</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">&quot;internal-wheels&quot;</span></span><br><span class="line"><span class="attr">url</span> = <span class="string">&quot;http://172.xx.xxx.229:8899/simple/&quot;</span></span><br><span class="line"><span class="attr">explicit</span> = <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="section">[[tool.uv.index]]</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">&quot;xxp&quot;</span></span><br><span class="line"><span class="attr">url</span> = <span class="string">&quot;http://xxp-pip.xx.lan/simple&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="section">[tool.uv]</span></span><br><span class="line"><span class="comment"># 索引按声明顺序排列；默认 first-index 可避免依赖混淆</span></span><br><span class="line"><span class="attr">index-strategy</span> = <span class="string">&quot;first-index&quot;</span></span><br><span class="line"><span class="attr">allow-insecure-host</span> = [</span><br><span class="line">  <span class="string">&quot;xxo-private-pip.xxxx.lan&quot;</span>,</span><br><span class="line">  <span class="string">&quot;172.xx.xxx.229&quot;</span>,</span><br><span class="line">  <span class="string">&quot;xxp-pip.xx.lan&quot;</span>,</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="section">[tool.uv.sources]</span></span><br><span class="line"><span class="comment"># 需要使用 internal-wheels 的包必须显式绑定来源</span></span><br><span class="line"><span class="comment"># some-internal-package = &#123; index = &quot;internal-wheels&quot; &#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果 <code>internal-wheels</code> 中的包也应参与所有依赖的普通搜索，就删除 <code>explicit = true</code>；如果只是某个包版本不全，不建议全局改成 <code>unsafe-best-match</code>，优先用 <code>[tool.uv.sources]</code> 为该包固定来源。</p>
+<p>这里的 <code>index-strategy = &quot;first-index&quot;</code> 是 uv 的默认策略：uv 按索引声明顺序查找包，某个索引第一次找到包之后，只使用这个索引中的版本，不再拿后续索引中的版本参与比较。例如 <code>private</code> 中存在 <code>requests</code> 时，即使 PyPI 中有更新版本，也只会从 <code>private</code> 选择。这样可以避免公共源中的同名恶意包覆盖内部包，降低依赖混淆风险。</p>
+<p>如果改成 <code>unsafe-best-match</code>，uv 会跨所有索引查找并选择最高版本，可能更容易解决“前一个索引版本不全”的问题，但也会增加供应链风险。因此，通常应保留 <code>first-index</code>；如果只有某个包需要使用特定索引，优先通过 <code>[tool.uv.sources]</code> 固定来源：</p>
+<figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[tool.uv.sources]</span></span><br><span class="line"><span class="attr">some-package</span> = &#123; index = <span class="string">&quot;private&quot;</span> &#125;</span><br></pre></td></tr></table></figure>
+
 <p>几点要注意:</p>
 <ul>
 <li><code>default = true</code> 会禁用 PyPI,并把这个索引放到已配置索引里优先级最低的位置。</li>
@@ -351,7 +360,7 @@
 </ul>
 <p><strong>解决刚才那个 psutil 问题</strong>,有两种思路:</p>
 <p>一种是全局关闭 <code>first-index</code> 策略:</p>
-<figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[tool.uv]</span></span><br><span class="line"><span class="attr">index-strategy</span> = <span class="string">&quot;unsafe-best-mxxxh&quot;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[tool.uv]</span></span><br><span class="line"><span class="attr">index-strategy</span> = <span class="string">&quot;unsafe-best-match&quot;</span></span><br></pre></td></tr></table></figure>
 
 <p>这样会跨所有索引找最高版本，但风险也最大——只有当你配置的所有索引都完全可信时才应该这么做，否则相当于把供应链安全性拱手让出去。</p>
 <p>更推荐的做法是<strong>单包 pin 来源</strong>,只解决出问题的那一个包:</p>
@@ -487,13 +496,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">778k</span>
+    <span title="站点总字数">779k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">21:37</span>
+    <span title="站点阅读时长">21:39</span>
   </span>
 </div>
 <div class="busuanzi-count">
