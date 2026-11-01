@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="在 CentOS 上搭建了 Jenkins 服务，为了防止意外丢失数据，我们需要定期备份 Jenkins 数据。本方案采用 FileZilla Server 作为 FTP 服务器，并使用 lftp 进行数据同步。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Jenkins 数据备份到 Windows FTP 服务器">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2025/02/09/9722/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="在 CentOS 上搭建了 Jenkins 服务，为了防止意外丢失数据，我们需要定期备份 Jenkins 数据。本方案采用 FileZilla Server 作为 FTP 服务器，并使用 lftp 进行数据同步。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-02-09T03:18:18.000Z">
+<meta property="article:modified_time" content="2025-02-09T03:18:18.000Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="tips">
+<meta property="article:tag" content="CI-CD">
+<meta property="article:tag" content="Windows">
+<meta property="article:tag" content="backup">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2025/02/09/9722/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://zypdominate.github.io/posts/2025/02/09/9722/","path":"posts/2025/02/09/9722/","title":"Jenkins 数据备份到 Windows FTP 服务器"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Jenkins 数据备份到 Windows FTP 服务器 | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script><script src="/js/pjax.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script data-pjax async src="https://vercount.one/js"></script>
+
+
+
+
+
+<script>
+(function () {
+  try {
+    var key = 'next-theme';
+    var saved = localStorage.getItem(key);
+    var theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', theme);
+    document.documentElement.style.colorScheme = theme;
+  } catch (e) {}
+})();
+</script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="Magnolia's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续提升</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-rss"><a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>RSS</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%83%8C%E6%99%AF"><span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE-FileZilla-Server%EF%BC%88Windows%EF%BC%89"><span class="nav-text">1. 安装配置 FileZilla Server（Windows）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E4%B8%8B%E8%BD%BD%E5%B9%B6%E5%AE%89%E8%A3%85-FileZilla-Server"><span class="nav-text">1.1 下载并安装 FileZilla Server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E9%85%8D%E7%BD%AE-FTP-%E7%94%A8%E6%88%B7%E5%92%8C%E5%85%B1%E4%BA%AB%E7%9B%AE%E5%BD%95"><span class="nav-text">1.2 配置 FTP 用户和共享目录</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%AE%89%E8%A3%85%E5%B9%B6%E9%85%8D%E7%BD%AE-FTP-%E5%AE%A2%E6%88%B7%E7%AB%AF%EF%BC%88CentOS%EF%BC%89"><span class="nav-text">2. 安装并配置 FTP 客户端（CentOS）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E5%9C%A8-CentOS-%E5%AE%89%E8%A3%85-lftp"><span class="nav-text">2.1 在 CentOS 安装 lftp</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E7%BC%96%E5%86%99-Jenkins-%E5%A4%87%E4%BB%BD%E8%84%9A%E6%9C%AC"><span class="nav-text">3. 编写 Jenkins 备份脚本</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E8%B5%8B%E4%BA%88%E6%89%A7%E8%A1%8C%E6%9D%83%E9%99%90"><span class="nav-text">3.1 赋予执行权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E6%B5%8B%E8%AF%95%E6%89%A7%E8%A1%8C"><span class="nav-text">3.2 测试执行</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E9%85%8D%E7%BD%AE%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%EF%BC%88Crontab%EF%BC%89"><span class="nav-text">4. 配置定时任务（Crontab）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-%E7%BC%96%E8%BE%91-Crontab-%E4%BB%BB%E5%8A%A1"><span class="nav-text">4.1 编辑 Crontab 任务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-%E9%87%8D%E5%90%AF-Crontab-%E6%9C%8D%E5%8A%A1%EF%BC%88%E9%80%82%E7%94%A8%E4%BA%8E%E9%83%A8%E5%88%86%E7%B3%BB%E7%BB%9F%EF%BC%89"><span class="nav-text">4.2 重启 Crontab 服务（适用于部分系统）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-%E7%A1%AE%E8%AE%A4%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%98%AF%E5%90%A6%E7%94%9F%E6%95%88"><span class="nav-text">4.3 确认定时任务是否生效</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E5%8F%AF%E8%83%BD%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-text">5. 可能遇到的问题及解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-%E8%84%9A%E6%9C%AC%E6%89%A7%E8%A1%8C%E6%97%B6%E6%8A%A5"><span class="nav-text">5.1 脚本执行时报</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-%E6%9D%83%E9%99%90%E9%97%AE%E9%A2%98"><span class="nav-text">5.2 权限问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-FTP-%E8%BF%9E%E6%8E%A5%E5%A4%B1%E8%B4%A5"><span class="nav-text">5.3 FTP 连接失败</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E6%80%BB%E7%BB%93"><span class="nav-text">6. 总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-%E4%BD%BF%E7%94%A8%E5%A4%87%E4%BB%BD%E6%95%B0%E6%8D%AE"><span class="nav-text">7. 使用备份数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-%E5%85%B6%E4%BB%96"><span class="nav-text">8. 其他</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">143</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">60</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767?type=blog" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767?type&#x3D;blog" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+        <div class="pjax">
+        <div class="sidebar-inner sidebar-post-related">
+          <div class="animated">
+              <div class="links-of-blogroll-title"><i class="fa fa-signs-post fa-fw"></i>
+    相关文章
+  </div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/posts/2025/10/19/38531/" rel="bookmark">
+        <time class="popular-posts-time">2025-10-19</time>
+        <br>
+      Jenkins Pipeline Shell 脚本编写指南
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/posts/2025/08/19/57841/" rel="bookmark">
+        <time class="popular-posts-time">2025-08-19</time>
+        <br>
+      AI辅助生成 Jenkins 流水线
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/posts/2020/10/15/6122/" rel="bookmark">
+        <time class="popular-posts-time">2020-10-15</time>
+        <br>
+      Docker 中安装 Elasticsearch + Kibana + Filebeat
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/posts/2025/12/10/19377/" rel="bookmark">
+        <time class="popular-posts-time">2025-12-10</time>
+        <br>
+      Docker 从入门到掌握，必知必会
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/posts/2025/09/24/56935/" rel="bookmark">
+        <time class="popular-posts-time">2025-09-24</time>
+        <br>
+      AI潮流下的新学习方式
+      </a>
+    </li>
+  </ul>
+
+          </div>
+        </div>
+        </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2025/02/09/9722/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Jenkins 数据备份到 Windows FTP 服务器 | Magnolia's Blog">
+      <meta itemprop="description" content="在 CentOS 上搭建了 Jenkins 服务，为了防止意外丢失数据，我们需要定期备份 Jenkins 数据。本方案采用 FileZilla Server 作为 FTP 服务器，并使用 lftp 进行数据同步。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Jenkins 数据备份到 Windows FTP 服务器
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-02-09 11:18:18" itemprop="dateCreated datePublished" datetime="2025-02-09T11:18:18+08:00">2025-02-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/Jenkins/" itemprop="url" rel="index"><span itemprop="name">Jenkins</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">在 CentOS 上搭建了 Jenkins 服务，为了防止意外丢失数据，我们需要定期备份 Jenkins 数据。本方案采用 FileZilla Server 作为 FTP 服务器，并使用 lftp 进行数据同步。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>在 CentOS 上搭建了 Jenkins 服务，为了防止意外丢失数据，我们需要定期备份 Jenkins 数据。本方案采用 <strong>FileZilla Server</strong> 作为 FTP 服务器，并使用 <strong>lftp</strong> 进行数据同步。</p>
+<hr>
+<h2 id="1-安装配置-FileZilla-Server（Windows）"><a href="#1-安装配置-FileZilla-Server（Windows）" class="headerlink" title="1. 安装配置 FileZilla Server（Windows）"></a>1. 安装配置 FileZilla Server（Windows）</h2><p>在 Windows 上安装并配置 FileZilla Server 以接收 Jenkins 备份数据。</p>
+<p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/FL1768317420/article/details/137217231">FileZilla Server&#x2F;Client 的简单使用-CSDN博客</a></p>
+<h3 id="1-1-下载并安装-FileZilla-Server"><a href="#1-1-下载并安装-FileZilla-Server" class="headerlink" title="1.1 下载并安装 FileZilla Server"></a>1.1 下载并安装 FileZilla Server</h3><ul>
+<li>下载 <a target="_blank" rel="noopener" href="https://www.filezilla.cn/download/server">FileZilla Server 0.9.60.2 中文安装版</a></li>
+<li>安装并启动 FileZilla Server，弹出配置窗口：<ul>
+<li><strong>主机</strong>：<code>localhost</code></li>
+<li><strong>密码</strong>：留空，直接连接</li>
+</ul>
+</li>
+</ul>
+<h3 id="1-2-配置-FTP-用户和共享目录"><a href="#1-2-配置-FTP-用户和共享目录" class="headerlink" title="1.2 配置 FTP 用户和共享目录"></a>1.2 配置 FTP 用户和共享目录</h3><ol>
+<li><strong>添加用户</strong>（用于 CentOS 连接 FTP 服务器上传文件）</li>
+<li><strong>设置共享目录</strong>，假设目录路径为 <code>F:\FileZillaServer</code>，用于存放备份数据。</li>
+</ol>
+<p>最终，FTP 服务器上的 Jenkins 备份目录路径为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">F:\FileZillaServer\jenkins_home</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="2-安装并配置-FTP-客户端（CentOS）"><a href="#2-安装并配置-FTP-客户端（CentOS）" class="headerlink" title="2. 安装并配置 FTP 客户端（CentOS）"></a>2. 安装并配置 FTP 客户端（CentOS）</h2><h3 id="2-1-在-CentOS-安装-lftp"><a href="#2-1-在-CentOS-安装-lftp" class="headerlink" title="2.1 在 CentOS 安装 lftp"></a>2.1 在 CentOS 安装 lftp</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> yum update -y  <span class="comment"># 更新系统（CentOS 7/8）</span></span><br><span class="line"><span class="built_in">sudo</span> yum install -y lftp</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-编写-Jenkins-备份脚本"><a href="#3-编写-Jenkins-备份脚本" class="headerlink" title="3. 编写 Jenkins 备份脚本"></a>3. 编写 Jenkins 备份脚本</h2><p>在 CentOS 服务器上创建 <code>backup_jenkins_ftp.sh</code>，用于定期同步 Jenkins 数据到 FTP 服务器。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># FTP 配置</span></span><br><span class="line">FTP_HOST=<span class="string">&quot;xxx.22.212.xx&quot;</span></span><br><span class="line">FTP_USER=<span class="string">&quot;autotest&quot;</span></span><br><span class="line">FTP_PASS=<span class="string">&quot;autotest&quot;</span></span><br><span class="line">FTP_TARGET_DIR=<span class="string">&quot;jenkins_home&quot;</span>  <span class="comment"># Windows FTP 服务器上的目标目录（映射到 F:\FileZillaServer\jenkins_home）</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Jenkins 数据目录（CentOS）</span></span><br><span class="line">SOURCE_DIR=<span class="string">&quot;/var/jenkins_home&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 日志文件</span></span><br><span class="line">LOG_FILE=<span class="string">&quot;/var/log/jenkins_ftp_backup.log&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 lftp 进行文件同步</span></span><br><span class="line">lftp -u <span class="variable">$FTP_USER</span>,<span class="variable">$FTP_PASS</span> <span class="variable">$FTP_HOST</span> &lt;&lt;<span class="string">EOF</span></span><br><span class="line"><span class="string">set ftp:ssl-allow no  # 如果 FTP 服务器不支持 SSL，则禁用 SSL</span></span><br><span class="line"><span class="string">mirror -R $SOURCE_DIR $FTP_TARGET_DIR  # 递归同步 Jenkins 目录到 FTP 服务器</span></span><br><span class="line"><span class="string">quit</span></span><br><span class="line"><span class="string">EOF</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 记录日志</span></span><br><span class="line"><span class="keyword">if</span> [ $? -eq 0 ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;<span class="subst">$(date &#x27;+%Y-%m-%d %H:%M:%S&#x27;)</span> - 备份成功&quot;</span> &gt;&gt; <span class="variable">$LOG_FILE</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;<span class="subst">$(date &#x27;+%Y-%m-%d %H:%M:%S&#x27;)</span> - 备份失败&quot;</span> &gt;&gt; <span class="variable">$LOG_FILE</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-1-赋予执行权限"><a href="#3-1-赋予执行权限" class="headerlink" title="3.1 赋予执行权限"></a>3.1 赋予执行权限</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chmod</span> +x backup_jenkins_ftp.sh</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-测试执行"><a href="#3-2-测试执行" class="headerlink" title="3.2 测试执行"></a>3.2 测试执行</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> ./backup_jenkins_ftp.sh</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="4-配置定时任务（Crontab）"><a href="#4-配置定时任务（Crontab）" class="headerlink" title="4. 配置定时任务（Crontab）"></a>4. 配置定时任务（Crontab）</h2><p>为了实现自动备份，我们使用 <code>crontab</code> 定时执行脚本。</p>
+<h3 id="4-1-编辑-Crontab-任务"><a href="#4-1-编辑-Crontab-任务" class="headerlink" title="4.1 编辑 Crontab 任务"></a>4.1 编辑 Crontab 任务</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">crontab -e</span><br></pre></td></tr></table></figure>
+
+<p>添加以下任务，每天凌晨 2 点执行备份：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0 2 * * * /home/xxx/jenkins/backup_jenkins_ftp.sh</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-重启-Crontab-服务（适用于部分系统）"><a href="#4-2-重启-Crontab-服务（适用于部分系统）" class="headerlink" title="4.2 重启 Crontab 服务（适用于部分系统）"></a>4.2 重启 Crontab 服务（适用于部分系统）</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> systemctl restart crond</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-3-确认定时任务是否生效"><a href="#4-3-确认定时任务是否生效" class="headerlink" title="4.3 确认定时任务是否生效"></a>4.3 确认定时任务是否生效</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">crontab -l</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="5-可能遇到的问题及解决方案"><a href="#5-可能遇到的问题及解决方案" class="headerlink" title="5. 可能遇到的问题及解决方案"></a>5. 可能遇到的问题及解决方案</h2><h3 id="5-1-脚本执行时报"><a href="#5-1-脚本执行时报" class="headerlink" title="5.1 脚本执行时报"></a>5.1 脚本执行时报</h3><p> <code>&#39;&#39;: command not found</code> 该问题通常是由于脚本文件包含 Windows 换行符 (<code>\r\n</code>)，而 Linux 只支持 <code>\n</code> 造成的。</p>
+<p><strong>解决方法</strong>：转换文件格式</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dos2unix backup_jenkins_ftp.sh</span><br></pre></td></tr></table></figure>
+
+<p>如果 <code>dos2unix</code> 未安装，可用 <code>sed</code> 命令处理：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed -i <span class="string">&#x27;s/\r$//&#x27;</span> backup_jenkins_ftp.sh</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-2-权限问题"><a href="#5-2-权限问题" class="headerlink" title="5.2 权限问题"></a>5.2 权限问题</h3><p>若执行时遇到权限不足的错误，可尝试：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> <span class="built_in">chmod</span> +x backup_jenkins_ftp.sh</span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">chmod</span> 666 /var/log/jenkins_ftp_backup.log</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-3-FTP-连接失败"><a href="#5-3-FTP-连接失败" class="headerlink" title="5.3 FTP 连接失败"></a>5.3 FTP 连接失败</h3><ol>
+<li><p>检查 FTP 服务器是否开启</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">telnet 172.22.212.25 21</span><br></pre></td></tr></table></figure>
+
+<p>如果连接失败，需检查 Windows 上 FileZilla Server 是否正常运行。</p>
+</li>
+<li><p>检查防火墙是否开放 21 端口</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> firewall-cmd --add-port=21/tcp --permanent</span><br><span class="line"><span class="built_in">sudo</span> firewall-cmd --reload</span><br></pre></td></tr></table></figure></li>
+</ol>
+<hr>
+<h2 id="6-总结"><a href="#6-总结" class="headerlink" title="6. 总结"></a>6. 总结</h2><p>通过以上步骤，我们完成了 Jenkins 备份到 Windows FTP 服务器的自动化流程，主要包括：</p>
+<ol>
+<li>在 Windows 上安装 FileZilla Server 作为 FTP 服务器。</li>
+<li>在 CentOS 上安装 lftp 并编写同步脚本。</li>
+<li>配置 Crontab 实现每日自动备份。</li>
+<li>处理常见问题，确保备份流程稳定运行。</li>
+</ol>
+<p>🎯 <strong>至此，Jenkins 数据将每日自动备份至 Windows FTP 服务器，确保数据安全可靠！</strong> 🚀</p>
+<hr>
+<h2 id="7-使用备份数据"><a href="#7-使用备份数据" class="headerlink" title="7. 使用备份数据"></a>7. 使用备份数据</h2><p>未来我重新使用 docker-compose.yml 搭建一个 jenkins 服务，使用备份的 jenkins_home 数据重建 Jenkins 服务，主要步骤如下：</p>
+<p>首先编写 docker-compose.yml 文件，需要特别注意卷映射配置：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&#x27;3.2&#x27;</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">jenkins:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">jenkins/jenkins:lts</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">jenkins</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;8080:8080&quot;</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;50000:50000&quot;</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="comment"># 这里的 ./jenkins_home 就是你要放置备份数据的本地目录</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./jenkins_home:/var/jenkins_home</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br></pre></td></tr></table></figure>
+
+<p>准备备份数据：</p>
+<ul>
+<li>在 docker-compose.yml 同级目录下创建 jenkins_home 文件夹</li>
+<li>将 Windows FTP 服务器上的备份数据（F:\FileZillaServer\jenkins_home 下的所有内容）复制到这个本地的 jenkins_home 文件夹中</li>
+</ul>
+<p>设置正确的权限：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># Jenkins 容器中的 jenkins 用户的 UID 通常是 1000</span><br><span class="line">sudo chown -R 1000:1000 ./jenkins_home</span><br></pre></td></tr></table></figure>
+
+<p>启动服务：<code>docker-compose up -d</code></p>
+<p>这样启动后，Jenkins 将会：</p>
+<ul>
+<li>使用备份数据（包括所有的任务配置、插件、凭据等）</li>
+<li>无需重新进行初始化设置</li>
+<li>保持原有的所有配置和历史数据</li>
+</ul>
+<p>注意事项：</p>
+<ol>
+<li>确保新环境的 Jenkins 版本与备份时的版本兼容，最好使用相同版本</li>
+<li>如果备份数据中包含了特定路径的配置（如工作目录、工具路径等），可能需要根据新环境进行调整</li>
+<li>如果有自定义的环境变量或系统配置，也要在新环境中相应设置</li>
+<li>首次启动可能会稍慢，因为 Jenkins 需要验证所有配置和插件</li>
+</ol>
+<p>如果启动过程中遇到问题，可以：</p>
+<ol>
+<li>检查 docker logs jenkins 查看详细日志</li>
+<li>确认文件权限是否正确</li>
+<li>验证所有必要的插件是否都在备份中</li>
+</ol>
+<p>对于敏感数据（如凭据），最好再次检查确认是否需要更新或重新配置。</p>
+<hr>
+<h2 id="8-其他"><a href="#8-其他" class="headerlink" title="8. 其他"></a>8. 其他</h2><p>使用 <code>lftp</code> 的 <code>mirror</code> 命令。默认情况下，<code>mirror</code> 命令会进行增量同步，具体行为如下：</p>
+<ol>
+<li>对于新文件：会被传输到目标目录</li>
+<li>对于已存在的文件：<ul>
+<li>如果源文件(Centos上)比目标文件(Windows上)新，则会覆盖</li>
+<li>如果文件未修改(时间戳和大小相同)，则会跳过，不会重新传输</li>
+</ul>
+</li>
+<li>对于已删除的文件：<ul>
+<li>默认情况下，目标目录中对应的文件不会被删除</li>
+<li>如果想删除目标目录中已不存在的文件，需要添加 <code>--delete</code> 参数</li>
+</ul>
+</li>
+</ol>
+<p>可以在脚本中添加一些参数来更精确地控制同步行为，例如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mirror -R --only-newer --ignore-time --size-only <span class="variable">$SOURCE_DIR</span> <span class="variable">$FTP_TARGET_DIR</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>--only-newer</code>: 只传输新文件或修改过的文件</li>
+<li><code>--ignore-time</code>: 忽略时间戳比较，只比较文件大小</li>
+<li><code>--size-only</code>: 只比较文件大小来决定是否需要更新</li>
+<li><code>--delete</code>: 删除目标目录中在源目录不存在的文件</li>
+<li><code>-v</code>: 显示详细的传输信息</li>
+</ul>
+<p>如果想在日志中看到具体哪些文件被传输或跳过，可以添加 <code>-v</code> 参数：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mirror -R -v <span class="variable">$SOURCE_DIR</span> <span class="variable">$FTP_TARGET_DIR</span></span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="preferred_color_scheme"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/tips/" rel="tag"># tips</a>
+              <a href="/tags/CI-CD/" rel="tag"># CI-CD</a>
+              <a href="/tags/Windows/" rel="tag"># Windows</a>
+              <a href="/tags/backup/" rel="tag"># backup</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2024/12/31/50892/" rel="prev" title="pytest 高级用法：间接参数">
+                  <i class="fa fa-angle-left"></i> pytest 高级用法：间接参数
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2025/02/15/43653/" rel="next" title="Python包导入的最佳实践">
+                  Python包导入的最佳实践 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">779k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">21:39</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+<button type="button" id="theme-toggle" class="theme-toggle" aria-label="切换白天/黑夜阅读模式" title="切换阅读模式">
+  <span class="theme-toggle-icon theme-toggle-icon-moon" aria-hidden="true">☾</span>
+  <span class="theme-toggle-icon theme-toggle-icon-sun" aria-hidden="true">☀</span>
+</button>
+<script>
+(function () {
+  var KEY = 'next-theme';
+  var root = document.documentElement;
+  var btn = document.getElementById('theme-toggle');
+
+  function current() {
+    return root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+  }
+
+  function syncGiscus(theme) {
+    var iframe = document.querySelector('iframe.giscus-frame');
+    if (!iframe || !iframe.contentWindow) return;
+    iframe.contentWindow.postMessage(
+      { giscus: { setConfig: { theme: theme === 'dark' ? 'dark' : 'light' } } },
+      'https://giscus.app'
+    );
+  }
+
+  function apply(theme) {
+    root.setAttribute('data-theme', theme);
+    root.style.colorScheme = theme;
+    try { localStorage.setItem(KEY, theme); } catch (e) {}
+    if (btn) btn.setAttribute('data-theme', theme);
+    syncGiscus(theme);
+  }
+
+  if (btn) {
+    btn.setAttribute('data-theme', current());
+    btn.addEventListener('click', function () {
+      apply(current() === 'dark' ? 'light' : 'dark');
+    });
+  }
+
+  // 无手动偏好时跟随系统变化
+  try {
+    if (!localStorage.getItem(KEY)) {
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function (e) {
+        if (!localStorage.getItem(KEY)) apply(e.matches ? 'dark' : 'light');
+      });
+    }
+  } catch (e) {}
+})();
+</script>
+
+</body>
+</html>
