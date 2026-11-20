@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zypdominate.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="记录从 amend 到 rebase 的开发习惯变化，以及在 dev 分支同步 master 的操作方式。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从 amend 到 rebase：一次 git 习惯的改变">
+<meta property="og:url" content="https://zypdominate.github.io/posts/2026/11/21/6970fbea/index.html">
+<meta property="og:site_name" content="Magnolia&#39;s Blog">
+<meta property="og:description" content="记录从 amend 到 rebase 的开发习惯变化，以及在 dev 分支同步 master 的操作方式。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-11-20T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-11-20T16:00:00.000Z">
+<meta property="article:author" content="Magnolia">
+<meta property="article:tag" content="VCS">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zypdominate.github.io/posts/2026/11/21/6970fbea/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://zypdominate.github.io/posts/2026/11/21/6970fbea/","path":"posts/2026/11/21/6970fbea/","title":"从 amend 到 rebase：一次 git 习惯的改变"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>从 amend 到 rebase：一次 git 习惯的改变 | Magnolia's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script><script src="/js/pjax.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"default"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script data-pjax async src="https://vercount.one/js"></script>
+
+
+
+
+
+<script>
+(function () {
+  try {
+    var key = 'next-theme';
+    var saved = localStorage.getItem(key);
+    var theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', theme);
+    document.documentElement.style.colorScheme = theme;
+  } catch (e) {}
+})();
+</script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="Magnolia's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Magnolia's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">持续提升</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-rss"><a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>RSS</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%8E-amend-%E5%88%B0-rebase%EF%BC%9A%E4%B8%80%E6%AC%A1-git-%E4%B9%A0%E6%83%AF%E7%9A%84%E6%94%B9%E5%8F%98"><span class="nav-text">从 amend 到 rebase：一次 git 习惯的改变</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E8%B5%B7%E5%9B%A0%EF%BC%9A%E6%88%91%E7%9A%84%E5%BC%80%E5%8F%91%E4%B9%A0%E6%83%AF"><span class="nav-text">1. 起因：我的开发习惯</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%9C%80%E5%B8%B8%E7%94%A8%E7%9A%84-merge"><span class="nav-text">2. 最常用的 merge</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-rebase-%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-text">3. rebase 是什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-dev-%E4%B8%8A%E6%9C%89%E5%A4%9A%E7%AC%94%E6%8F%90%E4%BA%A4%E6%97%B6"><span class="nav-text">4. dev 上有多笔提交时</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E6%88%91%E7%9A%84%E6%97%A5%E5%B8%B8%E6%B5%81%E7%A8%8B"><span class="nav-text">5. 我的日常流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E9%A3%8E%E9%99%A9%E5%92%8C%E5%85%9C%E5%BA%95"><span class="nav-text">6. 风险和兜底</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-%E5%AF%B9%E8%BF%99%E4%B8%AA%E4%B9%A0%E6%83%AF%E7%9A%84%E5%8F%8D%E6%80%9D"><span class="nav-text">7. 对这个习惯的反思</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%9F%E6%9F%A5"><span class="nav-text">速查</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Magnolia"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Magnolia</p>
+  <div class="site-description" itemprop="description">Python/测试开发</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">144</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">60</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_31362767?type=blog" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_31362767?type&#x3D;blog" rel="noopener me" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/zypdominate" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-gitee fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/zypdominate" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zypdominate" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zypdominate@gmail.com" title="E-Mail → mailto:zypdominate@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+        <div class="pjax">
+        <div class="sidebar-inner sidebar-post-related">
+          <div class="animated">
+              <div class="links-of-blogroll-title"><i class="fa fa-signs-post fa-fw"></i>
+    相关文章
+  </div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/posts/2025/02/15/28297/" rel="bookmark">
+        <time class="popular-posts-time">2025-02-15</time>
+        <br>
+      Learning git branching
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/posts/2020/01/11/11785/" rel="bookmark">
+        <time class="popular-posts-time">2020-01-11</time>
+        <br>
+      Git：分支merge主线代码
+      </a>
+    </li>
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/posts/2024/02/11/57207/" rel="bookmark">
+        <time class="popular-posts-time">2024-02-11</time>
+        <br>
+      gitlab-runner.exe exec 调试 ci 配置
+      </a>
+    </li>
+  </ul>
+
+          </div>
+        </div>
+        </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zypdominate.github.io/posts/2026/11/21/6970fbea/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Magnolia">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Magnolia's Blog">
+      <meta itemprop="description" content="Python/测试开发">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="从 amend 到 rebase：一次 git 习惯的改变 | Magnolia's Blog">
+      <meta itemprop="description" content="记录从 amend 到 rebase 的开发习惯变化，以及在 dev 分支同步 master 的操作方式。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          从 amend 到 rebase：一次 git 习惯的改变
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-11-21 00:00:00" itemprop="dateCreated datePublished" datetime="2026-11-21T00:00:00+08:00">2026-11-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/Git/" itemprop="url" rel="index"><span itemprop="name">Git</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">记录从 amend 到 rebase 的开发习惯变化，以及在 dev 分支同步 master 的操作方式。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="从-amend-到-rebase：一次-git-习惯的改变"><a href="#从-amend-到-rebase：一次-git-习惯的改变" class="headerlink" title="从 amend 到 rebase：一次 git 习惯的改变"></a>从 amend 到 rebase：一次 git 习惯的改变</h1><p>起因是我有个写代码习惯（反复 amend），又想经常同步 master 的代码，结果一路摸到了 rebase。</p>
+<p>之前一直不敢用 rebase，现在回想起来，可能是刚入行时某次用 rebase 产生不好的结果，有了心理阴影，加上一直用 merge 养成了习惯，就没再去研究一下 rebase。</p>
+<h2 id="1-起因：我的开发习惯"><a href="#1-起因：我的开发习惯" class="headerlink" title="1. 起因：我的开发习惯"></a>1. 起因：我的开发习惯</h2><p>场景是这样的：</p>
+<ul>
+<li>master 上有最新代码，我基于它拉了个 <code>dev</code> 分支。</li>
+<li>我在 dev 上改某个文件，要改很久，中间不想留一堆零碎提交，希望一直 amend 到<strong>同一个提交</strong>上。</li>
+<li>同时 master 在不断更新，我想时不时把 master 的代码同步过来，而且<strong>不打断 amend</strong>。</li>
+</ul>
+<p>问题就变成：怎么同步 master，才能让我的 HEAD 一直是“我那一个提交”，继续 amend？</p>
+<h2 id="2-最常用的-merge"><a href="#2-最常用的-merge" class="headerlink" title="2. 最常用的 merge"></a>2. 最常用的 merge</h2><p>同步 master 最直觉的做法是在 dev 上 <code>git merge master</code>，就算是没用过 git 的人，看到 merge 就见名知意了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">合并前：</span><br><span class="line">master:  A---B---C---D</span><br><span class="line">              \</span><br><span class="line">dev:           E</span><br><span class="line"></span><br><span class="line">合并后：</span><br><span class="line">master:  A---B---C---D</span><br><span class="line">              \       \</span><br><span class="line">dev:           E-------M</span><br></pre></td></tr></table></figure>
+
+<p>merge 会产生一个新的合并提交 M，HEAD 变成 M。这时再 <code>git commit --amend</code>，改的是 M，不是我的功能提交 E。我的改动会和合并混在一起，amend 的意义就没了。</p>
+<p>补充一点：<strong>M 是 D 和 E 的合并</strong>，也就是 <code>master</code> 最新提交和当前分支最新提交的合并。</p>
+<ul>
+<li>M 有两个父提交。第一父提交是我当前所在分支的最新提交，第二父提交是被合并进来的 master 最新提交 D。</li>
+<li>M 的内容 &#x3D; 分叉点 B 之后 master 的所有改动（C、D）+ dev 的所有改动，合在一起的结果。</li>
+<li>C 和 D 并没有被合成一个提交，它们仍然是独立的提交，只是现在从 dev 也能追溯到。</li>
+</ul>
+<p>看结构用 <code>git log --graph --oneline</code>，只看 dev 自己的主线用 <code>git log --first-parent</code>。</p>
+<p>所以 merge 本身没问题，但它不适合我“要持续 amend 同一个提交”的场景。</p>
+<h2 id="3-rebase-是什么"><a href="#3-rebase-是什么" class="headerlink" title="3. rebase 是什么"></a>3. rebase 是什么</h2><p>在 <code>dev</code> 分支执行 <code>git rebase master</code>（也叫 rebase dev onto master），Git 会把 <code>dev</code> 上从共同祖先之后的提交依次重放，形成一条以 <code>master</code> 最新提交为起点的 <code>dev</code> 历史。操作完成后，<code>dev</code> 前进到新提交，<code>master</code> 保持不变。</p>
+<p>下图中的 <code>E&#39;</code> 就是重放 <code>E</code> 后生成的新提交。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">rebase 前：</span><br><span class="line">master:  A---B---C---D</span><br><span class="line">              \</span><br><span class="line">dev:           E</span><br><span class="line"></span><br><span class="line">rebase 后：</span><br><span class="line">master:  A---B---C---D</span><br><span class="line">                      \</span><br><span class="line">dev:                   E&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>要点：</p>
+<ul>
+<li>E’ 和 E 内容相同，但 <strong>hash 不同</strong>，本质是重新创建的提交，旧的 E 没有分支指向它了。</li>
+<li>结果是一条直线，没有 merge commit。</li>
+<li>效果等价于“我是从 D 才开始开发的”。</li>
+<li>HEAD 仍然是我那个功能提交 E’，所以可以继续 amend。</li>
+</ul>
+<p>这就解决了开头的问题：rebase 同步 master，不会打断 amend。</p>
+<p>git 判断“哪些是 dev 独有的”：看 dev 和 master 的共同祖先（这里是 B）。B 之后 dev 上的所有提交，都会被 rebase 处理。</p>
+<h2 id="4-dev-上有多笔提交时"><a href="#4-dev-上有多笔提交时" class="headerlink" title="4. dev 上有多笔提交时"></a>4. dev 上有多笔提交时</h2><p>如果 dev 上不止一笔，比如 E、F 两笔，<code>git rebase master</code> 会把<strong>两笔都</strong>按顺序接到 master 最新提交后面。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">rebase 前：</span><br><span class="line">master:  A---B---C---D</span><br><span class="line">              \</span><br><span class="line">dev:           E---F</span><br><span class="line"></span><br><span class="line">rebase 后：</span><br><span class="line">master:  A---B---C---D</span><br><span class="line">                      \</span><br><span class="line">dev:                   E&#x27;---F&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>和单个提交的区别：</p>
+<ul>
+<li><strong>冲突可能出现多轮</strong>。git 是逐个提交重放的：E 有冲突就停下来，我解决后 <code>git add</code>、<code>git rebase --continue</code>，然后重放 F，F 可能再冲突一次。只有一个提交时，最多解决一轮。</li>
+<li><strong>amend 改的是最后一笔</strong>。rebase 后 HEAD 是 F’，amend 改 F’，不会动 E’。</li>
+</ul>
+<p>想保持“始终只有一个提交”，可以先压成一个：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git reset --soft HEAD~2</span><br><span class="line">git commit -m <span class="string">&quot;your message&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>或者 <code>git rebase -i master</code>，把 F 标成 <code>squash</code> &#x2F; <code>fixup</code>。</p>
+<ul>
+<li><code>squash</code>：合并 <code>F</code> 的改动，并让你编辑合并后的提交说明。</li>
+<li><code>fixup</code>：也合并 <code>F</code> 的改动，但直接丢弃 <code>F</code> 的提交说明，保留 <code>E</code> 的说明。</li>
+</ul>
+<p>完成后，<code>E</code> 和 <code>F</code> 会变成一个新的提交。<code>squash</code> 和 <code>fixup</code> 都会改写提交历史。</p>
+<h2 id="5-我的日常流程"><a href="#5-我的日常流程" class="headerlink" title="5. 我的日常流程"></a>5. 我的日常流程</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 平时：继续改，amend 到同一个提交</span></span><br><span class="line">git add -u                  <span class="comment"># 只暂存已跟踪文件的修改；有新文件要用 git add &lt;文件&gt;</span></span><br><span class="line">git commit --amend --no-edit  <span class="comment"># 通常都是 pycharm 中点击 Amend</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 想同步 master 时</span></span><br><span class="line">git fetch origin</span><br><span class="line">git rebase --autostash origin/master</span><br></pre></td></tr></table></figure>
+
+<p>几个细节：</p>
+<ul>
+<li>工作区有未提交的修改时，rebase 会拒绝执行。<code>--autostash</code> 会自动 stash、rebase、再恢复。也可以配置成默认：<code>git config --global rebase.autoStash true</code>。</li>
+<li>直接 rebase <code>origin/master</code>。如果用本地 master，要先更新，不然 rebase 的是旧代码。</li>
+<li>冲突时：解决文件 → <code>git add</code> → <code>git rebase --continue</code>。想放弃就 <code>git rebase --abort</code>，回到 rebase 之前的状态。</li>
+<li>可以开 <code>git config rerere.enabled true</code>，让 git 记住解决过的冲突，相同冲突下次自动应用。</li>
+</ul>
+<h2 id="6-风险和兜底"><a href="#6-风险和兜底" class="headerlink" title="6. 风险和兜底"></a>6. 风险和兜底</h2><p><strong>改写历史</strong></p>
+<p>amend 和 rebase 都会生成新提交、丢弃旧提交。如果 dev 已经推送到远程，再推送要强推：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push --force-with-lease</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>--force-with-lease</code> 比 <code>--force</code> 安全：远程分支被别人更新过时会拒绝覆盖。</li>
+<li>前提是这个分支只有我自己在用，别人基于它开发会出问题。</li>
+</ul>
+<p><strong>改坏了怎么办</strong></p>
+<ul>
+<li>rebase &#x2F; merge 进行中：<code>git rebase --abort</code>、<code>git merge --abort</code>。</li>
+<li>已经完成但想回退：<code>git reflog</code> 找到操作前的位置，<code>git reset --hard HEAD@&#123;n&#125;</code>。</li>
+<li>amend 会覆盖上一版，改坏了只能靠 reflog 找回。所以 reflog 值得提前演练一次。</li>
+</ul>
+<h2 id="7-对这个习惯的反思"><a href="#7-对这个习惯的反思" class="headerlink" title="7. 对这个习惯的反思"></a>7. 对这个习惯的反思</h2><p>反复 amend 的代价是覆盖上一版，改坏了只能靠 reflog。还有一条替代路径：</p>
+<ul>
+<li>平时正常多次提交，中间状态不丢。</li>
+<li>最后用 <code>git rebase -i</code> 或 <code>git reset --soft</code> 压成一个提交。</li>
+<li>我们用 GitLab，如果合并 MR 时本来就 squash，那平时多次提交效果一样，也不用为了保持单提交而频繁 rebase。</li>
+</ul>
+<p>我坚持 amend，是因为真的需要单提交历史，还是只是习惯？应该是更加方便，毕竟在 pycharm 上只要点击 Amend 即可，也不用更新 message，用上一次的就好了，特别适合频繁修改一个文件、不断查看差异。</p>
+<p>最近开始，我已经更习惯用 rebase 而不是 merge 了。稍微难一点的东西，用的多了，理解多了，自然也更加熟练。</p>
+<h2 id="速查"><a href="#速查" class="headerlink" title="速查"></a>速查</h2><table>
+<thead>
+<tr>
+<th>想做什么</th>
+<th>命令</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>同步 master 并保持线性</td>
+<td><code>git fetch origin &amp;&amp; git rebase --autostash origin/master</code></td>
+</tr>
+<tr>
+<td>同步 master，保留合并记录</td>
+<td><code>git merge origin/master</code></td>
+</tr>
+<tr>
+<td>把修改并进上一个提交</td>
+<td><code>git add -u &amp;&amp; git commit --amend --no-edit</code></td>
+</tr>
+<tr>
+<td>rebase 冲突后继续</td>
+<td>解决文件 → <code>git add</code> → <code>git rebase --continue</code></td>
+</tr>
+<tr>
+<td>放弃 rebase &#x2F; merge</td>
+<td><code>git rebase --abort</code> &#x2F; <code>git merge --abort</code></td>
+</tr>
+<tr>
+<td>已推送分支改写历史后推送</td>
+<td><code>git push --force-with-lease</code></td>
+</tr>
+<tr>
+<td>把最近 N 笔压成一笔</td>
+<td><code>git reset --soft HEAD~N &amp;&amp; git commit -m &quot;...&quot;</code></td>
+</tr>
+<tr>
+<td>交互式整理提交</td>
+<td><code>git rebase -i master</code></td>
+</tr>
+<tr>
+<td>看提交图</td>
+<td><code>git log --graph --oneline --all</code></td>
+</tr>
+<tr>
+<td>只看当前分支主线</td>
+<td><code>git log --first-parent</code></td>
+</tr>
+<tr>
+<td>找回操作前的状态</td>
+<td><code>git reflog</code> → <code>git reset --hard HEAD@&#123;n&#125;</code></td>
+</tr>
+<tr>
+<td>自动 stash</td>
+<td><code>git config --global rebase.autoStash true</code></td>
+</tr>
+<tr>
+<td>记住冲突解决方式</td>
+<td><code>git config rerere.enabled true</code></td>
+</tr>
+</tbody></table>
+<p>选择原则：</p>
+<ul>
+<li>只有我自己用的分支：rebase，历史干净。</li>
+<li>已推送且别人也在用：merge，不改写历史。</li>
+<li>团队有约定（线性历史、squash）：按约定来。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><script src="https://giscus.app/client.js"
+        data-repo="zypdominate/zypdominate.github.io"
+        data-repo-id="R_kgDOM5cC4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOM5cC484C0EW3"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="preferred_color_scheme"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+          <div class="post-tags">
+              <a href="/tags/VCS/" rel="tag"># VCS</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2026/10/17/9d2f7a1c/" rel="prev" title="AI 编程之后，我的工作变成了什么？">
+                  <i class="fa fa-angle-left"></i> AI 编程之后，我的工作变成了什么？
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Magnolia</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">783k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">21:45</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+<button type="button" id="theme-toggle" class="theme-toggle" aria-label="切换白天/黑夜阅读模式" title="切换阅读模式">
+  <span class="theme-toggle-icon theme-toggle-icon-moon" aria-hidden="true">☾</span>
+  <span class="theme-toggle-icon theme-toggle-icon-sun" aria-hidden="true">☀</span>
+</button>
+<script>
+(function () {
+  var KEY = 'next-theme';
+  var root = document.documentElement;
+  var btn = document.getElementById('theme-toggle');
+
+  function current() {
+    return root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+  }
+
+  function syncGiscus(theme) {
+    var iframe = document.querySelector('iframe.giscus-frame');
+    if (!iframe || !iframe.contentWindow) return;
+    iframe.contentWindow.postMessage(
+      { giscus: { setConfig: { theme: theme === 'dark' ? 'dark' : 'light' } } },
+      'https://giscus.app'
+    );
+  }
+
+  function apply(theme) {
+    root.setAttribute('data-theme', theme);
+    root.style.colorScheme = theme;
+    try { localStorage.setItem(KEY, theme); } catch (e) {}
+    if (btn) btn.setAttribute('data-theme', theme);
+    syncGiscus(theme);
+  }
+
+  if (btn) {
+    btn.setAttribute('data-theme', current());
+    btn.addEventListener('click', function () {
+      apply(current() === 'dark' ? 'light' : 'dark');
+    });
+  }
+
+  // 无手动偏好时跟随系统变化
+  try {
+    if (!localStorage.getItem(KEY)) {
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function (e) {
+        if (!localStorage.getItem(KEY)) apply(e.matches ? 'dark' : 'light');
+      });
+    }
+  } catch (e) {}
+})();
+</script>
+
+</body>
+</html>
